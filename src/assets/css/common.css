@@ -1,0 +1,21 @@
+/* CSS Reset */
+html, body, div, span, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,abbr, address, cite, code,del, dfn, em, img, ins, kbd, q, samp,small, strong, sub, sup, var,b, i,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, figcaption,figure, footer, header, hgroup, menu, nav, section, summary,time, mark, audio, video {margin:0;padding:0;border:0;outline:0;}
+article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary {display:block;}
+html, body{height: 100%;width: 100%;font:normal 500 100%/1.45 "Microsoft Yahei";position:relative;background-color: #fff;}
+input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei";}
+table {border-collapse:collapse;border-spacing:0;}
+a{ text-decoration:none; outline:none;}
+a:visited,a:active{ text-decoration:none;}
+i{ margin-right:5px;text-decoration: none;}
+li{ list-style:none;}
+[v-cloak] {display: none;}
+
+/* 清除浮动 */
+.fn-clear:after {visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
+.fn-clear {zoom:1;}
+
+/* placeholder重置 */
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {color: #aaa;}
+input:-moz-placeholder, textarea:-moz-placeholder {　color:#aaa;}
+input::-moz-placeholder, textarea::-moz-placeholder {　color:#aaa;}　
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#aaa;} 
