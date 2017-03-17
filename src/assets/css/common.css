@@ -1,13 +1,14 @@
 /* CSS Reset */
-html, body, div, span, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,abbr, address, cite, code,del, dfn, em, img, ins, kbd, q, samp,small, strong, sub, sup, var,b, i,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, figcaption,figure, footer, header, hgroup, menu, nav, section, summary,time, mark, audio, video {margin:0;padding:0;border:0;outline:0;}
-article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary {display:block;}
-html, body{height: 100%;width: 100%;font:normal 500 100%/1.45 "Microsoft Yahei";position:relative;background-color: #fff;}
-input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei";}
+html,body{font-family: "Microsoft Yahei";  background-color: #fff; height: 100%;}
+body, dl, dd, h1, h2, h3, h4, h5, h6, p, form{margin:0;}
+ol,ul{margin:0; padding:0;list-style-type:none;}
+input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei";vertical-align: middle;}
+button{border: none;}
 table {border-collapse:collapse;border-spacing:0;}
 a{ text-decoration:none; outline:none;}
 a:visited,a:active{ text-decoration:none;}
-i{ margin-right:5px;text-decoration: none;}
-li{ list-style:none;}
+i{ display: inline-block; text-decoration: none;}
+img{max-width: 100%;}
 [v-cloak] {display: none;}
 
 /* 清除浮动 */
@@ -19,3 +20,17 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {color: #a
 input:-moz-placeholder, textarea:-moz-placeholder {　color:#aaa;}
 input::-moz-placeholder, textarea::-moz-placeholder {　color:#aaa;}　
 input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#aaa;} 
+
+
+/* iconfont 图标字体 */
+@font-face{font-family:"iconfont";
+src:url('../fonts/iconfont.eot'); /* IE9 */
+src:url('../fonts/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+url('../fonts/iconfont.woff') format('woff'), /* chrome、firefox */
+url('../fonts/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+ */
+url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
+.iconfont{font-family:"iconfont"!important;font-size:1rem; font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:0.2px;-moz-osx-font-smoothing:grayscale;}
+
+/*首页样式*/
+#app{overflow: auto; height: 100%;}
+

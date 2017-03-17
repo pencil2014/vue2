@@ -5,8 +5,13 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 // 定义组件懒加载
-const index = resolve => require(['../components/index'], resolve)
-const Hello = resolve => require(['../components/Hello'], resolve)
+const Login = resolve => require(['../components/login/login'], resolve)
+const Register1 = resolve => require(['../components/register/step1'], resolve)
+const Register2 = resolve => require(['../components/register/step2'], resolve)
+const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
+
+
+const Index = resolve => require(['../components/index'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -15,17 +20,32 @@ export default new Router({
   routes: [
     {
       path: '/index',
-      name: 'index',
-      component: index
+      name: 'Index',
+      component: Index
     },
     {
-    	path: '/hello',
-    	name: 'hello',
-    	component: Hello
+    	path: '/login',
+    	name: 'Login',
+    	component: Login
+    },
+    {
+      path: '/register',
+      name: 'Register1',
+      component: Register1
+    },
+    {
+      path: '/register/:code',
+      name: 'Register2',
+      component: Register2
+    },
+    {
+      path: '/forgot',
+      name: 'Forgot',
+      component: Forgot
     },
     {
     	path:'*', 
-    	redirect:'/index'
+    	redirect:'/login'
     }
   ]
 })
