@@ -213,8 +213,8 @@ background-size: cover; display: block; height: 0.6rem; line-height: 0.6rem; wid
 .ex-index-menu{overflow: auto;}
 .ex-index-menu li{ float: left;  width: 33.33%;}
 .ex-index-menu li a{ display: block;  text-align: center; padding:0.5rem 0; border:1px solid #eee; margin-left: -1px; margin-top: -1px; color: #222; }
-.ex-index-menu li a i{font-size: 30px; margin-bottom: 0.06rem;}
-.ex-index-menu li a span{display: block;}
+.ex-index-menu li a i{font-size: 0.8rem; margin-bottom: 0.06rem;}
+.ex-index-menu li a span{display: block; color: #222;}
 .ex-index-menu li a:active{background-color: #eee;}
 i.m1{color: #ffbc3d;}
 i.m2{color: #27b581;}

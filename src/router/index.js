@@ -12,7 +12,7 @@ const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
 
 const Index = resolve => require(['../components/index/index'], resolve)
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
-const Set = resolve => require(['../components/forgot/forgot'], resolve)
+const Settings = resolve => require(['../components/forgot/forgot'], resolve)
 
 
 
@@ -54,7 +54,7 @@ export default new Router({
     {
       path: '/set',
       name: 'Set',
-      component: Set
+      component: Settings
     },
     {
     	path:'*', 

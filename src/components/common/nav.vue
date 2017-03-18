@@ -20,8 +20,8 @@ export default {
 .ex-nav{background-color: #fafafa; border-top: 1px solid #e6e6e6; padding-bottom: 0.1rem; position: fixed; bottom: 0; left: 0; width: 100%;}
 .ex-nav a {display: inline-block; width: 24%; text-align: center; color: #aaa;}
 .ex-nav a i{display: block;}
-.ex-nav .m1{font-size: 0.8rem;}
-.ex-nav .m2{font-size: 0.65rem;}
-.ex-nav .m3{font-size: 0.65rem;}
-.ex-nav .m4{font-size: 0.7rem;}
+.ex-nav .m1{font-size: 0.9rem;}
+.ex-nav .m2{font-size: 0.75rem;}
+.ex-nav .m3{font-size: 0.80rem;}
+.ex-nav .m4{font-size: 0.85rem;}
 </style>
