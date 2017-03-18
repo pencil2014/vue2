@@ -10,19 +10,17 @@ const Register1 = resolve => require(['../components/register/step1'], resolve)
 const Register2 = resolve => require(['../components/register/step2'], resolve)
 const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
 
+const Index = resolve => require(['../components/index/index'], resolve)
+const Message = resolve => require(['../components/forgot/forgot'], resolve)
+const Set = resolve => require(['../components/forgot/forgot'], resolve)
 
-const Index = resolve => require(['../components/index'], resolve)
+
 
 // 导出路由配置
 export default new Router({
   mode: 'history',
   linkActiveClass: 'activeRouter',
   routes: [
-    {
-      path: '/index',
-      name: 'Index',
-      component: Index
-    },
     {
     	path: '/login',
     	name: 'Login',
@@ -44,8 +42,23 @@ export default new Router({
       component: Forgot
     },
     {
+      path: '/index',
+      name: 'Index',
+      component: Index
+    },
+    {
+      path: '/message',
+      name: 'Message',
+      component: Message
+    },
+    {
+      path: '/set',
+      name: 'Set',
+      component: Set
+    },
+    {
     	path:'*', 
-    	redirect:'/login'
+    	redirect:'/index'
     }
   ]
 })

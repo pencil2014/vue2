@@ -33,4 +33,4 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 
 /*首页样式*/
 #app{overflow: auto; height: 100%;}
-
+.activeRouter {color: #2eadff !important;}
