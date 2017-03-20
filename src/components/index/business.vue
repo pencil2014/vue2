@@ -2,7 +2,7 @@
 	<div class="ex-index">
 		<div class="ex-index-box">
 			<div class="ex-index-toplink">
-				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为商家</div>  
+				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</div>  
 				<div class="links">
 					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
 					<router-link to="/set"><i class='iconfont'>&#xe651;</i></router-link>
@@ -14,7 +14,7 @@
 						<a href="javascript:;" @click="gouser">
 							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
 						</a>
-						<p :class="{vip:userVipStatus.auditStatus ==='2'}">E享会员</p>
+						<p :class="{vip:userVipStatus.auditStatus ==='2'}">E享商家</p>
 					</div>
 					<p class="name">{{userinfo.userName}}</p>
 					<p class="id">ID:{{userinfo.userCode}}</p>
@@ -24,10 +24,12 @@
 						<li><b>账户余额:</b><span>{{userinfo.overMoney | checknum}}</span></li>
 						<li><b>提现金额:</b><span>{{userinfo.freezeMoney | checknum}}</span></li>
 						<li><b>E积分:</b><span>{{userinfo.integralA}}</span></li>
+						<li><b>激励E积分:</b><span>{{userinfo.integralB}}</span></li>
 						<li><b>享积分:</b><span>{{userinfo.integral}}</span></li>
 						<li><b>平台商家数:</b><span>{{sysData.businessNum}}</span></li>
 						<li><b>昨日交易总额:</b><span>{{sysData.totalShareMoney}}</span></li>
 						<li><b>E享比例:</b><span>{{sysData.eProportion}}</span></li>
+						<li><b>激励比例:</b><span>{{sysData.jeProportion}}</span></li>
 						<li><b>昨日分享平均值:</b><span>{{sysData.yesterdayMoney}}</span></li>
 					</ul>
 				</div>
@@ -36,14 +38,15 @@
 		</div>
 		<div class="ex-index-menu">
 			<ul>
-				<li><router-link to="/record"><i class="iconfont m1">&#xe631;</i><span>消费记录</span></router-link></li>
+				<li><router-link to="/index"><i class="iconfont m9">&#xe602;</i><span>消费登记</span></router-link></li>
+				<li><router-link to="/index"><i class="iconfont m1">&#xe6d8;</i><span>报单查询</span></router-link></li>
+				<li><router-link to="/index"><i class="iconfont m10">&#xe601;</i><span>消费登记查询</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
-				<li v-show='userinfo.userLev !=="2"'><a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a></li>
-				<li v-show='!!isConstomer'><router-link to="/index"><i class="iconfont m8">&#xe600;</i><span>商家申请</span></router-link></li>
+				<!-- <li v-if="userinfo.userLev!=2"><router-link to="/index"><i class="iconfont m6">&#xe642;</i><span>升级会员</span></router-link></li> -->
 			</ul>
 		</div>
 		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
@@ -115,12 +118,12 @@ export default {
 	methods: {
 		changetoken () {
 			let _this = this
-			axios.post('user/switchUser',qs.stringify({type: 1}))
+			axios.post('user/switchUser',qs.stringify({type: 2}))
 				.then(function(res){
 					if (res.data.code === '10000') {
 						window.localStorage.setItem('token', res.data.data.token)
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
-						_this.$router.push('/business')
+						_this.$router.push('/index')
 					} else {
 						MessageBox('提示', '切换失败，请稍后重试！')
 					}
@@ -247,6 +250,8 @@ i.m5{color: #ffa100;}
 i.m6{color: #f0544d;}
 i.m7{color: #5eb5ea;}
 i.m8{color: #66c476;}
+i.m9{color: #ff8338;}
+i.m10{color: #66c476;}
 .ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4.5rem; height: 4.5rem; line-height: 4.5rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff;}
 .ex-index-service i{font-size: 3rem;}
 .ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 4;}

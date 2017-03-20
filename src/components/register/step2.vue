@@ -165,20 +165,20 @@ export default {
 </script>
 
 <style scoped>
-.ex-rigster-box{line-height: 1.5; }
-.ex-rigster-header{text-align: center; padding-top: 0.5rem; color:#2eadff; font-size: 16px; }
+.ex-rigster-box{}
+.ex-rigster-header{text-align: center; padding-top: 1.5rem; color:#2eadff; font-size: 1.6rem; }
 .ex-rigster-header span{color: #ffa132;}
-.ex-rigster-info{ margin:0.4rem 0.5rem; padding: 0.4rem; background-color: #f4f5f7; color: #555; }
-.ex-rigster-form{margin: 0.4rem 0.5rem;}
-.ex-rigster-from-item {padding:0.1rem; border-bottom:1px solid #e5e5e5; position: relative;}
-.ex-rigster-from-item i{font-size: 0.7rem; color: #bbb; vertical-align: middle;}
-.ex-rigster-from-item input{ height: 1.2rem; vertical-align: middle; border: none; width:85%; padding-left: 0.1rem;}
+.ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;}
+.ex-rigster-form{margin: 1.5rem;}
+.ex-rigster-from-item {padding:0.5rem; border-bottom:1px solid #e5e5e5; position: relative;}
+.ex-rigster-from-item i{font-size: 2.2rem; color: #bbb; vertical-align: middle;}
+.ex-rigster-from-item input{ height: 3rem; vertical-align: middle; border: none; width:85%; padding-left: 0.5rem;}
 .verycode input{ width: 60%; }
-.verycode a{position: absolute; right: 0; top: 0.5rem; color: #ffa132; }
-.ex-rigster-from-submit{margin: 0.3rem 0;}
-.ex-rigster-from-submit button{ height: 1.4rem; width: 100%; border: none; background-color: #58c86b; color: #fff; border-radius: 0.1rem; font-size: 16px;}
+.verycode a{position: absolute; right: 0; top: 1.5rem; color: #ffa132; }
+.ex-rigster-from-submit{margin: 1.5rem 0;}
+.ex-rigster-from-submit button{ height: 4.5rem; width: 100%; border: none; background-color: #58c86b; color: #fff; border-radius: 0.4rem; font-size: 1.6rem;}
 .ex-rigster-from-agreement{ color: #5d646e; margin: 0.2rem 0; }
-.ex-rigster-from-agreement input{ width: 0.4rem; height: 0.6rem; border-radius: 0.5rem; vertical-align: middle; }
+.ex-rigster-from-agreement input{ width: 1.4rem; height: 1.4rem; border-radius: 0.5rem; vertical-align: middle; }
 .ex-rigster-from-agreement a{color:#1b6798 }
 button.disableBtn,button.disableBtn:active { background-color: #eee; color: #ddd;}
 </style>

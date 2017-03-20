@@ -9,8 +9,9 @@ const Login = resolve => require(['../components/login/login'], resolve)
 const Register1 = resolve => require(['../components/register/step1'], resolve)
 const Register2 = resolve => require(['../components/register/step2'], resolve)
 const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
-
 const Index = resolve => require(['../components/index/index'], resolve)
+const Business = resolve => require(['../components/index/Business'], resolve)
+const Record = resolve => require(['../components/consume/record'], resolve)
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
 const Settings = resolve => require(['../components/forgot/forgot'], resolve)
 
@@ -47,18 +48,28 @@ export default new Router({
       component: Index
     },
     {
+      path: '/business',
+      name: 'Business',
+      component: Business
+    },
+    {
+      path: '/record',
+      name: 'Record',
+      component: Record
+    },
+    {
       path: '/message',
       name: 'Message',
       component: Message
     },
     {
-      path: '/set',
-      name: 'Set',
+      path: '/Settings',
+      name: 'Settings',
       component: Settings
     },
     {
     	path:'*', 
-    	redirect:'/index'
+    	redirect:'/login'
     }
   ]
 })

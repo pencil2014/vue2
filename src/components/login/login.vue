@@ -33,7 +33,7 @@ import md5 from "blueimp-md5"
 import axios from "axios"
 import qs from "qs"
 import { MessageBox } from 'mint-ui'
-
+import { mapState,  mapActions } from 'vuex'
 export default {
 	data () {
 		return {
@@ -44,6 +44,9 @@ export default {
 		}
 	},
 	computed: {
+		...mapState([
+      'loginStatus'
+    ]),
 		disableBtn () {
 			return (this.phone && this.password) ? false : true 
 		},
@@ -58,6 +61,9 @@ export default {
 		}
 	},
 	methods:{
+		...mapActions([
+      'changeLoginStatus'
+    ]),
 		login () {
 			if (this.repeatBtn) {
 				return
@@ -90,6 +96,8 @@ export default {
 					.then(function(res){
 						if (res.data.code === '10000') {
 							window.localStorage.setItem('token', res.data.data.token)
+							_this.changeLoginStatus(true)
+							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 							_this.$router.push('/index')
 						} else {
 							MessageBox('提示', '登录失败，请稍后重试！')
@@ -118,18 +126,18 @@ export default {
 <style scoped>
 .ex-login{ min-height:100%; background: url('../../assets/images/background.png') no-repeat fixed center; background-size: cover; }
 .ex-login-logo{ text-align: center; }
-.ex-login-cnt{margin:0 0.6rem;}
-.ex-login-from-item { background-color: rgba(255, 255, 255, 0.2); padding: 0.1rem; margin-bottom: 0.5rem; border-radius: 0.1rem; }
-.ex-login-from-item i{ font-size: 0.7rem; vertical-align: middle; color: #B3EBF6; padding-left: 0.1rem;}
-.ex-login-from-item input{ height:1.2rem;border: none; width: 85%;  vertical-align: middle; background-color: transparent;color: #fff;  font-size: 16px;}
+.ex-login-cnt{margin:0 1.5rem;}
+.ex-login-from-item { background-color: rgba(255, 255, 255, 0.2); padding: 0.5rem; margin-bottom: 1rem; border-radius: 0.4rem; }
+.ex-login-from-item i{ font-size: 2.2rem; vertical-align: middle; color: #B3EBF6; padding-left: 0.5rem;}
+.ex-login-from-item input{ height:3rem;border: none; width: 85%;  vertical-align: middle; background-color: transparent;color: #fff;  font-size: 1.4rem;}
 .ex-login-from-item input::-webkit-input-placeholder{color: #eee;}
-.ex-login-from-submit{margin: 0 0; }
-.ex-login-from-submit button {border: none; height: 1.4rem; width: 100%; border-radius: 0.1rem; background: rgba(255,255,255,.75); box-shadow: 0px 1px 1px rgba(0,0,0,0.30); color: #2f7bac; font-size: 18px;}
+.ex-login-from-submit{margin-top: 1.5rem; }
+.ex-login-from-submit button {border: none; height: 4.5rem; width: 100%; border-radius: 0.4rem; background: rgba(255,255,255,.75); box-shadow: 0px 1px 1px rgba(0,0,0,0.2); color: #2f7bac; font-size: 18px;}
 .ex-login-from-submit button:active{background-color: #33c1e6; color: #fff;}
 button.disableBtn,button.disableBtn:active { background-color: #eee; color: #ddd;}
 
-.ex-login-cnt-link{ text-align: right; margin-top: 0.5rem; }
-.ex-login-cnt-link a{ margin-left: 0.5rem; font-size: 12px; color: #1b6798;}
+.ex-login-cnt-link{ text-align: right; margin-top: 1.5rem; }
+.ex-login-cnt-link a{ margin-left: 2rem; font-size: 1.2rem; color: #1b6798;}
 .ex-login-cnt-link a:active{color: #fff;}
-.ex-login-copyright{height: 0.5rem; width: 100%; text-align: center; color: #eee; font-size: 10px; position: fixed; bottom: 0;}
+.ex-login-copyright{height: 1.5rem; width: 100%; text-align: center; color: #eee; font-size: 1rem; position: fixed; bottom: 0;}
 </style>

@@ -7,8 +7,9 @@ import actions from './actions'
 Vue.use(Vuex)
 
 const state = {
-  totalTime: 13,
-  list: [1,5,9,3,11]
+	loginStatus: false
+  // totalTime: 13,
+  // list: [1,5,9,3,11]
 }
 
 export default new Vuex.Store({

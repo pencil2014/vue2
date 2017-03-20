@@ -7,7 +7,7 @@
 			<span>忘记密码</span>
 		</div>
 		<div class="ex-forgot-box">
-			<p class="ex-forgot-tips">我们将给您发送一个随机密码，请注意查收短信。</p>
+			<p class="ex-forgot-tips">我们将给您发送一个随机验证码，请注意查收短信。</p>
 			<form action="" class="ex-login-from">
 				<div class="ex-forgot-from-item">
 					<label for="phone">手机号</label>
@@ -189,20 +189,21 @@ export default {
 </script>
 <style scoped>
 .ex-forgot{background-color: #f4f5f7; height: 100%;}
-.ex-forgot-header{height: 1.2rem; background-color: #2eadff; color: #fff; text-align: center; position: relative;}
-.ex-forgot-header span {font-size: 18px; display: block; line-height: 1.2rem;}
-.ex-forgot-header a{ position: absolute; left: 0; top: 0; bottom: 0; width: 1.6rem; color: #fff; text-align: center; }
+.ex-forgot-header{height: 5rem; background-color: #2eadff; color: #fff; text-align: center; position: relative;}
+.ex-forgot-header span {font-size: 1.8rem; display: block; line-height: 5rem;}
+.ex-forgot-header a{ position: absolute; left: 0; top: 0; bottom: 0; width: 5rem; line-height: 5rem; color: #fff; text-align: center; }
+.ex-forgot-header a i{font-size: 3rem;}
 .ex-forgot-header a:active{background-color: #29a0ec;}
-.ex-forgot-tips{ text-align: center; padding: 0.4rem 0; color: #5d646e; }
-.ex-login-from{background-color: #fff; padding: 0 0.4rem; padding-top: 0.2rem}
-.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 14px;  vertical-align: middle; position: relative; padding-bottom: 0.2rem; }
+.ex-forgot-tips{ text-align: center; padding: 1rem 0; color: #5d646e; }
+.ex-login-from{background-color: #fff; padding: 0 1rem; padding-top: 0.2rem}
+.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative; margin: 0.5rem 0;}
 .ex-forgot-from-item label{vertical-align: middle;}
-.ex-forgot-from-item input{ height: 1.2rem; border: none; padding-left: 0.1rem; width: 80%; }
-.ex-forgot-from-item .getcode{ position:absolute; right: 0; top: 0.4rem;color: #2eadff; }
-.ex-forgot-next{ height: 1.4rem; font-size: 16px; margin: 0.4rem 0; width: 100%; border-radius: 0.1rem; background-color: #62c1ff; color: #fff;}
+.ex-forgot-from-item input{ height: 4rem; border: none; padding-left: 0.5rem; width: 80%; }
+.ex-forgot-from-item .getcode{ position:absolute; right: 0; top: 1rem;color: #2eadff; }
+.ex-forgot-next{ height: 4.5rem; font-size: 1.6rem; margin: 1rem 0; width: 100%; border-radius: 0.4rem; background-color: #62c1ff; color: #fff;}
 .ex-forgot-next:active{background-color: #54a6dc;}
 .submit{background-color: #58c86b;}
 .submit:active{background-color: #52af62;}
 button.disableBtn,button.disableBtn:active { background-color: #eee; color: #ddd;}
-.ex-reset {padding-top: 0.5rem;}
+.ex-reset {padding-top: 1rem;}
 </style>
