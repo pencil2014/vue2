@@ -2,7 +2,7 @@
 <div>
 	
 	<div class="ex-forgot" v-show="showforgot">
-		<div class="ex-forgot-header">
+		<div class="ex-topbar">
 			<a href="javascript:;" @click="tologin"><i class="iconfont">&#xe605;</i></a>
 			<span>忘记密码</span>
 		</div>
@@ -24,7 +24,7 @@
 		</div>
 	</div>
 	<div class="ex-reset" v-show='!showforgot'>
-		<div class="ex-forgot-header">
+		<div class="ex-topbar">
 			<a href="javascript:;" @click="toforgot"><i class="iconfont">&#xe605;</i></a>
 			<span>忘记密码</span>
 		</div>
@@ -189,11 +189,6 @@ export default {
 </script>
 <style scoped>
 .ex-forgot{background-color: #f4f5f7; height: 100%;}
-.ex-forgot-header{height: 5rem; background-color: #2eadff; color: #fff; text-align: center; position: relative;}
-.ex-forgot-header span {font-size: 1.8rem; display: block; line-height: 5rem;}
-.ex-forgot-header a{ position: absolute; left: 0; top: 0; bottom: 0; width: 5rem; line-height: 5rem; color: #fff; text-align: center; }
-.ex-forgot-header a i{font-size: 3rem;}
-.ex-forgot-header a:active{background-color: #29a0ec;}
 .ex-forgot-tips{ text-align: center; padding: 1rem 0; color: #5d646e; }
 .ex-login-from{background-color: #fff; padding: 0 1rem; padding-top: 0.2rem}
 .ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative; margin: 0.5rem 0;}
@@ -204,6 +199,5 @@ export default {
 .ex-forgot-next:active{background-color: #54a6dc;}
 .submit{background-color: #58c86b;}
 .submit:active{background-color: #52af62;}
-button.disableBtn,button.disableBtn:active { background-color: #eee; color: #ddd;}
 .ex-reset {padding-top: 1rem;}
 </style>

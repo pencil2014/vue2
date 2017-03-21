@@ -12,10 +12,13 @@ const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
 const Index = resolve => require(['../components/index/index'], resolve)
 const Business = resolve => require(['../components/index/Business'], resolve)
 const Record = resolve => require(['../components/consume/record'], resolve)
+const Integral = resolve => require(['../components/consume/integral'], resolve)
+const Detail = resolve => require(['../components/consume/detail'], resolve)
+const Money = resolve => require(['../components/consume/money'], resolve)
+const Bank = resolve => require(['../components/consume/bank'], resolve)
+
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
-const Settings = resolve => require(['../components/forgot/forgot'], resolve)
-
-
+const Settings = resolve => require(['../components/settings/settings'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -58,12 +61,32 @@ export default new Router({
       component: Record
     },
     {
+      path: '/integral',
+      name: 'Integral',
+      component: Integral
+    },
+    {
+      path: '/detail',
+      name: 'Detail',
+      component: Detail
+    },
+    {
+      path: '/money',
+      name: 'Money',
+      component: Money
+    },
+    {
+      path: '/bank',
+      name: 'Bank',
+      component: Bank
+    },
+    {
       path: '/message',
       name: 'Message',
       component: Message
     },
     {
-      path: '/Settings',
+      path: '/settings',
       name: 'Settings',
       component: Settings
     },

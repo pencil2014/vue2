@@ -180,5 +180,4 @@ export default {
 .ex-rigster-from-agreement{ color: #5d646e; margin: 0.2rem 0; }
 .ex-rigster-from-agreement input{ width: 1.4rem; height: 1.4rem; border-radius: 0.5rem; vertical-align: middle; }
 .ex-rigster-from-agreement a{color:#1b6798 }
-button.disableBtn,button.disableBtn:active { background-color: #eee; color: #ddd;}
 </style>

@@ -3,7 +3,7 @@
 		<div class="ex-record-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>消费记录</span>
+				<span>资金明细</span>
 			</div>
 		</div>
 		<div class="ex-record-cnt" >
@@ -13,17 +13,17 @@
 	  			infinite-scroll-disabled="loading"
 	  			infinite-scroll-distance="10" >
 					<tr>
-						<th>编号</th>
 						<th>日期</th>
-						<th>商品</th>
+						<th>来源</th>
 						<th>金额</th>
+						<th>结算日期</th>
 					</tr>
 					<tbody v-show='recordList.length > 0'>
 						<tr v-for="(item, index) in recordList">
-							<td>{{index+1}}</td>
 							<td>{{item.createTime | formatTime}}</td>
-							<td>{{item.commodityName}}</td>
-							<td>{{item.consumptionMoney}}</td>
+							<td>{{item.sourceType | source}}</td>
+							<td>{{item.transactionMoney}}</td>
+							<td>{{item.createTime | formatTime}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -52,7 +52,7 @@ export default {
 		},
 		loadTop () {
 			let _this = this
-			axios.post('declaration/ulist',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('transactionRecord/list',qs.stringify({pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
@@ -72,7 +72,7 @@ export default {
 			}
 			let _this = this
 			this.loading = true
-			axios.post('declaration/ulist',qs.stringify({pageSize: this.pageSize, page: this.page}))
+			axios.post('transactionRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
@@ -94,6 +94,10 @@ export default {
 			let month = time.getMonth() + 1
 			let date = time.getDate()
 			return [month,date].join('/')
+		},
+		source (value) {
+			let array = ['充值', '享积分转换', '升级余额奖励', '余额转存提现', '升级VIP']
+			return array[value - 1]
 		}
 	}
 }	

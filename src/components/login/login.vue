@@ -134,7 +134,6 @@ export default {
 .ex-login-from-submit{margin-top: 1.5rem; }
 .ex-login-from-submit button {border: none; height: 4.5rem; width: 100%; border-radius: 0.4rem; background: rgba(255,255,255,.75); box-shadow: 0px 1px 1px rgba(0,0,0,0.2); color: #2f7bac; font-size: 18px;}
 .ex-login-from-submit button:active{background-color: #33c1e6; color: #fff;}
-button.disableBtn,button.disableBtn:active { background-color: #eee; color: #ddd;}
 
 .ex-login-cnt-link{ text-align: right; margin-top: 1.5rem; }
 .ex-login-cnt-link a{ margin-left: 2rem; font-size: 1.2rem; color: #1b6798;}
