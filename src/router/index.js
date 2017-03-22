@@ -16,9 +16,14 @@ const Integral = resolve => require(['../components/consume/integral'], resolve)
 const Detail = resolve => require(['../components/consume/detail'], resolve)
 const Money = resolve => require(['../components/consume/money'], resolve)
 const Bank = resolve => require(['../components/consume/bank'], resolve)
+const BankList = resolve => require(['../components/consume/banklist'], resolve)
+const Addcard = resolve => require(['../components/consume/addcard'], resolve)
+
 
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
 const Settings = resolve => require(['../components/settings/settings'], resolve)
+
+const Personal = resolve => require(['../components/personal/personal'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -81,6 +86,16 @@ export default new Router({
       component: Bank
     },
     {
+      path: '/banklist',
+      name: 'BankList',
+      component: BankList
+    },
+    {
+      path: '/addcard',
+      name: 'Addcard',
+      component: Addcard
+    },
+    {
       path: '/message',
       name: 'Message',
       component: Message
@@ -91,8 +106,17 @@ export default new Router({
       component: Settings
     },
     {
+      path: '/personal',
+      name: 'Personal',
+      component: Personal
+    },
+    {
     	path:'*', 
     	redirect:'/login'
+    },
+    { 
+      path: '/', 
+      redirect: '/login' 
     }
   ]
 })

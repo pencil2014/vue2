@@ -12,21 +12,23 @@
 				<label for="exchange">转存金额</label>
 				<input type="text" name="" id="exchange" v-model='exchange' placeholder="请输入金额">
 			</div>
-			<div class="ex-bank-card">
+			<div class="ex-bank-card" @click.stop='gobank'>
 				<label for="">银 行 卡：</label>
 				<div class='bankinfo'>
 					<p class="name">{{bankdata.banks}}</p>
 					<p class="number">{{bankdata.cardNo | card}}</p>
 				</div>
+				<span class='arrow'><i class='iconfont'>&#xe606;</i></span>
 			</div>
 		</div>	
-		<a  href="javascript:;"  :class="[ 'ex-bank-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</a>
+		<button type='button' :class="[ 'ex-bank-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
 		<div class="ex-bank-tips">
 			<b>回购说明：</b>
 			<p>1、提现金额每笔不少于100不超过5万</p>
 			<p>2、每笔提现收取5元手续费</p>
 		</div>
-		
+
+
 	</div>	
 </template>
 
@@ -40,13 +42,14 @@ export default {
 			userdata: '',
 			bankdata: '',
 			exchange: '',
-			repeatBtn: false
+			repeatBtn: false,
+			pickerValue: 0
 		}
 	},
 	computed: {
 		disableBtn () {
-			let rule1 = this.exchange > 100 ? true :false
-			let rule2 = this.exchange <= this.integral ? true : false
+			let rule1 = this.exchange >= 100 ? true :false
+			let rule2 = this.exchange <= this.userdata.overMoney ? true : false
 			let rule3 = rule1 && rule2 
 			if (rule3) {
 				return false
@@ -61,7 +64,7 @@ export default {
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.userdata = res.data.data
-				} else {integral
+				} else {
 					MessageBox('提示', '请求数据失败！')
 				}
 			})
@@ -73,7 +76,7 @@ export default {
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.bankdata = res.data.data
-				} else {integral
+				} else {
 					MessageBox('提示', '请求数据失败！')
 				}
 			})
@@ -86,7 +89,16 @@ export default {
 		back () {
 			this.$router.go(-1)
 		},
+		gobank () {
+			this.$router.push('/banklist')
+		},
 		submit () {
+			let _this = this
+
+			if (!/^\d+.?\d*$/.test(this.exchange)) {
+				MessageBox('提示', '提现金额不合法！')
+				return
+			}
 			if (this.exchange < 100) {
 				MessageBox('提示', '提现金额必须大于100！')
 				return
@@ -99,15 +111,28 @@ export default {
 				MessageBox('提示', '可提现金额不足！')
 				return
 			}
+			if (this.userdata.isRealName !== '2') {
+				MessageBox({
+				  title: '提示',
+				  message: '请先进行实名认证！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					_this.$router.push('/')
+				})
+				return
+			}
 			if (this.repeatBtn) {
 				return
 			}
-			let _this = this
+			
 			_this.repeatBtn = true
-			axios.post('integral/toBalance',qs.stringify({integral: this.exchange}))
+
+			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					MessageBox('提示', '您成功已兑换'+_this.exchange+'个享积分!')
+					MessageBox('提示', '您成功转存'+_this.exchange+'元!')
+					_this.userdata.overMoney -= _this.exchange
 					_this.exchange = ''
 				} else {
 					_this.repeatBtn = false
@@ -144,11 +169,12 @@ export default {
 .ex-bank-exchange{background-color: #fff; padding: 0.5rem 1rem; }
 .ex-bank-exchange label { vertical-align: middle; line-height: 3rem; }
 .ex-bank-exchange input{border:none; height: 3rem; padding-left: 1rem; width: 70%;}
-.ex-bank-card{background-color: #fff; margin: 1rem 0; padding: 0.5rem 1rem; min-height: 3rem;}
+.ex-bank-card{background-color: #fff; margin: 1rem 0; padding: 0.5rem 1rem; min-height: 3rem; position: relative;}
 .ex-bank-card label{float: left; line-height: 3.5rem;}
-.ex-bank-card .bankinfo { margin-left: 5rem; color: #586485; padding-left: 1rem; line-height: 1.5;}
+.ex-bank-card .bankinfo{ margin-left: 5rem; color: #586485; padding-left: 1rem; line-height: 1.5;}
+.ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 1.5rem;}
+.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 
-.ex-bank-btn { margin: 0 1.5rem; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; display: block;  text-align: center; font-size: 1.8rem;}
-.ex-bank-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem; padding: 1rem; line-height: 1.5;  }
+.ex-bank-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 
 </style>

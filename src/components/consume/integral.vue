@@ -11,7 +11,7 @@
 			</div>
 			<p class='share'>可用享积分：<span>{{integral | checknum}}</span></p>
 		</div>	
-		<a  href="javascript:;"  :class="[ 'ex-integral-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</a>
+		<button type='button'  :class="[ 'ex-integral-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
 		<div class="ex-integral-tips">
 			<b>操作说明：</b>
 			<p>1、只以100的倍数进行兑换</p>
@@ -66,7 +66,11 @@ export default {
 			this.$router.go(-1)
 		},
 		submit () {
-			if (this.exchange <= 0) {
+			if (!/^\d+$/.test(this.exchange)) {
+				MessageBox('提示', '兑换的享积分不合法！')
+				return
+			}
+			if (this.exchange <= 0 || this.exchange % 100 !== 0) {
 				MessageBox('提示', '兑换的享积分必须为100的倍数！')
 				return
 			}
@@ -115,6 +119,6 @@ export default {
 .ex-integral-cnt .exchange { border-bottom: 1px solid #e5e5e5; padding: 1rem 0; margin-bottom: 1rem;}
 .ex-integral-cnt .exchange input { height: 3rem; padding-left: 1rem; border:none;  border-left:2px solid #2eadff; width: 90%; font-size: 2rem; }
 .ex-integral-cnt .share{font-size: 1.6rem; color: #f00;}
-.ex-integral-btn { margin: 0 1.5rem; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; display: block;  text-align: center; font-size: 1.8rem;}
-.ex-integral-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem; padding: 1rem; line-height: 1.5;  }
+.ex-integral-btn {margin: 0 4%; display: block; width: 92%;  background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
+.ex-integral-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 </style>

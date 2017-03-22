@@ -44,9 +44,9 @@ export default {
 		}
 	},
 	computed: {
-		...mapState([
-      'loginStatus'
-    ]),
+		// ...mapState([
+  //     'loginStatus'
+  //   ]),
 		disableBtn () {
 			return (this.phone && this.password) ? false : true 
 		},
@@ -61,9 +61,9 @@ export default {
 		}
 	},
 	methods:{
-		...mapActions([
-      'changeLoginStatus'
-    ]),
+		// ...mapActions([
+  //     'changeLoginStatus'
+  //   ]),
 		login () {
 			if (this.repeatBtn) {
 				return
@@ -96,7 +96,7 @@ export default {
 					.then(function(res){
 						if (res.data.code === '10000') {
 							window.localStorage.setItem('token', res.data.data.token)
-							_this.changeLoginStatus(true)
+							// _this.changeLoginStatus(true)
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 							_this.$router.push('/index')
 						} else {

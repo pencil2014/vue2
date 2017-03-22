@@ -1,11 +1,11 @@
 <template>
 	<div class="ex-settings">
 
-		<HeadTittle :title="modal"></HeadTittle>
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-settings-list">
 			<div class="ex-settings-item" v-show="userType == 'M'">
 				<ul>
-					<router-link to="/index" tag="li">
+					<router-link to="/personal" tag="li">
 						<span>个人资料</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>		
@@ -54,6 +54,10 @@
 						<span>使用指南</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
+					<router-link to="/index" tag="li">
+						<span>留言反馈</span>
+						<i class="iconfont" >&#xe606;</i>
+					</router-link>
 				 	<router-link to="/index" tag="li">
 						<span>版本信息</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -62,9 +66,9 @@
 			</div>
 			<div class="ex-settings-item logout">
 				<ul>
-					<router-link to="/index" tag="li">
+					<li v-on:click="logout">
 						<span>退出登录</span>
-					</router-link>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -74,7 +78,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox } from 'mint-ui'
-import HeadTittle from '../common/title.vue'
+import HeadTitle from '../common/title.vue'
 export default {
 	data(){
 		return{
@@ -82,7 +86,6 @@ export default {
 			userType:'',
 			modal: {
 				text:'设置',
-				path:'index',
 				fixed: false
 			}
 		}
@@ -105,7 +108,33 @@ export default {
 		})
 	},
 	components: {
-		HeadTittle
+		HeadTitle
+	},
+	methods: {
+		back(){
+			this.$router.back();
+		},
+		logout(){
+			MessageBox({
+				title:'提示',
+				message:'是否退出登录?',
+				showConfirmButton:true,
+				showCancelButton:true,
+				confirmButtonText:'确认',
+				cancelButtonText:'取消',
+			}).then(action =>{
+				if(action === "confirm"){
+					let local=window.localStorage;
+					let i;
+					for (i in local){
+						if(i !== "phone"){
+							window.localStorage.setItem(i, '')
+						}
+					}
+					this.$router.push('/index')
+				}
+			});
+		}	
 	}
 }
 </script>

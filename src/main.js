@@ -1,8 +1,8 @@
 import Vue from 'vue'
+import Promise from 'es6-promise/auto'
 import App from './App'
 import router from './router'
 import store from './store'
-import Promise from 'es6-promise/auto'
 import axios from "axios"
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
@@ -13,13 +13,13 @@ Vue.config.productionTip = false
 Vue.use(Mint)
 
 // 判断用是否登录
-router.beforeEach((to, from, next) => {
-	if (!window.localStorage.token) {
-		next('/login')
-	} else {
-		next()
-	}	
-})
+// router.beforeEach((to, from, next) => {
+// 	if (!window.localStorage.token) {
+// 		next('/login')
+// 	} else {
+// 		next()
+// 	}	
+// })
 
 /* eslint-disable no-new */
 new Vue({

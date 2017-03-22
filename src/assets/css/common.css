@@ -6,7 +6,7 @@ input, select,button {vertical-align:middle; outline:none; font-family: "Microso
 button{border: none;}
 table {border-collapse:collapse;border-spacing:0;}
 a{ text-decoration:none; outline:none;}
-a:visited,a:active{ text-decoration:none;}
+a:visited,a:active{ text-decoration:none; }
 i{ display: inline-block; text-decoration: none;}
 img{max-width: 100%;}
 [v-cloak] {display: none;}
@@ -45,5 +45,4 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 .ex-topbar a{ position: absolute; left: 0; top: 0; bottom: 0; width: 5rem; line-height: 5rem; color: #fff; text-align: center; }
 .ex-topbar a i{font-size: 3rem;}
 .ex-topbar a:active{background-color: #29a0ec;}
-
 .disableBtn,.disableBtn:active { background-color: #eee !important; color: #ddd !important;}
