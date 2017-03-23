@@ -78,10 +78,26 @@ export default {
 				})
 		},
 		setdefault (item,index) {
-			this.banks.forEach( (element) => {
-				element.isDefault = '0'
+			if (item.isDefault === '1') {
+				return
+			}
+			let _this = this
+			axios.post('bankard/setDefault',qs.stringify({id: item.cardNo}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.banks.forEach( (element) => {
+						element.isDefault = '0'
+					})
+					_this.banks[index].isDefault = '1'
+					_this.$router.go(-1)
+				} else {
+					MessageBox('提示', '设置默认银行卡失败！')
+				}
 			})
-			this.banks[index].isDefault = '1'
+			.catch(function(){
+				MessageBox('提示', '系统出错了，正在修复中...')
+			})
+			
 		},
 		addcard () {
 			this.$router.push('/addcard')

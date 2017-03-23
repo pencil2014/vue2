@@ -14,7 +14,9 @@
 						<a href="javascript:;" @click="gouser">
 							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
 						</a>
-						<p :class="{vip:userVipStatus.auditStatus ==='2'}">E享会员</p>
+						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
+							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> E享会员
+						</p>
 					</div>
 					<p class="name">{{userinfo.userName}}</p>
 					<p class="id">ID:{{userinfo.userCode}}</p>
@@ -41,9 +43,13 @@
 				<li><router-link to="/detail"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
 				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
 				<li><router-link to="/bank"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
-				<li v-show='userinfo.userLev !=="2"'><a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a></li>
-				<li v-show='!!isConstomer'><router-link to="/index"><i class="iconfont m8">&#xe600;</i><span>商家申请</span></router-link></li>
+				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
+				<li v-show='userinfo.userLev !=="2"'>
+					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>
+				</li>
+				<li v-show='!!isConstomer'>
+					<router-link to="/index"><i class="iconfont m8">&#xe600;</i><span>商家申请</span></router-link>
+				</li>
 			</ul>
 		</div>
 		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
@@ -137,12 +143,12 @@ export default {
 			let _this = this
 			if (this.userVipStatus.auditStatus === '0') {
 				MessageBox.alert('VIP会员审核失败！').then(action => {
-					_this.$router.push('/index')
+					_this.$router.push('/upgrade')
 				})	
 			} else if(this.userVipStatus.auditStatus == '1') {
 				MessageBox('提示', 'VIP会员升级中,请稍后...')
 			} else {
-				this.$router.push('/index')
+				this.$router.push('/upgrade')
 			}
 		},
 		showcustomer () {
@@ -226,8 +232,9 @@ export default {
 background-size: cover; display: block; width: 6rem; height: 6rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff;}
 .ex-index-img a img{border-radius: 50%;}
 .ex-index-img p {background:url('../../assets/images/header.png') no-repeat center; -webkit-background-size: cover;
-background-size: cover; height: 2rem; line-height: 2rem; font-size: 1rem; width: 90%; color: #fff; margin: -1.5rem auto 0; }
-.ex-index-img p.vip {background-image: url('../../assets/images/header2.png');}
+background-size: cover; height: 2rem; line-height: 2rem; width: 90%; font-size: 1rem; color: #fff; margin: -1.5rem auto 0; }
+.ex-index-img p.vip {background-image: url('../../assets/images/header2.png'); position: relative;}
+.ex-index-img p.vip img{ width: 2rem; height: 2rem; position: absolute; left: 0.7rem; top: -0.4rem;}
 .ex-index-head .name{ color: #fff; margin: 0.5rem 0;font-size: 1.4rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .ex-index-head .id{ color: #fff; font-size: 1.2rem; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .ex-index-data li { color: #fff; height: 2rem; line-height: 2rem; border-bottom:1px solid #fff;}

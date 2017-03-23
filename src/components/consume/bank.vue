@@ -12,13 +12,16 @@
 				<label for="exchange">转存金额</label>
 				<input type="text" name="" id="exchange" v-model='exchange' placeholder="请输入金额">
 			</div>
-			<div class="ex-bank-card" @click.stop='gobank'>
+			<div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
 				<label for="">银 行 卡：</label>
 				<div class='bankinfo'>
 					<p class="name">{{bankdata.banks}}</p>
 					<p class="number">{{bankdata.cardNo | card}}</p>
 				</div>
 				<span class='arrow'><i class='iconfont'>&#xe606;</i></span>
+			</div>
+			<div class="ex-bank-add" @click='addcard' v-else>
+				<i class="iconfont">&#xe608;</i> 添加银行卡
 			</div>
 		</div>	
 		<button type='button' :class="[ 'ex-bank-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
@@ -40,10 +43,14 @@ export default {
 	data () {
 		return {
 			userdata: '',
-			bankdata: '',
+			bankdata: {
+				banks: '',
+				cardNo: ''
+			},
 			exchange: '',
 			repeatBtn: false,
-			pickerValue: 0
+			pickerValue: 0,
+			showAdd: false
 		}
 	},
 	computed: {
@@ -60,29 +67,34 @@ export default {
 	},
 	created () {
 		let _this = this
-			axios.post('user/personal',qs.stringify({}))
-			.then(function(res){
-				if (res.data.code === '10000') {
-					_this.userdata = res.data.data
-				} else {
-					MessageBox('提示', '请求数据失败！')
-				}
-			})
-			.catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-			})
+		axios.post('user/personal',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				_this.userdata = res.data.data
+			} else {
+				MessageBox('提示', '请求数据失败！')
+			}
+		})
+		.catch(function(){
+			MessageBox('提示', '系统出错了，正在修复中...')
+		})
 
-			axios.post('bankard/getDefault',qs.stringify({cardType: 1}))
-			.then(function(res){
-				if (res.data.code === '10000') {
+		axios.post('bankard/getDefault',qs.stringify({cardType: 1}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				if ('data' in res.data.data ) {
+					_this.showAdd = false
 					_this.bankdata = res.data.data
 				} else {
-					MessageBox('提示', '请求数据失败！')
+					_this.showAdd = true
 				}
-			})
-			.catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-			})
+			} else {
+				MessageBox('提示', '请求数据失败！')
+			}
+		})
+		.catch(function(){
+			MessageBox('提示', '系统出错了，正在修复中...')
+		})
 
 	},
 	methods: {
@@ -91,6 +103,9 @@ export default {
 		},
 		gobank () {
 			this.$router.push('/banklist')
+		},
+		addcard () {
+			this.$router.push('/addcard')
 		},
 		submit () {
 			let _this = this
@@ -148,7 +163,7 @@ export default {
 	},
 	filters: {
 		checknum (value) {
-			value += ''
+			value = value? value+'' : '0'
 			let num = '0.00'
 			num = value >= 0 ? value : '0.00' 
 			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
@@ -176,5 +191,5 @@ export default {
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 
 .ex-bank-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
-
+.ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
 </style>

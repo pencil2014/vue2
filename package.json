@@ -13,10 +13,13 @@
     "blueimp-md5": "^2.7.0",
     "es6-promise": "^4.1.0",
     "eventsource-polyfill": "^0.9.6",
+    "lrz": "^4.9.40",
     "mint-ui": "^2.2.1",
     "moment": "^2.18.1",
     "qs": "^6.4.0",
+    "v-qrcode": "^1.0.3",
     "vue": "^2.2.2",
+    "vue-qriously": "^1.0.0",
     "vue-router": "^2.2.0",
     "vuex": "^2.2.1"
   },

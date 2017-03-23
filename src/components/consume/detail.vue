@@ -7,7 +7,7 @@
 			</div>
 			<div class="ex-detail-integral">
 				<span>E积分总额</span>
-				<p>{{integral}}</p>
+				<p>{{integral || 0}}</p>
 			</div>
 	 </div>
 	 <div class="ex-detail-hack"></div>

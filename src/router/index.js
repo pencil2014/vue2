@@ -18,11 +18,14 @@ const Money = resolve => require(['../components/consume/money'], resolve)
 const Bank = resolve => require(['../components/consume/bank'], resolve)
 const BankList = resolve => require(['../components/consume/banklist'], resolve)
 const Addcard = resolve => require(['../components/consume/addcard'], resolve)
+const Recommend = resolve => require(['../components/consume/recommend'], resolve)
+const Upgrade = resolve => require(['../components/consume/upgrade'], resolve)
+const Wechat = resolve => require(['../components/consume/wechat'], resolve)
+const Bankpay = resolve => require(['../components/consume/bankpay'], resolve)
 
 
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
 const Settings = resolve => require(['../components/settings/settings'], resolve)
-
 const Personal = resolve => require(['../components/personal/personal'], resolve)
 
 // 导出路由配置
@@ -94,6 +97,26 @@ export default new Router({
       path: '/addcard',
       name: 'Addcard',
       component: Addcard
+    },
+    {
+      path: '/recommend',
+      name: 'Recommend',
+      component: Recommend
+    },
+    {
+      path: '/upgrade',
+      name: 'Upgrade',
+      component: Upgrade
+    },
+    {
+      path: '/wechat',
+      name: 'Wechat',
+      component: Wechat
+    },
+    {
+      path: '/bankpay',
+      name: 'Bankpay',
+      component: Bankpay
     },
     {
       path: '/message',

@@ -36,9 +36,9 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 .activeRouter {color: #2eadff !important;}
 
 .table {width: 100%;}
-.table th{ text-align: left; padding: 0.8rem; font-weight: normal; color: #888; }
+.table th{ text-align: left; padding: 1rem 0.8rem; font-weight: normal; color: #888; }
 .table tr{border-bottom: 1px solid #e5e5e5;}
-.table td{padding: 0.8rem; word-break: break-all;}
+.table td{padding: 1rem 0.8rem; word-break: break-all;}
 
 .ex-topbar{height: 5rem; background-color: #2eadff; color: #fff; text-align: center; position: relative;}
 .ex-topbar span {font-size: 1.8rem; display: block; line-height: 5rem;}

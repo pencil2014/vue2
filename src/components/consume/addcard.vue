@@ -138,7 +138,7 @@ export default {
 			},1000)
 		},
 		submit () {
-			if (/^\d{16,}$/.test(this.card)) {
+			if (!/^\d{16,}$/.test(this.card)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
 			}
@@ -154,8 +154,8 @@ export default {
 				return
 			}
 			let _this = this
-			axios.post('user/personal',qs.stringify({
-				cardNo: this.cardNo,
+			axios.post('bankard/add',qs.stringify({
+				cardNo: this.card,
 				banks: this.bankname,
 				branch: this.branchname,
 				phone: this.phone,
@@ -165,9 +165,11 @@ export default {
 			}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					_this.phone = res.data.data.phone
+					MessageBox.alert('银行卡添加成功！').then(action => {
+						_this.$router.go(-1)
+					})
 				} else {
-					MessageBox('提示', '请求数据失败！')
+					MessageBox('提示', '银行卡添加失败！')
 				}
 			})
 			.catch(function(){
