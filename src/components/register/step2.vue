@@ -179,5 +179,5 @@ export default {
 .ex-rigster-from-submit button{ height: 4.5rem; width: 100%; border: none; background-color: #58c86b; color: #fff; border-radius: 0.4rem; font-size: 1.6rem;}
 .ex-rigster-from-agreement{ color: #5d646e; margin: 0.2rem 0; }
 .ex-rigster-from-agreement input{ width: 1.4rem; height: 1.4rem; border-radius: 0.5rem; vertical-align: middle; }
-.ex-rigster-from-agreement a{color:#1b6798 }
+.ex-rigster-from-agreement a{color:#1b6798;vertical-align: middle;  }
 </style>

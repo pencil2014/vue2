@@ -18,15 +18,26 @@ const Money = resolve => require(['../components/consume/money'], resolve)
 const Bank = resolve => require(['../components/consume/bank'], resolve)
 const BankList = resolve => require(['../components/consume/banklist'], resolve)
 const Addcard = resolve => require(['../components/consume/addcard'], resolve)
-const Recommend = resolve => require(['../components/consume/recommend'], resolve)
-const Upgrade = resolve => require(['../components/consume/upgrade'], resolve)
-const Wechat = resolve => require(['../components/consume/wechat'], resolve)
-const Bankpay = resolve => require(['../components/consume/bankpay'], resolve)
+const Shop1 = resolve => require(['../components/consume/shop1'], resolve)
+const Shop2 = resolve => require(['../components/consume/shop2'], resolve)
+const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
 
 
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
 const Settings = resolve => require(['../components/settings/settings'], resolve)
 const Personal = resolve => require(['../components/personal/personal'], resolve)
+
+const Avatar = resolve => require(['../components/avatar/avatar'], resolve)
+const Username = resolve => require(['../components/username/username'], resolve)
+
+const QRcode = resolve => require(['../components/qrcode/qrcode'], resolve)
+const ChangePassword = resolve => require(['../components/changepassword/changepassword'], resolve)
+const AlterPhone1 = resolve => require(['../components/alterphone/step1'], resolve)
+const AlterPhone2 = resolve => require(['../components/alterphone/step2'], resolve)
+const Guide1 = resolve => require(['../components/guide/step1'], resolve)
+const Guide2 = resolve => require(['../components/guide/step2'], resolve)
+const Feedback = resolve => require(['../components/feedback/feedback'], resolve)
+const Version = resolve => require(['../components/version/version'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -99,39 +110,89 @@ export default new Router({
       component: Addcard
     },
     {
-      path: '/recommend',
-      name: 'Recommend',
-      component: Recommend
+      path: '/shop1',
+      name: 'Shop1',
+      component: Shop1
     },
     {
-      path: '/upgrade',
-      name: 'Upgrade',
-      component: Upgrade
+      path: '/shop2',
+      name: 'Shop2',
+      component: Shop2
     },
     {
-      path: '/wechat',
-      name: 'Wechat',
-      component: Wechat
+      path: '/shop3',
+      name: 'Shop3',
+      component: Shop3
     },
+    // {
+    //   path: '/message',
+    //   name: 'Message',
+    //   component: Message
+    // },
+    // {
+    //   path: '/settings',
+    //   name: 'Settings',
+    //   component: Settings
+    // },
+    // {
+    //   path: '/personal',
+    //   name: 'Personal',
+    //   component: Personal
+    // },
+    // {
+    //   path: '/username',
+    //   name: 'Username',
+    //   component: Username
+    // },
+    // {
+    //   path: '/avatar',
+    //   name: 'Avatar',
+    //   component: Avatar
+    // },
+    // {
+    //   path: '/username',
+    //   name: 'Username',
+    //   component: Username
+    // },
+    // {
+    //   path: '/qrcode',
+    //   name: 'QRcode',
+    //   component: QRcode
+    // },
+    // {
+    //   path: '/changepassword',
+    //   name: 'ChangePassword',
+    //   component: ChangePassword
+    // },
+    // {
+    //   path: '/alterphone',
+    //   name: 'AlterPhone1',
+    //   component: AlterPhone1
+    // },
+    // {
+    //   path: '/alterphone/step2',
+    //   name: 'AlterPhone2',
+    //   component: AlterPhone2
+    // },
+    // {
+    //   path: '/guide',
+    //   name: 'Guide1',
+    //   component: Guide1
+    // },
+    // {
+    //   path: '/guide/step2',
+    //   name: 'Guide2',
+    //   component: Guide2
+    // },
+    // {
+    //   path: '/feedback',
+    //   name: 'Feedback',
+    //   component: Feedback
+    // },
     {
-      path: '/bankpay',
-      name: 'Bankpay',
-      component: Bankpay
-    },
-    {
-      path: '/message',
-      name: 'Message',
-      component: Message
-    },
-    {
-      path: '/settings',
-      name: 'Settings',
-      component: Settings
-    },
-    {
-      path: '/personal',
-      name: 'Personal',
-      component: Personal
+      path: '/version',
+      name: 'Version',
+      component: Version
     },
     {
     	path:'*', 

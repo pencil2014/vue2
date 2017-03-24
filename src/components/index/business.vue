@@ -5,7 +5,7 @@
 				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</div>  
 				<div class="links">
 					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
-					<router-link to="/set"><i class='iconfont'>&#xe651;</i></router-link>
+					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
 				</div>
 			</div>
 			<div class="ex-index-userinfo">
@@ -14,7 +14,9 @@
 						<a href="javascript:;" @click="gouser">
 							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
 						</a>
-						<p :class="{vip:userVipStatus.auditStatus ==='2'}">E享商家</p>
+						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
+							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> E享会员
+						</p>
 					</div>
 					<p class="name">{{userinfo.userName}}</p>
 					<p class="id">ID:{{userinfo.userCode}}</p>
@@ -229,8 +231,9 @@ export default {
 background-size: cover; display: block; width: 6rem; height: 6rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff;}
 .ex-index-img a img{border-radius: 50%;}
 .ex-index-img p {background:url('../../assets/images/header.png') no-repeat center; -webkit-background-size: cover;
-background-size: cover; height: 2rem; line-height: 2rem; font-size: 1rem; width: 90%; color: #fff; margin: -1.5rem auto 0; }
-.ex-index-img p.vip {background-image: url('../../assets/images/header2.png');}
+background-size: cover; height: 2rem; line-height: 2rem; font-size: 1rem; width: 8rem; color: #fff; margin: -1.5rem auto 0; }
+.ex-index-img p.vip {background-image: url('../../assets/images/header2.png'); position: relative;}
+.ex-index-img p.vip img{ width: 2rem; height: 2rem; position: absolute; left: 0.7rem; top: -0.4rem;}
 .ex-index-head .name{ color: #fff; margin: 0.5rem 0;font-size: 1.4rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .ex-index-head .id{ color: #fff; font-size: 1.2rem; white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .ex-index-data li { color: #fff; height: 2rem; line-height: 2rem; border-bottom:1px solid #fff;}

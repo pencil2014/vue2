@@ -31,9 +31,8 @@
 				<div class="upload">
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
-					<img class='showpic' :src="imgurl" alt="" > <!--  v-if='imgurl !== ""'-->
+					<img class='showpic' :src="imgurl" alt="" v-show='imgurl !==""'> <!--  v-show='imgurl !== ""'-->
 					<input type="file" class="uploadimg" id="uploadimg" @change='getfile'>
-					
 				</div>
 			</div>
 		</div>

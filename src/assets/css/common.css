@@ -35,6 +35,7 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 #app{overflow: auto; height: 100%; font-size: 1.2rem;}
 .activeRouter {color: #2eadff !important;}
 
+
 .table {width: 100%;}
 .table th{ text-align: left; padding: 1rem 0.8rem; font-weight: normal; color: #888; }
 .table tr{border-bottom: 1px solid #e5e5e5;}
@@ -46,3 +47,4 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 .ex-topbar a i{font-size: 3rem;}
 .ex-topbar a:active{background-color: #29a0ec;}
 .disableBtn,.disableBtn:active { background-color: #eee !important; color: #ddd !important;}
+

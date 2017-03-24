@@ -1,6 +1,5 @@
 <template>
 	<div class="ex-settings">
-
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-settings-list">
 			<div class="ex-settings-item" v-show="!isShop">
@@ -50,15 +49,15 @@
 			</div>
 			<div class="ex-settings-item">
 				<ul>
-					<router-link to="/guide" tag="li">
+					<router-link to="/index" tag="li">
 						<span>使用指南</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/feedback" tag="li">
+					<router-link to="/index" tag="li">
 						<span>留言反馈</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-				 	<router-link to="/version" tag="li">
+				 	<router-link to="/index" tag="li">
 						<span>版本信息</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>

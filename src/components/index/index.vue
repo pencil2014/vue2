@@ -232,7 +232,7 @@ export default {
 background-size: cover; display: block; width: 6rem; height: 6rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff;}
 .ex-index-img a img{border-radius: 50%;}
 .ex-index-img p {background:url('../../assets/images/header.png') no-repeat center; -webkit-background-size: cover;
-background-size: cover; height: 2rem; line-height: 2rem; width: 90%; font-size: 1rem; color: #fff; margin: -1.5rem auto 0; }
+background-size: cover; height: 2rem; line-height: 2rem; width: 8rem; font-size: 1rem; color: #fff; margin: -1.5rem auto 0; }
 .ex-index-img p.vip {background-image: url('../../assets/images/header2.png'); position: relative;}
 .ex-index-img p.vip img{ width: 2rem; height: 2rem; position: absolute; left: 0.7rem; top: -0.4rem;}
 .ex-index-head .name{ color: #fff; margin: 0.5rem 0;font-size: 1.4rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
