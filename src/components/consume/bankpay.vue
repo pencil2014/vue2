@@ -53,7 +53,8 @@ export default {
 			file: '',
 			fileList: [],
 			repeatBtn: false,
-			resurl: ''
+			resurl: '',
+			type: ''
 		}
 	},
 	computed: {

@@ -127,13 +127,7 @@ export default {
 				cancelButtonText:'取消',
 			}).then(action =>{
 				if(action === "confirm"){
-					let local=window.localStorage;
-					let i;
-					for (i in local){
-						if(i !== "phone"){
-							window.localStorage.setItem(i, '')
-						}
-					}
+					window.localStorage.setItem('token', '')
 					this.$router.push('/login')
 				}
 			});

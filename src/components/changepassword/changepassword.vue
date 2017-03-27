@@ -32,6 +32,7 @@
 	</div>
 </template>
 <script>
+import md5 from "blueimp-md5"
 import axios from "axios"
 import qs from "qs"
 import HeadTitle from '../common/title.vue'
@@ -98,15 +99,13 @@ export default {
 			}
 			_this.submitBtn = true;
 			axios.post('user/updatePasswod',qs.stringify({
-				oldPassword: _this.oldpsw,
-				password: _this.confirmpsw
+				oldPassword: md5(_this.oldpsw),
+				password: md5(_this.confirmpsw)
 			})).then(function(res){
 				if (res.data.code === '10000') {
+					_this.$router.push('/login')
+					_this.submitBtn = false;
 					let instance = Toast('修改成功');
-					setTimeout(() => {
-					  instance.close();
-					  this.$router.back();
-					}, 2000);
 				} else {
 					_this.submitBtn = false;
 					Toast({message: res.data.msg});

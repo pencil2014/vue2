@@ -9,8 +9,9 @@ const Login = resolve => require(['../components/login/login'], resolve)
 const Register1 = resolve => require(['../components/register/step1'], resolve)
 const Register2 = resolve => require(['../components/register/step2'], resolve)
 const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
+
 const Index = resolve => require(['../components/index/index'], resolve)
-const Business = resolve => require(['../components/index/Business'], resolve)
+const Business = resolve => require(['../components/index/business'], resolve)
 const Record = resolve => require(['../components/consume/record'], resolve)
 const Integral = resolve => require(['../components/consume/integral'], resolve)
 const Detail = resolve => require(['../components/consume/detail'], resolve)
@@ -18,9 +19,16 @@ const Money = resolve => require(['../components/consume/money'], resolve)
 const Bank = resolve => require(['../components/consume/bank'], resolve)
 const BankList = resolve => require(['../components/consume/banklist'], resolve)
 const Addcard = resolve => require(['../components/consume/addcard'], resolve)
+const Recommend = resolve => require(['../components/consume/recommend'], resolve)
+const Upgrade = resolve => require(['../components/consume/upgrade'], resolve)
+const Wechat = resolve => require(['../components/consume/wechat'], resolve)
+const Bankpay = resolve => require(['../components/consume/bankpay'], resolve)
 const Shop1 = resolve => require(['../components/consume/shop1'], resolve)
 const Shop2 = resolve => require(['../components/consume/shop2'], resolve)
 const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
+
+const Declare = resolve => require(['../components/business/declare'], resolve)
+const Declare2 = resolve => require(['../components/business/declare2'], resolve)
 
 
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
@@ -105,6 +113,26 @@ export default new Router({
       component: BankList
     },
     {
+      path: '/upgrade',
+      name: 'Upgrade',
+      component: Upgrade
+    },
+    {
+      path: '/recommend',
+      name: 'Recommend',
+      component: Recommend
+    },
+    {
+      path: '/wechat',
+      name: 'Wechat',
+      component: Wechat
+    },
+    {
+      path: '/bankpay',
+      name: 'Bankpay',
+      component: Bankpay
+    },
+    {
       path: '/addcard',
       name: 'Addcard',
       component: Addcard
@@ -124,71 +152,76 @@ export default new Router({
       name: 'Shop3',
       component: Shop3
     },
-    // {
-    //   path: '/message',
-    //   name: 'Message',
-    //   component: Message
-    // },
-    // {
-    //   path: '/settings',
-    //   name: 'Settings',
-    //   component: Settings
-    // },
-    // {
-    //   path: '/personal',
-    //   name: 'Personal',
-    //   component: Personal
-    // },
-    // {
-    //   path: '/username',
-    //   name: 'Username',
-    //   component: Username
-    // },
-    // {
-    //   path: '/avatar',
-    //   name: 'Avatar',
-    //   component: Avatar
-    // },
-    // {
-    //   path: '/username',
-    //   name: 'Username',
-    //   component: Username
-    // },
-    // {
-    //   path: '/qrcode',
-    //   name: 'QRcode',
-    //   component: QRcode
-    // },
-    // {
-    //   path: '/changepassword',
-    //   name: 'ChangePassword',
-    //   component: ChangePassword
-    // },
-    // {
-    //   path: '/alterphone',
-    //   name: 'AlterPhone1',
-    //   component: AlterPhone1
-    // },
-    // {
-    //   path: '/alterphone/step2',
-    //   name: 'AlterPhone2',
-    //   component: AlterPhone2
-    // },
-    // {
-    //   path: '/guide',
-    //   name: 'Guide1',
-    //   component: Guide1
-    // },
-    // {
-    //   path: '/guide/step2',
-    //   name: 'Guide2',
-    //   component: Guide2
-    // },
-    // {
-    //   path: '/feedback',
-    //   name: 'Feedback',
-    //   component: Feedback
-    // },
+    {
+      path: '/declare',
+      name: 'Declare',
+      component: Declare
+    },
+    {
+      path: '/declare2/:id',
+      name: 'Declare2',
+      component: Declare2
+    },
+    {
+      path: '/message',
+      name: 'Message',
+      component: Message
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings
+    },
+    {
+      path: '/personal',
+      name: 'Personal',
+      component: Personal
+    },
+    {
+      path: '/username',
+      name: 'Username',
+      component: Username
+    },
+    {
+      path: '/avatar',
+      name: 'Avatar',
+      component: Avatar
+    },
+    {
+      path: '/qrcode',
+      name: 'QRcode',
+      component: QRcode
+    },
+    {
+      path: '/changepassword',
+      name: 'ChangePassword',
+      component: ChangePassword
+    },
+    {
+      path: '/alterphone',
+      name: 'AlterPhone1',
+      component: AlterPhone1
+    },
+    {
+      path: '/alterphone/step2',
+      name: 'AlterPhone2',
+      component: AlterPhone2
+    },
+    {
+      path: '/guide',
+      name: 'Guide1',
+      component: Guide1
+    },
+    {
+      path: '/guide/step2',
+      name: 'Guide2',
+      component: Guide2
+    },
+    {
+      path: '/feedback',
+      name: 'Feedback',
+      component: Feedback
+    },
     {
       path: '/version',
       name: 'Version',

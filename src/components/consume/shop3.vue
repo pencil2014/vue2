@@ -11,7 +11,7 @@
 	  	<p>平台正在处理您的申请，请稍等...</p>
 	  </div>
 
-	  <div class="ex-shop3-result" v-if="examineData.auditStatus !== '1'">
+	  <div class="ex-shop3-result" v-if="examineData.auditStatus == '0'">
 	  	<i class="iconfont err">&#xe63f;</i>
 	  	<h3>抱歉，审核未通过！</h3>
 	  	<p v-html='examineData.auditOpinion'></p>
@@ -76,7 +76,7 @@
 			</div>
 		</div>
 		</div>
-		<button type='button'  class="ex-shop3-btn" @click='next' v-if="examineData.auditStatus !== '1'">重新申请</button>
+		<button type='button'  class="ex-shop3-btn" @click='next' v-if="examineData.auditStatus === '0'">重新申请</button>
 	</div>
 </template>
 

@@ -82,7 +82,7 @@ export default {
 		axios.post('bankard/getDefault',qs.stringify({cardType: 1}))
 		.then(function(res){
 			if (res.data.code === '10000') {
-				if ('data' in res.data.data ) {
+				if (!!res.data.data ) {
 					_this.showAdd = false
 					_this.bankdata = res.data.data
 				} else {

@@ -28,6 +28,10 @@
 					</tbody>
 				</table>
 			</mt-loadmore>
+			<div class="nodata" v-show='recordList.length === 0'>
+				<img src="../../assets/images/nodata.png" alt="">
+				<p>还没有数据哦~</p>
+			</div>
 		</div>
 	</div>
 </template>

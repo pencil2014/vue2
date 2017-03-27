@@ -44,7 +44,7 @@
 				<span>*姓名</span><input type="text" name="" id="" placeholder="负责人姓名" maxlength="10" v-model.trim='shopsLinkman'>
 			</div>
 			<div class="ex-shop1-cnt-item">
-				<span>*联系电话</span><input type="text" name="" id="" placeholder="联系人手机" maxlength="11" v-model.trim='shopsLinkphone'>
+				<span>*联系电话</span><input type="tel" name="" id="" placeholder="联系人手机" maxlength="11" v-model.trim='shopsLinkphone'>
 			</div>
 			<button type='button'  :class="[ 'ex-shop1-btn', {disableBtn:disableBtn}]" @click='next'>下一步</button>
 		</div>
@@ -83,7 +83,7 @@ export default {
 			let area = this.district.filter(function(item){
 				return item.id === this.districtId
 			}.bind(this))
-			if (area.name.indexOf('县')) {
+			if (area[0].name.indexOf('县')) {
 				return ''
 			} else {
 				return area.id

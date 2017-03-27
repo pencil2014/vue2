@@ -48,3 +48,5 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 .ex-topbar a:active{background-color: #29a0ec;}
 .disableBtn,.disableBtn:active { background-color: #eee !important; color: #ddd !important;}
 
+.nodata { height: 20rem; line-height: 2; text-align: center; color: #a6a9b0; font-size: 1.4rem;}
+.nodata img{ width: 15rem; height: auto;  padding-top: 5rem;}

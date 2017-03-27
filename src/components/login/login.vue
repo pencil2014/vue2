@@ -95,6 +95,7 @@ export default {
 					axios.post('user/login',qs.stringify({loginName: _this.phone, password: md5(_this.password)}))
 					.then(function(res){
 						if (res.data.code === '10000') {
+							_this.repeatBtn = false
 							window.localStorage.setItem('token', res.data.data.token)
 							// _this.changeLoginStatus(true)
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token

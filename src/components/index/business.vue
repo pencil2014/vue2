@@ -4,7 +4,7 @@
 			<div class="ex-index-toplink">
 				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</div>  
 				<div class="links">
-					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
+					<!-- <router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link> -->
 					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
 				</div>
 			</div>
@@ -40,15 +40,17 @@
 		</div>
 		<div class="ex-index-menu">
 			<ul>
-				<li><router-link to="/index"><i class="iconfont m9">&#xe602;</i><span>消费登记</span></router-link></li>
+				<li><router-link to="/declare"><i class="iconfont m9">&#xe602;</i><span>消费登记</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m1">&#xe6d8;</i><span>报单查询</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m10">&#xe601;</i><span>消费登记查询</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
+				<li><router-link to="/integral"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
+				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
 				<li><router-link to="/index"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
-				<!-- <li v-if="userinfo.userLev!=2"><router-link to="/index"><i class="iconfont m6">&#xe642;</i><span>升级会员</span></router-link></li> -->
+				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
+				<li v-show='userinfo.userLev !=="2"'>
+					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>
+				</li>
 			</ul>
 		</div>
 		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
@@ -142,12 +144,12 @@ export default {
 			let _this = this
 			if (this.userVipStatus.auditStatus === '0') {
 				MessageBox.alert('VIP会员审核失败！').then(action => {
-					_this.$router.push('/index')
+					_this.$router.push('/upgrade')
 				})	
 			} else if(this.userVipStatus.auditStatus == '1') {
 				MessageBox('提示', 'VIP会员升级中,请稍后...')
 			} else {
-				this.$router.push('/index')
+				this.$router.push('/upgrade')
 			}
 		},
 		showcustomer () {
@@ -179,35 +181,59 @@ export default {
 	created () {
 		let _this = this
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.userinfo = res.data.data
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-		})
+		let personal = this.$getcache('user/personal')
+		if (personal) {
+			this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		} else {
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userinfo = res.data.data
+					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/personal', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					MessageBox('提示', 'user/personal系统出错了，正在修复中...')
+			})
+		}
+		
 		// 获取平台信息
-		axios.post('user/sysIndex',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.sysData = res.data.data
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-		})
+		let sysIndex = this.$getcache('user/sysIndex')
+		if (sysIndex) {
+			this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
+		} else {
+			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.sysData = res.data.data
+					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/sysIndex', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					MessageBox('提示', 'user/sysIndex系统出错了，正在修复中...')
+			})
+		}
+		
+		
 		//获取会员审核详情信息
-		axios.post('user/examine',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.userVipStatus = res.data.data
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-		})
+		let examine = this.$getcache('user/examine')
+		if (examine) {
+			this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
+		} else {
+			axios.post('user/examine',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userVipStatus = res.data.data
+					window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/examine', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					MessageBox('提示', 'user/examine系统出错了，正在修复中...')
+			})
+		}
 	},
 	monuted () {
 	}

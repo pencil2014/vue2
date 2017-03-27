@@ -5,14 +5,14 @@
 			<div class="ex-field-wrapper">
 				<label class="ex-field-title">新手机</label>
 				<div class="ex-field-value">
-					<input type="text" maxlength="10"  placeholder="请输入新手机号">
+					<input type="text" maxlength="11"  placeholder="请输入新手机号" v-model.trim="phone">
 				</div>
 			</div>
 			<div class="ex-field-wrapper">
 				<label class="ex-field-title">短信验证码</label>
 				<div class="ex-field-value">
-					<input type="text" placeholder="请输入验证码" maxlength="10">
-					<input type="button" name="" value="短信验证码">
+					<input type="text" placeholder="请输入验证码" maxlength="10" v-model.trim="phoneCode">
+					<input type="button" name="" value="短信验证码" @click="sendCode" v-model.trim="secondText" :disabled='countdown'>
 				</div>
 			</div>
 		</div>
@@ -29,7 +29,7 @@ import axios from "axios"
 import qs from "qs"
 import HeadTitle from '../common/title.vue'
 import Btn from '../common/button.vue'
-import { MessageBox,Indicator } from 'mint-ui'
+import { Toast,Indicator } from 'mint-ui'
 export default {
 	data(){
 		return{
@@ -45,6 +45,10 @@ export default {
 					});
 	            }
 	        },
+	        phone:'',
+	        phoneCode:'',
+	        countdown: false,
+			second: '短信验证码',
 			submitBtn: false
 		}
 	},
@@ -54,7 +58,19 @@ export default {
 	},
 	computed: {
 		disable () {
-		    return 
+			let rule1 = !this.phone || !this.phoneCode;
+			if(rule1){
+				return true
+			}else{
+				return false
+			}
+		},
+		secondText () {
+			if (/^\d*$/.test(this.second)) {
+				return this.second + '秒'
+			}else{
+				return this.second
+			}
 		}
 	},
 	created () {
@@ -62,12 +78,12 @@ export default {
 		// 获取用户详情
 		axios.post('user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
-
+				_this.originalPhone = res.data.data.phone
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			MessageBox('提示', '系统出错了，正在修复中...')
+			Toast('系统出错了，正在修复中...')
 		})
 	},
 	methods: {
@@ -75,9 +91,82 @@ export default {
 			this.$router.back();
 		},
 		submit () {
-			
-		}
-	}
+			let _this = this;
+			let rule1 = /^1(3|4|5|7|8)\d{9}$/;
+			if(_this.disable){
+				return;
+			}
+			if(!rule1.test(_this.phone)){
+				Toast('手机号码不正确！')
+				return 
+			}
+			if(_this.submitBtn){
+				return 
+			}
+			_this.submitBtn = true;
+			axios.post('user/updateRegPhone2',qs.stringify({
+				phone:_this.phone,
+				phoneCode: _this.phoneCode
+			})).then(res =>{
+				if (res.data.code === '10000') {
+					window.localStorage.setItem('token', '')
+					this.$router.push('/login')
+					_this.submitBtn = false;
+					Toast('修改成功')
+				} else {
+					_this.submitBtn = false;
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				_this.submitBtn = false;
+				Toast('系统出错了，正在修复中...')
+			})
+		},
+		sendCode () {
+			let _this = this;
+			let rule1 = /^1(3|4|5|7|8)\d{9}$/;
+			if(_this.phone === ""){
+				Toast('新手机号不能为空')
+				return
+			}
+			if(!rule1.test(_this.phone)){
+				Toast('手机号码不正确！')
+				return 
+			}
+			if(_this.originalPhone === _this.phone){
+				Toast('新手机号码不能与原手机号码一致')
+				return
+			}
+			//获取短信验证码
+			axios.post('verify/sendPhoneCode',qs.stringify({
+				phone: _this.phone,
+				codeType: 4,
+				smsType: 1
+			})).then(res =>{
+				if (res.data.code === '10000') {
+					Toast('请查收您的短信')
+					_this.countdownFn();
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('系统出错了，正在修复中...')
+			})
+		},
+		countdownFn () {
+			let _this = this
+			_this.countdown = true
+			_this.second = 120;
+			let timer = setInterval(function(){
+				_this.second -= 1
+				if (_this.second < 0) {
+					_this.countdown = false
+					_this.second = '短信验证码'
+					clearInterval(timer)
+				}
+			},1000)
+		},
+	},
 }
 </script>
 <style scoped>

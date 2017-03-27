@@ -117,7 +117,8 @@ export default {
 				if (res.data.code === '10000') {
 
 					_this.personalData.logoImg = picPath;
-					this.$router.back();
+					_this.$router.back();
+					//_this.$router.push('/personal');
 				} else {
 					MessageBox('提示', res.data.msg)
 				}

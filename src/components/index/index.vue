@@ -4,7 +4,7 @@
 			<div class="ex-index-toplink">
 				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为商家</div>  
 				<div class="links">
-					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
+					<!-- <router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link> -->
 					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
 				</div>
 			</div>
@@ -47,8 +47,12 @@
 				<li v-show='userinfo.userLev !=="2"'>
 					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>
 				</li>
-				<li v-show='!!isConstomer'>
-					<router-link to="/index"><i class="iconfont m8">&#xe600;</i><span>商家申请</span></router-link>
+				<li v-show='isConstomer'>
+					<a href="javascript:;" @click='gotoshop'>
+					<i class="iconfont m8">&#xe600;</i>
+					<span v-if='userinfo.shopsStatus ==="-1" || userinfo.shopsStatus ==="0"'>商家申请</span>
+					<span v-if='userinfo.shopsStatus ==="1" || userinfo.shopsStatus ==="3"'>商家审核</span>
+					</a>
 				</li>
 			</ul>
 		</div>
@@ -151,6 +155,13 @@ export default {
 				this.$router.push('/upgrade')
 			}
 		},
+		gotoshop () {
+			if (this.userinfo.shopsStatus === '-1' || this.userinfo.shopsStatus === '0') {
+				this.$router.push('/shop1')
+			} else {
+				this.$router.push('/shop3')
+			}
+		},
 		showcustomer () {
 			this.customerService = true
 		},
@@ -165,50 +176,67 @@ export default {
 	},
 	watch: {
 		userinfo () {
-			if (this.userinfo.phone) {
-				let _this = this
-				// 获取用户是否为商家
-				axios.post('shop/isShopp',qs.stringify({phone: this.userinfo.phone})).then(function(res){
-				if (res.data.code === '10000') {
-							_this.isConstomer = res.data.msg
-						} else {
-						}
-					}).catch(function(){})
+			if (this.userinfo.shopsStatus) {
+				 return this.userinfo.shopsStatus === '2' ? false : true
 			}
 		}
 	},
 	created () {
 		let _this = this
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.userinfo = res.data.data
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-		})
+		let personal = this.$getcache('user/personal')
+		if (personal) {
+			this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		} else {
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userinfo = res.data.data
+					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/personal', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					MessageBox('提示', '系统出错了，正在修复中...')
+			})
+		}
+		
 		// 获取平台信息
-		axios.post('user/sysIndex',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.sysData = res.data.data
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-		})
+		let sysIndex = this.$getcache('user/sysIndex')
+		if (sysIndex) {
+			this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
+		} else {
+			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.sysData = res.data.data
+					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/sysIndex', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					MessageBox('提示', '系统出错了，正在修复中...')
+			})
+		}
+		
+		
 		//获取会员审核详情信息
-		axios.post('user/examine',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.userVipStatus = res.data.data
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
-		})
+		let examine = this.$getcache('user/examine')
+		if (examine) {
+			this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
+		} else {
+			axios.post('user/examine',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userVipStatus = res.data.data
+					window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/examine', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					MessageBox('提示', '系统出错了，正在修复中...')
+			})
+		}
 	},
 	monuted () {
 	}
