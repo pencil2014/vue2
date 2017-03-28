@@ -88,7 +88,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Toast} from 'mint-ui'
+import { MessageBox, Toast, Indicator} from 'mint-ui'
 import lrz from 'lrz'
 export default {
 	data () {
@@ -163,7 +163,7 @@ export default {
 				})
 				.catch(function(){
 					_this.repeatBtn = false
-					MessageBox('提示', '系统出错了，正在修复中...')
+					Indicator.open({ spinnerType: 'fading-circle'})
 				})
 		}
 	},
@@ -224,7 +224,7 @@ export default {
 			})
 			.catch(function(res){
 				_this.repeatBtn = false
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})	
 		},
 		getfile (id) {

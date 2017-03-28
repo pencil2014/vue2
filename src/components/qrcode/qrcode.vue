@@ -73,7 +73,7 @@ export default {
 			}
 		}).catch(function(){
 				Indicator.close();
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 		})
 	},
 	methods: {

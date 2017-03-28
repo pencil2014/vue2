@@ -59,7 +59,7 @@
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
 				 	<router-link to="/version" tag="li">
-						<span>版本信息</span>
+						<span>关于我们</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
 				</ul>
@@ -77,7 +77,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox } from 'mint-ui'
+import { MessageBox, Indicator } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
@@ -110,7 +110,7 @@ export default {
 				MessageBox('提示', res.data.msg)
 			}
 		}).catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 		})
 	},
 	methods: {

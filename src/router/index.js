@@ -29,7 +29,14 @@ const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
 
 const Declare = resolve => require(['../components/business/declare'], resolve)
 const Declare2 = resolve => require(['../components/business/declare2'], resolve)
+const Declare3 = resolve => require(['../components/business/declare3'], resolve)
+const Declare4 = resolve => require(['../components/business/declare4'], resolve)
+const Declare5 = resolve => require(['../components/business/declare5'], resolve)
+const Declare6 = resolve => require(['../components/business/declare6'], resolve)
 
+const Order = resolve => require(['../components/business/order'], resolve)
+const Tables = resolve => require(['../components/business/tables'], resolve)
+const Detail2 = resolve => require(['../components/business/detail'], resolve)
 
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
 const Settings = resolve => require(['../components/settings/settings'], resolve)
@@ -46,10 +53,11 @@ const Guide1 = resolve => require(['../components/guide/step1'], resolve)
 const Guide2 = resolve => require(['../components/guide/step2'], resolve)
 const Feedback = resolve => require(['../components/feedback/feedback'], resolve)
 const Version = resolve => require(['../components/version/version'], resolve)
+const Realname = resolve => require(['../components/realname/realname'], resolve)
 
 // 导出路由配置
 export default new Router({
-  mode: 'history',
+  mode: 'hash',
   linkActiveClass: 'activeRouter',
   routes: [
     {
@@ -163,6 +171,41 @@ export default new Router({
       component: Declare2
     },
     {
+      path: '/declare3/:id',
+      name: 'Declare3',
+      component: Declare3
+    },
+    {
+      path: '/declare4/:id',
+      name: 'Declare4',
+      component: Declare4
+    },
+    {
+      path: '/declare5/:id',
+      name: 'Declare5',
+      component: Declare5
+    },
+    {
+      path: '/declare6/:id',
+      name: 'Declare6',
+      component: Declare6
+    },
+    {
+      path: '/order',
+      name: 'Order',
+      component: Order
+    },
+    {
+      path: '/tables',
+      name: 'Tables',
+      component: Tables
+    },
+    {
+      path: '/detail2',
+      name: 'Detail2',
+      component: Detail2
+    },
+    {
       path: '/message',
       name: 'Message',
       component: Message
@@ -226,6 +269,11 @@ export default new Router({
       path: '/version',
       name: 'Version',
       component: Version
+    },
+    {
+      path: '/realname',
+      name: 'Realname',
+      component: Realname
     },
     {
     	path:'*', 

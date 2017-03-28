@@ -32,7 +32,7 @@
 import md5 from "blueimp-md5"
 import axios from "axios"
 import qs from "qs"
-import { MessageBox } from 'mint-ui'
+import { MessageBox,Indicator } from 'mint-ui'
 import { mapState,  mapActions } from 'vuex'
 export default {
 	data () {
@@ -106,12 +106,12 @@ export default {
 					})
 					.catch(function(){
 						_this.repeatBtn = false
-						MessageBox('提示', '系统出错了，正在修复中...')
+						Indicator.open({ spinnerType: 'fading-circle'})
 					})
 				}
 			}).catch(function(){
 				_this.repeatBtn = false 
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 
 		},

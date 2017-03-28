@@ -41,12 +41,12 @@
 		<div class="ex-index-menu">
 			<ul>
 				<li><router-link to="/declare"><i class="iconfont m9">&#xe602;</i><span>消费登记</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m1">&#xe6d8;</i><span>报单查询</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m10">&#xe601;</i><span>消费登记查询</span></router-link></li>
+				<li><router-link to="/order"><i class="iconfont m1">&#xe6d8;</i><span>报单查询</span></router-link></li>
+				<li><router-link to="/tables"><i class="iconfont m10">&#xe601;</i><span>报单成功明细</span></router-link></li>
 				<li><router-link to="/integral"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
+				<li><router-link to="/detail2"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
 				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
-				<li><router-link to="/index"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
+				<li><router-link to="/bank"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
 				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
 				<li v-show='userinfo.userLev !=="2"'>
 					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>
@@ -80,7 +80,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox } from 'mint-ui'
+import { MessageBox, Indicator } from 'mint-ui'
 import appNav from "../common/nav.vue"
 export default {
 	data () {
@@ -134,7 +134,7 @@ export default {
 				})
 				.catch(function(){
 					_this.repeatBtn = false
-					MessageBox('提示', '系统出错了，正在修复中...')
+					Indicator.open({ spinnerType: 'fading-circle'})
 				})
 		},
 		gouser () {
@@ -157,6 +157,48 @@ export default {
 		},
 		hidecustomer () {
 			this.customerService = false
+		},
+		getuserinfo () {
+			let _this = this
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userinfo = res.data.data
+					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/personal', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					Indicator.open({ spinnerType: 'fading-circle'})
+			})
+		},
+		getsysIndex () {
+			let _this = this
+			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.sysData = res.data.data
+					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/sysIndex', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					Indicator.open({ spinnerType: 'fading-circle'})
+			})
+		},
+		getexamine () {
+			let _this = this
+			axios.post('user/examine',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userVipStatus = res.data.data
+					window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
+					window.localStorage.setItem('user/examine', new Date().getTime())
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					Indicator.open({ spinnerType: 'fading-circle'})
+			})
 		}
 	},
 	filters: {
@@ -179,60 +221,34 @@ export default {
 		}
 	},
 	created () {
-		let _this = this
-		// 获取用户详情
-		let personal = this.$getcache('user/personal')
-		if (personal) {
-			this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		let phone = window.localStorage.getItem('phone')
+		let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		if (!!userinfo && phone === userinfo.phone) {
+			// 获取用户详情
+			let personal = this.$getcache('user/personal')
+			if (personal) {
+				this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+			} else {
+				this.getuserinfo()
+			}
+			// 获取平台信息
+			let sysIndex = this.$getcache('user/sysIndex')
+			if (sysIndex) {
+				this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
+			} else {
+				this.getsysIndex()
+			}
+			//获取会员审核详情信息
+			let examine = this.$getcache('user/examine')
+			if (examine) {
+				this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
+			} else {
+				this.getexamine()
+			}
 		} else {
-			axios.post('user/personal',qs.stringify({})).then(function(res){
-				if (res.data.code === '10000') {
-					_this.userinfo = res.data.data
-					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/personal', new Date().getTime())
-				} else {
-					MessageBox('提示', res.data.msg)
-				}
-			}).catch(function(){
-					MessageBox('提示', 'user/personal系统出错了，正在修复中...')
-			})
-		}
-		
-		// 获取平台信息
-		let sysIndex = this.$getcache('user/sysIndex')
-		if (sysIndex) {
-			this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
-		} else {
-			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
-				if (res.data.code === '10000') {
-					_this.sysData = res.data.data
-					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/sysIndex', new Date().getTime())
-				} else {
-					MessageBox('提示', res.data.msg)
-				}
-			}).catch(function(){
-					MessageBox('提示', 'user/sysIndex系统出错了，正在修复中...')
-			})
-		}
-		
-		
-		//获取会员审核详情信息
-		let examine = this.$getcache('user/examine')
-		if (examine) {
-			this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-		} else {
-			axios.post('user/examine',qs.stringify({})).then(function(res){
-				if (res.data.code === '10000') {
-					_this.userVipStatus = res.data.data
-					window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/examine', new Date().getTime())
-				} else {
-					MessageBox('提示', res.data.msg)
-				}
-			}).catch(function(){
-					MessageBox('提示', 'user/examine系统出错了，正在修复中...')
-			})
+			this.getuserinfo()
+			this.getsysIndex()
+			this.getexamine()
 		}
 	},
 	monuted () {

@@ -6,8 +6,14 @@
 				<span>积分明细</span>
 			</div>
 			<div class="ex-detail-integral">
-				<span>E积分总额</span>
-				<p>{{integral || 0}}</p>
+				<div class="ex-detail-integral-item">
+					<span>E积分总额</span>
+					<p>{{integralA || 0}}</p>
+				</div>
+				<div class="ex-detail-integral-item">
+					<span>激励E积分总额</span>
+					<p>{{integralB || 0}}</p>
+				</div>
 			</div>
 	 </div>
 	 <div class="ex-detail-hack"></div>
@@ -15,12 +21,13 @@
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table">
 					<tr>
-						<th width="15%">结算日期</th>
-						<th width="15%">卖家ID</th>
-						<th width="15%">卖家ID</th>
-						<th width="20%">商品名称</th>
-						<th width="20%">E积分</th>
-						<th width="15%">来源</th>
+						<th>结算日期</th>
+						<th>卖家ID</th>
+						<th>卖家ID</th>
+						<th>商品名称</th>
+						<th>E积分</th>
+						<th>激励E积分</th>
+						<th>来源</th>
 					</tr>
 					<tbody 
 					v-show='recordList.length > 0'
@@ -33,6 +40,7 @@
 							<td>{{ item.buyersCode }}</td>
 							<td>{{ item.shoppName }}</td>
 							<td>{{ item.integralValue }}</td>
+							 <td>{{ item.integralValueE}}</td>
 							<td>{{ item.integralSource }}</td>
 						</tr>
 					</tbody>
@@ -49,13 +57,14 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll, Indicator } from 'mint-ui'
+import { MessageBox, Loadmore, InfiniteScroll ,Indicator} from 'mint-ui'
 
 export default {
 	data () {
 		return {
 			recordList: [],
-			integral: 0,
+			integralB:0,
+			integralA:0,
 			page: 1,
 			totalPage: 1,
 			pageSize: 20
@@ -73,7 +82,6 @@ export default {
 			axios.post('integralRecord/list',qs.stringify({pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					_this.integral = res.data.data.integralA
 					_this.totalPage = res.data.data.data.totalPage
 					_this.recordList = res.data.data.data.list || []
 				} else {
@@ -94,7 +102,6 @@ export default {
 			axios.post('integralRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					_this.integral = res.data.data.integralA
 					_this.totalPage = res.data.data.data.totalPage
 					_this.recordList.push(...res.data.data.data.list)
 					_this.page += 1
@@ -121,8 +128,10 @@ export default {
 
 <style scoped>
 .ex-detail-box{ position: fixed; top: 0; width: 100%; z-index: 2;}
-.ex-detail-integral {background-color: #2eadff; padding: 0.5rem 1.5rem;}
+.ex-detail-integral {background-color: #2eadff; padding: 0.5rem 1.5rem;overflow: hidden; }
 .ex-detail-integral span {color: #cde5ff;font-size: 1.4rem;}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;}
-.ex-detail-cnt { padding-top: 12rem; }
+.ex-detail-integral-item { width: 50%; text-align: center; float: left; }
+.ex-detail-cnt { padding-top: 12rem; width: 120%;}
+.ex-detail-cnt .nodata { margin-left: -20%; }
 </style>

@@ -105,12 +105,7 @@ export default {
 			this.$router.push('/banklist')
 		},
 		addcard () {
-			if (this.userdata.isRealName !== '2') {
-				this.$router.push('/realname')
-			} else {
-				this.$router.push('/addcard')
-			}
-			
+			this.$router.push('/addcard')
 		},
 		submit () {
 			let _this = this

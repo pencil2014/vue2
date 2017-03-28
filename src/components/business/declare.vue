@@ -73,7 +73,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Toast } from 'mint-ui'
+import { MessageBox, Toast, Indicator } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -124,11 +124,11 @@ export default {
 						_this.realName = res.data.data.realName ? '姓名：'+res.data.data.realName : ''
 						_this.querycode()
 				} else {
-					MessageBox('提示', 'user/personal对不起验证失败！')
+					MessageBox('提示', '对不起验证失败！')
 				}
 			})
 			.catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 
 
@@ -146,7 +146,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		},
 		next () {
@@ -193,7 +193,7 @@ export default {
 			})
 			.catch(function(){
 				_this.repeatBtn = false
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		}
 	}

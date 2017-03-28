@@ -104,7 +104,7 @@
 import axios from "axios"
 import qs from "qs"
 import HeadTitle from '../common/title.vue'
-import { MessageBox, DatetimePicker,Popup,Picker } from 'mint-ui'
+import { MessageBox, DatetimePicker,Popup,Picker,Indicator } from 'mint-ui'
 export default {
 	data(){
 		return{
@@ -184,7 +184,7 @@ export default {
 				MessageBox('提示', res.data.msg)
 			}
 		}).catch(function(){
-			MessageBox('提示', '系统出错了，正在修复中...')
+			Indicator.open({ spinnerType: 'fading-circle'})
 		})
 	},
 	methods: {
@@ -212,7 +212,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					MessageBox('提示', '系统出错了，正在修复中...')
+					Indicator.open({ spinnerType: 'fading-circle'})
 			})
 	    },
 	    changeSex (value) {
@@ -235,7 +235,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					MessageBox('提示', '系统出错了，正在修复中...')
+					Indicator.open({ spinnerType: 'fading-circle'})
 			})
 	    },
 	    Random (Min,Max) {

@@ -1,12 +1,12 @@
 <template>
-	<div class="ex-record">
-		<div class="ex-record-box">
+	<div class="ex-order">
+		<div class="ex-order-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>资金明细</span>
+				<span>报单成功明细</span>
 			</div>
 		</div>
-		<div class="ex-record-cnt" >
+		<div class="ex-order-cnt" >
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table"
 					v-infinite-scroll="loadMore"
@@ -14,21 +14,21 @@
 	  			infinite-scroll-distance="10" >
 					<tr>
 						<th>日期</th>
-						<th>来源</th>
+						<th>商品</th>
+						<th>消费者ID</th>
 						<th>金额</th>
-						<th>结算日期</th>
 					</tr>
-					<tbody v-show='recordList.length > 0'>
-						<tr v-for="(item, index) in recordList">
+					<tbody v-show='tableList.length > 0'>
+						<tr v-for="(item, index) in tableList">
+							<td>{{item.userCode}}</td>
 							<td>{{item.createTime | formatTime}}</td>
-							<td>{{item.sourceType | source}}</td>
-							<td>{{item.transactionMoney}}</td>
-							<td>{{item.createTime | formatTime}}</td>
+							<td>{{item.commodityName}}</td>
+							<td>{{item.consumptionMoney}}</td>
 						</tr>
 					</tbody>
 				</table>
 			</mt-loadmore>
-			<div class="nodata" v-show='recordList.length === 0'>
+			<div class="nodata" v-show='tableList.length === 0'>
 				<img src="../../assets/images/nodata.png" alt="">
 				<p>还没有数据哦~</p>
 			</div>
@@ -42,7 +42,7 @@ import { MessageBox, Loadmore, InfiniteScroll, Indicator } from 'mint-ui'
 export default {
 	data () {
 		return {
-			recordList: [],
+			tableList: [],
 			page: 1,
 			totalPage: 1,
 			pageSize: 20
@@ -56,11 +56,14 @@ export default {
 		},
 		loadTop () {
 			let _this = this
-			axios.post('transactionRecord/list',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
-					_this.recordList = res.data.data.list || []
+					let array = res.data.data.list.filter(function(item) {
+						return item.status === '6'
+					}.bind(this))
+					_this.tableList = array || []
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
 				}
@@ -76,11 +79,14 @@ export default {
 			}
 			let _this = this
 			this.loading = true
-			axios.post('transactionRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
+			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
-					_this.recordList.push(...res.data.data.list)
+					let array = res.data.data.list.filter(function(item) {
+						return item.status === '6'
+					}.bind(this))
+					_this.tableList.push(...array)
 					_this.page += 1
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
@@ -98,15 +104,14 @@ export default {
 			let month = time.getMonth() + 1
 			let date = time.getDate()
 			return [month,date].join('/')
-		},
-		source (value) {
-			let array = ['充值', '享积分转换', '升级余额奖励', '余额转存提现', '升级VIP']
-			return array[value - 1]
 		}
 	}
 }	
 </script>
 <style scoped>
-.ex-record-box {position: fixed; top: 0; width: 100%; z-index: 2; }
-.ex-record-cnt {padding-top: 5rem}
+.ex-order-box {position: fixed; top: 0; width: 100%; z-index: 2; }
+.ex-order-cnt {padding-top: 5rem}
+.ex-order-cnt td i { font-size: 1.4rem; color: #999; float: right; padding-right: 0.5rem; }
+.ex-order-cnt td a {display: inline-block;font-size: 1.2rem;color: #2eadff;border-radius: 0.2rem;border: 1px solid #2eadff;padding: 0.4rem;}
+.ex-order-cnt td .links{margin-right: 1rem; margin-bottom: 0.5rem;}
 </style>

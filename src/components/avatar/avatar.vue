@@ -60,6 +60,7 @@
 import axios from "axios"
 import qs from "qs"
 import HeadTitle from '../common/title.vue'
+import { Toast } from 'mint-ui'
 export default {
 	data(){
 		return{
@@ -83,6 +84,22 @@ export default {
 			return /girl/gi.test(this.personalData.logoImg)
 		}
 	},
+	watch: {
+		'$route' (to, from){
+	    	let _this = this;
+			// 获取用户详情
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.isCreact = true
+					_this.personalData = res.data.data
+				} else {
+					Toast('提示', res.data.msg)
+				}
+			}).catch(function(){
+				Toast('提示', '系统出错了，正在修复中...')
+			})
+	    }
+	},
 	components: {
 		HeadTitle,
 	},
@@ -94,10 +111,10 @@ export default {
 				_this.isCreact = true
 				_this.personalData = res.data.data
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast('提示', res.data.msg)
 			}
 		}).catch(function(){
-			MessageBox('提示', '系统出错了，正在修复中...')
+			Toast('提示', '系统出错了，正在修复中...')
 		})
 	},
 	methods: {
@@ -120,10 +137,10 @@ export default {
 					_this.$router.back();
 					//_this.$router.push('/personal');
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast('提示', res.data.msg)
 				}
 			}).catch(function(){
-					MessageBox('提示', '系统出错了，正在修复中...')
+					Toast('提示', '系统出错了，正在修复中...Toast')
 			})
 		}
 	}

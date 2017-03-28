@@ -22,7 +22,7 @@ import axios from "axios"
 import qs from "qs"
 import HeadTitle from '../common/title.vue'
 import Btn from '../common/button.vue'
-import { MessageBox,Indicator } from 'mint-ui'
+import {Indicator,Toast } from 'mint-ui'
 export default {
 	data(){
 		return{
@@ -57,12 +57,12 @@ export default {
 		axios.post('user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.username = res.data.data.userName;
-				console.log(_this.username)
+
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			MessageBox('提示', '系统出错了，正在修复中...')
+			Toast('系统出错了，正在修复中...')
 		})
 	},
 	methods: {
@@ -84,15 +84,17 @@ export default {
 			}),_this.config).then(res =>{
 				Indicator.close();
 				if (res.data.code === '10000') {
-					this.$router.back();
+					_this.$router.push('/personal');
+					Toast('修改成功')
+					_this.submitBtn = false
 				} else {
 					_this.submitBtn = false
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Indicator.close();
 					_this.submitBtn = false
-					MessageBox('提示', '系统出错了，正在修复中...')
+					Toast('系统出错了，正在修复中...')
 			})
 		}
 	}

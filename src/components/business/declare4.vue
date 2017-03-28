@@ -16,7 +16,7 @@
 				<b>2</b>
 				<span>消费凭证</span>
 			</div>
-			<div class="ex-declare-progress-item">
+			<div class="ex-declare-progress-item active">
 				<b>3</b>
 				<span>汇款凭证</span>
 			</div>
@@ -25,10 +25,23 @@
 				<span>审核结果</span>
 			</div>
 		</div>
+		<div class="ex-declare-money">
+			<p>您应转款：<b>{{rangliMoney}}</b></p>
+			<span>（转款后，请上传让利款转款凭据）</span>
+		</div>
 		<div class="ex-declare-cnt">
+			<div class="ex-declare-from">
+				<div class="ex-declare-cnt-item">
+					<span>*转款户名</span>
+					<input type="text" placeholder="请填写转款银行卡开户（人）名" v-model.trim='transferUserName' maxlength="15">
+				</div>
+				<div class="ex-declare-cnt-item">
+					<span>*转款金额</span>
+					<input type="text" placeholder="请输入实际转款金额（含批量款）" v-model.trim='transferMoney' maxlength="15">
+				</div>
+			</div>
 			<div class="img">
-				<span>*上传消费凭证</span>
-				<label class="tips">合同、收据、发票、提货单、银行流水单、任选其中一项。</label>
+				<span>*上传让利款转款凭据</span>
 				<div class="upload">
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
@@ -37,14 +50,14 @@
 				</div>
 			</div>
 		</div>
-		<button type='button'  :class="[ 'ex-declare-btn', {disableBtn:disableBtn}]" @click='next'>下一步</button>
+		<button type='button'  :class="[ 'ex-declare-btn', {disableBtn:disableBtn}]" @click='next'>提交</button>
 	</div>
 </template>
 
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox,Indicator } from 'mint-ui'
+import { MessageBox, Indicator } from 'mint-ui'
 import lrz from 'lrz'
 export default {
 	data () {
@@ -55,15 +68,21 @@ export default {
 			repeatBtn: false,
 			resurl: '',
 			id: '',
-			type: ''
+			type: '',
+			transferUserName: '',
+			transferMoney: '',
+			rangliMoney: ''
 		}
 	},
 	computed: {
 		disableBtn () {
-			if (!this.file || this.fileList.length === 0) {
-				return true
-			} else {
+			let rule1 = this.transferUserName ? true : false
+			let rule2 = Number(this.transferMoney)  >= Number(this.rangliMoney) ? true : false
+			let rule3 = this.file ? true : false
+			if (rule1 && rule2 && rule3) {
 				return false
+			} else {
+				return true
 			}
 		}
 	},
@@ -73,6 +92,7 @@ export default {
 		axios.post('declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
+					_this.rangliMoney = res.data.data.rangliMoney
 					let status = res.data.status
 					switch (status) {
 						case '0':  //首次提交
@@ -120,14 +140,19 @@ export default {
 			if (this.repeatBtn) {
 				return
 			}
+			if (!(Number(this.transferMoney)  >= Number(this.rangliMoney))) {
+				MessageBox('提示', '转款金额不足！')
+				return
+			}
 			if ( !this.file) {
-				MessageBox('提示', '消费凭证不能为空！')
+				MessageBox('提示', '让利款转款凭据不能为空！')
 				return
 			}
 			if (this.fileList.length === 0) {
 				MessageBox('提示', '图片处理中，请稍后...')
 				return
 			}
+
 			let _this = this
 			_this.repeatBtn = true
 			let formData = new FormData()
@@ -150,16 +175,18 @@ export default {
 		},
 		check () {
 			let _this = this
-			axios.post('declaration/supplement',qs.stringify({
-				consumptionCertificate: this.resurl[0],
-				physicalPic: this.resurl[0],
+			this.repeatBtn = true
+			axios.post('declaration/update',qs.stringify({
+				transferVoucher: this.resurl[0],
 				type: this.type,
-				id: this.id
+				id: this.id,
+				transferUserName: this.transferUserName,
+				transferMoney: this.transferMoney
 			}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.repeatBtn = false
-					_this.$router.push({ name: 'Declare3', params: { id: _this.id}})
+					_this.$router.push({ name: 'Declare5', params: { id: _this.id}})
 				} else {
 					_this.repeatBtn = false
 					MessageBox('提示', '提交失败，请稍后重试！')
@@ -183,6 +210,18 @@ export default {
 .ex-declare-progress-item span {position: absolute; left: 0; bottom: 0; width: 100%;}
 .active {color: #58c86b;}
 .active b{height: 2.5rem; width: 2.5rem; line-height: 2.5rem; background-color: #58c86b; color: #fff;}
+
+.ex-declare-money {background-color: #fff; padding: 1.5rem 0; text-align: center;}
+.ex-declare-money p {font-size: 1.6rem; padding-bottom: 0.5rem;}
+.ex-declare-money p b {font-size: 2.4rem;}
+.ex-declare-money span {font-size: 1.4rem; color: #aaafb6;}
+
+.ex-declare-from {background-color: #fff; margin: 1rem 0; padding: 0 1rem;}
+.ex-declare-cnt-item { border-bottom:1px solid #e5e5e5; position: relative; font-size: 1.4rem; padding: 0.5rem 0; }
+.ex-declare-cnt-item span {display: inline-block; width: 30%; line-height: 3rem; vertical-align: middle;}
+.ex-declare-cnt-item input { height: 3rem; width: 65%; border: none; vertical-align: middle;}
+
+
 
 .ex-declare-cnt .img {background-color: #fff; border-bottom: 1px solid #e5e5e5; padding: 0.5rem 1rem 1rem; position: relative;}
 .ex-declare-cnt .img .tips {font-size: 1.2rem; color:#aaafb6; display: block;}

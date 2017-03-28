@@ -38,7 +38,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll } from 'mint-ui'
+import { MessageBox, Loadmore, InfiniteScroll, Indicator } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -66,7 +66,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 			this.$refs.loadmore.onTopLoaded()
 		},
@@ -87,7 +87,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				MessageBox('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		}
 	},
