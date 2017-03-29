@@ -1,10 +1,10 @@
 <template>
 	<div class="ex-index">
-		<div class="ex-index-box">
+		<!-- <div class="ex-index-box">
 			<div class="ex-index-toplink">
 				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</div>  
 				<div class="links">
-					<!-- <router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link> -->
+					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
 					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
 				</div>
 			</div>
@@ -37,7 +37,67 @@
 				</div>
 			</div>
 
+		</div> -->
+	
+					<div class="ex-index-header">
+			<div class="ex-index-user">
+				<div class="ex-index-logo">
+					<a href="javascript:;" @click="gouser">
+						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-show="userinfo.logoImg">
+					</a>
+					<!-- <p class="name">{{userinfo.userName}}</p> -->
+					<p class="code">ID:{{userinfo.userCode}}</p>
+				</div>
+				<div class="ex-index-money">
+					<p>账户余额(元)</p>
+					<b class='money'>{{userinfo.overMoney | checknum}}</b>
+					<p>提现审核中(元)：<b class="money2">{{userinfo.freezeMoney | checknum}}</b></p>
+				</div>
+				<div class="ex-index-switch">
+					<p v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</p>
+				</div>
+			</div>
+
+			<div class="ex-index-integral">
+				<div class="integral" style="border-bottom: 1px solid #fff; ">
+					<p>E积分：{{userinfo.integralA}}</p>
+					<p>享积分：{{userinfo.integral}}</p>
+				</div>
+				<div class="integral">
+					<p>激励E积分：{{userinfo.integralB}}</p>
+					<p>激励比例：{{sysData.jeProportion}}</p>
+				</div>
+			</div>
+
+			<div class="ex-index-table">
+				<table class="table">
+					<tr>
+						<td>
+							<b>平台商家数</b>
+							<span>{{sysData.businessNum}}（家）</span>
+						</td>
+						<td>
+							<b>E享比例</b>
+							<span>{{sysData.eProportion}}</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>昨日交易总额</b>
+							<span>{{sysData.totalShareMoney}}（元）</span>
+						</td>
+						<td>
+							<b>昨日分享平均值</b>
+							<span>{{sysData.yesterdayMoney}}（元）</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+
 		</div>
+
+
+
 		<div class="ex-index-menu">
 			<ul>
 				<li><router-link to="/declare"><i class="iconfont m9">&#xe602;</i><span>消费登记</span></router-link></li>
@@ -258,6 +318,36 @@ export default {
 </script>
 
 <style scoped>
+/*改版css*/
+.ex-index-header {background-color: #047dcb; color: #fff; padding-top: 1rem; margin-bottom: 1rem;}
+.ex-index-user {overflow: auto; padding-bottom: 2rem;}
+.ex-index-logo,.ex-index-money,.ex-index-switch { float: left; }
+.ex-index-logo {width: 25%; text-align: center; }
+.ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
+background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff; margin-bottom: 0.5rem;}
+.ex-index-logo img {width: 5rem; height: 5rem;}
+.ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
+.ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
+.ex-index-money p{ color: #9bcbea; font-weight: 300;}
+.ex-index-money .money {font-size: 3rem; padding: 0.5rem 0;}
+.ex-index-money .money2{font-weight: 400; color: #fff;}
+.ex-index-switch { width: 25%;  text-align: right; margin-top: 0.5rem;}
+.ex-index-switch p{background-color: #0369aa; color: #b3d8f6;  border-radius: 3rem; height: 2.5rem; line-height: 2.5rem; text-align: center; margin-right: 0.5rem;}
+
+.ex-index-integral{background-color: #0473bb; color: #fff; overflow: hidden;padding: 0.5rem 1rem; margin-top: 1rem;}
+.ex-index-integral .integral {overflow: hidden; padding: 1rem 0;}
+.ex-index-integral .integral i{font-size: 3rem;float: left; margin-right: 1rem; line-height: 4rem;}
+.ex-index-integral .integral p{ float: left; width: 50%; font-size: 1.4rem;}
+.ex-index-integral .integral p label {display: block; line-height: 2rem;}
+
+.ex-index-table { width: 100%; background-color: #fff; color: #000; }
+.ex-index-table td {border-left: 1px solid #eee; margin-left: -0.05rem; margin-top: -0.05rem; font-size: 1.4rem;}
+.ex-index-table td b{display: block; line-height: 2; font-weight: normal;}
+.ex-index-table td span { color: #999; }
+/*改版css*/
+
+
+
 .ex-index {padding-bottom: 7rem;}
 .ex-index-box { background-color: #2eadff; padding:0.5rem 1rem; }
 .ex-index-toplink { height: 2rem;  vertical-align: middle; margin-bottom: 1rem;}

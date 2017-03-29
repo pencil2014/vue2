@@ -22,7 +22,7 @@
 			</div>
 			<p class='tips'>*请填写您在银行预留的手机号码，以验证银行卡是否属于您本人</p>
 			<div class="ex-addcard-num">
-				<label for="number">手机号码:</label><input type="text" name="" id="" placeholder="请输入手机号码" v-model='phone'>
+				<label for="number">手机号码:</label><input type="tel" name="" id="" placeholder="请输入手机号码" v-model='phone'>
 			</div>
 			<div class="ex-addcard-num verycode" v-show='phone !== userphone'>
 				<label for="number">验证码:</label><input type="text" name="" id="" placeholder="请输入验证码" v-model='phonecode'>

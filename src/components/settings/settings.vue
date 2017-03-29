@@ -29,7 +29,7 @@
 						<span>推荐二维码和链接</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<li>
+					<li @click="toRealName">
 						<span>实名认证</span>
 						<i class="iconfont" v-show="!isRealName">&#xe606;</i>
 						<label for="" v-show="isRealName">已认证</label>
@@ -131,7 +131,13 @@ export default {
 					this.$router.push('/login')
 				}
 			});
-		}	
+		},
+		toRealName () {
+			if(this.isRealName){
+				return
+			}
+			this.$router.push('/realname')
+		}
 	}
 }
 </script>

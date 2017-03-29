@@ -6,23 +6,23 @@
 			<div class="ex-avatar-item" v-if="isGirl || !avatar">
 				<ul>
 					<li @click="selAvatar('girl01')">
-						<img src="../../assets/images/girl01@2x.png" alt="">
+						<img src="../../assets/images/girl01.png" alt="">
 						<i class="iconfont" v-show="avatar==='girl01'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('girl02')">
-						<img src="../../assets/images/girl02@2x.png" alt="">
+						<img src="../../assets/images/girl02.png" alt="">
 						<i class="iconfont" v-show="avatar==='girl02'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('girl03')">
-						<img src="../../assets/images/girl03@2x.png" alt="">
+						<img src="../../assets/images/girl03.png" alt="">
 						<i class="iconfont" v-show="avatar==='girl03'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('girl04')">
-						<img src="../../assets/images/girl04@2x.png" alt="">
+						<img src="../../assets/images/girl04.png" alt="">
 						<i class="iconfont" v-show="avatar==='girl04'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('girl05')">
-						<img src="../../assets/images/girl05@2x.png" alt="">
+						<img src="../../assets/images/girl05.png" alt="">
 						<i class="iconfont" v-show="avatar==='girl05'">&#xe636;</i>
 					</li>
 				</ul>
@@ -31,23 +31,23 @@
 			<div class="ex-avatar-item" v-if="!isGirl || !avatar">
 				<ul>
 					<li @click="selAvatar('boy01')">
-						<img src="../../assets/images/boy01@2x.png" alt="">
+						<img src="../../assets/images/boy01.png" alt="">
 						<i class="iconfont" v-show="avatar==='boy01'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('boy02')">
-						<img src="../../assets/images/boy02@2x.png" alt="">
+						<img src="../../assets/images/boy02.png" alt="">
 						<i class="iconfont" v-show="avatar==='boy02'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('boy03')">
-						<img src="../../assets/images/boy03@2x.png" alt="">
+						<img src="../../assets/images/boy03.png" alt="">
 						<i class="iconfont" v-show="avatar==='boy03'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('boy04')">
-						<img src="../../assets/images/boy04@2x.png" alt="">
+						<img src="../../assets/images/boy04.png" alt="">
 						<i class="iconfont" v-show="avatar==='boy04'">&#xe636;</i>
 					</li>
 					<li @click="selAvatar('boy05')">
-						<img src="../../assets/images/boy05@2x.png" alt="">
+						<img src="../../assets/images/boy05.png" alt="">
 						<i class="iconfont" v-show="avatar==='boy05'">&#xe636;</i>
 					</li>
 				</ul>

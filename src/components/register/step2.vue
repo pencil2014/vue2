@@ -10,7 +10,7 @@
 		<div class="ex-rigster-form">
 			<div class="ex-rigster-from-item">
 				<i class="iconfont">&#xe6f2;</i>
-				<input type="text" name="phone"  v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
+				<input type="tel" name="phone"  v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
 			</div>
 			<div class="ex-rigster-from-item">
 				<i class="iconfont">&#xe61e;</i>

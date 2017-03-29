@@ -7,16 +7,16 @@
 					<router-link to="/avatar" tag="li" class="ex-personal-avatar">
 						<span>头像</span>
 						<span class="avatar" href="javascript:void(0);" >
-							<img src="../../assets/images/girl01@2x.png" alt="" v-show="logoImg === 'girl01'">
-							<img src="../../assets/images/girl02@2x.png" alt="" v-show="logoImg === 'girl02'">
-							<img src="../../assets/images/girl03@2x.png" alt="" v-show="logoImg === 'girl03'">
-							<img src="../../assets/images/girl04@2x.png" alt="" v-show="logoImg === 'girl04'">
-							<img src="../../assets/images/girl05@2x.png" alt="" v-show="logoImg === 'girl05'">
-							<img src="../../assets/images/boy01@2x.png" alt="" v-show="logoImg === 'boy01'">
-							<img src="../../assets/images/boy02@2x.png" alt="" v-show="logoImg === 'boy02'">
-							<img src="../../assets/images/boy03@2x.png" alt="" v-show="logoImg === 'boy03'">
-							<img src="../../assets/images/boy04@2x.png" alt="" v-show="logoImg === 'boy04'">
-							<img src="../../assets/images/boy05@2x.png" alt="" v-show="logoImg === 'boy05'">
+							<img src="../../assets/images/girl01.png" alt="" v-show="logoImg === 'girl01'">
+							<img src="../../assets/images/girl02.png" alt="" v-show="logoImg === 'girl02'">
+							<img src="../../assets/images/girl03.png" alt="" v-show="logoImg === 'girl03'">
+							<img src="../../assets/images/girl04.png" alt="" v-show="logoImg === 'girl04'">
+							<img src="../../assets/images/girl05.png" alt="" v-show="logoImg === 'girl05'">
+							<img src="../../assets/images/boy01.png" alt="" v-show="logoImg === 'boy01'">
+							<img src="../../assets/images/boy02.png" alt="" v-show="logoImg === 'boy02'">
+							<img src="../../assets/images/boy03.png" alt="" v-show="logoImg === 'boy03'">
+							<img src="../../assets/images/boy04.png" alt="" v-show="logoImg === 'boy04'">
+							<img src="../../assets/images/boy05.png" alt="" v-show="logoImg === 'boy05'">
 						</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>

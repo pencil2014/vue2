@@ -105,8 +105,16 @@ export default {
 			this.$router.push('/banklist')
 		},
 		addcard () {
+			let _this = this
 			if (this.userdata.isRealName !== '2') {
-				this.$router.push('/realname')
+				MessageBox({
+				  title: '提示',
+				  message: '请先进行实名认证！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					_this.$router.push('/realname')
+				})
 			} else {
 				this.$router.push('/addcard')
 			}
@@ -138,7 +146,7 @@ export default {
 				  showCancelButton: true,
 				  confirmButtonText: '去认证'
 				}).then(action => {
-					_this.$router.push('/')
+					_this.$router.push('/realname')
 				})
 				return
 			}

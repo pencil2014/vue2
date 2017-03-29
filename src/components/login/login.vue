@@ -7,7 +7,7 @@
 			<form class="ex-login-from">
 				<div class="ex-login-from-item">
 					<i class="iconfont">&#xe6f2;</i>
-					<input type="text" name="phone" @focus='hidecopy' @blur='showcopy' v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
+					<input type="tel" name="phone" @focus='hidecopy' @blur='showcopy' v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
 				</div>
 				<div class="ex-login-from-item">
 					<i class="iconfont">&#xe61e;</i>

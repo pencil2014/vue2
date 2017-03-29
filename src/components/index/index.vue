@@ -1,10 +1,10 @@
 <template>
 	<div class="ex-index">
-		<div class="ex-index-box">
+		<!-- <div class="ex-index-box">
 			<div class="ex-index-toplink">
 				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为商家</div>  
 				<div class="links">
-					<!-- <router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link> -->
+					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
 					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
 				</div>
 			</div>
@@ -12,7 +12,7 @@
 				<div class="ex-index-head">
 					<div class="ex-index-img" >
 						<a href="javascript:;" @click="gouser">
-							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
+							<img :src="'/static/'+userinfo.logoImg+'.png'"  v-show="userinfo.logoImg">
 						</a>
 						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
 							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> E享会员
@@ -34,8 +34,73 @@
 					</ul>
 				</div>
 			</div>
+		</div> -->
+		
+		<div class="ex-index-header">
+			<div class="ex-index-user">
+				<div class="ex-index-logo">
+					<a href="javascript:;" @click="gouser">
+						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-show="userinfo.logoImg">
+					</a>
+					<!-- <p class="name">{{userinfo.userName}}</p> -->
+					<p class="code">ID:{{userinfo.userCode}}</p>
+				</div>
+				<div class="ex-index-money">
+					<p>账户余额(元)</p>
+					<b class='money'>{{userinfo.overMoney | checknum}}</b>
+					<p>提现审核中(元)：<b class="money2">{{userinfo.freezeMoney | checknum}}</b></p>
+				</div>
+				<div class="ex-index-switch">
+					<p v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为商家</p>
+				</div>
+			</div>
+
+			<div class="ex-index-integral">
+				<div class="integral">
+					<i class="iconfont">&#xe65b;</i>
+					<p>
+						<label>E积分</label>
+						<span>{{userinfo.integralA}}</span>
+					</p>
+				</div>
+				<div class="integral">
+					<i class="iconfont">&#xe680;</i>
+					<p>
+						<label>享积分</label>
+						<span>{{userinfo.integral}}</span>
+					</p>
+				</div>
+			</div>
+
+			<div class="ex-index-table">
+				<table class="table">
+					<tr>
+						<td>
+							<b>平台商家数</b>
+							<span>{{sysData.businessNum}}（家）</span>
+						</td>
+						<td>
+							<b>E享比例</b>
+							<span>{{sysData.eProportion}}</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>昨日交易总额</b>
+							<span>{{sysData.totalShareMoney}}（元）</span>
+						</td>
+						<td>
+							<b>昨日分享平均值</b>
+							<span>{{sysData.yesterdayMoney}}（元）</span>
+						</td>
+					</tr>
+				</table>
+			</div>
 
 		</div>
+
+
+
 		<div class="ex-index-menu">
 			<ul>
 				<li><router-link to="/record"><i class="iconfont m1">&#xe631;</i><span>消费记录</span></router-link></li>
@@ -141,7 +206,7 @@ export default {
 				})
 		},
 		gouser () {
-			this.$router.push('/index')
+			this.$router.push('/personal')
 		},
 		gotovip () {
 			let _this = this
@@ -223,6 +288,8 @@ export default {
 			}
 		}
 	},
+	computed: {
+	},
 	created () {
 		let phone = window.localStorage.getItem('phone')
 		let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
@@ -262,7 +329,35 @@ export default {
 </script>
 
 <style scoped>
-.ex-index {padding-bottom: 7rem;}
+/*改版css*/
+.ex-index-header {background-color: #047dcb; color: #fff; padding-top: 1rem; margin-bottom: 1rem;}
+.ex-index-user {overflow: auto; padding-bottom: 2rem;}
+.ex-index-logo,.ex-index-money,.ex-index-switch { float: left; }
+.ex-index-logo {width: 25%; text-align: center; }
+.ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
+background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff; margin-bottom: 0.5rem;}
+.ex-index-logo img {width: 5rem; height: 5rem;}
+.ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
+.ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
+.ex-index-money p{ color: #9bcbea; font-weight: 300;}
+.ex-index-money .money {font-size: 3rem; padding: 0.5rem 0;}
+.ex-index-money .money2{font-weight: 400; color: #fff;}
+.ex-index-switch { width: 25%;  text-align: right; margin-top: 0.5rem;}
+.ex-index-switch p{background-color: #0369aa; color: #b3d8f6;  border-radius: 3rem; height: 2.5rem; line-height: 2.5rem; text-align: center; margin-right: 0.5rem;}
+
+.ex-index-integral{background-color: #0473bb; color: #fff; overflow: hidden;padding: 0.5rem 1rem; margin-top: 1rem;}
+.ex-index-integral .integral { width: 50%; float: left; }
+.ex-index-integral .integral i{font-size: 3rem;float: left; margin-right: 1rem; line-height: 4rem;}
+.ex-index-integral .integral p{ float: left; font-size: 1.4rem;}
+.ex-index-integral .integral p label {display: block; line-height: 2rem;}
+
+.ex-index-table { width: 100%; background-color: #fff; color: #000; }
+.ex-index-table td {border-left: 1px solid #eee; margin-left: -0.05rem; margin-top: -0.05rem; font-size: 1.4rem;}
+.ex-index-table td b{display: block; line-height: 2; font-weight: normal;}
+.ex-index-table td span { color: #999; }
+/*改版css*/
+
+.ex-index {padding-bottom: 7rem;background-color: #e5e5e5;}
 .ex-index-box { background-color: #2eadff; padding:0.5rem 1rem; }
 .ex-index-toplink { height: 2rem;  vertical-align: middle; margin-bottom: 1rem;}
 .ex-index-toplink .switch { float: left; line-height: 2rem; background-color: #258acc;    color: #b3d8f6;  border-radius: 1rem; height: 2rem; padding: 0 1rem; margin-left: 1rem; margin-top: 0.5rem;}
@@ -277,7 +372,7 @@ export default {
 background-size: cover; display: block; width: 6rem; height: 6rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff;}
 .ex-index-img a img{border-radius: 50%;}
 .ex-index-img p {background:url('../../assets/images/header.png') no-repeat center; -webkit-background-size: cover;
-background-size: cover; height: 2rem; line-height: 2rem; width: 8rem; font-size: 1rem; color: #fff; margin: -1.5rem auto 0; }
+background-size: cover; height: 2rem; line-height: 2rem; width: 8rem; font-size: 1rem; color: #fff; margin: -1.5rem auto 0; position: relative;}
 .ex-index-img p.vip {background-image: url('../../assets/images/header2.png'); position: relative;}
 .ex-index-img p.vip img{ width: 2rem; height: 2rem; position: absolute; left: 0.7rem; top: -0.4rem;}
 .ex-index-head .name{ color: #fff; margin: 0.5rem 0;font-size: 1.4rem;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
@@ -285,7 +380,7 @@ background-size: cover; height: 2rem; line-height: 2rem; width: 8rem; font-size:
 .ex-index-data li { color: #fff; height: 2rem; line-height: 2rem; border-bottom:1px solid #fff;}
 .ex-index-data li b{font-weight: 400;}
 .ex-index-data li span {width: 50%; text-align: right;display: block;float: right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
-.ex-index-menu{overflow: auto;}
+.ex-index-menu{overflow: auto; background-color: #fff;}
 .ex-index-menu li{ float: left;  width: 33.33%;}
 .ex-index-menu li a{ display: block;  text-align: center; padding:2rem 0; border:1px solid #eee; margin-left: -1px; margin-top: -1px; color: #222; }
 .ex-index-menu li a i{font-size: 3rem; margin-bottom: 0.06rem;}
