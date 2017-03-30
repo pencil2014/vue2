@@ -2,7 +2,7 @@
 	<div class="ex-declare">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>消费登记</span>
+			<span>商家报单</span>
 		</div>
 		<div class="ex-declare-progress">
 			<p class="percent">

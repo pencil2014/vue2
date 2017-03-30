@@ -59,7 +59,7 @@
 			</div>
 
 			<div class="ex-index-integral">
-				<div class="integral" style="border-bottom: 1px solid #fff; ">
+				<div class="integral border" >
 					<p>E积分：{{userinfo.integralA}}</p>
 					<p>享积分：{{userinfo.integral}}</p>
 				</div>
@@ -100,11 +100,11 @@
 
 		<div class="ex-index-menu">
 			<ul>
-				<li><router-link to="/declare"><i class="iconfont m9">&#xe602;</i><span>消费登记</span></router-link></li>
-				<li><router-link to="/order"><i class="iconfont m1">&#xe6d8;</i><span>报单查询</span></router-link></li>
+				<li><router-link to="/declare"><i class="iconfont m9">&#xe602;</i><span>商家报单</span></router-link></li>
+				<li><router-link to="/order"><i class="iconfont m1">&#xe6d8;</i><span>报单进度</span></router-link></li>
 				<li><router-link to="/tables"><i class="iconfont m10">&#xe601;</i><span>报单成功明细</span></router-link></li>
 				<li><router-link to="/integral"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
-				<li><router-link to="/detail2"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
+				<li><router-link to="/detail2"><i class="iconfont m3">&#xe680;</i><span>E积分明细</span></router-link></li>
 				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
 				<li><router-link to="/bank"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
 				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
@@ -113,7 +113,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
+		<!-- <div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
 		<div class="ex-customer" v-show='customerService' @click.stop="hidecustomer">
 			<div class="ex-customer-cnt" @click.stop=''>
 				<div class="ex-customer-cnt-item">
@@ -132,7 +132,7 @@
 				</div>
 				<div class="ex-customer-close" @click.stop="hidecustomer">关闭</div>
 			</div>
-		</div>
+		</div> -->
 		<app-nav></app-nav>
 	</div>	
 </template>
@@ -141,7 +141,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator } from 'mint-ui'
-import appNav from "../common/nav.vue"
+import appNav from "../common/tabbar.vue"
 export default {
 	data () {
 		return {
@@ -173,7 +173,8 @@ export default {
 		  },
 		  userVipStatus: {},
 		  isConstomer: false,
-		  customerService: false
+		  customerService: false,
+		  repeatBtn: false
 		}
 	},
 	components: {
@@ -181,7 +182,11 @@ export default {
 	},
 	methods: {
 		changetoken () {
+			if (this.repeatBtn) {
+				return
+			}
 			let _this = this
+			this.repeatBtn = true
 			axios.post('user/switchUser',qs.stringify({type: 2}))
 				.then(function(res){
 					if (res.data.code === '10000') {
@@ -189,6 +194,7 @@ export default {
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 						_this.$router.push('/index')
 					} else {
+						_this.repeatBtn = false
 						MessageBox('提示', '切换失败，请稍后重试！')
 					}
 				})
@@ -336,6 +342,7 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 
 .ex-index-integral{background-color: #0473bb; color: #fff; overflow: hidden;padding: 0.5rem 1rem; margin-top: 1rem;}
 .ex-index-integral .integral {overflow: hidden; padding: 1rem 0;}
+.ex-index-integral .border{border-bottom: 1px solid #68abd6;}
 .ex-index-integral .integral i{font-size: 3rem;float: left; margin-right: 1rem; line-height: 4rem;}
 .ex-index-integral .integral p{ float: left; width: 50%; font-size: 1.4rem;}
 .ex-index-integral .integral p label {display: block; line-height: 2rem;}
@@ -348,7 +355,7 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 
 
 
-.ex-index {padding-bottom: 7rem;}
+.ex-index {padding-bottom: 4rem;background-color: #e5e5e5;}
 .ex-index-box { background-color: #2eadff; padding:0.5rem 1rem; }
 .ex-index-toplink { height: 2rem;  vertical-align: middle; margin-bottom: 1rem;}
 .ex-index-toplink .switch { float: left; line-height: 2rem; background-color: #258acc;    color: #b3d8f6;  border-radius: 1rem; height: 2rem; padding: 0 1rem; margin-left: 1rem; margin-top: 0.5rem;}
@@ -371,7 +378,7 @@ background-size: cover; height: 2rem; line-height: 2rem; font-size: 1rem; width:
 .ex-index-data li { color: #fff; height: 2rem; line-height: 2rem; border-bottom:1px solid #fff;}
 .ex-index-data li b{font-weight: 400;}
 .ex-index-data li span {width: 50%; text-align: right;display: block;float: right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
-.ex-index-menu{overflow: auto;}
+.ex-index-menu{overflow: auto; background: #fff;}
 .ex-index-menu li{ float: left;  width: 33.33%;}
 .ex-index-menu li a{ display: block;  text-align: center; padding:2rem 0; border:1px solid #eee; margin-left: -1px; margin-top: -1px; color: #222; }
 .ex-index-menu li a i{font-size: 3rem; margin-bottom: 0.06rem;}

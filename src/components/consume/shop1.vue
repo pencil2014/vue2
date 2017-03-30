@@ -27,10 +27,10 @@
 			</div>
 			<div class="ex-shop1-cnt-item">
 				<span>*联系地址</span>
-				<select v-model="provinceId" @change='changeProvince'>
+				<select v-model="provinceId" @change='changeProvince("")'>
 					<option v-for='item in province' :value='item.id'>{{item.name}}</option>
 				</select>
-				<select v-model="cityId" @change='changeCity'>
+				<select v-model="cityId" @change='changeCity("")'>
 					<option v-for='item in cityArray' :value='item.id'>{{item.name}}</option>
 				</select>
 				<select v-model="districtId">
@@ -102,8 +102,8 @@ export default {
 			let array = this.district.filter(function(item) {
 				return item.parentId === this.cityId
 			}.bind(this))
-			this.districtId = this.districtId ? this.districtId : array[0].id
 			this.districtArray = array
+			this.districtId = this.districtId ? this.districtId : array[0].id
 		}
 	},
 	created () {
@@ -142,20 +142,27 @@ export default {
 		back () {
 			this.$router.go(-1)
 		},
-		changeProvince (cityId) {
+		changeProvince (Id) {
 			let array = this.city.filter(function(item) {
 				return item.parentId === this.provinceId
 			}.bind(this))
-			this.cityId = cityId ? cityId : array[0].id
 			this.cityArray = array
+			this.cityId = Id ? Id : array[0].id
+
+			let array2 = this.district.filter(function(item) {
+				return item.parentId === this.cityId
+			}.bind(this))
+			this.districtArray = array2
+			this.districtId = Id ? Id : array2[0].id
 		},
-		changeCity (districtId) {
+		changeCity (Id) {
 			let array = this.district.filter(function(item) {
 				return item.parentId === this.cityId
 			}.bind(this))
-			this.districtId = districtId ? districtId : array[0].id
 			this.districtArray = array
+			this.districtId = Id ? Id : array[0].id
 		},
+
 		next () {
 			if (this.repeatBtn) {
 				return

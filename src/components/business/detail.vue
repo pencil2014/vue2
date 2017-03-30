@@ -3,7 +3,7 @@
 	 <div class="ex-detail-box">
 		 	<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>积分明细</span>
+				<span>E积分明细</span>
 			</div>
 			<div class="ex-detail-integral">
 				<div class="ex-detail-integral-item">

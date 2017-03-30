@@ -2,7 +2,7 @@
 	<div class="ex-declare">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>消费登记</span>
+			<span>商家报单</span>
 		</div>
 
 		<div class="ex-declare-cnt">
@@ -93,7 +93,7 @@ export default {
 			let _this = this
 			MessageBox({
 				  title: '提示',
-				  message: '确定撤销本次消费登记吗?',
+				  message: '确定撤销本次商家报单吗?',
 				  showCancelButton: true,
 				  confirmButtonText: '撤销'
 				}).then(action => {

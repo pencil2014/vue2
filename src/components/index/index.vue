@@ -121,7 +121,7 @@
 				</li>
 			</ul>
 		</div>
-		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
+		<!-- <div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
 		<div class="ex-customer" v-show='customerService' @click.stop="hidecustomer">
 			<div class="ex-customer-cnt" @click.stop=''>
 				<div class="ex-customer-cnt-item">
@@ -140,7 +140,7 @@
 				</div>
 				<div class="ex-customer-close" @click.stop="hidecustomer">关闭</div>
 			</div>
-		</div>
+		</div> -->
 		<app-nav></app-nav>
 	</div>	
 </template>
@@ -149,7 +149,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator } from 'mint-ui'
-import appNav from "../common/nav.vue"
+import appNav from "../common/tabbar.vue"
 export default {
 	data () {
 		return {
@@ -181,7 +181,8 @@ export default {
 		  },
 		  userVipStatus: {},
 		  isConstomer: false,
-		  customerService: false
+		  customerService: false,
+		  repeatBtn: false
 		}
 	},
 	components: {
@@ -189,7 +190,11 @@ export default {
 	},
 	methods: {
 		changetoken () {
+			if (this.repeatBtn) {
+				return
+			}
 			let _this = this
+			this.repeatBtn = true
 			axios.post('user/switchUser',qs.stringify({type: 1}))
 				.then(function(res){
 					if (res.data.code === '10000') {
@@ -197,6 +202,7 @@ export default {
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 						_this.$router.push('/business')
 					} else {
+						_this.repeatBtn = false
 						MessageBox('提示', '切换失败，请稍后重试！')
 					}
 				})
@@ -357,7 +363,7 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 .ex-index-table td span { color: #999; }
 /*改版css*/
 
-.ex-index {padding-bottom: 7rem;background-color: #e5e5e5;}
+.ex-index {padding-bottom: 4rem;background-color: #e5e5e5;}
 .ex-index-box { background-color: #2eadff; padding:0.5rem 1rem; }
 .ex-index-toplink { height: 2rem;  vertical-align: middle; margin-bottom: 1rem;}
 .ex-index-toplink .switch { float: left; line-height: 2rem; background-color: #258acc;    color: #b3d8f6;  border-radius: 1rem; height: 2rem; padding: 0 1rem; margin-left: 1rem; margin-top: 0.5rem;}

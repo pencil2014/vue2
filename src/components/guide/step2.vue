@@ -2,7 +2,6 @@
 	<div class="ex-guide" :key="list.id">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-guide-content" v-html="list.articleContent">
-			
 		</div>
 	</div>
 </template>

@@ -38,6 +38,16 @@ const Order = resolve => require(['../components/business/order'], resolve)
 const Tables = resolve => require(['../components/business/tables'], resolve)
 const Detail2 = resolve => require(['../components/business/detail'], resolve)
 
+const Bank1 = resolve => require(['../components/business/bank'], resolve)
+const BankList1 = resolve => require(['../components/business/banklist'], resolve)
+const Addcard1 = resolve => require(['../components/business/addcard'], resolve)
+
+const School = resolve => require(['../components/school/school'], resolve)
+const Details = resolve => require(['../components/school/details'], resolve)
+const Details2 = resolve => require(['../components/school/details2'], resolve)
+const News = resolve => require(['../components/school/news'], resolve)
+
+
 const Message = resolve => require(['../components/forgot/forgot'], resolve)
 const Settings = resolve => require(['../components/settings/settings'], resolve)
 const Personal = resolve => require(['../components/personal/personal'], resolve)
@@ -54,6 +64,7 @@ const Guide2 = resolve => require(['../components/guide/step2'], resolve)
 const Feedback = resolve => require(['../components/feedback/feedback'], resolve)
 const Version = resolve => require(['../components/version/version'], resolve)
 const Realname = resolve => require(['../components/realname/realname'], resolve)
+const User = resolve => require(['../components/user/user'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -116,9 +127,19 @@ export default new Router({
       component: Bank
     },
     {
+      path: '/bank1',
+      name: 'Bank1',
+      component: Bank1
+    },
+    {
       path: '/banklist',
       name: 'BankList',
       component: BankList
+    },
+    {
+      path: '/banklist1',
+      name: 'BankList1',
+      component: BankList1
     },
     {
       path: '/upgrade',
@@ -144,6 +165,11 @@ export default new Router({
       path: '/addcard',
       name: 'Addcard',
       component: Addcard
+    },
+    {
+      path: '/addcard1',
+      name: 'Addcard1',
+      component: Addcard1
     },
     {
       path: '/shop1',
@@ -204,6 +230,26 @@ export default new Router({
       path: '/detail2',
       name: 'Detail2',
       component: Detail2
+    },
+    {
+      path: '/school',
+      name: 'School',
+      component: School
+    },
+    {
+      path: '/details/:id',
+      name: 'Details',
+      component: Details
+    },
+    {
+      path: '/details2/:id',
+      name: 'Details2',
+      component: Details2
+    },
+    {
+      path: '/news/:id',
+      name: 'News',
+      component: News
     },
     {
       path: '/message',
@@ -274,6 +320,11 @@ export default new Router({
       path: '/realname',
       name: 'Realname',
       component: Realname
+    },
+    {
+      path: '/user',
+      name: 'User',
+      component: User
     },
     {
     	path:'*', 

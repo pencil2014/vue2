@@ -2,7 +2,7 @@
 	<div class="ex-declare">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>消费登记</span>
+			<span>商家报单</span>
 		</div>
 		<div class="ex-declare-progress">
 			<p class="percent">
@@ -45,7 +45,7 @@
 			</div>
 			<div class="ex-declare-tips-item">
 				<b>四、关注审批进度：</b>
-				<p>基本信息提交后，请到报单查询点击详情关注进度</p>
+				<p>基本信息提交后，请到报单进度点击详情关注进度</p>
 			</div>
 			</div>
 		</div>

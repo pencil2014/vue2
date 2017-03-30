@@ -1,9 +1,8 @@
 <template>
 	<div class="ex-settings">
-
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-settings-list">
-			<div class="ex-settings-item" v-show="!isShop">
+			<!-- <div class="ex-settings-item" v-show="!isShop">
 				<ul>
 					<router-link to="/personal" tag="li">
 						<span>个人资料</span>
@@ -22,8 +21,8 @@
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
 				</ul>
-			</div>
-			<div class="ex-settings-item">
+			</div> -->
+			<!-- <div class="ex-settings-item">
 				<ul>
 					<router-link to="/qrcode" tag="li">
 						<span>推荐二维码和链接</span>
@@ -35,7 +34,7 @@
 						<label for="" v-show="isRealName">已认证</label>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 			<div class="ex-settings-item">
 				<ul>
 					<router-link to="/changepassword" tag="li">
@@ -54,10 +53,10 @@
 						<span>使用指南</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/feedback" tag="li">
+					<!-- <router-link to="/feedback" tag="li">
 						<span>留言反馈</span>
 						<i class="iconfont" >&#xe606;</i>
-					</router-link>
+					</router-link> -->
 				 	<router-link to="/version" tag="li">
 						<span>关于我们</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -147,7 +146,6 @@ export default {
 .ex-settings-list .ex-settings-item{margin-top: 15px; padding: 0 0 0 15px;background: #fff;}
 .ex-settings-list .ex-settings-item ul{list-style-type: none;display: block;}
 .ex-settings-list .ex-settings-item ul li{min-height: 30px;font-size: 1.4rem;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;border-bottom: solid 1px #e5e5e5;}
-/*.ex-settings-list .ex-settings-item ul li:active{background: #ebebeb}*/
 .ex-settings-list .ex-settings-item ul li:last-child{border: none;}
 .ex-settings-list .logout{text-align: center;padding-right: 0px;font-size: 1.6rem;color: #f0544d !important;}
 .ex-settings-list .ex-settings-item ul li .iconfont{color: rgba(173,180,190,1);float: right;padding: 0 15px 0 0;}

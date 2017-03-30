@@ -7,6 +7,9 @@
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
+				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
+			</div>
+			<div class="ex-addcard-num">
 				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card'>
 			</div>
 			<div class="ex-addcard-name">
@@ -41,6 +44,7 @@ import { MessageBox, Indicator } from 'mint-ui'
 export default {
 	data () {
 		return {
+			accountName: '',
 			card:'', 
 			banks:'', 
 			phone:'',
@@ -60,7 +64,8 @@ export default {
 			let rule2 = this.city ? true :false
 			let rule3 = this.branch ? true :false
 			let rule4 = /^1\d{10}$/.test(this.phone) ? true :false
-			if (rule1 && rule2 && rule3 && rule4) {
+			let rule5 = this.accountName ? true :false
+			if (rule1 && rule2 && rule3 && rule4 && rule5) {
 				return false
 			} else {
 				return true
@@ -138,6 +143,10 @@ export default {
 			},1000)
 		},
 		submit () {
+			if (!this.accountName) {
+				MessageBox('提示', '银行开户名不能为空！')
+				return
+			}
 			if (!/^\d{16,}$/.test(this.card)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
@@ -159,9 +168,9 @@ export default {
 				banks: this.bankname,
 				branch: this.branchname,
 				phone: this.phone,
-				cardType: 1,
-				accountName: null,
-				phoneCode: this.phonecode
+				cardType: 2,
+				accountName: this.accountName,
+				phoneCode:this.phonecode
 			}))
 			.then(function(res){
 				if (res.data.code === '10000') {

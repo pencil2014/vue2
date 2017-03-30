@@ -3,7 +3,7 @@
 		<div class="ex-order-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>报单查询</span>
+				<span>报单进度</span>
 			</div>
 		</div>
 		<div class="ex-order-cnt" >

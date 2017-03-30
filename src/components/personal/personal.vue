@@ -39,11 +39,11 @@
 			</div>
 			<div class="ex-personal-item" v-show="!isShop">
 				<ul>
-					<li>
+					<router-link to="/alterphone" tag="li">
 						<span>手机</span>
 						<i class="iconfont" >&#xe606;</i>
 						<label for="" v-text="phone"></label>
-					</li>
+					</router-link>
 					<router-link to="/banklist" tag="li">
 						<span>银行卡</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -52,10 +52,10 @@
 			</div>
 			<div class="ex-personal-item" v-show="isShop">
 				<ul>
-					<router-link to="/index" tag="li">
+					<router-link to="/alterphone" tag="li">
 						<span>手机</span>
 						<i class="iconfont" >&#xe606;</i>
-						<label for="">{{phone}}</label>
+						<label for="" v-text="phone"></label>
 					</router-link>
 					<router-link to="/banklist" tag="li">
 						<span>个人银行卡</span>

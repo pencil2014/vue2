@@ -102,10 +102,10 @@ export default {
 			this.$router.go(-1)
 		},
 		gobank () {
-			this.$router.push('/banklist')
+			this.$router.push('/banklist1')
 		},
 		addcard () {
-			this.$router.push('/addcard')
+			this.$router.push('/addcard1')
 		},
 		submit () {
 			let _this = this
