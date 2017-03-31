@@ -1,20 +1,17 @@
 <template>
-	<div class="ex-message">
+	<div class="ex-notice">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
-		<div class="tabbar">
-			<div class="m1" @click="tap(1)" :class="{active:messageType==1}">消息</div>
-			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">系统</div>
-		</div>
-		<div class="ex-message-list">
-			<div class="ex-message-item" ref="wrapper">	
+		<div class="ex-notice-list">
+			<div class="ex-notice-item" ref="wrapper">	
 				<ul
 				  v-infinite-scroll="loadMore"
 				  infinite-scroll-disabled="loading"
 				   infinite-scroll-distance="10"
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
-					<li v-for="(item, index) in list" @click="todetail(item.id)" v-show="item.messageType == messageType">
-						<span class="title" v-text="item.messageTitle" :class="{read:item.isRead === '1'}"></span>
+					<li v-for="(item, index) in list" @click="todetail(item.id)">
+					    <span class="title" v-text="item.messageTitle" :class="{read:item.isRead === '1'}" ></span> <br/>
+						<span class="summary">{{item.messageContent | formatHtml}}</span>
 						<span class="time">{{item.pushTime | localTime}}</span>
 					</li>
 					</mt-loadmore>
@@ -22,7 +19,6 @@
 				<div class="page-infinite-loading" v-show="loading">
 			       <mt-spinner type="fading-circle"></mt-spinner>
 			    </div>
-			
 			</div>
 		</div>
 	</div>
@@ -38,67 +34,42 @@ export default {
 			list:[],
 			page: 1,
 			totalPage: 1,
-			pageSize: 7,
+			pageSize: 20,
 			modal: {
-				text:'我的消息',
-				fixed: true
+				text:'公告',
+				fixed: 'fixed'
 			},
-			wrapperHeight: 0,
 			loading:false,
-			config:{
-	            onUploadProgress (progressEvent) {
-	              	Indicator.open({
-					  text: '加载中...',
-					  spinnerType: 'fading-circle'
-					});
-	            }
-	        },
 		}
-	},
-	// watch: {
-	// 	'$route': 'loadTop' 
-	// },
-	computed: {
-		messageType () {
-		    return this.$route.params.id
-		},
 	},
 	components: {
 		HeadTitle
 	},
 	methods: {
 		back () {
-			this.$router.push('/user')
-		},
-		tap (id) {
-			this.$router.push({ name: 'Message', params: { id: id}})
+			this.$router.back();
 		},
 		todetail (id) {
-			this.$router.push({name: 'Message2', params: { id: id}})
+			this.$router.push({name: 'Notice2', params: { id: id}})
 		},
 		loadTop () {
 			let _this = this;
-			if(document.body.scrollTop !== 0){
-				return;
-			}
 			axios.post('message/list',qs.stringify({
-				messageType: _this.messageType,	
 				pageSize: _this.pageSize,
-				page: 1
-			}),_this.config).then(function(res){
-				Indicator.close();
+				page: 1,
+				messageType: 3
+			})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.list = res.data.data.list || [];
 					_this.totalPage = res.data.data.totalPage
 					_this.page = 2
 				} else {	
 					Toast('对不起数据加载失败！')
-				}	
+				}
 			}).catch(function(){
-				Indicator.close();
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})
-			_this.$refs.loadmore.onTopLoaded();
+			this.$refs.loadmore.onTopLoaded();
 		},
 		loadMore () {
 			let _this = this;
@@ -109,7 +80,7 @@ export default {
 			axios.post('message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
-				//messageType: _this.messageType
+				messageType: 3
 			})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.list.push(...res.data.data.list);
@@ -136,21 +107,21 @@ export default {
 			let time2 = [hours,minutes].join(':')
 			return time1 + '    ' +time2;
 		},
+		formatHtml (value) {
+			// let result = value.replace(/\<[^img]*?\>/gi,"");
+			return value.replace(/<.*?>/gmi,"")
+		}	
 	}
 }
 </script>
-<style scoped>
-.ex-message{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
-.tabbar{height: 44px;background: #fff;border-bottom: solid 1px #ebebeb;text-align: center;line-height: 44px;font-size: 1.6rem;padding:0 0 3px 0;color: rgb(170,175,182);
-position: fixed;width: 100%;top: 58px;z-index: 1000;}
-.tabbar .m1{margin:0 5% 0 15%;width: 30%;float: left;}
-.tabbar .m2{margin:0 15% 0 5%;width: 30%;float: left;}
-.active{border-bottom: solid 3px rgb(4,112,182);color: rgb(4,112,182);}
-.ex-message-item{padding-top: 106px;}
-.ex-message-item li{display: block;font-size: 1.4rem;background: #fff;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
-.ex-message-item li:last-child{border-bottom: none;}
-.ex-message-item .title{}
-.ex-message-item .time{color: rgb(196,201,209);float: right;padding-top: 5px;}
-.ex-message-item li.read{background: rgb(241,250,255);}
+<style>
+.ex-notice{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
+.ex-notice-item{padding-top: 58px;}
+.ex-notice-item li{display: block;font-size: 1.6rem;background: #fff;padding: 20px 10px 30px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
+.ex-notice-item li:last-child{border-bottom: none;}
+.ex-notice-item span.title:before{content:"●"; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}
+.ex-notice-item span.read:before{display: none;}
+.ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;text-indent: 1em;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;padding-top: 10px;}
+.ex-notice-item .time{color: #aaafb6;float: right;padding-top: 5px;font-size: 1rem;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>

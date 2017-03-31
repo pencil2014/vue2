@@ -46,9 +46,12 @@ const School = resolve => require(['../components/school/school'], resolve)
 const Details = resolve => require(['../components/school/details'], resolve)
 const Details2 = resolve => require(['../components/school/details2'], resolve)
 const News = resolve => require(['../components/school/news'], resolve)
+const Partner = resolve => require(['../components/partner/partner'], resolve)
 
 
-const Message = resolve => require(['../components/forgot/forgot'], resolve)
+const Message = resolve => require(['../components/message/message'], resolve)
+const Message2 = resolve => require(['../components/message/detail'], resolve)
+
 const Settings = resolve => require(['../components/settings/settings'], resolve)
 const Personal = resolve => require(['../components/personal/personal'], resolve)
 
@@ -65,6 +68,7 @@ const Feedback = resolve => require(['../components/feedback/feedback'], resolve
 const Version = resolve => require(['../components/version/version'], resolve)
 const Realname = resolve => require(['../components/realname/realname'], resolve)
 const User = resolve => require(['../components/user/user'], resolve)
+const Notice = resolve => require(['../components/notice/notice'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -252,9 +256,19 @@ export default new Router({
       component: News
     },
     {
-      path: '/message',
+      path: '/partner',
+      name: 'Partner',
+      component: Partner
+    },
+    {
+      path: '/message/:id',
       name: 'Message',
       component: Message
+    },
+    {
+      path: '/messagedetail/:id',
+      name: 'Message2',
+      component: Message2
     },
     {
       path: '/settings',
@@ -302,7 +316,7 @@ export default new Router({
       component: Guide1
     },
     {
-      path: '/guide/step2',
+      path: '/guide/:id',
       name: 'Guide2',
       component: Guide2
     },
@@ -326,6 +340,11 @@ export default new Router({
       name: 'User',
       component: User
     },
+    {
+      path: '/notice',
+      name: 'Notice',
+      component: Notice
+    },  
     {
     	path:'*', 
     	redirect:'/login'

@@ -347,7 +347,7 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 .ex-index-switch p{background-color: #0369aa; color: #b3d8f6;  border-radius: 3rem; height: 2.5rem; line-height: 2.5rem; text-align: center; margin-right: 0.5rem;}
 
 .ex-index-integral{background-color: #0473bb; color: #fff; overflow: hidden;padding: 0.5rem 1rem; margin-top: 1rem;}
-.ex-index-integral .integral {overflow: hidden; padding: 1rem 0;}
+.ex-index-integral .integral {overflow: hidden; padding: 0.5rem 0;}
 .ex-index-integral .border{border-bottom: 1px solid #68abd6;}
 .ex-index-integral .integral i{font-size: 3rem;float: left; margin-right: 1rem; line-height: 4rem;}
 .ex-index-integral .integral p{ float: left; width: 50%; font-size: 1.4rem;}

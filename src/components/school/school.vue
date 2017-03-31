@@ -131,6 +131,7 @@ export default {
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
+					_this.page += 1
 					if (page === 1) {
 							if (value === '讲师风采') {
 								_this.teacherList = res.data.data.list || []
@@ -140,7 +141,6 @@ export default {
 								_this.newsList = res.data.data.list || []
 							}
 						} else {
-							_this.page += 1
 							if (value === '讲师风采') {
 								_this.teacherList.push(...res.data.data.list)
 							} else if (value === 'E享文化') {

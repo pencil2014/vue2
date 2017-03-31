@@ -43,25 +43,22 @@ export default {
 	components: {
 		HeadTitle
 	},
-	computed:{
-	},
-	created () {
-		let _this = this;
-
-		
-	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
 		loadTop () {
+			Indicator.open({
+			  text: '正在刷新...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this;
 			axios.post('artic/list',qs.stringify({
 				article_type_name: '使用指南',
 				pageSize: _this.pageSize,
 				page: 1
 			})).then(function(res){
-				
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.list = res.data.data.list || [];
 					_this.totalPage = res.data.data.totalPage
@@ -69,6 +66,7 @@ export default {
 					Toast('对不起数据加载失败！')
 				}
 			}).catch(function(){
+				Indicator.close()
 				Toast('系统出错了，正在修复中...')
 			})
 			_this.$refs.loadmore.onTopLoaded();

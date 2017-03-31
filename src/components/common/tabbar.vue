@@ -1,7 +1,7 @@
 <template>
 	<div class="ex-nav">
 		<router-link to="/index" :class="{activeRouter: isBuesiness}"><i class="iconfont m1">&#xe60c;</i>首页</router-link>
-		<router-link to="/login"><i class="iconfont m2">&#xe619;</i>联盟商家</router-link>
+		<router-link to="/partner"><i class="iconfont m2">&#xe619;</i>联盟商家</router-link>
 		<router-link to="/school"><i class="iconfont m3">&#xe60a;</i>商学院</router-link>
 		<router-link to="/user"><i class="iconfont m4">&#xe607;</i>我的</router-link>
 	</div>

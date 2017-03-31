@@ -102,8 +102,14 @@ export default {
 			let array = this.district.filter(function(item) {
 				return item.parentId === this.cityId
 			}.bind(this))
-			this.districtArray = array
-			this.districtId = this.districtId ? this.districtId : array[0].id
+			if (array.length > 0) {
+				this.districtArray = array
+				this.districtId = this.districtId ? this.districtId : array[0].id
+			} else {
+				this.districtArray = []
+				this.districtId = ''
+			}
+			
 		}
 	},
 	created () {
@@ -131,7 +137,7 @@ export default {
 				}
 					
 			} else {
-				MessageBox('提示', '请求数据失败！')
+				MessageBox('提示', res.data.msg)
 			}
 		})
 		.catch(function(){
@@ -152,8 +158,14 @@ export default {
 			let array2 = this.district.filter(function(item) {
 				return item.parentId === this.cityId
 			}.bind(this))
-			this.districtArray = array2
-			this.districtId = Id ? Id : array2[0].id
+			if (array2.length > 0) {
+				this.districtArray = array2
+				this.districtId = Id ? Id : array2[0].id
+			} else {
+				this.districtArray = []
+				this.districtId = ''
+			}
+			
 		},
 		changeCity (Id) {
 			let array = this.district.filter(function(item) {

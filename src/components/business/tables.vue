@@ -55,9 +55,14 @@ export default {
 			this.$router.go(-1)
 		},
 		loadTop () {
+			Indicator.open({
+			  text: '正在刷新...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: 1}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					let array = res.data.data.list.filter(function(item) {
@@ -69,6 +74,7 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 			this.$refs.loadmore.onTopLoaded()

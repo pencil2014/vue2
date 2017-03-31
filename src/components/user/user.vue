@@ -32,13 +32,13 @@
 						<span>个人资料</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/personal" tag="li">
+					<router-link to="/message/1" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
 						<i class="iconfont" >&#xe606;</i>
 						<label for="" class="count" v-text="count" v-show="count!=0"></label>
 					</router-link>
-					<router-link to="/personal" tag="li">
+					<router-link to="/notice" tag="li">
 						<img src="../../assets/images/notice.png" alt="">
 						<span>公告</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -144,9 +144,9 @@ export default {
 .ex-header .userdata img{border-radius: 50%;border: solid #fff 4px;width: 6rem;float: left;}
 .ex-header .text{float: left;padding: 1rem 0 0 1rem;font-size: 1.6rem;color: rgba(255,255,255,0.5);}
 .ex-header .text .name{font-size: 2.2rem;color: #fff !important;}
-.ex-header .identity{display: inline-block;width: 10rem;background: #fff;text-align: center;text-indent: 2em;border-radius: 20px 0 0 20px;height: 36px;line-height: 36px;position: absolute;top: 50%;margin-top: -18px;right: 0px;background: rgb(170,231,255);color: rgb(12,135,213);font-size: 1.6rem;}
+.ex-header .identity{display: inline-block;width: 10rem;background: #fff;text-align: center;text-indent: 2em;border-radius: 20px 0 0 20px;height: 32px;line-height: 32px;position: absolute;top: 50%;margin-top: -18px;right: 0px;background: rgb(170,231,255);color: rgb(12,135,213);font-size: 1.6rem;}
 .ex-header .vip{background: rgb(245,174,38);color: #fff;}
-.ex-header .vip img{width: 26px;position: absolute;top: 50%;margin-top: -13px;left: 5px;}
+.ex-header .vip img{width: 26px;position: absolute;top: 50%;margin-top: -13px;left: 3px;}
 
 .ex-user-item:nth-child(1){margin-top: 0px;}
 .ex-user-item{margin-top: 18px;padding: 0 0 0 15px;background: #fff;}
