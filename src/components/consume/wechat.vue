@@ -30,7 +30,8 @@ export default {
 			money: '',
 			qrurl: '',
 			timer: '',
-			orderstatus: ''
+			orderstatus: '',
+			timer: ''
 		}
 	},
 	methods: {
@@ -64,7 +65,7 @@ export default {
 				}
 				// 如果状态不是已支付就继续监听
 				if (res.data.data.status !== '1') {
-					setTimeout(function(){_this.getstatus()},5000)
+					_this.timer = setTimeout(function(){_this.getstatus()},60000)
 				}
 			})
 			.catch(function(){
@@ -92,6 +93,9 @@ export default {
 	},
 	components: {
       Qrcode
+  },
+  destroyed () {
+  	clearTimeout(this.timer)
   }
 }
 </script>

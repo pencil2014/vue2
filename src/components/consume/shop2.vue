@@ -88,7 +88,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Toast, Indicator} from 'mint-ui'
+import { MessageBox, Indicator} from 'mint-ui'
 import lrz from 'lrz'
 export default {
 	data () {
@@ -134,6 +134,10 @@ export default {
 			if (this.imgArray.length < 5) {
 				return
 			}
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			let applyshops = JSON.parse(window.localStorage.getItem('shopdata'))
 			axios.post('shop/apply',qs.stringify({
@@ -154,6 +158,7 @@ export default {
 				area: applyshops.areaId
 			}))
 				.then(function(res){
+					Indicator.close()
 					if (res.data.code === '10000') {
 						_this.$router.push('/shop3')
 					} else {
@@ -162,6 +167,7 @@ export default {
 					}
 				})
 				.catch(function(){
+					Indicator.close()
 					_this.repeatBtn = false
 					Indicator.open({ spinnerType: 'fading-circle'})
 				})
@@ -200,7 +206,6 @@ export default {
 			}
 			this.repeatBtn = true
 			this.uploadimg()
-			Toast('图片处理中，请稍后...')
 		},
 		uploadimg () {
 			let _this = this
@@ -213,8 +218,13 @@ export default {
 			if (this.imgbase64.proxyPic) {
 				formData.append("imgStr", this.imgbase64.proxyPic)
 			}
+			Indicator.open({
+			  text: '图片处理中...',
+			  spinnerType: 'fading-circle'
+			})
 			axios.post('upload/pic_min',formData)
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.imgArray = res.data.urls
 				} else {
@@ -223,6 +233,7 @@ export default {
 				}
 			})
 			.catch(function(res){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})	

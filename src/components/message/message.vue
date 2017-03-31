@@ -2,36 +2,141 @@
 	<div class="ex-message">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="tabbar">
-			<div class="m1">消息</div>
-			<div class="m2">系统</div>
+			<div class="m1" @click="tap(1)" :class="{active:messageType==1}">消息</div>
+			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">系统</div>
 		</div>
+			<div class="ex-message-list">
+				<div class="ex-message-item" ref="wrapper">	
+				
+					<ul
+					  v-infinite-scroll="loadMore"
+					  infinite-scroll-disabled="loading"
+					   infinite-scroll-distance="10"
+					 >
+					 	<mt-loadmore :top-method="loadTop" ref="loadmore">
+						<li v-for="(item, index) in list">
+							<span class="title" v-text="item.messageTitle" :class="{read:item.isRead === '1'}"></span>
+							<span class="time">2016-12-2 11:54</span>
+						</li>
+						</mt-loadmore>
+					</ul>
+					<div class="page-infinite-loading" v-show="loading">
+				       <mt-spinner type="fading-circle"></mt-spinner>
+				    </div>
+				
+				</div>
+			</div>
 	</div>
 </template>
 <script>
 import axios from "axios"
 import qs from "qs"
-import { Indicator } from 'mint-ui'
+import { Indicator, Loadmore ,InfiniteScroll,Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
 		return{
-			userinfo:'',
+			list:[],
+			page: 1,
+			totalPage: 1,
+			pageSize: 10,
 			modal: {
 				text:'我的消息',
-				fixed: false
-			}
+				fixed: true
+			},
+			wrapperHeight: 0,
+			loading:false,
+			id:1,
+			config:{
+	            onUploadProgress (progressEvent) {
+	              	Indicator.open({
+					  text: '加载中...',
+					  spinnerType: 'fading-circle'
+					});
+	            }
+	        },
+		}
+	},
+	watch: {
+		'$route': 'loadTop' 
+	},
+	computed: {
+		messageType () {
+		    return this.$route.params.id
 		}
 	},
 	components: {
 		HeadTitle
 	},
 	methods: {
-		back(){
-			this.$router.back();
+		back () {
+			this.$router.push('/user')
 		},
+		tap (id) {
+			this.$router.push({ name: 'Message', params: { id: id}})
+		},
+		loadTop () {
+			let _this = this;
+			if(document.body.scrollTop !== 0){
+				return;
+			}
+			axios.post('message/list',qs.stringify({
+				messageType: _this.messageType,	
+				pageSize: _this.pageSize,
+				page: 1
+			}),_this.config).then(function(res){
+				Indicator.close();
+				if (res.data.code === '10000') {
+					_this.list = res.data.data.list || [];
+					_this.totalPage = res.data.data.totalPage
+					_this.page = 2
+				} else {	
+					Toast('对不起数据加载失败！')
+				}
+			}).catch(function(){
+				Indicator.close();
+				Toast('系统出错了，正在修复中...')
+			})
+			_this.$refs.loadmore.onTopLoaded();
+		},
+		loadMore () {
+			let _this = this;
+			if (_this.page > _this.totalPage) {
+				return
+			}
+			_this.loading = true;
+			axios.post('message/list',qs.stringify({
+				pageSize: _this.pageSize,
+				page: _this.page,
+				messageType: _this.messageType
+			})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.list.push(...res.data.data.list);
+					_this.totalPage = res.data.data.totalPage
+					_this.page += 1;
+					_this.loading = false;
+				} else {	
+					Toast('对不起数据加载失败！')
+				}
+			}).catch(function(){
+				Toast('系统出错了，正在修复中...')
+			})
+		}
 	}
 }
 </script>
 <style scoped>
-.ex-message{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;}
+.ex-message{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
+.tabbar{height: 44px;background: #fff;border-bottom: solid 1px #ebebeb;text-align: center;line-height: 44px;font-size: 1.6rem;padding:0 0 3px 0;color: rgb(170,175,182);
+position: fixed;width: 100%;top: 58px;z-index: 1000;}
+.tabbar .m1{margin:0 5% 0 15%;width: 30%;float: left;}
+.tabbar .m2{margin:0 15% 0 5%;width: 30%;float: left;}
+.active{border-bottom: solid 3px rgb(4,112,182);color: rgb(4,112,182);}
+.ex-message-item{padding-top: 106px;}
+.ex-message-item li{display: block;font-size: 1.4rem;background: #fff;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
+.ex-message-item li:last-child{border-bottom: none;}
+.ex-message-item .title{}
+.ex-message-item .time{color: rgb(196,201,209);float: right;padding-top: 5px;}
+.ex-message-item li.read{background: rgb(241,250,255);}
+.page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>

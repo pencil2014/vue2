@@ -43,7 +43,7 @@
 			<div class="ex-index-user">
 				<div class="ex-index-logo">
 					<a href="javascript:;" @click="gouser">
-						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-show="userinfo.logoImg">
+						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-if="userinfo.logoImg">
 					</a>
 					<!-- <p class="name">{{userinfo.userName}}</p> -->
 					<p class="code">ID:{{userinfo.userCode}}</p>
@@ -185,10 +185,15 @@ export default {
 			if (this.repeatBtn) {
 				return
 			}
+			Indicator.open({
+			  text: '正在切换...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			this.repeatBtn = true
 			axios.post('user/switchUser',qs.stringify({type: 2}))
 				.then(function(res){
+					Indicator.close()
 					if (res.data.code === '10000') {
 						window.localStorage.setItem('token', res.data.data.token)
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
@@ -199,6 +204,7 @@ export default {
 					}
 				})
 				.catch(function(){
+					Indicator.close()
 					_this.repeatBtn = false
 					Indicator.open({ spinnerType: 'fading-circle'})
 				})
@@ -330,7 +336,7 @@ export default {
 .ex-index-logo,.ex-index-money,.ex-index-switch { float: left; }
 .ex-index-logo {width: 25%; text-align: center; }
 .ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
-background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #6ac5ff; margin-bottom: 0.5rem;}
+background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #fff; margin-bottom: 0.5rem;}
 .ex-index-logo img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
 .ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }

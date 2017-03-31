@@ -62,7 +62,7 @@ export default {
 					_this.totalPage = res.data.data.totalPage
 					_this.recordList = res.data.data.list || []
 				} else {
-					MessageBox('提示', '对不起数据加载失败！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -83,7 +83,7 @@ export default {
 					_this.recordList.push(...res.data.data.list)
 					_this.page += 1
 				} else {
-					MessageBox('提示', '对不起数据加载失败！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){

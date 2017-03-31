@@ -174,6 +174,10 @@ export default {
 			})
 		},
 		check () {
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			this.repeatBtn = true
 			axios.post('declaration/update',qs.stringify({
@@ -184,6 +188,7 @@ export default {
 				transferMoney: this.transferMoney
 			}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.repeatBtn = false
 					_this.$router.push({ name: 'Declare5', params: { id: _this.id}})
@@ -193,6 +198,7 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

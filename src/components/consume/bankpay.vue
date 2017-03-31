@@ -97,6 +97,12 @@ export default {
 				MessageBox('提示', '图片处理中，请稍后...')
 				return
 			}
+
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
+
 			let _this = this
 			_this.repeatBtn = true
 			let formData = new FormData()
@@ -104,6 +110,7 @@ export default {
 
 			axios.post('upload/pic_min',formData)
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.resurl = res.data.urls
 					_this.check()
@@ -113,6 +120,7 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

@@ -2,17 +2,17 @@
 	<div class="ex-user">
 		<div class="ex-header">
 			<div class="userdata">
-				<img src="../../assets/images/head.png" alt="" v-show="avatar === 'default'">
-				<img src="../../assets/images/girl01.png" alt="" v-show="avatar === 'girl01'">
-				<img src="../../assets/images/girl02.png" alt="" v-show="avatar === 'girl02'">
-				<img src="../../assets/images/girl03.png" alt="" v-show="avatar === 'girl03'">
-				<img src="../../assets/images/girl04.png" alt="" v-show="avatar === 'girl04'">
-				<img src="../../assets/images/girl05.png" alt="" v-show="avatar === 'girl05'">
-				<img src="../../assets/images/boy01.png" alt="" v-show="avatar === 'boy01'">
-				<img src="../../assets/images/boy02.png" alt="" v-show="avatar === 'boy02'">
-				<img src="../../assets/images/boy03.png" alt="" v-show="avatar === 'boy03'">
-				<img src="../../assets/images/boy04.png" alt="" v-show="avatar === 'boy04'">
-				<img src="../../assets/images/boy05.png" alt="" v-show="avatar === 'boy05'">
+				<img src="../../assets/images/head.png" alt="" v-if="avatar === 'default'">
+				<img src="../../assets/images/girl01.png" alt="" v-if="avatar === 'girl01'">
+				<img src="../../assets/images/girl02.png" alt="" v-if="avatar === 'girl02'">
+				<img src="../../assets/images/girl03.png" alt="" v-if="avatar === 'girl03'">
+				<img src="../../assets/images/girl04.png" alt="" v-if="avatar === 'girl04'">
+				<img src="../../assets/images/girl05.png" alt="" v-if="avatar === 'girl05'">
+				<img src="../../assets/images/boy01.png" alt="" v-if="avatar === 'boy01'">
+				<img src="../../assets/images/boy02.png" alt="" v-if="avatar === 'boy02'">
+				<img src="../../assets/images/boy03.png" alt="" v-if="avatar === 'boy03'">
+				<img src="../../assets/images/boy04.png" alt="" v-if="avatar === 'boy04'">
+				<img src="../../assets/images/boy05.png" alt="" v-if="avatar === 'boy05'">
 				<div class="text">
 					<p class="name" v-text="userinfo.userName"></p>
 					<p class="userid">ID：{{userinfo.userCode}}</p>

@@ -121,7 +121,10 @@ export default {
 				MessageBox('提示', '验证码不能为空！')
 				return
 			}
-
+			Indicator.open({
+			  text: '注册中...',
+			  spinnerType: 'fading-circle'
+			})
 			this.repeatBtn = true //防止重复提交
 			let _this = this
 
@@ -129,6 +132,7 @@ export default {
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.repeatBtn = false 
+					Indicator.close()
 					MessageBox('提示', '手机号码已经注册!')
 					return
 				} else {
@@ -142,19 +146,23 @@ export default {
 					}))
 					.then(function(res){
 						if (res.data.code === '10000') {
+							Indicator.close()
 							window.localStorage.setItem('phone', _this.phone)
 							window.localStorage.removeItem('token')
 							_this.$router.push('/index')
 						} else {
-							MessageBox('提示', '注册失败，请稍后重试！')
+							Indicator.close()
+							MessageBox('提示', res.data.msg)
 						}
 					})
 					.catch(function(){
+						ndicator.close()
 						_this.repeatBtn = false
 						Indicator.open({ spinnerType: 'fading-circle'})
 					})
 				}
 			}).catch(function(){
+				ndicator.close()
 				_this.repeatBtn = false 
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

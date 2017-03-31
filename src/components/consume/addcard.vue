@@ -153,6 +153,10 @@ export default {
 			if (this.repeatBtn) {
 				return
 			}
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			axios.post('bankard/add',qs.stringify({
 				cardNo: this.card,
@@ -164,15 +168,17 @@ export default {
 				phoneCode: this.phonecode
 			}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					MessageBox.alert('银行卡添加成功！').then(action => {
 						_this.$router.go(-1)
 					})
 				} else {
-					MessageBox('提示', '银行卡添加失败！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		}

@@ -130,9 +130,13 @@ export default {
 			_this.repeatBtn = true
 			let formData = new FormData()
 			formData.append("imgStr",this.fileList[0])
-
+			Indicator.open({
+			  text: '正在处理图片...',
+			  spinnerType: 'fading-circle'
+			})
 			axios.post('upload/pic_min',formData)
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.resurl = res.data.urls
 					_this.check()
@@ -142,11 +146,16 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		},
 		check () {
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			axios.post('declaration/supplement',qs.stringify({
 				consumptionCertificate: this.resurl[0],
@@ -155,6 +164,7 @@ export default {
 				id: this.id
 			}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.repeatBtn = false
 					_this.$router.push({ name: 'Declare3', params: { id: _this.id}})
@@ -164,6 +174,7 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

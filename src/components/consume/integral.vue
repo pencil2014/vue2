@@ -81,19 +81,25 @@ export default {
 			if (this.repeatBtn) {
 				return
 			}
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			_this.repeatBtn = true
 			axios.post('integral/toBalance',qs.stringify({integral: this.exchange}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					MessageBox('提示', '您成功已兑换'+_this.exchange+'个享积分!')
 					_this.exchange = ''
 				} else {
 					_this.repeatBtn = false
-					MessageBox('提示', '提交失败，请稍后重试！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

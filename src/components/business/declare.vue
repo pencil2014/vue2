@@ -174,7 +174,10 @@ export default {
 				MessageBox('提示', '消费金额不合法！')
 				return
 			}
-			Toast('数据提交中，请稍后...')
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			this.repeatBtn = true
 			axios.post('declaration/insert',qs.stringify({
@@ -183,6 +186,7 @@ export default {
 				consumptionMoney: this.consumptionMoney
 			}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.repeatBtn = false
 					_this.$router.push({ name: 'Declare2', params: { id: res.data.data.id}})
@@ -192,6 +196,7 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

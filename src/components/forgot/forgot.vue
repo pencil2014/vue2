@@ -144,9 +144,14 @@ export default {
 				MessageBox('提示', '验证码不正确!')
 				return
 			}
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			this.repeatBtn = true //防止重复提交
 			let _this = this
 			axios.post('verify/validatePhoneCode',qs.stringify({phone: _this.phone,phoneCode:_this.code,codeType:8})).then(function(){
+				Indicator.close()
 				if (res.data.code !== '10000') {
 					_this.repeatBtn = false 
 					MessageBox('提示', res.data.msg)
@@ -156,6 +161,7 @@ export default {
 					_this.showforgot = false
 				} 
 			}).catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})

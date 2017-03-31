@@ -153,21 +153,26 @@ export default {
 			if (this.repeatBtn) {
 				return
 			}
-			
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			_this.repeatBtn = true
 
 			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					MessageBox('提示', '您成功转存'+_this.exchange+'元!')
 					_this.userdata.overMoney -= _this.exchange
 					_this.exchange = ''
 				} else {
 					_this.repeatBtn = false
-					MessageBox('提示', '提交失败，请稍后重试！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})
