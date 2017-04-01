@@ -10,7 +10,7 @@
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
 					<li v-for="(item, index) in list" @click="todetail(item.id)">
-					    <span class="title" v-text="item.messageTitle" :class="{read:item.isRead === '1'}" ></span> <br/>
+					    <span class="title" v-text="item.messageTitle" :class="{read:item.isRead == '1'}" ></span> <br/>
 						<span class="summary">{{item.messageContent | formatHtml}}</span>
 						<span class="time">{{item.pushTime | localTime}}</span>
 					</li>
@@ -108,8 +108,8 @@ export default {
 			return time1 + '    ' +time2;
 		},
 		formatHtml (value) {
-			// let result = value.replace(/\<[^img]*?\>/gi,"");
-			return value.replace(/<.*?>/gmi,"")
+			let result1 = value.replace(/<[img].*?>/gim,"[图片]")
+			return result1.replace(/<.*?>/gim,"") 
 		}	
 	}
 }
@@ -121,6 +121,7 @@ export default {
 .ex-notice-item li:last-child{border-bottom: none;}
 .ex-notice-item span.title:before{content:"●"; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}
 .ex-notice-item span.read:before{display: none;}
+.ex-notice-item span.read{color:#aaafb6;}
 .ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;text-indent: 1em;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;padding-top: 10px;}
 .ex-notice-item .time{color: #aaafb6;float: right;padding-top: 5px;font-size: 1rem;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}

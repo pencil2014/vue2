@@ -28,11 +28,12 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
-			banks: []
+			banks: [],
+			userinfo: ''
 		}
 	},
 	created () {
@@ -46,7 +47,16 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
+			})
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userinfo = res.data.data
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			}).catch(function(){
+					Toast('系统错误！')
 			})
 	},
 	methods: {
@@ -72,7 +82,7 @@ export default {
 							}
 						})
 						.catch(function(){
-							Indicator.open({ spinnerType: 'fading-circle'})
+							Toast('系统错误！')
 						})
 					}
 				})
@@ -95,12 +105,26 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 			
 		},
 		addcard () {
-			this.$router.push('/addcard')
+			let _this = this
+			if (this.userinfo.isRealName !== '2') {
+				MessageBox({
+				  title: '提示',
+				  message: '请先进行实名认证！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+			} else {
+				this.$router.push('/addcard')
+			}
 		}
 	},
 	filters: {

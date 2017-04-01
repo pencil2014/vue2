@@ -1,7 +1,6 @@
 <template v-cloak>
 	<div class="ex-warpper">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
-		
 		<div class="ex-content">
 			<div class="ex-head">
 				<p class="title" v-html="content.messageTitle"></p>
@@ -14,7 +13,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { Toast, Indicator } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
@@ -49,15 +48,16 @@ export default {
 	created () {
 		let _this = this
 		axios.post('message/get',qs.stringify({
-			id: _this.id
+			id: _this.id,
+			type: 1
 		})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.content = res.data.data
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast('对不起数据加载失败！')
 			}
 		}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 		})
 	},
 	components: {

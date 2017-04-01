@@ -24,7 +24,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -58,7 +58,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 	},
 	methods: {
@@ -90,18 +90,18 @@ export default {
 			axios.post('integral/toBalance',qs.stringify({integral: this.exchange}))
 			.then(function(res){
 				Indicator.close()
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
 					MessageBox('提示', '您成功已兑换'+_this.exchange+'个享积分!')
 					_this.exchange = ''
 				} else {
-					_this.repeatBtn = false
 					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 
 		}

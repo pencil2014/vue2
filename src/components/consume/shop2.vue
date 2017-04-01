@@ -88,7 +88,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator} from 'mint-ui'
+import { MessageBox, Indicator, Toast} from 'mint-ui'
 import lrz from 'lrz'
 export default {
 	data () {
@@ -158,18 +158,18 @@ export default {
 				area: applyshops.areaId
 			}))
 				.then(function(res){
+					_this.repeatBtn = false
 					Indicator.close()
 					if (res.data.code === '10000') {
 						_this.$router.push('/shop3')
 					} else {
-						_this.repeatBtn = false
 						MessageBox('提示', '提交失败，请稍后重试！')
 					}
 				})
 				.catch(function(){
 					Indicator.close()
 					_this.repeatBtn = false
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 				})
 		}
 	},
@@ -224,18 +224,18 @@ export default {
 			})
 			axios.post('upload/pic_min',formData)
 			.then(function(res){
+				_this.repeatBtn = false
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.imgArray = res.data.urls
 				} else {
-					_this.repeatBtn = false
 					MessageBox('提示', '上传图片失败，请稍后重试！')
 				}
 			})
 			.catch(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})	
 		},
 		getfile (id) {

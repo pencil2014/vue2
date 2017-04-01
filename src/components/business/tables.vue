@@ -28,7 +28,7 @@
 					</tbody>
 				</table>
 			</mt-loadmore>
-			<div class="nodata" v-show='tableList.length === 0'>
+			<div class="nodata" v-show='tableList.length === 0  && nodateStatus'>
 				<img src="../../assets/images/nodata.png" alt="">
 				<p>还没有数据哦~</p>
 			</div>
@@ -38,14 +38,15 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll, Indicator } from 'mint-ui'
+import { MessageBox, Loadmore, InfiniteScroll, Indicator , Toast} from 'mint-ui'
 export default {
 	data () {
 		return {
 			tableList: [],
 			page: 1,
 			totalPage: 1,
-			pageSize: 20
+			pageSize: 20,
+			nodateStatus: false
 		}
 	},
 	created () {
@@ -69,13 +70,14 @@ export default {
 						return item.status === '6'
 					}.bind(this))
 					_this.tableList = array || []
+					_this.page = 2
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
 				}
 			})
 			.catch(function(){
 				Indicator.close()
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 			this.$refs.loadmore.onTopLoaded()
 		},
@@ -83,10 +85,15 @@ export default {
 			if (this.page > this.totalPage) {
 				return
 			}
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			this.loading = true
 			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					let array = res.data.data.list.filter(function(item) {
@@ -99,7 +106,8 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Indicator.close()
+				Toast('系统错误！')
 			})
 		}
 	},

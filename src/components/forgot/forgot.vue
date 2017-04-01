@@ -17,7 +17,7 @@
 					<label for="code">验证码</label>
 					<input type="text" name="code" id="code"  v-model.trim="code" placeholder="请输入验证码" maxlength="10">
 					<a href="javascript:;" class='getcode' @click='getcode' v-show='!countdown'>获取验证码</a>
-					<a href="javascript:;"  v-show='countdown'>{{second}}秒</a>
+					<a href="javascript:;"  class='getcode' v-show='countdown'>{{second}}秒</a>
 				</div>
 				<button type="button" class="ex-forgot-next" :class="{disableBtn:disableBtn}" @click='gotonext'>下一步</button>
 			</form>
@@ -45,7 +45,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -90,10 +90,11 @@ export default {
 				MessageBox('提示', '手机号码不正确!')
 				return
 			}
+			this.code = ''
 			let _this = this
 			// 验证用户名是否存在
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
-				if (res.data.code !== '10000') {
+				if (res.data.msg === 'false') {
 					MessageBox('提示', "手机号码未注册!")
 					return
 				} else {
@@ -113,11 +114,11 @@ export default {
 						}
 					})
 					.catch(function(){
-						Indicator.open({ spinnerType: 'fading-circle'})
+						Toast('系统错误！')
 					})
 				}
 			}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 
 		},
@@ -150,20 +151,24 @@ export default {
 			})
 			this.repeatBtn = true //防止重复提交
 			let _this = this
-			axios.post('verify/validatePhoneCode',qs.stringify({phone: _this.phone,phoneCode:_this.code,codeType:8})).then(function(){
+			axios.post('verify/validatePhoneCode',qs.stringify({
+				phone: _this.phone,
+				phoneCode:_this.code,
+				codeType:8
+			})).then(function(res){
 				Indicator.close()
+				_this.repeatBtn = false 
 				if (res.data.code !== '10000') {
-					_this.repeatBtn = false 
 					MessageBox('提示', res.data.msg)
 					return
 				} else {
-					_this.repeatBtn = false
 					_this.showforgot = false
 				} 
 			}).catch(function(){
+
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		reset () {
@@ -174,20 +179,26 @@ export default {
 				MessageBox('提示', '两次密码不一致！')
 				return
 			}
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
 			this.repeatBtn = true //防止重复提交
 			let _this = this
-			axios.post('ser/forgetPasswod',qs.stringify({phone: _this.phone,phoneCode:_this.code,password:_this.password})).then(function(){
+			axios.post('user/forgetPasswod',qs.stringify({phone: _this.phone,phoneCode:_this.code,password:_this.password})).then(function(res){
+				Indicator.close()
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
 					MessageBox.alert('密码修改成功！').then(action => {
 						_this.$router.push('/login')
 					})
 				} else {
-					_this.repeatBtn = false
 					MessageBox('提示', '密码修改失败，请稍后重试！')
 				}
 			}).catch(function(){
+				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		}
 	}

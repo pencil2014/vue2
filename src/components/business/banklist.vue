@@ -2,7 +2,7 @@
 	<div class="ex-banklist">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>银行卡</span>
+			<span>公司银行卡</span>
 		</div>
 		<div class="ex-banklist-cnt">
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
@@ -28,14 +28,16 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
-			banks: []
+			banks: [],
+			userinfo: ''
 		}
 	},
 	created () {
+		this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
 		let _this = this
 		axios.post('bankard/list',qs.stringify({cardType: 2}))
 			.then(function(res){
@@ -46,7 +48,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 	},
 	methods: {
@@ -72,7 +74,7 @@ export default {
 							}
 						})
 						.catch(function(){
-							Indicator.open({ spinnerType: 'fading-circle'})
+							Toast('系统错误！')
 						})
 					}
 				})
@@ -95,12 +97,25 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 			
 		},
 		addcard () {
-			this.$router.push('/addcard')
+			if (this.userinfo.isRealName !== '2') {
+				MessageBox({
+				  title: '提示',
+				  message: '请先进行实名认证！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+			} else {
+				this.$router.push('/addcard1')
+			}
 		}
 	},
 	filters: {

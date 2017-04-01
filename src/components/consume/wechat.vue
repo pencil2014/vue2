@@ -21,7 +21,7 @@
 import Qrcode from 'v-qrcode'
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 
 export default {
 	data () {
@@ -69,7 +69,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 	}
 	},
@@ -87,7 +87,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 
 	},

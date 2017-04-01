@@ -86,7 +86,7 @@ export default {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			Toast('系统出错了，正在修复中...')
+			Indicator.open({ spinnerType: 'fading-circle'})
 		})
 	},
 	methods: {
@@ -114,7 +114,7 @@ export default {
 				}
 			}).catch(function(){
 				_this.submitBtn = false;
-				Toast('系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		},
 		sendCode () {

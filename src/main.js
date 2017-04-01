@@ -13,13 +13,13 @@ Vue.config.productionTip = false
 Vue.use(Mint)
 
 // 判断用是否登录
-router.beforeEach((to, from, next) => {
-	if (!window.localStorage.token && to.path !=='/login' ) {
-		next('/login')
-	} else {
-		next()
-	}
-})
+// router.beforeEach((to, from, next) => {
+// 	if (!window.localStorage.token && to.path !=='/login' ) {
+// 		next('/login')
+// 	} else {
+// 		next()
+// 	}
+// })
 
 /* eslint-disable no-new */
 new Vue({
@@ -33,7 +33,7 @@ new Vue({
 Vue.prototype.$bus = new Vue()  // this.$bus调用
 
 // 配置全局ajax请求域名
-axios.defaults.baseURL = 'http://192.168.1.201/exsd-web/'  // 'http://120.77.22.9:8080/exsd-web/' 'http://192.168.1.155:80/exsd-web/' 'http://120.25.77.33:8999/exsd-web/'
+axios.defaults.baseURL = 'http://192.168.1.201:8080/exsd-web/'  // 'http://120.77.22.9:8080/exsd-web/' 'http://192.168.1.155:80/exsd-web/' 'http://120.25.77.33:8999/exsd-web/'
 
 if (!!window.localStorage.getItem('token')) {
 	axios.defaults.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('token')
@@ -54,7 +54,7 @@ var _hmt = _hmt || [];
 Vue.prototype.$getcache = function getcache (api) {
   let time1 = window.localStorage.getItem(api)
   let time2 = new Date().getTime() - time1
-  if (time2 < 1000 * 60 * 5) {
+  if (time2 < 1000 * 60 * 2) {
     return true
   } else {
     return false

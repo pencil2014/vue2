@@ -34,7 +34,7 @@
 					</tbody>
 				</table>
 			</mt-loadmore>
-			<div class="nodata" v-show='recommendList.length === 0'>
+			<div class="nodata" v-show='recommendList.length === 0 && nodateStatus'>
 				<img src="../../assets/images/nodata.png" alt="">
 				<p>还没有数据哦~</p>
 			</div>
@@ -45,7 +45,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll, Indicator } from 'mint-ui'
+import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -54,7 +54,8 @@ export default {
 			totalPage: 1,
 			pageSize: 20,
 			parentUserCode: '',
-			totalSize: ''
+			totalSize: '',
+			nodateStatus: false
 		}
 	},
 	methods: {
@@ -75,13 +76,14 @@ export default {
 					_this.totalSize = res.data.data.total
 					_this.totalPage = res.data.data.totalPage
 					_this.recommendList = res.data.data.list || []
+					_this.page = 2
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
 				}
 			})
 			.catch(function(){
 				Indicator.close()
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 			this.$refs.loadmore.onTopLoaded()
 		},
@@ -89,10 +91,16 @@ export default {
 			if (this.page > this.totalPage) {
 				return
 			}
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			this.loading = true
 			axios.post('recommend/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
+				Indicator.close()
+				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.parentUserCode = res.data.data.parentUserCode
 					_this.totalSize = res.data.data.total
@@ -104,7 +112,9 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Indicator.close()
+				_this.nodateStatus = true
+				Toast('系统错误！')
 			})
 		}
 	},

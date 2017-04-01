@@ -76,7 +76,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
@@ -109,7 +109,7 @@ export default {
 				MessageBox('提示', res.data.msg)
 			}
 		}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 		})
 	},
 	methods: {

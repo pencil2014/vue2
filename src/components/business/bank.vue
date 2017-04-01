@@ -38,7 +38,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -76,10 +76,10 @@ export default {
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 
-		axios.post('bankard/getDefault',qs.stringify({cardType: 1}))
+		axios.post('bankard/getDefault',qs.stringify({cardType: 2}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				if (!!res.data.data ) {
@@ -93,7 +93,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 
 	},
@@ -105,7 +105,21 @@ export default {
 			this.$router.push('/banklist1')
 		},
 		addcard () {
-			this.$router.push('/addcard1')
+			if (this.userdata.isRealName !== '2') {
+				MessageBox({
+				  title: '提示',
+				  message: '请先进行实名认证！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+			} else {
+				this.$router.push('/addcard1')
+			}
+			
 		},
 		submit () {
 			let _this = this
@@ -133,7 +147,9 @@ export default {
 				  showCancelButton: true,
 				  confirmButtonText: '去认证'
 				}).then(action => {
-					_this.$router.push('/')
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
 				})
 				return
 			}
@@ -149,19 +165,19 @@ export default {
 			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id}))
 			.then(function(res){
 				Indicator.close()
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
 					MessageBox('提示', '您成功转存'+_this.exchange+'元!')
 					_this.userdata.overMoney -= _this.exchange
 					_this.exchange = ''
 				} else {
-					_this.repeatBtn = false
 					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 
 		}

@@ -35,8 +35,8 @@
 import md5 from "blueimp-md5"
 import axios from "axios"
 import qs from "qs"
-import { MessageBox,Indicator } from 'mint-ui'
-import { mapState,  mapActions } from 'vuex'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
+// import { mapState,  mapActions } from 'vuex'
 export default {
 	data () {
 		return {
@@ -92,7 +92,7 @@ export default {
 			// 验证用户名是否存在
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				Indicator.close()
-				if (res.data.code !== '10000') {
+				if (res.data.msg === 'false') {
 					_this.repeatBtn = false 
 					MessageBox('提示', res.data.msg)
 					return
@@ -103,8 +103,8 @@ export default {
 					axios.post('user/login',qs.stringify({loginName: _this.phone, password: md5(_this.password)}))
 					.then(function(res){
 						Indicator.close()
+						_this.repeatBtn = false
 						if (res.data.code === '10000') {
-							_this.repeatBtn = false
 							window.localStorage.setItem('token', res.data.data.token)
 							// _this.changeLoginStatus(true)
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
@@ -116,13 +116,13 @@ export default {
 					.catch(function(){
 						Indicator.close()
 						_this.repeatBtn = false
-						Indicator.open({ spinnerType: 'fading-circle'})
+						Toast('系统错误！')
 					})
 				}
 			}).catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false 
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 
 		},

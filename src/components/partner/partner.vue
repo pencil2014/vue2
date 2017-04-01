@@ -46,7 +46,7 @@
 				</ul>
 			</mt-loadmore>
 		</div>
-		<div class="nodata" v-show='dataList.length === 0'>
+		<div class="nodata" v-show='dataList.length === 0  && nodateStatus'>
 			<img src="../../assets/images/nodata.png" alt="">
 			<p>还没有数据哦~</p>
 		</div>
@@ -57,7 +57,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data () {
@@ -77,7 +77,8 @@ export default {
 			pageSize: 20,
 			countyname: '',
 			cityname: '',
-			provincename: ''
+			provincename: '',
+			nodateStatus: false
 		}
 	},
 	created () {
@@ -99,7 +100,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	watch: {
@@ -197,13 +198,14 @@ export default {
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.dataList = res.data.data.list || []
+					_this.page = 2
 				} else {
 					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
 				Indicator.close()
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		loadTop () {
@@ -214,6 +216,10 @@ export default {
 			if (this.page > this.totalPage) {
 				return
 			}
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			this.loading = true
 			axios.post('shop/list',qs.stringify({
@@ -224,6 +230,8 @@ export default {
 				county: this.districtId
 			}))
 			.then(function(res){
+				Indicator.close()
+				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.dataList.push(...res.data.data.list)
@@ -233,7 +241,9 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Indicator.close()
+				_this.nodateStatus = true
+				Toast('系统错误！')
 			})
 		}
 	},

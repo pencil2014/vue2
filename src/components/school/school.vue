@@ -60,7 +60,7 @@
 			
 
 		</div>
-		<div class="nodata" v-show='dataList.length === 0'>
+		<div class="nodata" v-show='dataList.length === 0  && nodateStatus'>
 			<img src="../../assets/images/nodata.png" alt="">
 			<p>还没有数据哦~</p>
 		</div>
@@ -71,7 +71,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll, Indicator } from 'mint-ui'
+import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data () {
@@ -82,7 +82,8 @@ export default {
 			tabnum: 1,
 			page: 1,
 			totalPage: 1,
-			pageSize: 20
+			pageSize: 20,
+			nodateStatus: false
 		}
 	},
 	computed: {
@@ -121,6 +122,10 @@ export default {
 			this.$router.push({ name: 'News', params: { id: id}})
 		},
 		getdata (value,refresh) {
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			let page = refresh ? 1 : this.page
 			axios.post('artic/list',qs.stringify({
@@ -129,16 +134,21 @@ export default {
 				page: page
 			}))
 			.then(function(res){
+				Indicator.close()
+				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.page += 1
 					if (page === 1) {
 							if (value === '讲师风采') {
 								_this.teacherList = res.data.data.list || []
+								_this.page = 2
 							} else if (value === 'E享文化') {
 								_this.cultureList = res.data.data.list || []
+								_this.page = 2
 							} else {
 								_this.newsList = res.data.data.list || []
+								_this.page = 2
 							}
 						} else {
 							if (value === '讲师风采') {
@@ -155,7 +165,9 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Indicator.close()
+				_this.nodateStatus = true
+				Toast('系统错误！')
 			})
 		},
 

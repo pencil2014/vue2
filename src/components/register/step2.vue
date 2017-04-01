@@ -1,7 +1,7 @@
 <template>
 	<div class="ex-rigster-box">
 		<div class="ex-rigster-header">
-			您的好友<span v-if="name !== ''">{{name}}</span><span v-if="name === ''">{{userId}}</span><br>
+			您的好友<span v-if="name !== ''">{{name}}</span><span v-else>{{userId}}</span><br>
 			邀请您加入E享时代！
 		</div>
 		<div class="ex-rigster-info">
@@ -32,13 +32,15 @@
 	</div>
 </template>
 <script>
+import md5 from "blueimp-md5"
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
 			userId: '',
+			id: '',
 			name: '',
 			phone: '',
 			password: '',
@@ -56,6 +58,20 @@ export default {
 	},
 	created () {
 		this.userId = this.$route.params.code
+		let _this = this
+		axios.post('user/personalbase',qs.stringify({userCode: this.userId}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.id = res.data.data.id
+					_this.name = res.data.data.userName
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('系统错误！')
+			})
 	},
 	methods: {
 		getcode () {
@@ -63,10 +79,16 @@ export default {
 				MessageBox('提示', '手机号码不正确!')
 				return
 			}
+			this.code = ''
+			Indicator.open({
+			  text: '正在获取...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			// 验证用户名是否存在
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
-				if (res.data.code === '10000') {
+				Indicator.close()
+				if (res.data.msg ==='true') {
 					MessageBox('提示', "手机号码已经注册!")
 					return
 				} else {
@@ -79,6 +101,7 @@ export default {
 						smsType: 1
 					}))
 					.then(function(res){
+						Indicator.close()
 						if (res.data.code === '10000') {
 							MessageBox('提示', '验证码已经发送，请注意查收！')
 						} else {
@@ -86,11 +109,13 @@ export default {
 						}
 					})
 					.catch(function(){
-						Indicator.open({ spinnerType: 'fading-circle'})
+						Indicator.close()
+						Toast('系统错误！')
 					})
 				}
 			}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Indicator.close()
+				Toast('系统错误！')
 			})
 
 		},
@@ -130,7 +155,7 @@ export default {
 
 			// 验证用户名是否存在
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
-				if (res.data.code === '10000') {
+				if (res.data.msg ==='true') {
 					_this.repeatBtn = false 
 					Indicator.close()
 					MessageBox('提示', '手机号码已经注册!')
@@ -139,32 +164,32 @@ export default {
 
 					// 请求注册接口
 					axios.post('user/register',qs.stringify({
-						user_id:_this.userId, 
+						user_id: _this.id, 
 						login_name: _this.phone,
-						password: _this.password,
+						password: md5(_this.password),
 						phone_code: _this.code
 					}))
 					.then(function(res){
+						Indicator.close()
 						if (res.data.code === '10000') {
-							Indicator.close()
 							window.localStorage.setItem('phone', _this.phone)
 							window.localStorage.removeItem('token')
-							_this.$router.push('/index')
+							_this.$router.push('/login')
 						} else {
 							Indicator.close()
 							MessageBox('提示', res.data.msg)
 						}
 					})
 					.catch(function(){
-						ndicator.close()
+						Indicator.close()
 						_this.repeatBtn = false
-						Indicator.open({ spinnerType: 'fading-circle'})
+						Toast('系统错误！')
 					})
 				}
 			}).catch(function(){
-				ndicator.close()
+				Indicator.close()
 				_this.repeatBtn = false 
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 
 		}

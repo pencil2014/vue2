@@ -61,7 +61,7 @@
 						<span>个人银行卡</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>	
-					<router-link to="/banklist" tag="li">
+					<router-link to="/banklist1" tag="li">
 						<span>公司银行卡</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>		
@@ -104,7 +104,7 @@
 import axios from "axios"
 import qs from "qs"
 import HeadTitle from '../common/title.vue'
-import { MessageBox, DatetimePicker,Popup,Picker,Indicator } from 'mint-ui'
+import { MessageBox, DatetimePicker,Popup,Picker,Indicator, Toast } from 'mint-ui'
 export default {
 	data(){
 		return{
@@ -184,7 +184,7 @@ export default {
 				MessageBox('提示', res.data.msg)
 			}
 		}).catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	methods: {
@@ -197,7 +197,6 @@ export default {
 	    changeDate (value) {
 	    	let _this = this;
 	    	var stamp = Date.parse(value)
-
 			let year = value.getFullYear()
 			let month = value.getMonth() +1
 			let date = value.getDate()
@@ -212,7 +211,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 	    },
 	    changeSex (value) {
@@ -221,6 +220,10 @@ export default {
 	    },
 	    selSex () {
 	    	let _this = this;
+	    	if(_this.sexIndex == _this.personalData.sex){
+	    		_this.openSexSlots = false;
+	    		return 
+	    	}
 	    	let sex = _this.sexIndex === '0' ? 'girl0' : 'boy0';
 	    	_this.personalData.logoImg = sex + _this.Random(1,5)
 	    	// 改变用户资料
@@ -235,7 +238,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 	    },
 	    Random (Min,Max) {

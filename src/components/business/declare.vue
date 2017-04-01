@@ -57,6 +57,10 @@
 				<a href="javascript:;" @click='exit' class='exit'>校 验</a>
 			</div>
 			<div class="ex-declare-cnt-item">
+				<span>*买家手机</span>
+				<input type="text" placeholder="请输入买家手机" v-model.trim='commodityPhone' maxlength="11">
+			</div>
+			<div class="ex-declare-cnt-item">
 				<span>*商品名称</span>
 				<input type="text" placeholder="请输入商品名称" v-model.trim='commodityName' maxlength="15">
 			</div>
@@ -82,6 +86,7 @@ export default {
 			isEixt: '',
 			commodityName: '',
 			consumptionMoney: '',
+			commodityPhone: '',
 			userId: '',
 			realName: '',
 			hasEixt: false,
@@ -94,7 +99,8 @@ export default {
 			let rule1 = /^(M|m|B|b)?\d+$/.test(this.userCode)
 			let rule2 = this.commodityName ? true : false
 			let rule3 = /^\d+\.?\d{1,2}$/.test(this.consumptionMoney)
-			return (rule1 && rule2 && rule3) ? false : true
+			let rule4 = /^1\d{10}$/.test(this.commodityPhone)
+			return (rule1 && rule2 && rule3 && rule4) ? false : true
 		},
 	},
 	created () {
@@ -106,6 +112,9 @@ export default {
 			this.$router.go(-1)
 		},
 		exit () {
+			if (this.repeatBtn) {
+				return
+			}
 			if (!/^(M|m|B|b)?\d+$/.test(this.userCode)) {
 				MessageBox('提示', '用户编号不正确！')
 				return
@@ -115,9 +124,11 @@ export default {
 				MessageBox('提示', '买家不能为自己!')
 				return
 			}
+			this.repeatBtn = true
 			let _this = this
 			axios.post('user/personal',qs.stringify({userCode: 'M' + userCode}))
 			.then(function(res){
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
 						_this.hasEixt = true
 						_this.buyerPhone = res.data.data.phone
@@ -128,7 +139,8 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				_this.repeatBtn = false
+				Toast('系统错误！')
 			})
 
 
@@ -137,16 +149,21 @@ export default {
 			let _this = this
 			axios.post('user/isEixt',qs.stringify({phone: this.buyerPhone}))
 			.then(function(res){
-				if (res.data.code === '10000') {
-					let str = "<span>用户编号："+_this.userCode+"<br/>"+_this.realName+"<br/>"+"手机号："+ _this.buyerPhone+"</span>"
+				if (res.data.msg === 'true') {
+					let str = ''
+					if (_this.realName) {
+						str = "<span>用户编号："+_this.userCode+"<br/>"+_this.realName+"<br/>"+"手机号："+ _this.buyerPhone+"</span>"
+					} else {
+						str = "<span>用户编号："+_this.userCode+"<br/>" + "手机号："+ _this.buyerPhone+"</span>"
+					}
 						MessageBox('提示', str)
 
 				} else {
-					MessageBox('提示', '对不起验证失败！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		next () {
@@ -166,6 +183,14 @@ export default {
 				MessageBox('提示', '请校验买家用户编号!')
 				return
 			}
+			if (!(/^1\d{10}$/.test(this.commodityPhone))) {
+				MessageBox('提示', '买家手机号码不正确!')
+				return
+			}
+			if (this.buyerPhone !== this.commodityPhone) {
+				MessageBox('提示', '买家用户编号与买家手机不符！')
+				return
+			}
 			if (!this.commodityName) {
 				MessageBox('提示', '商品名称不能为空！')
 				return
@@ -181,24 +206,25 @@ export default {
 			let _this = this
 			this.repeatBtn = true
 			axios.post('declaration/insert',qs.stringify({
+				phone: this.commodityPhone,
 				userCode: this.userCode,
 				commodityName: this.commodityName,
 				consumptionMoney: this.consumptionMoney
 			}))
 			.then(function(res){
 				Indicator.close()
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
-					_this.repeatBtn = false
+					
 					_this.$router.push({ name: 'Declare2', params: { id: res.data.data.id}})
 				} else {
-					_this.repeatBtn = false
-					MessageBox('提示', '对不起提交失败！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		}
 	}

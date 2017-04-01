@@ -47,7 +47,7 @@ const Details = resolve => require(['../components/school/details'], resolve)
 const Details2 = resolve => require(['../components/school/details2'], resolve)
 const News = resolve => require(['../components/school/news'], resolve)
 const Partner = resolve => require(['../components/partner/partner'], resolve)
-
+const Partner2 = resolve => require(['../components/partner/detail'], resolve)
 
 const Message = resolve => require(['../components/message/message'], resolve)
 const Message2 = resolve => require(['../components/message/detail'], resolve)
@@ -68,7 +68,8 @@ const Feedback = resolve => require(['../components/feedback/feedback'], resolve
 const Version = resolve => require(['../components/version/version'], resolve)
 const Realname = resolve => require(['../components/realname/realname'], resolve)
 const User = resolve => require(['../components/user/user'], resolve)
-const Notice = resolve => require(['../components/notice/notice'], resolve)
+const Notice1 = resolve => require(['../components/notice/step1'], resolve)
+const Notice2 = resolve => require(['../components/notice/step2'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -261,6 +262,11 @@ export default new Router({
       component: Partner
     },
     {
+      path: '/partner/:id',
+      name: 'Partner2',
+      component: Partner2
+    },
+    {
       path: '/message/:id',
       name: 'Message',
       component: Message
@@ -342,9 +348,14 @@ export default new Router({
     },
     {
       path: '/notice',
-      name: 'Notice',
-      component: Notice
-    },  
+      name: 'Notice1',
+      component: Notice1
+    },
+    {
+      path: '/notice/:id',
+      name: 'Notice2',
+      component: Notice2
+    },
     {
     	path:'*', 
     	redirect:'/login'

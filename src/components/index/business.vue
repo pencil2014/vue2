@@ -46,7 +46,7 @@
 						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-if="userinfo.logoImg">
 					</a>
 					<!-- <p class="name">{{userinfo.userName}}</p> -->
-					<p class="code">ID:{{userinfo.userCode}}</p>
+					<p class="code">ID:{{userinfo.userCode | formatcode}}</p>
 				</div>
 				<div class="ex-index-money">
 					<p>账户余额(元)</p>
@@ -140,7 +140,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data () {
@@ -172,7 +172,6 @@ export default {
 		  	 jeProportion: ''
 		  },
 		  userVipStatus: {},
-		  isConstomer: false,
 		  customerService: false,
 		  repeatBtn: false
 		}
@@ -194,19 +193,23 @@ export default {
 			axios.post('user/switchUser',qs.stringify({type: 2}))
 				.then(function(res){
 					Indicator.close()
+					_this.repeatBtn = false
 					if (res.data.code === '10000') {
 						window.localStorage.setItem('token', res.data.data.token)
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 						_this.$router.push('/index')
 					} else {
-						_this.repeatBtn = false
-						MessageBox('提示', '切换失败，请稍后重试！')
+						if (res.data.msg === '当前已是会员模式') {
+							_this.$router.push('/index')
+						} else {
+							MessageBox('提示', res.data.msg)
+						}
 					}
 				})
 				.catch(function(){
 					Indicator.close()
 					_this.repeatBtn = false
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 				})
 		},
 		gouser () {
@@ -241,7 +244,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		},
 		getsysIndex () {
@@ -255,7 +258,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		},
 		getexamine () {
@@ -269,28 +272,19 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		}
 	},
 	filters: {
 		checknum (value) {
 			return value ? value : 0
+		},
+		formatcode (value) {
+			return value.replace('M','B')
 		}
 	},
 	watch: {
-		userinfo () {
-			if (this.userinfo.phone) {
-				let _this = this
-				// 获取用户是否为商家
-				axios.post('shop/isShopp',qs.stringify({phone: this.userinfo.phone})).then(function(res){
-				if (res.data.code === '10000') {
-							_this.isConstomer = res.data.msg
-						} else {
-						}
-					}).catch(function(){})
-			}
-		}
 	},
 	created () {
 		let phone = window.localStorage.getItem('phone')

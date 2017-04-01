@@ -44,7 +44,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox,Indicator } from 'mint-ui'
+import { MessageBox,Indicator,Toast } from 'mint-ui'
 import lrz from 'lrz'
 export default {
 	data () {
@@ -91,7 +91,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 
 	},
@@ -137,18 +137,18 @@ export default {
 			axios.post('upload/pic_min',formData)
 			.then(function(res){
 				Indicator.close()
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
 					_this.resurl = res.data.urls
 					_this.check()
 				} else {
-					_this.repeatBtn = false
 					MessageBox('提示', '提交失败，请稍后重试！')
 				}
 			})
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		check () {
@@ -165,18 +165,17 @@ export default {
 			}))
 			.then(function(res){
 				Indicator.close()
+				_this.repeatBtn = false
 				if (res.data.code === '10000') {
-					_this.repeatBtn = false
 					_this.$router.push({ name: 'Declare3', params: { id: _this.id}})
 				} else {
-					_this.repeatBtn = false
-					MessageBox('提示', '提交失败，请稍后重试！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		}
 	}

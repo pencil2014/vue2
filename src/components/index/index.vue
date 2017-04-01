@@ -43,11 +43,11 @@
 						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-if="userinfo.logoImg">
 					</a>
 					<!-- <p class="name">{{userinfo.userName}}</p> -->
-					<p class="code">ID:{{userinfo.userCode}}</p>
+					<p class="code">ID:{{userinfo.userCode | formatcode}}</p>
 				</div>
 				<div class="ex-index-money">
 					<p>账户余额(元)</p>
-					<b class='money'>{{userinfo.overMoney | checknum}}</b>
+					<b class='money'>{{userinfo.overMoney}}</b>
 					<p>提现审核中(元)：<b class="money2">{{userinfo.freezeMoney | checknum}}</b></p>
 				</div>
 				<div class="ex-index-switch">
@@ -112,7 +112,7 @@
 				<li v-show='userinfo.userLev !=="2"'>
 					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>
 				</li>
-				<li v-show='isConstomer'>
+				<li v-show="userinfo.shopsStatus !== '2'">
 					<a href="javascript:;" @click='gotoshop'>
 					<i class="iconfont m8">&#xe600;</i>
 					<span v-if='userinfo.shopsStatus ==="-1" || userinfo.shopsStatus ==="0"'>商家申请</span>
@@ -148,7 +148,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data () {
@@ -180,7 +180,6 @@ export default {
 		  	 jeProportion: ''
 		  },
 		  userVipStatus: {},
-		  isConstomer: false,
 		  customerService: false,
 		  repeatBtn: false
 		}
@@ -202,19 +201,23 @@ export default {
 			axios.post('user/switchUser',qs.stringify({type: 1}))
 				.then(function(res){
 					Indicator.close()
+					_this.repeatBtn = false
 					if (res.data.code === '10000') {
 						window.localStorage.setItem('token', res.data.data.token)
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 						_this.$router.push('/business')
 					} else {
-						_this.repeatBtn = false
-						MessageBox('提示', '切换失败，请稍后重试！')
+						if (res.data.msg === '当前已是商家模式') {
+							_this.$router.push('/business')
+						} else {
+							MessageBox('提示', res.data.msg)
+						}
 					}
 				})
 				.catch(function(){
 					Indicator.close()
 					_this.repeatBtn = false
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 				})
 		},
 		gouser () {
@@ -256,7 +259,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		},
 		getsysIndex () {
@@ -270,7 +273,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		},
 		getexamine () {
@@ -284,21 +287,19 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		}
 	},
 	filters: {
 		checknum (value) {
 			return value ? value : 0
+		},
+		formatcode (value) {
+			return value.replace('B','M')
 		}
 	},
 	watch: {
-		userinfo () {
-			if (this.userinfo.shopsStatus) {
-				 return this.userinfo.shopsStatus === '2' ? false : true
-			}
-		}
 	},
 	computed: {
 	},

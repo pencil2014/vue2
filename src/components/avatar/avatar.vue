@@ -96,7 +96,7 @@ export default {
 					Toast('提示', res.data.msg)
 				}
 			}).catch(function(){
-				Toast('提示', '系统出错了，正在修复中...')
+				Indicator.open({ spinnerType: 'fading-circle'})
 			})
 	    }
 	},
@@ -114,7 +114,7 @@ export default {
 				Toast('提示', res.data.msg)
 			}
 		}).catch(function(){
-			Toast('提示', '系统出错了，正在修复中...')
+			Indicator.open({ spinnerType: 'fading-circle'})
 		})
 	},
 	methods: {
@@ -140,7 +140,7 @@ export default {
 					Toast('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Toast('提示', '系统出错了，正在修复中...Toast')
+					Indicator.open({ spinnerType: 'fading-circle'})
 			})
 		}
 	}

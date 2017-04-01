@@ -54,7 +54,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -141,7 +141,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	methods: {
@@ -214,8 +214,8 @@ export default {
 </script>
 
 <style scoped>
-.ex-shop1{background-color: #f4f5f7;}
-.ex-shop-progress {padding: 2rem 0; text-align: center; overflow: hidden; position: relative;}
+.ex-shop1{ position:absolute; width: 100%; min-height: 100%;}
+.ex-shop-progress {padding: 2rem 0; text-align: center; overflow: hidden; position: relative;background-color: #f4f5f7;}
 .ex-shop-progress .percent { height: 0.4rem; background-color: #e3e3e3;position: absolute; top: 3.2rem; left: 5rem; right: 5.5rem;}
 .ex-shop-progress-item { width: 33%; float: left; height: 5rem;  text-align: center; z-index: 2; position: relative;}
 .ex-shop-progress-item.secend {margin: 0;}

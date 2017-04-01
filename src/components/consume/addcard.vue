@@ -37,7 +37,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -94,7 +94,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	methods: {
@@ -123,7 +123,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		countdownFn () {
@@ -179,7 +179,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		}
 	}

@@ -58,7 +58,7 @@ export default {
 				MessageBox('提示', res.data.msg)
 			}
 		}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 		})
 	},
 	methods: {

@@ -7,14 +7,15 @@
 		</div>
 		<div class="ex-message-list">
 			<div class="ex-message-item" ref="wrapper">	
+			
 				<ul
 				  v-infinite-scroll="loadMore"
 				  infinite-scroll-disabled="loading"
 				   infinite-scroll-distance="10"
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
-					<li v-for="(item, index) in list" @click="todetail(item.id)" v-show="item.messageType == messageType">
-						<span class="title" v-text="item.messageTitle" :class="{read:item.isRead === '1'}"></span>
+					<li v-for="(item, index) in list" @click="todetail(item.id)" :class="{read:item.isRead == '1'}">
+						<span class="title" v-text="item.messageTitle"></span>
 						<span class="time">{{item.pushTime | localTime}}</span>
 					</li>
 					</mt-loadmore>
@@ -38,7 +39,7 @@ export default {
 			list:[],
 			page: 1,
 			totalPage: 1,
-			pageSize: 7,
+			pageSize: 20,
 			modal: {
 				text:'我的消息',
 				fixed: true
@@ -55,9 +56,9 @@ export default {
 	        },
 		}
 	},
-	// watch: {
-	// 	'$route': 'loadTop' 
-	// },
+	watch: {
+		'$route': 'loadTop' 
+	},
 	computed: {
 		messageType () {
 		    return this.$route.params.id
@@ -78,9 +79,6 @@ export default {
 		},
 		loadTop () {
 			let _this = this;
-			if(document.body.scrollTop !== 0){
-				return;
-			}
 			axios.post('message/list',qs.stringify({
 				messageType: _this.messageType,	
 				pageSize: _this.pageSize,
@@ -93,7 +91,7 @@ export default {
 					_this.page = 2
 				} else {	
 					Toast('对不起数据加载失败！')
-				}	
+				}
 			}).catch(function(){
 				Indicator.close();
 				Indicator.open({ spinnerType: 'fading-circle'})
@@ -109,7 +107,7 @@ export default {
 			axios.post('message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
-				//messageType: _this.messageType
+				messageType: _this.messageType
 			})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.list.push(...res.data.data.list);
@@ -147,10 +145,10 @@ position: fixed;width: 100%;top: 58px;z-index: 1000;}
 .tabbar .m2{margin:0 15% 0 5%;width: 30%;float: left;}
 .active{border-bottom: solid 3px rgb(4,112,182);color: rgb(4,112,182);}
 .ex-message-item{padding-top: 106px;}
-.ex-message-item li{display: block;font-size: 1.4rem;background: #fff;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
+.ex-message-item li{display: block;font-size: 1.4rem;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;background: rgb(241,250,255)}
 .ex-message-item li:last-child{border-bottom: none;}
 .ex-message-item .title{}
 .ex-message-item .time{color: rgb(196,201,209);float: right;padding-top: 5px;}
-.ex-message-item li.read{background: rgb(241,250,255);}
+.ex-message-item li.read{background: #fff;color: #aaafb6;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>

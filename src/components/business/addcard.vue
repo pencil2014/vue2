@@ -2,7 +2,7 @@
 	<div class="ex-addcard">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>添加银行卡</span>
+			<span>添加公司银行卡</span>
 		</div>
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
@@ -40,7 +40,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -95,11 +95,11 @@ export default {
 				_this.phone = res.data.data.phone
 				_this.userphone =  res.data.data.phone
 			} else {
-				MessageBox('提示', '请求数据失败！')
+				MessageBox('提示', res.data.msg)
 			}
 		})
 		.catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	methods: {
@@ -128,7 +128,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		countdownFn () {
@@ -188,7 +188,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		}
 	}

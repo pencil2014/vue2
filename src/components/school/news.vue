@@ -20,7 +20,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -40,12 +40,11 @@ export default {
 				if (res.data.code === '10000') {
 					_this.article = res.data.data
 				} else {
-					_this.repeatBtn = false
 					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 	},
 	filters: {

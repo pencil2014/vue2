@@ -26,7 +26,9 @@
 </template>
 
 <script>
-import { MessageBox } from 'mint-ui'
+import axios from "axios"
+import qs from "qs"
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data(){
 		return {
@@ -44,7 +46,25 @@ export default {
 				MessageBox('提示', 'ID号为字母M(m)或B(b)加数字！')
 				return
 			}
-			this.$router.push({ name: 'Register2', params: { code: this.code}})
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
+			let _this = this
+			axios.post('user/personalbase',qs.stringify({userCode: this.code}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.$router.push({ name: 'Register2', params: { code: _this.code}})
+				} else {
+					MessageBox('提示', res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('系统错误！')
+			})
+			
 		},
 		showbtn () {
 			this.showlogin = true
