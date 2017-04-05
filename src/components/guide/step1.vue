@@ -5,12 +5,14 @@
 			:top-method="loadTop" 
 			ref="loadmore"
 			>
+				<no-data :hasdata="hasdata"></no-data>
 				<div class="ex-guide-list">
 					<div class="ex-guide-item">
 						<ul
 							v-infinite-scroll="loadMore" 	infinite-scroll-disabled="loading"
 							infinite-scroll-distance="10"
 						>
+
 							<li v-for="(item, index) in list" :id="item.id" @click="toDetail(item.id)">
 								<span v-text="item.articleTitle"></span>
 								<i class="iconfont" >&#xe606;
@@ -25,8 +27,9 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { Toast , Loadmore ,InfiniteScroll } from 'mint-ui'
+import { Toast , Loadmore ,InfiniteScroll,Indicator } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import NoData from '../common/nodata.vue'
 export default {
 	data(){
 		return{
@@ -37,11 +40,18 @@ export default {
 			list:[],
 			page: 1,
 			totalPage: 1,
-			pageSize: 20
+			pageSize: 20,
+			nodateStatus:false
 		}
 	},
-	components: {
-		HeadTitle
+	computed: {
+		hasdata () {
+			if(this.nodateStatus && this.list.length === 0){
+				return false
+			}else{
+				return true
+			}
+		},
 	},
 	methods: {
 		back () {
@@ -53,6 +63,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this;
+			_this.nodateStatus = false
 			axios.post('artic/list',qs.stringify({
 				article_type_name: '使用指南',
 				pageSize: _this.pageSize,
@@ -62,6 +73,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.list = res.data.data.list || [];
 					_this.totalPage = res.data.data.totalPage
+					_this.nodateStatus = true
 				} else {	
 					Toast('对不起数据加载失败！')
 				}
@@ -77,6 +89,7 @@ export default {
 			}
 			let _this = this
 			this.loading = true;
+			_this.nodateStatus = false
 			axios.post('artic/list',qs.stringify({
 				article_type_name: '使用指南',
 				pageSize: _this.pageSize,
@@ -87,6 +100,7 @@ export default {
 					_this.totalPage = res.data.data.totalPage
 					_this.list.push(...res.data.data.list)
 					_this.page += 1
+					_this.nodateStatus = true
 				} else {
 					Toast('对不起数据加载失败！')
 				}
@@ -99,7 +113,11 @@ export default {
 			let listId = id;
 			this.$router.push({ name: 'Guide2', params: { id: listId}})
 		},
-	}
+	},
+	components: {
+		HeadTitle,
+		NoData
+	},
 }
 </script>
 <style scoped>

@@ -26,6 +26,7 @@ const Bankpay = resolve => require(['../components/consume/bankpay'], resolve)
 const Shop1 = resolve => require(['../components/consume/shop1'], resolve)
 const Shop2 = resolve => require(['../components/consume/shop2'], resolve)
 const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
+const Integral2 = resolve => require(['../components/consume/integraldetail'], resolve)
 
 const Declare = resolve => require(['../components/business/declare'], resolve)
 const Declare2 = resolve => require(['../components/business/declare2'], resolve)
@@ -70,6 +71,7 @@ const Realname = resolve => require(['../components/realname/realname'], resolve
 const User = resolve => require(['../components/user/user'], resolve)
 const Notice1 = resolve => require(['../components/notice/step1'], resolve)
 const Notice2 = resolve => require(['../components/notice/step2'], resolve)
+
 
 // 导出路由配置
 export default new Router({
@@ -356,6 +358,12 @@ export default new Router({
       name: 'Notice2',
       component: Notice2
     },
+    {
+      path: '/integraldetail/:id',
+      name: 'Integral2',
+      component: Integral2
+    },
+    
     {
     	path:'*', 
     	redirect:'/login'

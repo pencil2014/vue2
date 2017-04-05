@@ -60,11 +60,11 @@
 
 			<div class="ex-index-integral">
 				<div class="integral border" >
-					<p>E积分：{{userinfo.integralA}}</p>
-					<p>享积分：{{userinfo.integral}}</p>
+					<p>E积分：{{userinfo.integralA | checknum}}</p>
+					<p>享积分：{{userinfo.integral | checknum}}</p>
 				</div>
 				<div class="integral">
-					<p>激励E积分：{{userinfo.integralB}}</p>
+					<p>激励E积分：{{userinfo.integralB | checknum}}</p>
 					<p>激励比例：{{sysData.jeProportion}}</p>
 				</div>
 			</div>
@@ -84,11 +84,11 @@
 					<tr>
 						<td>
 							<b>昨日交易总额</b>
-							<span>{{sysData.totalShareMoney}}（元）</span>
+							<span>{{sysData.totalShareMoney | checknum}}（元）</span>
 						</td>
 						<td>
 							<b>昨日分享平均值</b>
-							<span>{{sysData.yesterdayMoney}}（元）</span>
+							<span>{{sysData.yesterdayMoney | checknum}}（元）</span>
 						</td>
 					</tr>
 				</table>
@@ -276,9 +276,17 @@ export default {
 			})
 		}
 	},
+	beforeRouteLeave (to,from,next) {
+		 window.localStorage.setItem('integralPath', '/business')
+		 next()
+	},
 	filters: {
 		checknum (value) {
-			return value ? value : 0
+			value = value? value+'' : '0'
+			let num = '0.00'
+			num = value >= 0 ? value : '0.00' 
+			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+			return num 
 		},
 		formatcode (value) {
 			return value.replace('M','B')

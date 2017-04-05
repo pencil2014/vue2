@@ -3,6 +3,9 @@
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>享积分操作</span>
+			<router-link to="/integraldetail/1" tag="label" class="right">
+				明细
+			</router-link>
 		</div>
 		<div class="ex-integral-cnt">
 			<span class='title'>兑换的享积分</span>
@@ -30,7 +33,8 @@ export default {
 		return {
 			integral: 0,
 			exchange: '',
-			repeatBtn: false
+			repeatBtn: false,
+			path: '/index'
 		}
 	},
 	computed: {
@@ -60,10 +64,14 @@ export default {
 			.catch(function(){
 				Toast('系统错误！')
 			})
+		let path = window.localStorage.getItem('integralPath')
+		if (path) {
+			this.path = path
+		}
 	},
 	methods: {
 		back () {
-			this.$router.go(-1)
+			this.$router.push(this.path)
 		},
 		submit () {
 			if (!/^\d+$/.test(this.exchange)) {
@@ -119,6 +127,7 @@ export default {
 </script>
 
 <style scoped>
+.ex-topbar .right{position: absolute;right: 0;top: 0;bottom: 0;width: 5rem;line-height: 5rem;color: #fff;text-align: center;font-size: 1.6rem;}
 .ex-integral {height: 100%; background-color: #f4f5f7;}
 .ex-integral-cnt {background-color: #fff; margin: 2rem 0; padding:2rem 1rem;}
 .ex-integral-cnt .title { font-size: 1.4rem; color: #5d646e; padding: 1rem 0; }

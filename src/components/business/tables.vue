@@ -72,7 +72,7 @@ export default {
 					_this.tableList = array || []
 					_this.page = 2
 				} else {
-					MessageBox('提示', '对不起数据加载失败！')
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -94,6 +94,7 @@ export default {
 			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
+				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					let array = res.data.data.list.filter(function(item) {
@@ -107,6 +108,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
+				_this.nodateStatus = true
 				Toast('系统错误！')
 			})
 		}

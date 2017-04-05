@@ -2,17 +2,20 @@
 	<div class="ex-user">
 		<div class="ex-header">
 			<div class="userdata">
-				<img src="../../assets/images/head.png" alt="" v-if="avatar === 'default'">
-				<img src="../../assets/images/girl01.png" alt="" v-if="avatar === 'girl01'">
-				<img src="../../assets/images/girl02.png" alt="" v-if="avatar === 'girl02'">
-				<img src="../../assets/images/girl03.png" alt="" v-if="avatar === 'girl03'">
-				<img src="../../assets/images/girl04.png" alt="" v-if="avatar === 'girl04'">
-				<img src="../../assets/images/girl05.png" alt="" v-if="avatar === 'girl05'">
-				<img src="../../assets/images/boy01.png" alt="" v-if="avatar === 'boy01'">
-				<img src="../../assets/images/boy02.png" alt="" v-if="avatar === 'boy02'">
-				<img src="../../assets/images/boy03.png" alt="" v-if="avatar === 'boy03'">
-				<img src="../../assets/images/boy04.png" alt="" v-if="avatar === 'boy04'">
-				<img src="../../assets/images/boy05.png" alt="" v-if="avatar === 'boy05'">
+				<router-link to="/personal" tag="span" class="avatar">
+					<img src="../../assets/images/head.png" alt="" v-if="avatar === 'default'">
+					<img src="../../assets/images/girl01.png" alt="" v-if="avatar === 'girl01'">
+					<img src="../../assets/images/girl02.png" alt="" v-if="avatar === 'girl02'">
+					<img src="../../assets/images/girl03.png" alt="" v-if="avatar === 'girl03'">
+					<img src="../../assets/images/girl04.png" alt="" v-if="avatar === 'girl04'">
+					<img src="../../assets/images/girl05.png" alt="" v-if="avatar === 'girl05'">
+					<img src="../../assets/images/boy01.png" alt="" v-if="avatar === 'boy01'">
+					<img src="../../assets/images/boy02.png" alt="" v-if="avatar === 'boy02'">
+					<img src="../../assets/images/boy03.png" alt="" v-if="avatar === 'boy03'">
+					<img src="../../assets/images/boy04.png" alt="" v-if="avatar === 'boy04'">
+					<img src="../../assets/images/boy05.png" alt="" v-if="avatar === 'boy05'">
+				</router-link>
+				
 				<div class="text">
 					<p class="name" v-text="userinfo.userName"></p>
 					<p class="userid">ID：{{userinfo.userCode}}</p>
@@ -141,9 +144,10 @@ export default {
 .ex-user{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 56px;}
 .ex-header{	width: 100%;height: 25%;background: url(../../assets/images/pc_bg.jpg) no-repeat;background-position: 50%;background-size: cover;zoom: 1 !important;position: relative;}
 .ex-header .userdata{position: absolute;top: 50%;margin: -3rem 0 0 1rem;}
-.ex-header .userdata img{border-radius: 50%;border: solid #fff 4px;width: 6rem;float: left;background: #fff}
+.ex-header .avatar{display: inline-block;border-radius: 50%;border: solid #fff 4px;width: 6rem;height: 6rem;overflow: hidden;float: left;background: #fff;}
+.ex-header .userdata img{overflow: hidden;}
 .ex-header .text{float: left;padding: 1rem 0 0 1rem;font-size: 1.6rem;color: rgba(255,255,255,0.5);}
-.ex-header .text .name{font-size: 2.2rem;color: #fff !important;}
+.ex-header .text .name{font-size: 2rem;color: #fff !important;max-width: 9rem;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;}
 .ex-header .identity{display: inline-block;width: 10rem;background: #fff;text-align: center;text-indent: 2em;border-radius: 20px 0 0 20px;height: 32px;line-height: 32px;position: absolute;top: 50%;margin-top: -18px;right: 0px;background: rgb(170,231,255);color: rgb(12,135,213);font-size: 1.6rem;}
 .ex-header .vip{background: rgb(245,174,38);color: #fff;}
 .ex-header .vip img{width: 26px;position: absolute;top: 50%;margin-top: -13px;left: 3px;}

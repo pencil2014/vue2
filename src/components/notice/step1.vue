@@ -9,6 +9,7 @@
 				   infinite-scroll-distance="10"
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
+				 	<no-data :hasdata="hasdata"></no-data>
 					<li v-for="(item, index) in list" @click="todetail(item.id)">
 					    <span class="title" v-text="item.messageTitle" :class="{read:item.isRead == '1'}" ></span> <br/>
 						<span class="summary">{{item.messageContent | formatHtml}}</span>
@@ -28,6 +29,7 @@ import axios from "axios"
 import qs from "qs"
 import { Indicator, Loadmore ,InfiniteScroll,Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import NoData from '../common/nodata.vue'
 export default {
 	data(){
 		return{
@@ -40,10 +42,17 @@ export default {
 				fixed: 'fixed'
 			},
 			loading:false,
+			nodateStatus:false
 		}
 	},
-	components: {
-		HeadTitle
+	computed: {
+		hasdata () {
+			if(this.nodateStatus && this.list.length === 0){
+				return false
+			}else{
+				return true
+			}
+		},
 	},
 	methods: {
 		back () {
@@ -54,6 +63,7 @@ export default {
 		},
 		loadTop () {
 			let _this = this;
+			_this.nodateStatus = false
 			axios.post('message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: 1,
@@ -63,6 +73,7 @@ export default {
 					_this.list = res.data.data.list || [];
 					_this.totalPage = res.data.data.totalPage
 					_this.page = 2
+					_this.nodateStatus = true
 				} else {	
 					Toast('对不起数据加载失败！')
 				}
@@ -77,6 +88,7 @@ export default {
 				return
 			}
 			_this.loading = true;
+			_this.nodateStatus = false
 			axios.post('message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
@@ -87,6 +99,7 @@ export default {
 					_this.totalPage = res.data.data.totalPage
 					_this.page += 1;
 					_this.loading = false;
+					_this.nodateStatus = true
 				} else {	
 					Toast('对不起数据加载失败！')
 				}
@@ -111,7 +124,11 @@ export default {
 			let result1 = value.replace(/<[img].*?>/gim,"[图片]")
 			return result1.replace(/<.*?>/gim,"") 
 		}	
-	}
+	},
+	components: {
+		HeadTitle,
+		NoData
+	},
 }
 </script>
 <style>

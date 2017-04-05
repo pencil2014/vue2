@@ -71,7 +71,7 @@
 			<div class="ex-declare-item" v-if="checkdata.consumptionCertificate">
 				<span>消费凭证</span>
 				<div class="img">
-					<img :src="checkdata.consumptionCertificate">
+					<img :src="checkdata.consumptionCertificate" @click='preimg(checkdata.consumptionCertificate)'>
 				</div>
 			</div>
 			<!-- <div class="ex-declare-item" v-if='checkdata.physicalPic'>
@@ -83,11 +83,12 @@
 			<div class="ex-declare-item"  v-if="checkdata.transferVoucher">
 				<span>让利款转款凭据</span>
 				<div class="img">
-					<img :src="checkdata.transferVoucher" >
+					<img :src="checkdata.transferVoucher"  @click='preimg(checkdata.transferVoucher)'>
 				</div>
 			</div>
 		</div>
 		<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>
+		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
 
@@ -95,12 +96,17 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import imgPreview from '../common/image'
 export default {
 	data () {
 		return {
 			id: '',
 			checkdata: '',
-			auditOpinion: ''
+			auditOpinion: '',
+			imgpre: {
+				show: false,
+				url: ''
+			}
 		}
 	},
 	computed: {
@@ -115,6 +121,9 @@ export default {
 				return 3
 			}
 		}
+	},
+	components: {
+		imgPreview
 	},
 	created () {
 		this.id = this.$route.params.id
@@ -134,6 +143,14 @@ export default {
 
 	},
 	methods: {
+		preimg (url) {
+			this.imgpre.url = url,
+			this.imgpre.show = true
+		},
+		hidepre () {
+			this.imgpre.show = false,
+			this.imgpre.url = ''
+		},
 		back () {
 			this.$router.go(-1)
 		},

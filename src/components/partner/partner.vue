@@ -8,7 +8,6 @@
 				<i class="iconfont" v-show='!showsub'>&#xe60d;</i>
 				<i class="iconfont" v-show='showsub'>&#xe60e;</i>
 			</p>
-				
 			<h3 class="title">联盟商家</h3>
 		</div>
 		<div class="ex-city-box" v-show='showsub'>
@@ -33,10 +32,10 @@
 				<ul
 					v-show='dataList.length > 0'
 					v-infinite-scroll="loadMore"
-	  			infinite-scroll-disabled="loading"
-	  			infinite-scroll-distance="10"
+	  				infinite-scroll-disabled="loading"
+	  				infinite-scroll-distance="10"
 				>
-					<li v-for='item in dataList'>
+					<li v-for='item in dataList' @click="toDetail(item.id)">
 						<p class="img"><img :src="item.facadePhoto" alt=""></p>
 						<div class="info">
 							<h3>{{ item.shopsName | substr}}</h3>
@@ -132,6 +131,9 @@ export default {
 		}
 	},
 	methods: {
+		toDetail (id) {
+			this.$router.push({ name: 'Partner2', params: { id: id}})
+		},
 		showcity () {
 			this.showsub = !this.showsub
 		},
@@ -198,7 +200,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.dataList = res.data.data.list || []
-					_this.page = 2
+					_this.page = 2;
 				} else {
 					MessageBox('提示', res.data.msg)
 				}
@@ -216,10 +218,6 @@ export default {
 			if (this.page > this.totalPage) {
 				return
 			}
-			Indicator.open({
-			  text: '数据加载中...',
-			  spinnerType: 'fading-circle'
-			})
 			let _this = this
 			this.loading = true
 			axios.post('shop/list',qs.stringify({

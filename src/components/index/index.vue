@@ -47,7 +47,7 @@
 				</div>
 				<div class="ex-index-money">
 					<p>账户余额(元)</p>
-					<b class='money'>{{userinfo.overMoney}}</b>
+					<b class='money'>{{userinfo.overMoney | checknum}}</b>
 					<p>提现审核中(元)：<b class="money2">{{userinfo.freezeMoney | checknum}}</b></p>
 				</div>
 				<div class="ex-index-switch">
@@ -60,14 +60,14 @@
 					<i class="iconfont">&#xe65b;</i>
 					<p>
 						<label>E积分</label>
-						<span>{{userinfo.integralA}}</span>
+						<span>{{userinfo.integralA | checknum}}</span>
 					</p>
 				</div>
 				<div class="integral">
 					<i class="iconfont">&#xe680;</i>
 					<p>
 						<label>享积分</label>
-						<span>{{userinfo.integral}}</span>
+						<span>{{userinfo.integral | checknum}}</span>
 					</p>
 				</div>
 			</div>
@@ -87,11 +87,11 @@
 					<tr>
 						<td>
 							<b>昨日交易总额</b>
-							<span>{{sysData.totalShareMoney}}（元）</span>
+							<span>{{sysData.totalShareMoney | checknum}}（元）</span>
 						</td>
 						<td>
 							<b>昨日分享平均值</b>
-							<span>{{sysData.yesterdayMoney}}（元）</span>
+							<span>{{sysData.yesterdayMoney | checknum}}（元）</span>
 						</td>
 					</tr>
 				</table>
@@ -291,9 +291,17 @@ export default {
 			})
 		}
 	},
+	beforeRouteLeave (to,from,next) {
+		 window.localStorage.setItem('integralPath', '/index')
+		 next()
+	},
 	filters: {
 		checknum (value) {
-			return value ? value : 0
+			value = value? value+'' : '0'
+			let num = '0.00'
+			num = value >= 0 ? value : '0.00' 
+			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+			return num 
 		},
 		formatcode (value) {
 			return value.replace('B','M')
