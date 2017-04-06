@@ -77,7 +77,8 @@ export default {
 			countyname: '',
 			cityname: '',
 			provincename: '',
-			nodateStatus: false
+			nodateStatus: false,
+			loading: false
 		}
 	},
 	created () {
@@ -257,7 +258,15 @@ export default {
 				return value
 			}
 		}
-	}
+	},
+	beforeRouteLeave (to,from,next) {
+		let path = window.localStorage.getItem('integralPath')
+		if(to.path !== path && to.path === '/index'){
+			next(path)
+		}else{
+			next()
+		}
+	},
 }	
 </script>
 

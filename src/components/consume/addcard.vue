@@ -7,7 +7,7 @@
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
-				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card'>
+				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard">
 			</div>
 			<div class="ex-addcard-name">
 				<label for="name">开户行:</label>中国<input type="text" name="" id="name" placeholder="请输入" v-model.trim='banks'>银行
@@ -56,7 +56,7 @@ export default {
 	},
 	computed: {
 		disableBtn () {
-			let rule1 = /^\d{16,}$/.test(this.card) ? true :false
+			let rule1 = /^\d{16,}$/.test(this.card2) ? true :false
 			let rule2 = this.city ? true :false
 			let rule3 = this.branch ? true :false
 			let rule4 = /^1\d{10}$/.test(this.phone) ? true :false
@@ -79,6 +79,9 @@ export default {
 			} else {
 				return this.city +'市'+this. branch +'支行'
 			}
+		},
+		card2 () {
+			return this.card.replace(/\s/g,'')
 		}
 
 	},
@@ -100,6 +103,10 @@ export default {
 	methods: {
 		back () {
 			this.$router.go(-1)
+		},
+		formatcard () {
+			let card = this.card;
+			this.card = card.replace(/\s/g, '').replace(/(.{4})/g, "$1 ");
 		},
 		getcode () {
 			if (!(/^1\d{10}$/.test(this.phone))) {
@@ -138,7 +145,7 @@ export default {
 			},1000)
 		},
 		submit () {
-			if (!/^\d{16,}$/.test(this.card)) {
+			if (!/^\d{16,}$/.test(this.card2)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
 			}
@@ -159,7 +166,7 @@ export default {
 			})
 			let _this = this
 			axios.post('bankard/add',qs.stringify({
-				cardNo: this.card,
+				cardNo: this.card2,
 				banks: this.bankname,
 				branch: this.branchname,
 				phone: this.phone,
@@ -187,7 +194,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-addcard { font-size: 1.4rem; padding-bottom: 5rem;  height: 100%;}
+.ex-addcard { font-size: 1.4rem; padding-bottom: 5rem;}
 .ex-addcard-cnt {background-color: #f4f5f7;position: absolute; top: 5rem; left: 0; width: 100%;}
 .ex-addcard-cnt .tips{ color: #5d646e; padding: 1.5rem 1rem; line-height: 1.5; font-size: 1.2rem;}
 .ex-addcard-cnt div {background-color: #fff;  vertical-align: middle;}

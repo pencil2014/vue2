@@ -4,21 +4,40 @@
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>银行转存</span>
 		</div>
+		<div class="ex-bank-balance">
+			当前账户余额：<span class="orange">{{userdata.overMoney | checknum}}</span>
+		</div>
 		<div class="ex-bank-cnt">
-			<div class="ex-bank-balance">
-				当前账户余额：{{userdata.overMoney | checknum}}
-			</div>
-			<div class="ex-bank-exchange">
-				<label for="exchange">转存金额</label>
-				<input type="text" name="" id="exchange" v-model='exchange' placeholder="请输入金额">
-			</div>
+			<table class="table">
+				<tr class="money">
+					<td>转存金额</td>
+					<td><input type="number" placeholder="请输入金额" v-model.trim='exchange' id="exchange" @input="maxmoney"></td>
+				</tr>
+				<tr class="option">
+					<td>请选择</td>
+					<td>
+						<span :class="{'select':selectType === 1}" @click="option(1)">
+							<i class="radio"></i>
+							<label for="">个人卡</label>
+						</span><br>
+						<span :class="{'select':selectType === 2}" @click="option(2)">
+							<i class="radio"></i>
+							<label for="">公司卡</label>
+						</span>
+					</td>
+				</tr>
+			</table>
 			<div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
-				<label for="">银 行 卡：</label>
-				<div class='bankinfo'>
-					<p class="name">{{bankdata.banks}}</p>
-					<p class="number">{{bankdata.cardNo | card}}</p>
-				</div>
-				<span class='arrow'><i class='iconfont'>&#xe606;</i></span>
+				<span class="m1">银行卡：</span>
+				<span class="m2">
+					<label for="" class="b1">{{bankdata.banks}}</label>
+					<label for="" class="b2" v-if="selectType === 2">{{ businessname }}</label>
+					<label for="" class="b3">{{bankdata.cardNo | card}}</label>
+				</span>
+				<span class="m3">
+					<label for="">{{cardstatus}}</label>
+					<i class='iconfont'>&#xe606;</i>
+				</span>
 			</div>
 			<div class="ex-bank-add" @click='addcard' v-else>
 				<i class="iconfont">&#xe608;</i> 添加银行卡
@@ -30,15 +49,13 @@
 			<p>1、提现金额每笔不少于100不超过5万</p>
 			<p>2、每笔提现收取5元手续费</p>
 		</div>
-
-
 	</div>	
 </template>
 
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator, Toast } from 'mint-ui'
+import { MessageBox, Indicator, Toast ,Radio } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -50,7 +67,8 @@ export default {
 			exchange: '',
 			repeatBtn: false,
 			pickerValue: 0,
-			showAdd: false
+			showAdd: false,
+			selectType: 1 
 		}
 	},
 	computed: {
@@ -62,6 +80,24 @@ export default {
 				return false
 			} else {
 				return true
+			}
+		},
+		businessname (){
+			let type = this.bankdata.cardType
+			if(type === '1'){
+				return 
+			}else{
+				return this.bankdata.accountName
+			}
+		},
+		cardstatus () {
+			let status = this.bankdata.status
+			let type = this.bankdata.cardType
+			let allstatus = ['已删除','审核中','审核未通过','']
+			if(type === '1'){
+				return 
+			}else{
+				return allstatus[status]
 			}
 		}
 	},
@@ -79,22 +115,8 @@ export default {
 			Toast('系统错误！')
 		})
 
-		axios.post('bankard/getDefault',qs.stringify({cardType: 2}))
-		.then(function(res){
-			if (res.data.code === '10000') {
-				if (!!res.data.data ) {
-					_this.showAdd = false
-					_this.bankdata = res.data.data
-				} else {
-					_this.showAdd = true
-				}
-			} else {
-				MessageBox('提示', '请求数据失败！')
-			}
-		})
-		.catch(function(){
-			Toast('系统错误！')
-		})
+		//获取默认银行卡列表
+		_this.getDefaultCard(_this.selectType)
 
 	},
 	methods: {
@@ -102,7 +124,17 @@ export default {
 			this.$router.go(-1)
 		},
 		gobank () {
-			this.$router.push('/banklist1')
+			this.$router.push('/banklist')
+		},
+		option (type) {
+			this.selectType = type
+			this.getDefaultCard(this.selectType)
+		},
+		maxmoney () {
+			let value = this.exchange
+			if(value.length>5){
+				this.exchange = value.slice(0,9)
+			}
 		},
 		addcard () {
 			if (this.userdata.isRealName !== '2') {
@@ -119,7 +151,6 @@ export default {
 			} else {
 				this.$router.push('/addcard1')
 			}
-			
 		},
 		submit () {
 			let _this = this
@@ -180,6 +211,34 @@ export default {
 				Toast('系统错误！')
 			})
 
+		},
+		getDefaultCard (type) {
+			let _this = this;
+			axios.post('bankard/getDefault',qs.stringify({cardType: type}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					if (!!res.data.data ) {
+						_this.showAdd = false
+						_this.bankdata = res.data.data
+					} else {
+						_this.showAdd = true
+					}
+				} else {
+					MessageBox('提示', '请求数据失败！')
+				}
+			})
+			.catch(function(){
+				Toast('系统错误！')
+			})
+		}
+	},
+	beforeRouteLeave (to,from,next) {
+		if(to.path === '/banklist' && this.selectType === 2){
+			next('/banklist1')
+		}else if(to.path === '/addcard' && this.selectType === 2){
+			next('/addcard1')
+		}else{
+			next()
 		}
 	},
 	filters: {
@@ -193,24 +252,38 @@ export default {
 		card (value) { 
 			value += ''
 			return value.replace(/^(\d{4})(\d*)(\d{4})$/, '$1*********$3')
-		}
+		},
+
 	}
 }	
 </script>
 
 <style scoped>
 .ex-bank {height: 100%; background-color: #f4f5f7;}
-.ex-bank-balance{ padding: 1rem; color: #f00; font-size: 1.6rem; }
-.ex-bank-cnt {font-size: 1.4rem;}
-.ex-bank-exchange{background-color: #fff; padding: 0.5rem 1rem; }
-.ex-bank-exchange label { vertical-align: middle; line-height: 3rem; }
-.ex-bank-exchange input{border:none; height: 3rem; padding-left: 1rem; width: 70%;}
-.ex-bank-card{background-color: #fff; margin: 1rem 0; padding: 0.5rem 1rem; min-height: 3rem; position: relative;}
-.ex-bank-card label{float: left; line-height: 3.5rem;}
-.ex-bank-card .bankinfo{ margin-left: 5rem; color: #586485; padding-left: 1rem; line-height: 1.5;}
-.ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 1.5rem;}
+.ex-bank-balance{ padding: 15px 0.8rem; color: rgb(33,42,50); font-size: 1.6rem; }
+.ex-bank-balance .orange{color: rgb(255,161,50)}
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 
-.ex-bank-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
+.ex-bank-tips { background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
+
+.ex-bank-card {display: table;width: 100%;line-height: 22px;background: #fff;height: 30px;margin-top: 20px;padding: 10px 0 10px 0;font-size: 1.4rem;}
+.ex-bank-card span{display: table-cell;vertical-align: middle;}
+.ex-bank-card .m1{width: 25%;padding-left: 0.8rem;}
+.ex-bank-card .m2{width: 45%;color: rgb(170,175,182)}
+.ex-bank-card .m2 label{display: block;}
+.ex-bank-card .m2 .b1{color: rgb(88,100,133)}
+.ex-bank-card .m3{width: 30%;text-align: right;padding-right:0.8rem;}
+.ex-bank-card .m3 label{display: inline-block;width: 60%;color: red;}
+.ex-bank-card .m3 i{vertical-align: middle;color: rgb(170,175,182)}
+.table {background: #fff;width: 100%;color: rgb(33,42,50);font-size: 1.4rem}
+.table tr{border-bottom: none;}
+.table .money{border-bottom: solid 1px #ebebeb;}
+.table .money td{padding: 13px 0.8rem;}
+.table .money input{border: none;width: 100%;height: 30px;font-size: 1.4rem}
+.table .option{vertical-align: baseline;}
+.table .option td{line-height: 40px;}
+.table .option .radio{display: inline-block;width: 2rem;height: 2rem;vertical-align: middle;background: url(../../assets/images/noselect.png);background-size: cover;}
+.table .option .select{color: #1296db;}
+.table .option .select .radio{background: url(../../assets/images/select.png);background-size: cover;}
 </style>

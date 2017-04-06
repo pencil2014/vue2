@@ -83,7 +83,8 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			nodateStatus: false
+			nodateStatus: false,
+			loading: false
 		}
 	},
 	computed: {
@@ -207,7 +208,15 @@ export default {
 			let date = time.getDate()
 			return [year,month,date].join('/')
 		}
-	}
+	},
+	beforeRouteLeave (to,from,next) {
+		let path = window.localStorage.getItem('integralPath')
+		if(to.path !== path && to.path === '/index'){
+			next(path)
+		}else{
+			next()
+		}
+	},
 }	
 </script>
 

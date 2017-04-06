@@ -6,7 +6,7 @@
 		</div>
 		<div class="ex-bank-cnt">
 			<div class="ex-bank-balance">
-				当前账户余额：{{userdata.overMoney | checknum}}
+				当前账户余额：<span class="orange">{{userdata.overMoney | checknum}}</span>
 			</div>
 			<div class="ex-bank-exchange">
 				<label for="exchange">转存金额</label>
@@ -199,7 +199,8 @@ export default {
 
 <style scoped>
 .ex-bank {height: 100%; background-color: #f4f5f7;}
-.ex-bank-balance{ padding: 1rem; color: #f00; font-size: 1.6rem; }
+.ex-bank-balance{ padding: 1rem; color: rgb(33,42,50); font-size: 1.6rem; }
+.ex-bank-balance .orange{color: rgb(255,161,50)}
 .ex-bank-cnt {font-size: 1.4rem;}
 .ex-bank-exchange{background-color: #fff; padding: 0.5rem 1rem; }
 .ex-bank-exchange label { vertical-align: middle; line-height: 3rem; }
@@ -210,6 +211,6 @@ export default {
 .ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 1.5rem;}
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 
-.ex-bank-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
+.ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
 </style>

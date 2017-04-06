@@ -55,7 +55,8 @@ export default {
 			pageSize: 20,
 			parentUserCode: '',
 			totalSize: '',
-			nodateStatus: false
+			nodateStatus: false,
+			loading: false
 		}
 	},
 	methods: {

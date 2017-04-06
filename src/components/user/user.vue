@@ -134,6 +134,14 @@ export default {
 			this.$router.push('/realname')
 		}
 	},
+	beforeRouteLeave (to,from,next) {
+		let path = window.localStorage.getItem('integralPath')
+		if(to.path !== path && to.path === '/index'){
+			next(path)
+		}else{
+			next()
+		}
+	},
 	components: {
 		appNav
 	},

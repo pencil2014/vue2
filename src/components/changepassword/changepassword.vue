@@ -103,9 +103,18 @@ export default {
 				password: md5(_this.confirmpsw)
 			})).then(function(res){
 				if (res.data.code === '10000') {
-					_this.$router.push('/login')
 					_this.submitBtn = false;
-					let instance = Toast('修改成功');
+					MessageBox({
+						title:'提示',
+						message:'修改成功，请重新登陆',
+						showConfirmButton:true,
+						confirmButtonText:'确认',
+					}).then(action =>{
+						if(action === "confirm"){
+							window.localStorage.setItem('token', '')
+							_this.$router.push('/login')
+						}
+					});
 				} else {
 					_this.submitBtn = false;
 					Toast({message: res.data.msg});

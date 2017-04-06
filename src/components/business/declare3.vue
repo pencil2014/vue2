@@ -169,24 +169,7 @@ export default {
 			}
 		}
 	},
-	beforeRouteLeave (to,from,next) {
-		if (to.path.indexOf('/declare2')> -1) {
-			MessageBox({
-				  title: '提示',
-				  message: '确认要退出本次操作吗?',
-				  showCancelButton: true,
-				  confirmButtonText: '退出'
-				}).then(action => {
-					if (action === "confirm") {
-						next('/business')
-					} else {
-						next(false)
-					}
-				})
-		} else {
-			next()
-		}
-	},
+	
 	filters: {
 		formatTime (value) {
 			let time = new Date(value * 1000)

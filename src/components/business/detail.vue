@@ -68,7 +68,8 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			nodateStatus: false
+			nodateStatus: false,
+			loading: false
 		}
 	},
 	created () {
@@ -128,6 +129,7 @@ export default {
 				_this.nodateStatus = true
 				Toast('系统错误！')
 			})
+
 		}
 	},
 	filters: {
@@ -138,6 +140,9 @@ export default {
 			let date = time.getDate()
 			return [month,date].join('/')
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>

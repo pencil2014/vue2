@@ -83,7 +83,7 @@ export default {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	methods: {
@@ -94,7 +94,7 @@ export default {
 			let _this = this;
 			let rule1 = /^1(3|4|5|7|8)\d{9}$/;
 			if(_this.disable){
-				return;
+				return
 			}
 			if(!rule1.test(_this.phone)){
 				Toast('手机号码不正确！')
@@ -119,7 +119,7 @@ export default {
 				}
 			}).catch(function(){
 				_this.submitBtn = false;
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('系统错误！')
 			})
 		},
 		sendCode () {
@@ -150,7 +150,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		},
 		countdownFn () {

@@ -62,7 +62,7 @@ export default {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('系统错误！')
 		})
 	},
 	methods: {
@@ -83,18 +83,17 @@ export default {
 				userName: _this.username,
 			}),_this.config).then(res =>{
 				Indicator.close();
+				_this.submitBtn = false
 				if (res.data.code === '10000') {
 					_this.$router.push('/personal');
 					Toast('修改成功')
-					_this.submitBtn = false
 				} else {
-					_this.submitBtn = false
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Indicator.close();
 					_this.submitBtn = false
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('系统错误！')
 			})
 		}
 	}

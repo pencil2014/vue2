@@ -41,7 +41,8 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			nodateStatus:false
+			nodateStatus:false,
+			loading: false
 		}
 	},
 	computed: {
@@ -88,7 +89,7 @@ export default {
 				return
 			}
 			let _this = this
-			this.loading = true;
+			this.loading = true
 			_this.nodateStatus = false
 			axios.post('artic/list',qs.stringify({
 				article_type_name: '使用指南',

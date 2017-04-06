@@ -94,7 +94,7 @@ export default {
 				Indicator.close()
 				if (res.data.msg === 'false') {
 					_this.repeatBtn = false 
-					MessageBox('提示', res.data.msg)
+					MessageBox('提示', '用户不存在!')
 					return
 				} else {
 					// 保存用户手机号码

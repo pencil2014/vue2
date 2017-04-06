@@ -12,7 +12,7 @@
 			<div class="exchange" >
 				<input type="tel" v-model="exchange" placeholder="转换数额">
 			</div>
-			<p class='share'>可用享积分：<span>{{integral | checknum}}</span></p>
+			<p class='share'>可用享积分：<span class="orange">{{integral | checknum}}</span></p>
 		</div>	
 		<button type='button'  :class="[ 'ex-integral-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
 		<div class="ex-integral-tips">
@@ -133,7 +133,8 @@ export default {
 .ex-integral-cnt .title { font-size: 1.4rem; color: #5d646e; padding: 1rem 0; }
 .ex-integral-cnt .exchange { border-bottom: 1px solid #e5e5e5; padding: 1rem 0; margin-bottom: 1rem;}
 .ex-integral-cnt .exchange input { height: 3rem; padding-left: 1rem; border:none;  border-left:2px solid #2eadff; width: 90%; font-size: 2rem; }
-.ex-integral-cnt .share{font-size: 1.6rem; color: #f00;}
+.ex-integral-cnt .share{font-size: 1.6rem; color: rgb(33,42,50);}
+.ex-integral-cnt .share .orange{color: rgb(255,161,50)}
 .ex-integral-btn {margin: 0 4%; display: block; width: 92%;  background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
-.ex-integral-tips { background-color: #eee; color:#aaafb6; margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
+.ex-integral-tips { background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 </style>

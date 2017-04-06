@@ -46,7 +46,8 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			nodateStatus: false
+			nodateStatus: false,
+			loading: false
 		}
 	},
 	created () {

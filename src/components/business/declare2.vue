@@ -178,7 +178,36 @@ export default {
 				Toast('系统错误！')
 			})
 		}
-	}
+	},
+	beforeRouteLeave (to,from,next) {
+		if (to.path.indexOf('/declare')> -1) {
+			MessageBox({
+				  title: '提示',
+				  message: '确认要退出本次操作吗?',
+				  showCancelButton: true,
+				  confirmButtonText: '退出'
+				}).then(action => {
+					if (action === "confirm") {
+						next('/business')
+					} else {
+						next(false)
+					}
+				})
+		} else {
+			MessageBox({
+			  title: '提示',
+			  message: '确认要退出本次操作吗?',
+			  showCancelButton: true,
+			  confirmButtonText: '退出'
+			}).then(action => {
+				if (action === "confirm") {
+					next()
+				} else {
+					next(false)
+				}
+			})
+		}
+	},
 }	
 </script>
 

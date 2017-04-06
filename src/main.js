@@ -14,7 +14,8 @@ Vue.use(Mint)
 
 // 判断用是否登录
 // router.beforeEach((to, from, next) => {
-// 	if (!window.localStorage.token && to.path !=='/login' ) {
+//   let url = to.path.indexOf('login') > -1 || to.path.indexOf('forgot') > -1 || to.path.indexOf('register') > -1
+// 	if (!window.localStorage.token && !url ) {
 // 		next('/login')
 // 	} else {
 // 		next()
@@ -44,7 +45,7 @@ var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
   hm.src = "https://hm.baidu.com/hm.js?522501167730fa7b3f5fb59de99411f6";
-  var s = document.getElementsByTagName("script")[0]; 
+  var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(hm, s);
 })();
 

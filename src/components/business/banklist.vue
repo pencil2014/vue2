@@ -8,6 +8,7 @@
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
 				<div class="bankinfo">
 					<p>{{item.banks}}</p>
+					<p>{{item.accountName}}</p>
 					<p>{{item.cardNo | card}}</p>
 				</div>
 				<div class="bankaction">
@@ -129,7 +130,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-banklist {height: 100%; background-color: #f4f5f7;color: #586485; font-size: 1.4rem;}
+.ex-banklist {background-color: #f4f5f7;color: #586485; font-size: 1.4rem; overflow-x: hidden;min-height: 100%;padding-bottom: 5rem;}
 .ex-banklist-item	{background-color: #fff; margin: 1.5rem 0; padding: 1rem;}
 .ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; }
 .bankaction { padding-top: 1rem; overflow: auto;}

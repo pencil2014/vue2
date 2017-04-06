@@ -183,7 +183,7 @@ export default {
 			this.getData ()
 		},
 		back () {
-			this.$router.back();
+			this.$router.push('/integral');
 		},
 		tap (id) {
 			this.$router.push({ name: 'Integral2', params: { id: id}})
@@ -221,7 +221,7 @@ export default {
 			if (_this.page > _this.totalPage) {
 				return
 			}
-			_this.loading = true;
+			this.loading = true;
 			_this.nodateStatus = false
 			axios.post('integralDetail/detail',qs.stringify({
 				pageSize: _this.pageSize,

@@ -106,7 +106,7 @@
 				<li><router-link to="/integral"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
 				<li><router-link to="/detail2"><i class="iconfont m3">&#xe680;</i><span>E积分明细</span></router-link></li>
 				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
-				<li><router-link to="/bank"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
+				<li><router-link to="/bank1"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
 				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
 				<li v-show='userinfo.userLev !=="2"'>
 					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>

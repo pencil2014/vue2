@@ -2,7 +2,7 @@
 	<div class="ex-detail">
 	 <div class="ex-detail-box">
 		 	<div class="ex-topbar">
-				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
+				<a href="javascript:;" @click="back"><i class="iconfont"> &#xe605; </i></a>
 				<span>积分明细</span>
 			</div>
 			<div class="ex-detail-integral">
@@ -10,7 +10,7 @@
 				<p>{{integral || 0}}</p>
 			</div>
 	 </div>
-	 <div class="ex-detail-hack"></div>
+
 		<div class="ex-detail-cnt">
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table">
@@ -59,7 +59,8 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			nodateStatus: false
+			nodateStatus: false,
+			loading: false
 		}
 	},
 	created () {
