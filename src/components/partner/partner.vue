@@ -230,6 +230,7 @@ export default {
 			}))
 			.then(function(res){
 				Indicator.close()
+				_this.loading = false
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
@@ -267,6 +268,9 @@ export default {
 			next()
 		}
 	},
+	destroyed () {
+		Indicator.close()
+	}
 }	
 </script>
 

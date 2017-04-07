@@ -201,6 +201,9 @@ export default {
 				Toast('系统错误！')
 			})
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }
 </script>

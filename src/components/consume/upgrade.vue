@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-upgrade">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>会员升级</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-upgrade-img">
 			<img src="../../assets/images/upgrade.png" >
 		</div>
@@ -35,9 +36,16 @@
 </template>
 
 <script>
+import HeadTitle from '../common/title.vue'
+
 	export default {
 		data () {
-			return {}
+			return {
+				modal:{
+					text:'会员升级',
+					fixed: false,
+				},
+			}
 		},
 		methods: {
 			back () {
@@ -49,7 +57,10 @@
 			gobank () {
 				this.$router.push('/bankpay')
 			}
-		}
+		},
+		components: {
+			HeadTitle,
+		},
 	}
 </script>
 
@@ -60,10 +71,10 @@
 .ex-upgrade-pay {padding: 2rem;}
 .ex-upgrade-pay a{display: block; height: 5rem; line-height: 5rem; text-align: center;font-size: 1.6rem;color: #fff;border-radius: 0.4rem;}
 .ex-upgrade-pay a i{font-size: 3rem;}
-.ex-upgrade-pay .wechat {background: #58c86b; margin-bottom: 2rem;}
-.ex-upgrade-pay .wechat:active{background-color: #4fb360;}
-.ex-upgrade-pay .bank {background: #62c1ff;}
-.ex-upgrade-pay .bank:active{background-color: #5ab0e8;}
+.ex-upgrade-pay .wechat {background: #3dbc3c; margin-bottom: 2rem;}
+.ex-upgrade-pay .wechat:active{background-color: #37a936;}
+.ex-upgrade-pay .bank {background: #047dcb;}
+.ex-upgrade-pay .bank:active{background-color: #047dcb;}
 .ex-upgrade-info {background-color: #f4f5f7; padding: 2rem;}
 .ex-upgrade-item {padding-bottom: 2rem;}
 .ex-upgrade-item b{ line-height: 2; }

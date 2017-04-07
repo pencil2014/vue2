@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-declare">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家报单</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-declare-progress">
 			<p class="percent">
 				<span></span>
@@ -46,6 +47,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox,Indicator,Toast } from 'mint-ui'
 import lrz from 'lrz'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -55,7 +57,11 @@ export default {
 			repeatBtn: false,
 			resurl: '',
 			id: '',
-			type: ''
+			type: '',
+			modal:{
+				text:'商家报单',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -180,7 +186,7 @@ export default {
 		}
 	},
 	beforeRouteLeave (to,from,next) {
-		if (to.path.indexOf('/declare')> -1) {
+		if (to.path === '/declare') {
 			MessageBox({
 				  title: '提示',
 				  message: '确认要退出本次操作吗?',
@@ -194,20 +200,15 @@ export default {
 					}
 				})
 		} else {
-			MessageBox({
-			  title: '提示',
-			  message: '确认要退出本次操作吗?',
-			  showCancelButton: true,
-			  confirmButtonText: '退出'
-			}).then(action => {
-				if (action === "confirm") {
-					next()
-				} else {
-					next(false)
-				}
-			})
+			next()
 		}
 	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
+	}
 }	
 </script>
 
@@ -231,6 +232,6 @@ export default {
 .ex-declare-cnt .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
 .ex-declare-cnt .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
 
-.ex-declare-btn {margin: 0 2%; display: block; background-color: #62c1ff; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-declare-btn:active{background-color:#58ace2; }
+.ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-declare-btn:active {background-color: #0470b6;}
 </style>

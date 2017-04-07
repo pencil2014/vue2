@@ -106,7 +106,7 @@ export default {
 			if (this.month < 10) {
 				month = '0' + this.month
 			}else{
-				month = month
+				month = this.month
 			}
 			return this.year + '-' + month
 		},
@@ -144,41 +144,30 @@ export default {
 		addyear () {
 			let year = new Date().getFullYear();
 			let month = new Date().getMonth()+1;
-			if(this.year < year){
-				this.year++;
-				if(this.month > month && this.year>=year){
-					this.month = month
-				}
-			}else{
+			if(this.year >= year){
 				return
 			}
+			this.year++;
+			this.month = this.month > month ? month : this.month
 			this.getData ()
 		},
 		reducemonth () {
-			let _this = this;
-			if(_this.month > 1){
-				_this.month--;
-			}else{
-				return
+			if(this.month <= 1){
+				return 
 			}
+			this.month--;
 			this.getData ()
 		},
 		addmonth () {
-			let _this = this;
 			let month = new Date().getMonth()+1;
 			let year = new Date().getFullYear();
-			if(_this.year < year){
-				if(_this.month < 12){
-					_this.month++;
-				}else{
-					return 
-				}
-			}else{
-				if(_this.month < month){
-					_this.month++;
-				}else{
-					return 
-				}
+
+			if(this.month >= month && this.year >= year){
+				return 
+			}else if(this.month >= 12){
+				return 
+			}else {
+				this.month++;
 			}
 			this.getData ()
 		},
@@ -255,11 +244,15 @@ export default {
 		},
 		num (value) {
 			if(/^\d*\.{1}\d{2,}$/.test(value)){
-				return value.replace(/^(\d*)(\.{1}\d{2})(\d{1,})$/,'$1$2')
+				let value2 =value + '';
+				return value2.replace(/^(\d*)(\.{1}\d{2})(\d{1,})$/,'$1$2')
 			}else{
 				return value
 			}
 		} 
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }
 </script>

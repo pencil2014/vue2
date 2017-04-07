@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-shop1">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家申请</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-shop-progress">
 			<p class="percent">
 				<span></span>
@@ -55,6 +56,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -70,7 +72,11 @@ export default {
 			addressDetail: '',
 			shopsLinkman: '',
 			shopsLinkphone: '',
-			repeatBtn: false
+			repeatBtn: false,
+			modal:{
+				text:'商家申请',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -209,7 +215,10 @@ export default {
 			window.localStorage.setItem('shopdata', JSON.stringify(shopdata))
 			this.$router.push('/shop2')
 		}
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 
@@ -228,6 +237,6 @@ export default {
 .ex-shop1-cnt-item span {display: inline-block; width: 25%; height: 3rem; line-height: 3rem;}
 .ex-shop1-cnt-item input { height: 3rem;  width: 70%; border:none;}
 .ex-shop1-cnt-item select { width: 20%; height: 2rem; margin-right: 1%;}
-.ex-shop1-btn {margin: 0 2%; display: block; background-color: #62c1ff; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-shop1-btn:active{background-color:#58ace2; }
+.ex-shop1-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-shop1-btn:active{background-color:#0470b6; }
 </style> 

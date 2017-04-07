@@ -1,10 +1,10 @@
 <template>
 	<div class="ex-shop3">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家申请</span>
-		</div>
-
+		</div> -->
+	  <HeadTitle :title="modal" @callback="back"></HeadTitle>
 	  <div class="ex-shop3-result" v-if="examineData.auditStatus === '1'">
 	  	<i class="iconfont suc">&#xe609;</i>
 	  	<h3>审核中...</h3>
@@ -84,10 +84,15 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
-			examineData: ''
+			examineData: '',
+			modal:{
+				text:'商家申请',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -115,12 +120,15 @@ export default {
 		next () {
 			this.$router.push('/shop1')
 		}
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 
 <style scoped>
-.ex-shop3{background-color: #f4f5f7;}
+.ex-shop3{background-color: #f4f5f7;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
 .ex-shop3-result {background: #fff; text-align: center; padding: 2rem 0;}
 .ex-shop3-result i{ font-size: 5rem; }
 .ex-shop3-result i.suc{color: #ffa100;}
@@ -132,6 +140,6 @@ export default {
 .ex-shop3-item b{font-weight: normal; color:#aaafb6; }
 .ex-shop3-item b,.ex-shop3-item .img {float: right;}
 .ex-shop3-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
-.ex-shop3-btn {margin: 0 2%; display: block; background-color: #58c86b; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto 1rem;}
-.ex-shop3-btn:active{background-color:#52af62; }
+.ex-shop3-btn { display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%;position: fixed;bottom: 1rem;left: 4%;}
+.ex-shop3-btn:active{background-color:#0470b6; }
 </style> 

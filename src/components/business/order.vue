@@ -1,11 +1,12 @@
 <template>
 	<div class="ex-order">
-		<div class="ex-order-box">
+		<!-- <div class="ex-order-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 				<span>报单进度</span>
 			</div>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-order-cnt" >
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table"
@@ -48,15 +49,20 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
 			orderList: [],
 			page: 1,
 			totalPage: 1,
-			pageSize: 20,
+			pageSize: 15,
 			nodateStatus: false,
-			loading: false
+			loading: false,
+			modal:{
+				text:'报单进度',
+				fixed: true,
+			},
 		}
 	},
 	created () {
@@ -105,6 +111,7 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
+				_this.loading = false
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					let array = res.data.data.list.filter(function(item) {
@@ -145,12 +152,19 @@ export default {
 			let date = time.getDate()
 			return [month,date].join('/')
 		}
+	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
 <style scoped>
 .ex-order-box {position: fixed; top: 0; width: 100%; z-index: 2; }
-.ex-order-cnt {padding-top: 5rem}
+/*.ex-order-cnt {padding-top: 5rem}*/
+.ex-order-cnt {padding-top: 56px;}
 .ex-order-cnt td i { font-size: 1.4rem; color: #999; float: right; padding-right: 0.5rem; }
 .ex-order-cnt td a {display: inline-block;font-size: 1.2rem;color: #2eadff;border-radius: 0.2rem;border: 1px solid #2eadff;padding: 0.4rem;}
 .ex-order-cnt td .links{margin-right: 1rem; margin-bottom: 0.5rem;}

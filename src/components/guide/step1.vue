@@ -97,6 +97,7 @@ export default {
 				page: 1
 			}))
 			.then(function(res){
+				_this.loading = false
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.list.push(...res.data.data.list)

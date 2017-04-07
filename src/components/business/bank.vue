@@ -252,8 +252,10 @@ export default {
 		card (value) { 
 			value += ''
 			return value.replace(/^(\d{4})(\d*)(\d{4})$/, '$1*********$3')
-		},
-
+		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
@@ -262,8 +264,8 @@ export default {
 .ex-bank {height: 100%; background-color: #f4f5f7;}
 .ex-bank-balance{ padding: 15px 0.8rem; color: rgb(33,42,50); font-size: 1.6rem; }
 .ex-bank-balance .orange{color: rgb(255,161,50)}
-.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
-
+.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
+.ex-bank-btn:active {background-color: #0470b6;}
 .ex-bank-tips { background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
 
@@ -283,7 +285,7 @@ export default {
 .table .money input{border: none;width: 100%;height: 30px;font-size: 1.4rem}
 .table .option{vertical-align: baseline;}
 .table .option td{line-height: 40px;}
-.table .option .radio{display: inline-block;width: 2rem;height: 2rem;vertical-align: middle;background: url(../../assets/images/noselect.png);background-size: cover;}
+.table .option .radio{display: inline-block;width: 1.5rem;height: 1.5rem;vertical-align: middle;background: url(../../assets/images/noselect.png);background-size: cover;}
 .table .option .select{color: #1296db;}
 .table .option .select .radio{background: url(../../assets/images/select.png);background-size: cover;}
 </style>

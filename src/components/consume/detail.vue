@@ -1,10 +1,11 @@
 <template>
 	<div class="ex-detail">
 	 <div class="ex-detail-box">
-		 	<div class="ex-topbar">
+		 	<!-- <div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont"> &#xe605; </i></a>
 				<span>积分明细</span>
-			</div>
+			</div> -->
+			<HeadTitle :title="modal" @callback="back"></HeadTitle>
 			<div class="ex-detail-integral">
 				<span>E积分总额</span>
 				<p>{{integral || 0}}</p>
@@ -50,6 +51,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 
 export default {
 	data () {
@@ -60,7 +62,11 @@ export default {
 			totalPage: 1,
 			pageSize: 20,
 			nodateStatus: false,
-			loading: false
+			loading: false,
+			modal: {
+				text:'E积分明细',
+				fixed: true
+			},
 		}
 	},
 	created () {
@@ -107,6 +113,7 @@ export default {
 			axios.post('integralRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
+				_this.loading = false
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.integral = res.data.data.integralA
@@ -132,14 +139,21 @@ export default {
 			let date = time.getDate()
 			return [month,date].join('/')
 		}
+	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
 
 <style scoped>
-.ex-detail-box{ position: fixed; top: 0; width: 100%; z-index: 2;}
+.ex-detail-box{ position: fixed; top: 58px; width: 100%; z-index: 2;}
 .ex-detail-integral {background-color: #2eadff; padding: 0.5rem 1.5rem;}
 .ex-detail-integral span {color: #cde5ff;font-size: 1.4rem;}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;}
-.ex-detail-cnt { padding-top: 12rem; }
+/*.ex-detail-cnt { padding-top: 12rem; }*/
+.ex-detail-cnt{padding-top: 132px;}
 </style>

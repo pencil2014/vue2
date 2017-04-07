@@ -132,6 +132,9 @@ export default {
 		showcopy () {
 			this.showcopyright = true
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>

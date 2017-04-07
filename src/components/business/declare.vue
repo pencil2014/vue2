@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-declare">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家报单</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-declare-progress">
 			<p class="percent">
 				<span></span>
@@ -78,6 +79,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Toast, Indicator } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -91,8 +93,15 @@ export default {
 			realName: '',
 			hasEixt: false,
 			selfUserCode: '',
-			repeatBtn: false
+			repeatBtn: false,
+			modal:{
+				text:'商家报单',
+				fixed: false,
+			},
 		}
+	},
+	components: {
+		HeadTitle,
 	},
 	computed: {
 		disableBtn () {
@@ -135,7 +144,7 @@ export default {
 						_this.realName = res.data.data.realName ? '姓名：'+res.data.data.realName : ''
 						_this.querycode()
 				} else {
-					MessageBox('提示', '对不起验证失败！')
+					MessageBox('提示', '此用户不存在')
 				}
 			})
 			.catch(function(){
@@ -227,6 +236,9 @@ export default {
 				Toast('系统错误！')
 			})
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
@@ -256,6 +268,6 @@ export default {
 .ex-declare-cnt-item input { height: 3rem; width: 65%; border: none; vertical-align: middle;}
 .ex-declare-cnt-item .exit { position: absolute; right: 0; top: 0.5rem; display: block; height: 3rem; padding: 0 1rem; text-align: right; line-height: 3rem; color: #2eadff;}
 
-.ex-declare-btn {margin: 0 2%; display: block; background-color: #62c1ff; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-declare-btn:active{background-color:#58ace2; }
+.ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-declare-btn:active{background-color:#0470b6; }
 </style>

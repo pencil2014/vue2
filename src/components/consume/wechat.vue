@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-wechat">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>会员升级</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-wechat-payment">
 			<p><span>支付金额</span> <b class='money'>￥{{money}}</b></p>
 			<p><span>交易单号</span> <b>{{ordernum}}</b></p>
@@ -22,7 +23,7 @@ import Qrcode from 'v-qrcode'
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
-
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -31,7 +32,11 @@ export default {
 			qrurl: '',
 			timer: '',
 			orderstatus: '',
-			timer: ''
+			timer: '',
+			modal:{
+				text:'会员升级',
+				fixed: false,
+			},
 		}
 	},
 	methods: {
@@ -92,11 +97,12 @@ export default {
 
 	},
 	components: {
-      Qrcode
-  },
-  destroyed () {
-  	clearTimeout(this.timer)
-  }
+      Qrcode,
+      HeadTitle,
+	},
+	destroyed () {
+	  	clearTimeout(this.timer)
+	}
 }
 </script>
 

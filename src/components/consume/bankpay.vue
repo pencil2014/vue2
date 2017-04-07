@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-bankpay">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>会员升级</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-bankpay-tips">
 			<div class="ex-bankpay-tips-cnt">
 				<div class="item">
@@ -45,6 +46,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import lrz from 'lrz'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -54,7 +56,11 @@ export default {
 			fileList: [],
 			repeatBtn: false,
 			resurl: '',
-			type: ''
+			type: '',
+			modal:{
+				text:'会员升级',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -155,6 +161,12 @@ export default {
 		.catch(function(){
 			Toast('系统错误！')
 		})
+	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
@@ -180,5 +192,6 @@ export default {
 .ex-bankpay-sub .showpic {position: absolute;left: 30%;top: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
 .ex-bankpay-sub .uploadimg { position: absolute;left: 30%;top: 0; height: 5rem; width: 8rem; opacity: 0; z-index: 3; }
 
-.ex-bankpay-btn {margin: 0 4%; display: block; width: 92%;  background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
+.ex-bankpay-btn {margin: 0 4%; display: block; width: 92%;  background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
+.ex-bankpay-btn:active{ background-color: #0470b6;}
 </style>

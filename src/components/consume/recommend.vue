@@ -1,11 +1,12 @@
 <template>
 	<div class="ex-recommend">
-		<div class="ex-recommend-box">
+		<!-- <div class="ex-recommend-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 				<span>我的推荐</span>
 			</div>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-recommend-cnt" >
 			<div class="ex-recommend-tips">
 				<span class='id'>上级会员ID：<b>{{parentUserCode}}</b></span>
@@ -46,6 +47,8 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
+
 export default {
 	data () {
 		return {
@@ -56,7 +59,11 @@ export default {
 			parentUserCode: '',
 			totalSize: '',
 			nodateStatus: false,
-			loading: false
+			loading: false,
+			modal: {
+				text:'我的推荐',
+				fixed: false
+			},
 		}
 	},
 	methods: {
@@ -102,6 +109,7 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
+				_this.loading = false
 				if (res.data.code === '10000') {
 					_this.parentUserCode = res.data.data.parentUserCode
 					_this.totalSize = res.data.data.total
@@ -127,6 +135,12 @@ export default {
 			let date = time.getDate()
 			return [year,month,date].join('/')
 		}
+	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>

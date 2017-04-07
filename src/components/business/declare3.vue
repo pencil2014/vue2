@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-declare">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家报单</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-declare-progress">
 			<p class="percent">
 				<span></span>
@@ -97,6 +98,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import imgPreview from '../common/image'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -106,7 +108,11 @@ export default {
 			imgpre: {
 				show: false,
 				url: ''
-			}
+			},
+			modal:{
+				text:'商家报单',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -123,7 +129,8 @@ export default {
 		}
 	},
 	components: {
-		imgPreview
+		imgPreview,
+		HeadTitle,
 	},
 	created () {
 		this.id = this.$route.params.id
@@ -178,12 +185,15 @@ export default {
 			let date = time.getDate()
 			return [year,month,date].join('/')
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
 
 <style scoped>
-.ex-declare{background-color: #f4f5f7; min-height: 100%;  position: absolute; width: 100%;}
+.ex-declare{background-color: #f4f5f7; min-height: 100%; /* position: absolute;*/ width: 100%;overflow-x: hidden;height: 100%;padding-bottom: 56px;}
 .ex-declare-progress {padding: 2rem 0; text-align: center; overflow: hidden; position: relative;}
 .ex-declare-progress .percent { height: 0.4rem; background-color: #e3e3e3;position: absolute; top: 3.2rem; left: 3rem; right: 3rem;}
 .ex-declare-progress-item { width: 25%; float: left; height: 5rem;  text-align: center; z-index: 2; position: relative;}
@@ -206,6 +216,7 @@ export default {
 .ex-declare-item b,.ex-declare-item .img {float: right;}
 .ex-declare-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
 
-.ex-declare-btn {margin: 0 2%; display: block; background-color: #62c1ff; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-declare-btn:active{background-color:#58ace2; }
+/*.ex-declare-btn {margin: 0 2%; display: block; background-color:#047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}*/
+.ex-declare-btn {display: block; background-color:#047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%;position: fixed;bottom: 1rem;left: 4%;}
+.ex-declare-btn:active{background-color:#0470b6;}
 </style>

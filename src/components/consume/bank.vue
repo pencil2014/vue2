@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-bank">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>银行转存</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-bank-cnt">
 			<div class="ex-bank-balance">
 				当前账户余额：<span class="orange">{{userdata.overMoney | checknum}}</span>
@@ -39,6 +40,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -50,7 +52,11 @@ export default {
 			exchange: '',
 			repeatBtn: false,
 			pickerValue: 0,
-			showAdd: false
+			showAdd: false,
+			modal: {
+				text:'银行转存',
+				fixed: false
+			},
 		}
 	},
 	computed: {
@@ -193,7 +199,10 @@ export default {
 			value += ''
 			return value.replace(/^(\d{4})(\d*)(\d{4})$/, '$1*********$3')
 		}
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 
@@ -209,8 +218,8 @@ export default {
 .ex-bank-card label{float: left; line-height: 3.5rem;}
 .ex-bank-card .bankinfo{ margin-left: 5rem; color: #586485; padding-left: 1rem; line-height: 1.5;}
 .ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 1.5rem;}
-.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
-
+.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
+.ex-bank-btn:active {background-color: #0470b6;}
 .ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
 </style>

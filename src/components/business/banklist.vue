@@ -1,15 +1,17 @@
 <template>
 	<div class="ex-banklist">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>公司银行卡</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-banklist-cnt">
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
 				<div class="bankinfo">
 					<p>{{item.banks}}</p>
 					<p>{{item.accountName}}</p>
 					<p>{{item.cardNo | card}}</p>
+					<p class="right">{{item.status | status}}</p>
 				</div>
 				<div class="bankaction">
 					<span class='deleted' v-if='item.isDefault !== "1"' @click='delcard(item, index)'>删 除</span>
@@ -30,12 +32,20 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
 			banks: [],
-			userinfo: ''
+			userinfo: '',
+			modal:{
+				text:'公司银行卡',
+				fixed: false,
+			},
 		}
+	},
+	computed: {
+		
 	},
 	created () {
 		this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
@@ -85,14 +95,14 @@ export default {
 				return
 			}
 			let _this = this
-			axios.post('bankard/setDefault',qs.stringify({id: item.cardNo}))
+			axios.post('bankard/setDefault',qs.stringify({id: item.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks.forEach( (element) => {
 						element.isDefault = '0'
 					})
 					_this.banks[index].isDefault = '1'
-					_this.$router.go(-1)
+					_this.$router.back()
 				} else {
 					MessageBox('提示', '设置默认银行卡失败！')
 				}
@@ -123,16 +133,23 @@ export default {
 		card (value) { 
 			value += ''
 			return value.replace(/^(\d{4})(\d*)(\d{4})$/, '$1*********$3')
+		},
+		status (value) {
+			let status = ['已删除','审核中','审核未通过','']
+			return status[value]
 		}
-	}
-
+	},
+	components: {
+		HeadTitle,
+	},	
 }	
 </script>
 
 <style scoped>
 .ex-banklist {background-color: #f4f5f7;color: #586485; font-size: 1.4rem; overflow-x: hidden;min-height: 100%;padding-bottom: 5rem;}
 .ex-banklist-item	{background-color: #fff; margin: 1.5rem 0; padding: 1rem;}
-.ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; }
+.ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; position: relative;}
+.ex-banklist-item	.bankinfo  .right {position: absolute;right: 10px;line-height: 20px;top: 50%;margin-top: -10px;color: red;}
 .bankaction { padding-top: 1rem; overflow: auto;}
 .bankaction span i{vertical-align: middle; margin-right: 0.4rem; font-size: 2rem; }
 .bankaction .deleted {padding: 0 2rem 0 0;}

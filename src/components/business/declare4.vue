@@ -117,7 +117,17 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.go(-1)
+			let _this = this;
+			MessageBox({
+			  title: '提示',
+			  message: '确认要退出本次操作吗?',
+			  showCancelButton: true,
+			  confirmButtonText: '退出'
+			}).then(action => {
+				if (action === "confirm") {
+					_this.$router.back();
+				}
+			})
 		},
 		getfile () {
 			let _this = this
@@ -201,20 +211,9 @@ export default {
 			})
 		}
 	},
-	beforeRouteLeave (to,from,next) {
-		MessageBox({
-		  title: '提示',
-		  message: '确认要退出本次操作吗?',
-		  showCancelButton: true,
-		  confirmButtonText: '退出'
-		}).then(action => {
-			if (action === "confirm") {
-				next()
-			} else {
-				next(false)
-			}
-		})
-	},
+	destroyed () {
+		Indicator.close()
+	}
 }	
 </script>
 
@@ -250,6 +249,6 @@ export default {
 .ex-declare-cnt .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
 .ex-declare-cnt .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
 
-.ex-declare-btn {margin: 0 2%; display: block; background-color: #62c1ff; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-declare-btn:active{background-color:#58ace2; }
+.ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-declare-btn:active{background-color:#0470b6; }
 </style>

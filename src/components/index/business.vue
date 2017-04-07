@@ -326,6 +326,9 @@ export default {
 		}
 	},
 	monuted () {
+	},
+	destroyed () {
+		Indicator.close()
 	}
 
 }	

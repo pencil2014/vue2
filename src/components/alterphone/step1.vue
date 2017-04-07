@@ -148,8 +148,11 @@ export default {
 					clearInterval(timer)
 				}
 			},1000)
-		},
+		}
 	},
+	destroyed () {
+		Indicator.close()
+	}
 }
 </script>
 <style scoped>

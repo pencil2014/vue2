@@ -73,8 +73,7 @@ export default {
 		}
 	},
 	created () {
-
-	},
+	},	
 	methods: {
 		back () {
 			this.$router.go(-1)
@@ -120,6 +119,7 @@ export default {
 					_this.totalPage = res.data.data.data.totalPage
 					_this.recordList.push(...res.data.data.data.list)
 					_this.page += 1
+					_this.loading = false
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
 				}

@@ -193,6 +193,9 @@ export default {
 			})
 
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }
 </script>

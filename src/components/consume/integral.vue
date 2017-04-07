@@ -1,10 +1,21 @@
 <template>
 	<div class="ex-integral">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>享积分操作</span>
 			<router-link to="/integraldetail/1" tag="label" class="right">
 				明细
+			</router-link>
+		</div> -->
+		<div class="topbar">
+			<span class="m1" @click="back">
+				<a href="javascript:;">
+					<i class="iconfont">&#xe605;</i>
+					<label for="">返回</label>
+				</a>
+			</span>
+			<span class="m2">享积分操作</span>
+			<router-link to="/integraldetail/1" tag="span" class="m3">明细
 			</router-link>
 		</div>
 		<div class="ex-integral-cnt">
@@ -127,6 +138,15 @@ export default {
 </script>
 
 <style scoped>
+.topbar {background: #fff;width: 100%;font-size: 1.8rem;height: 35px;color: rgb( 33,42,50);display: table;line-height: 35px;padding: 12px 0;}
+.topbar span{display: table-cell;}
+.topbar .m1 a{display: inline-block;height: 35px;width: 100%;}
+.topbar .m1 i{font-size: 3rem;vertical-align: middle;color: rgb(4,125,203);}
+.topbar .m1 label{vertical-align: middle;color: rgb(4,125,203);}
+.topbar .m1{width: 20%;}
+.topbar .m2{font-size: 2rem;text-align: center;}
+.topbar .m3{color: rgb(93,100,110);text-align: right;padding-right: 10px;width: 20%;}
+
 .ex-topbar .right{position: absolute;right: 0;top: 0;bottom: 0;width: 5rem;line-height: 5rem;color: #fff;text-align: center;font-size: 1.6rem;}
 .ex-integral {height: 100%; background-color: #f4f5f7;}
 .ex-integral-cnt {background-color: #fff; margin: 2rem 0; padding:2rem 1rem;}
@@ -135,6 +155,7 @@ export default {
 .ex-integral-cnt .exchange input { height: 3rem; padding-left: 1rem; border:none;  border-left:2px solid #2eadff; width: 90%; font-size: 2rem; }
 .ex-integral-cnt .share{font-size: 1.6rem; color: rgb(33,42,50);}
 .ex-integral-cnt .share .orange{color: rgb(255,161,50)}
-.ex-integral-btn {margin: 0 4%; display: block; width: 92%;  background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
+.ex-integral-btn {margin: 0 4%; display: block; width: 92%;  background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
+.ex-integral-btn:active {background-color: #0470b6;}
 .ex-integral-tips { background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 </style>

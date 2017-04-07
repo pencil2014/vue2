@@ -150,6 +150,6 @@ export default {
 .ex-declare-item b,.ex-declare-item .img {float: right;}
 .ex-declare-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
 
-.ex-declare-btn-cancel {margin: 0 2%; display: block; background-color: #f0544d; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-declare-btn-cancel:active{background-color:#da4c46; }
+.ex-declare-btn-cancel {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-declare-btn-cancel:active{background-color:#047dcb; }
 </style>

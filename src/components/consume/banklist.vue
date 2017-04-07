@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-banklist">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>银行卡</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-banklist-cnt">
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
 				<div class="bankinfo">
@@ -29,11 +30,16 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
 			banks: [],
-			userinfo: ''
+			userinfo: '',
+			modal:{
+				text:'银行卡',
+				fixed: false,
+			},
 		}
 	},
 	created () {
@@ -92,7 +98,7 @@ export default {
 				return
 			}
 			let _this = this
-			axios.post('bankard/setDefault',qs.stringify({id: item.cardNo}))
+			axios.post('bankard/setDefault',qs.stringify({id: item.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks.forEach( (element) => {
@@ -132,13 +138,16 @@ export default {
 			value += ''
 			return value.replace(/^(\d{4})(\d*)(\d{4})$/, '$1*********$3')
 		}
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 
 }	
 </script>
 
 <style scoped>
-.ex-banklist {height: 100%; background-color: #f4f5f7;color: #586485; font-size: 1.4rem;}
+.ex-banklist {overflow-x: hidden;min-height: 100%;padding-bottom: 56px;background-color: #f4f5f7;color: #586485; font-size: 1.4rem;}
 .ex-banklist-item	{background-color: #fff; margin: 1.5rem 0; padding: 1rem;}
 .ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; }
 .bankaction { padding-top: 1rem; overflow: auto;}

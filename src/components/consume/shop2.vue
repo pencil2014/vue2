@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-shop2">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家申请</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-shop-progress">
 			<p class="percent">
 				<span></span>
@@ -90,6 +91,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast} from 'mint-ui'
 import lrz from 'lrz'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -112,7 +114,11 @@ export default {
 			},
 			imgArray: [],
 			agreement: true,
-			repeatBtn: false
+			repeatBtn: false,
+			modal:{
+				text:'商家申请',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -253,6 +259,12 @@ export default {
 	       })  
 			}
 		}
+	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
@@ -287,8 +299,8 @@ export default {
 .ex-shop2-cnt .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
 .ex-shop2-cnt .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
 
-.ex-shop2-btn {margin: 0 2%; display: block; background-color: #62c1ff; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto 1rem;}
-.ex-shop2-btn:active{background-color:#58ace2; }
+.ex-shop2-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto 1rem;}
+.ex-shop2-btn:active{background-color:#0470b6; }
 .agreement {padding-left: 2%; font-size: 1.2rem; margin-bottom: 1rem;}
 .agreement input{ width: 1.4rem; height: 1.4rem; border-radius: 0.5rem; vertical-align: middle; }
 .agreement a{color:#1b6798; vertical-align: middle; }

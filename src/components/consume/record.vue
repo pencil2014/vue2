@@ -1,11 +1,12 @@
 <template>
 	<div class="ex-record">
-		<div class="ex-record-box">
+		<!-- <div class="ex-record-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 				<span>消费记录</span>
 			</div>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-record-cnt" >
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table"
@@ -39,6 +40,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -47,7 +49,11 @@ export default {
 			totalPage: 1,
 			pageSize: 20,
 			nodateStatus: false,
-			loading: false
+			loading: false,
+			modal: {
+				text:'消费记录',
+				fixed: true
+			},
 		}
 	},
 	created () {
@@ -93,6 +99,7 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
+				_this.loading = false
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.recordList.push(...res.data.data.list)
@@ -116,10 +123,17 @@ export default {
 			let date = time.getDate()
 			return [month,date].join('/')
 		}
+	},
+	components: {
+		HeadTitle,
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
 <style scoped>
 .ex-record-box {position: fixed; top: 0; width: 100%; z-index: 2; }
-.ex-record-cnt {padding-top: 5rem}
+/*.ex-record-cnt {padding-top: 5rem}*/
+.ex-record-cnt {padding-top: 56px;}
 </style>

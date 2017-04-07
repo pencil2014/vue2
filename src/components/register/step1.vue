@@ -72,6 +72,9 @@ export default {
 		hidebtn () {
 			this.showlogin = false
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
