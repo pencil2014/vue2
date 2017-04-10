@@ -7,6 +7,9 @@
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
+				<label for="number">姓名:</label> <span>{{realName}}</span>
+			</div>
+			<div class="ex-addcard-num">
 				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
 			</div>
 			<div class="ex-addcard-num">
@@ -44,6 +47,7 @@ import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
+			realName: '',
 			accountName: '',
 			card:'', 
 			banks:'', 
@@ -97,6 +101,7 @@ export default {
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
 				_this.userphone =  res.data.data.phone
+				_this.realName =  res.data.data.realName
 			} else {
 				MessageBox('提示', res.data.msg)
 			}

@@ -54,7 +54,7 @@
 			<div class="ex-declare-box" >
 				<div class="ex-declare-cnt-item">
 				<span>*买家用户编号</span>
-				<input type="text" placeholder="请输入买家用户编号" v-model.trim='userCode'>
+				<input type="tel" placeholder="请输入买家用户编号" v-model.trim='userCode'>
 				<a href="javascript:;" @click='exit' class='exit'>校 验</a>
 			</div>
 			<div class="ex-declare-cnt-item">
@@ -67,7 +67,7 @@
 			</div>
 			<div class="ex-declare-cnt-item">
 				<span>*消费金额</span>
-				<input type="text" placeholder="请输入消费金额" v-model.trim='consumptionMoney' maxlength="15">
+				<input type="tel" placeholder="请输入消费金额" v-model.trim='consumptionMoney' maxlength="15">
 			</div>
 			</div>
 		</div>
@@ -200,8 +200,8 @@ export default {
 				MessageBox('提示', '买家用户编号与买家手机不符！')
 				return
 			}
-			if (!this.commodityName) {
-				MessageBox('提示', '商品名称不能为空！')
+			if (!this.commodityName || this.$emoji(this.commodityName)) {
+				MessageBox('提示', '商品名称不能为空或表情图片！')
 				return
 			}
 			if (!/^\d+\.?\d{1,2}$/.test(this.consumptionMoney)) {

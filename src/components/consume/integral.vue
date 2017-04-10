@@ -112,6 +112,7 @@ export default {
 				_this.repeatBtn = false
 				if (res.data.code === '10000') {
 					MessageBox('提示', '您成功已兑换'+_this.exchange+'个享积分!')
+					_this.integral -= _this.exchange
 					_this.exchange = ''
 				} else {
 					MessageBox('提示', res.data.msg)

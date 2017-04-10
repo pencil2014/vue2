@@ -133,11 +133,12 @@ export default {
 		},
 		check () {
 			let _this = this
+			let path = window.localStorage.getItem('integralPath')
 			axios.post('user/vip',qs.stringify({consumptionPath: this.resurl[0]}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					MessageBox.alert('提交成功，后台正在审核您的会员升级申请,请稍后').then(action => {
-						_this.$router.go(-1)
+						_this.$router.push(path)
 					})
 				} else {
 					MessageBox('提示', '提交失败，请稍后重试！')

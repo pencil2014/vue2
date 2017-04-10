@@ -16,10 +16,11 @@
 					<img src="../../assets/images/boy05.png" alt="" v-if="avatar === 'boy05'">
 				</router-link>
 				
-				<div class="text">
+				<div class="text" v-if="userinfo.userName">
 					<p class="name" v-text="userinfo.userName"></p>
 					<p class="userid">ID：{{userinfo.userCode}}</p>
 				</div>
+				<div class="text2" v-else><p class="name">{{userinfo.userCode}}</p></div>
 			</div>
 			<span class="identity" v-show="isLev">{{identity}}</span>
 			<span class="identity vip">
@@ -155,6 +156,7 @@ export default {
 .ex-header .avatar{display: inline-block;border-radius: 50%;border: solid #fff 4px;width: 6rem;height: 6rem;overflow: hidden;float: left;background: #fff;}
 .ex-header .userdata img{overflow: hidden;}
 .ex-header .text{float: left;padding: 1rem 0 0 1rem;font-size: 1.6rem;color: rgba(255,255,255,0.5);}
+.ex-header .text2{float: left;color: #fff;font-size: 2rem;padding: 25px  0 0 1rem;}
 .ex-header .text .name{font-size: 2rem;color: #fff !important;max-width: 9rem;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;}
 .ex-header .identity{display: inline-block;width: 10rem;background: #fff;text-align: center;text-indent: 2em;border-radius: 20px 0 0 20px;height: 32px;line-height: 32px;position: absolute;top: 50%;margin-top: -18px;right: 0px;background: rgb(170,231,255);color: rgb(12,135,213);font-size: 1.6rem;}
 .ex-header .vip{background: rgb(245,174,38);color: #fff;}

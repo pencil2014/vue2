@@ -188,7 +188,6 @@ export default {
 				MessageBox('提示', '企业营业执照号不正确!')
 				return
 			}
-
 			if (!this.imgbase64.businessLicense) {
 				MessageBox('提示', '请上传营业执照照片！')
 				return
@@ -208,6 +207,10 @@ export default {
 			}
 			if (!this.imgbase64.facadePhoto) {
 				MessageBox('提示', '请上传店面门头照片！')
+				return
+			}
+			if(!this.agreement){
+				MessageBox('提示', '请勾选同意《E享时代商家入驻加盟协议书》')
 				return
 			}
 			this.repeatBtn = true

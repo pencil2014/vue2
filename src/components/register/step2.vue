@@ -26,7 +26,7 @@
 				<button type="button" @click="register" :class="{disableBtn:disableBtn}">注 册</button>
 			</div>
 			<div class="ex-rigster-from-agreement">
-				<input type="checkbox" name="agreement" v-model='agreement'> 我已阅读并同意 <a href="javascript:;">《E享时代注册协议》</a>
+				<input type="checkbox" name="agreement" v-model='agreement'> 我已阅读并同意 <a href="http://www.exgj.com.cn/exsdresc/file/m-xy.pdf">《E享时代注册协议》</a>
 			</div>
 		</div>
 	</div>
@@ -53,7 +53,7 @@ export default {
 	},
 	computed: {
 		disableBtn () {
-			return (this.phone && this.password && this.code) ? false : true 
+			return (this.phone && this.password && this.code  && this.agreement) ? false : true 
 		}
 	},
 	created () {
@@ -146,6 +146,10 @@ export default {
 				MessageBox('提示', '验证码不能为空！')
 				return
 			}
+			if (!this.agreement) {
+				MessageBox('提示', '请勾选同意《E享时代注册协议》！')
+				return
+			}
 			Indicator.open({
 			  text: '注册中...',
 			  spinnerType: 'fading-circle'
@@ -166,22 +170,25 @@ export default {
 					axios.post('user/register',qs.stringify({
 						user_id: _this.id, 
 						login_name: _this.phone,
-						password: md5(_this.password),
+						password: _this.password,
 						phone_code: _this.code
 					}))
 					.then(function(res){
 						Indicator.close()
 						if (res.data.code === '10000') {
 							window.localStorage.setItem('phone', _this.phone)
-							window.localStorage.removeItem('token')
-							_this.$router.push('/login')
+							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
+							window.localStorage.setItem('token', res.data.data.token)
+							_this.$router.push('/index')
 						} else {
 							Indicator.close()
+							_this.second = 0
 							MessageBox('提示', res.data.msg)
 						}
 					})
 					.catch(function(){
 						Indicator.close()
+						_this.second = 0
 						_this.repeatBtn = false
 						Toast('系统错误！')
 					})

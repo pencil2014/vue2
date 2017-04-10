@@ -103,7 +103,7 @@ export default {
 					// 请求验证码接口
 					axios.post('verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
-						codeType: 1,
+						codeType: 8,
 						smsType: 1
 					}))
 					.then(function(res){
