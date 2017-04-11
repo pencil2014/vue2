@@ -38,8 +38,9 @@
 					<li v-for='item in dataList' @click="toDetail(item.id)">
 						<p class="img"><img :src="item.facadePhoto" alt=""></p>
 						<div class="info">
-							<h3>{{ item.shopsName | substr}}</h3>
-							<p>{{ item.shopsAddress | substr}}</p>
+							<h3>{{ item.shopsName }}</h3>
+							<p v-if='item.mainBusiness'>{{ item.mainBusiness }}</p>
+							<p>{{ item.shopsLinkphone}}</p>
 						</div>
 					</li>
 				</ul>
@@ -290,7 +291,7 @@ export default {
 .ex-partner-cnt li { border-bottom: 1px solid #eee; padding: 1rem 0.5rem; overflow: hidden;}
 .ex-partner-cnt li .img{float: left; margin-right: 1rem; width: 6rem;}
 .ex-partner-cnt li .img img{ width: 6rem; height: 6rem; border-radius: 0.4rem; }
-.ex-partner-cnt li .info { margin-left: 6rem; }
+.ex-partner-cnt li .info { margin-left: 6rem; padding:0 1rem;}
 .ex-partner-cnt li .info h3{font-weight: normal; font-size: 1.6rem; padding: 0.5rem 0;}
-.ex-partner-cnt li .info p{ color: #aaafb6; }
+.ex-partner-cnt li .info p{ color: #aaafb6; max-height: 4.8rem; overflow: hidden; margin-bottom: 0.5rem;}
 </style>
