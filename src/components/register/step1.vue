@@ -9,7 +9,7 @@
 			<b>方法一</b>
 			<p>输入好友提供的ID号</p>
 			<div class="ex-register-item-sub">
-				<input type="text" name="" class="input" v-model.trim='code' @focus='hidebtn' @blur='showbtn' placeholder="输入ID号"><button type='button' class='button' @click='goto'>去注册</button></div>
+				<input type="tel" name="" class="input" v-model.trim='code' @focus='hidebtn' @blur='showbtn' placeholder="输入ID号"><button type='button' class='button' @click='goto'>去注册</button></div>
 		</div>
 		<div class="ex-register-item">
 			<span></span>
@@ -43,9 +43,13 @@ export default {
 				return
 			}
 			if (!/^(M|m|B|b)\d+$/.test(this.code)) {
-				MessageBox('提示', 'ID号为字母M(m)或B(b)加数字！')
-				return
+				this.code = "M" + this.code
 			}
+			// if (!/^(M|m|B|b)\d+$/.test(this.code)) {
+			// 	MessageBox('提示', 'ID号为字母M(m)或B(b)加数字！')
+			// 	return
+			// }
+
 			Indicator.open({
 			  text: '正在提交...',
 			  spinnerType: 'fading-circle'

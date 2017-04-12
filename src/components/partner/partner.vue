@@ -145,6 +145,13 @@ export default {
 		changeProvince (id,name) {
 			this.provinceId = id
 			this.provincename = name
+			if (name === '全国') {
+				this.showsub = false
+				this.districtId = ''
+				this.cityId = ''
+				this.getdata()
+				return
+			}
 			let array = this.city.filter(function(item) {
 				return item.parentId === this.provinceId
 			}.bind(this))
@@ -287,7 +294,7 @@ export default {
 .ex-county{background-color: #fff;}
 .ex-city-box li{ padding: 1rem; border-bottom: 1px solid #ddd; text-align: center;}
 .ex-city-box li.active { color: #2f91d8; border-color: #2f91d8;}
-.ex-partner-cnt { margin-top: 5rem; padding: 0 1rem;}
+.ex-partner-cnt { margin: 5rem 0;  padding: 0 1rem;}
 .ex-partner-cnt li { border-bottom: 1px solid #eee; padding: 1rem 0.5rem; overflow: hidden;}
 .ex-partner-cnt li .img{float: left; margin-right: 1rem; width: 6rem;}
 .ex-partner-cnt li .img img{ width: 6rem; height: 6rem; border-radius: 0.4rem; }

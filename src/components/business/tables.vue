@@ -68,15 +68,12 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: 1,status: 6}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
-					let array = res.data.data.list.filter(function(item) {
-						return item.status === '6'
-					}.bind(this))
-					_this.tableList = array || []
+					_this.tableList = res.data.data.list || []
 					_this.page = 2
 				} else {
 					MessageBox('提示', res.data.msg)
@@ -98,17 +95,14 @@ export default {
 			})
 			let _this = this
 			this.loading = true
-			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
+			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page,status: 6}))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
 
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
-					let array = res.data.data.list.filter(function(item) {
-						return item.status === '6'
-					}.bind(this))
-					_this.tableList.push(...array)
+					_this.tableList.push(...res.data.data.list)
 					_this.page += 1
 					_this.loading = false
 				} else {

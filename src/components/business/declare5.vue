@@ -152,7 +152,7 @@ export default {
 			this.imgpre.url = ''
 		},
 		back () {
-			this.$router.go(-1)
+			this.$router.push('/order')
 		},
 		repeat () {
 			let status = this.checkdata.transferVoucher

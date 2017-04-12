@@ -117,10 +117,10 @@ export default {
 	},
 	computed: {
 		check () {
-			if (this.checkdata.status === '1' || this.checkdata.status === '5') {
+			if (this.checkdata.status === '1' || this.checkdata.status === '5' || this.checkdata.status === '4') {
 				return 1
 			}
-			if (this.checkdata.status === '3' || this.checkdata.status === '7' || this.checkdata.status === '4') {
+			if (this.checkdata.status === '3' || this.checkdata.status === '7') {
 				return 2
 			}
 			if (this.checkdata.status === '2') {
@@ -165,7 +165,7 @@ export default {
 			this.imgpre.url = ''
 		},
 		back () {
-			this.$router.go(-1)
+			this.$router.push('/business')
 		},
 		repeat () {
 			let status = this.checkdata.transferVoucher

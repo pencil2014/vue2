@@ -7,13 +7,13 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">真实姓名</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="请输入真实姓名" maxlength="10" v-model.trim="realName">
+						<input type="text" placeholder="请输入真实姓名" maxlength="10" v-model.trim="realName" @input="standard('realName')" ref="input">
 					</div>
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">身份证号码</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="请输入身份证号码" maxlength="18" v-model.trim="idCard">
+						<input type="text" placeholder="请输入身份证号码" maxlength="18" v-model.trim="idCard" >
 					</div>
 				</div>
 			</div>
@@ -106,6 +106,9 @@ export default {
 	methods: {
 		back(){
 			this.$router.back();
+		},
+		standard(value) {
+		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')
 		},
 		submit(){
 			let _this = this;
