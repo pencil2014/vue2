@@ -54,7 +54,13 @@ export default {
 							MessageBox('提示', '交易记录数据非法！')
 							break;
 						case '1':   //交易成功
-							MessageBox('提示', '交易成功！')
+							// MessageBox('提示', '交易成功！')
+							MessageBox({
+							  title: '提示',
+							  message: '交易成功！'
+							}).then(action => {
+								_this.$router.push('/index')
+							})
 							break;
 						case '2':   //待支付
 							break;

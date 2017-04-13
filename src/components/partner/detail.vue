@@ -2,7 +2,7 @@
 	<div class="ex-warpper">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="IMGbanner">
-			<img src="content.facadePhoto" alt="">
+			<img :src="content.facadePhoto" alt="">
 			<p v-text="content.shopsName"></p>
 		</div>
 		<div class="items introduce">

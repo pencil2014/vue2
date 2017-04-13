@@ -266,7 +266,7 @@ export default {
 .ex-declare-cnt-item {border-bottom:1px solid #e5e5e5; position: relative; font-size: 1.4rem; padding: 0.5rem 0; }
 .ex-declare-cnt-item span {display: inline-block; width: 30%; line-height: 3rem; vertical-align: middle;}
 .ex-declare-cnt-item input { height: 3rem; width: 65%; border: none; vertical-align: middle;}
-.ex-declare-cnt-item .exit { position: absolute; right: 0; top: 0.5rem; display: block; height: 3rem; padding: 0 1rem; text-align: right; line-height: 3rem; color: #2eadff;}
+.ex-declare-cnt-item .exit { position: absolute; right: 0; top: 0.5rem; display: block; height: 3rem; padding: 0 1rem; text-align: right; line-height: 3rem; color: #2eadff; border: 1px solid #2eadff;}
 
 .ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
 .ex-declare-btn:active{background-color:#0470b6; }

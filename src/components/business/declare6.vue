@@ -1,10 +1,10 @@
 <template>
 	<div class="ex-declare">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家报单</span>
-		</div>
-
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-declare-cnt">
 		</div>
 		<div class="ex-declare-check">
@@ -59,11 +59,16 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
 			id: '',
-			checkdata: ''
+			checkdata: '',
+			modal:{
+				text:'商家报单',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -122,7 +127,10 @@ export default {
 			let date = time.getDate()
 			return [year,month,date].join('/')
 		}
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 
@@ -150,6 +158,6 @@ export default {
 .ex-declare-item b,.ex-declare-item .img {float: right;}
 .ex-declare-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
 
-.ex-declare-btn-cancel {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
-.ex-declare-btn-cancel:active{background-color:#047dcb; }
+.ex-declare-btn-cancel {margin: 0 2%; display: block; background-color: #f0544d; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-declare-btn-cancel:active{background-color:rgba(240,84,77,0.8); }
 </style>

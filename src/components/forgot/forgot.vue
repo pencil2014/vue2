@@ -1,11 +1,11 @@
 <template>
 <div>
-	
 	<div class="ex-forgot" v-show="showforgot">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="tologin"><i class="iconfont">&#xe605;</i></a>
 			<span>忘记密码</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="tologin"></HeadTitle>
 		<div class="ex-forgot-box">
 			<p class="ex-forgot-tips">我们将给您发送一个随机验证码，请注意查收短信。</p>
 			<form action="" class="ex-login-from">
@@ -24,18 +24,19 @@
 		</div>
 	</div>
 	<div class="ex-reset" v-show='!showforgot'>
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="toforgot"><i class="iconfont">&#xe605;</i></a>
 			<span>忘记密码</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="toforgot"></HeadTitle>
 		<form action="" class="ex-login-from">
 				<div class="ex-forgot-from-item">
 					<label for="pwd">新 密 码</label>
-					<input type="password" name="pwd" id="pwd"  v-model.trim="password" placeholder="请输入新密码" maxlength="20">
+					<input type="password" name="pwd" id="pwd" v-model.trim="password" placeholder="请输入新密码" maxlength="20">
 				</div>
 				<div class="ex-forgot-from-item">
 					<label for="confirm">确认密码</label>
-					<input type="password" name="confirm" id="confirm"  v-model.trim="confirm" placeholder="请再次输入新密码" maxlength="20">
+					<input type="password" name="confirm" id="confirm" v-model.trim="confirm" placeholder="请再次输入新密码" maxlength="20">
 				</div>
 				<button type="button" class="ex-forgot-next submit" :class="{disableBtn:checkpwd}" @click='reset'>提交</button>
 		</form>
@@ -46,6 +47,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -56,7 +58,11 @@ export default {
 			repeatBtn: false,
 			showforgot: true,
 			password: '',
-			confirm: ''
+			confirm: '',
+			modal:{
+				text:'忘记密码',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -204,7 +210,10 @@ export default {
 	},
 	destroyed () {
 		Indicator.close()
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }
 </script>
 <style scoped>
@@ -215,9 +224,9 @@ export default {
 .ex-forgot-from-item label{vertical-align: middle;}
 .ex-forgot-from-item input{ height: 4rem; border: none; padding-left: 0.5rem; width: 80%; }
 .ex-forgot-from-item .getcode{ position:absolute; right: 0; top: 1rem;color: #2eadff; }
-.ex-forgot-next{ height: 4.5rem; font-size: 1.6rem; margin: 1rem 0; width: 100%; border-radius: 0.4rem; background-color: #62c1ff; color: #fff;}
-.ex-forgot-next:active{background-color: #54a6dc;}
-.submit{background-color: #58c86b;}
-.submit:active{background-color: #52af62;}
-.ex-reset {padding-top: 1rem;}
+.ex-forgot-next{ height: 4.5rem; font-size: 1.6rem; margin: 1rem 0; width: 100%; border-radius: 0.4rem; background-color: #047dcb; color: #fff;}
+.ex-forgot-next:active{background-color: #0470b6;}
+.submit{background-color: #047dcb;}
+.submit:active{background-color: #0470b6;}
+/*.ex-reset {padding-top: 1rem;}*/
 </style>

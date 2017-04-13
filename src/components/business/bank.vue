@@ -137,6 +137,7 @@ export default {
 			}
 		},
 		addcard () {
+			let _this = this
 			if (this.userdata.isRealName !== '2') {
 				MessageBox({
 				  title: '提示',

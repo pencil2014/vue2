@@ -119,7 +119,7 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.back();
+			this.$router.go(-1);
 		},
 		selAvatar (value){
 			let _this = this;

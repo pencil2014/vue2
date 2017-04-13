@@ -137,25 +137,30 @@ export default {
 				Toast('新手机号码不能与原手机号码一致')
 				return
 			}
+			_this.countdown = true
+			Indicator.open({ spinnerType: 'fading-circle'})
 			//获取短信验证码
 			axios.post('verify/sendPhoneCode',qs.stringify({
 				phone: _this.phone,
 				codeType: 4,
 				smsType: 1
 			})).then(res =>{
+				Indicator.close()
 				if (res.data.code === '10000') {
 					Toast('请查收您的短信')
 					_this.countdownFn();
 				} else {
 					Toast(res.data.msg)
+					_this.countdown = false
 				}
 			}).catch(function(){
-					Toast('系统错误！')
+				_this.countdown = false
+				Indicator.close()
+				Toast('系统错误！')
 			})
 		},
 		countdownFn () {
 			let _this = this
-			_this.countdown = true
 			_this.second = 120;
 			let timer = setInterval(function(){
 				_this.second -= 1

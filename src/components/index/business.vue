@@ -213,7 +213,7 @@ export default {
 				})
 		},
 		gouser () {
-			this.$router.push('/index')
+			this.$router.push('/personal')
 		},
 		gotovip () {
 			let _this = this
@@ -238,7 +238,7 @@ export default {
 			axios.post('user/personal',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
-					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
+					window.localStorage.setItem('businessinfo', JSON.stringify(res.data.data))
 					window.localStorage.setItem('user/personal', new Date().getTime())
 				} else {
 					MessageBox('提示', res.data.msg)
@@ -266,8 +266,8 @@ export default {
 			axios.post('user/examine',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userVipStatus = res.data.data
-					window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/examine', new Date().getTime())
+					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
+					// window.localStorage.setItem('user/examine', new Date().getTime())
 				} else {
 					MessageBox('提示', res.data.msg)
 				}
@@ -296,12 +296,12 @@ export default {
 	},
 	created () {
 		let phone = window.localStorage.getItem('phone')
-		let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		let userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
 		if (!!userinfo && phone === userinfo.phone) {
 			// 获取用户详情
 			let personal = this.$getcache('user/personal')
 			if (personal) {
-				this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+				this.userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
 			} else {
 				this.getuserinfo()
 			}

@@ -3,9 +3,15 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-field">
 			<div class="ex-field-wrapper">
-				<label class="ex-field-title">原手机</label>
-				<div class="ex-field-value readonly">
-					<input type="text" maxlength="11" readonly="readonly" v-model="originalPhone">
+				<label class="ex-field-title">二级密码</label>
+				<div class="ex-field-value">
+					<input type="password" placeholder="请输入二级密码" maxlength="20" v-model.trim="psw">
+				</div>
+			</div>
+			<div class="ex-field-wrapper">
+				<label class="ex-field-title">确认二级密码</label>
+				<div class="ex-field-value">
+					<input type="password" placeholder="请再次确认二级密码" maxlength="20" v-model.trim="confirmpsw">
 				</div>
 			</div>
 			<div class="ex-field-wrapper">
@@ -27,6 +33,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
+import md5 from "blueimp-md5"
 import HeadTitle from '../common/title.vue'
 import Btn from '../common/button.vue'
 import { Toast,Indicator } from 'mint-ui'
@@ -34,19 +41,13 @@ export default {
 	data(){
 		return{
 			modal:{
-				text:'更换注册手机',
+				text:'设置二级密码',
 				fixed: false,
 			},
-			config:{
-	            onUploadProgress (progressEvent) {
-	              	Indicator.open({
-					  text: '加载中...',
-					  spinnerType: 'fading-circle'
-					});
-	            }
-	        },
-	        phone:'',
+	        psw:'',
+	        confirmpsw:'',
 	        VeryCode:'',
+	        phone:'',
 	        countdown: false,
 			second: '短信验证码',
 			submitBtn: false
@@ -58,7 +59,7 @@ export default {
 	},
 	computed: {
 		disable () {
-			let rule1 = !this.phone || !this.VeryCode;
+			let rule1 = !this.psw || !this.confirmpsw||!this.VeryCode;
 			if(rule1){
 				return true
 			}else{
@@ -78,14 +79,17 @@ export default {
 	},
 	created () {
 		let _this = this;
+		Indicator.open({ spinnerType: 'fading-circle'})
 		// 获取用户详情
 		axios.post('user/personal',qs.stringify({})).then(function(res){
+			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
 			} else {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
+			Indicator.close()
 			Indicator.open({ spinnerType: 'fading-circle'})
 		})
 	},
@@ -95,19 +99,25 @@ export default {
 		},
 		submit () {
 			let _this = this;
-			if(_this.disable){
+			if(_this.disable||_this.submitBtn){
 				return;
 			}
-			if(_this.submitBtn){
-				return 
+			if(!/^\w{6,20}$/.test(_this.psw)){
+				Toast('密码只能在6~20位之间,由字母、数字或者下滑线组成')
+				return;
+			}
+			if(_this.psw !== _this.confirmpsw){
+				Toast('两次输入密码不一致')
+				return;
 			}
 			_this.submitBtn = true;
-			axios.post('user/updateRegPhone1',qs.stringify({
+			axios.post('user/setTwoPwd',qs.stringify({
+				password: md5(_this.confirmpsw),
 				phoneCode: _this.VeryCode
 			})).then(res =>{
 				if (res.data.code === '10000') {
-					this.$router.push('/alterphone/step2')
-					_this.submitBtn = false;
+					this.$router.push('/settings')
+					Toast('设置成功')
 				} else {
 					_this.submitBtn = false;
 					Toast(res.data.msg)
@@ -124,7 +134,7 @@ export default {
 			Indicator.open({ spinnerType: 'fading-circle'})
 			axios.post('verify/sendPhoneCode',qs.stringify({
 				phone: _this.phone,
-				codeType: 3,
+				codeType: 5,
 				smsType: 1
 			})).then(res =>{
 				Indicator.close()
@@ -136,9 +146,9 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-				_this.countdown = false
-				Indicator.close()
-				Toast('系统出错了')
+					Indicator.close()
+					_this.countdown = false
+					Toast('系统出错了，正在修复中...')
 			})
 
 		},
@@ -166,6 +176,7 @@ export default {
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
 .ex-field-wrapper .ex-field-title{display: block;float: left;width: 30%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
+.ex-field-wrapper .ex-field-value input[type=password],
 .ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 65%;height: 30px;border: none;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}

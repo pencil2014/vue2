@@ -132,9 +132,9 @@ export default {
 		gotodec (status,id) {
 			if (status === '0') {
 				this.$router.push({ name: 'Declare2', params: { id: id}})
-			} else if (status === '1'|| status === '3') {
+			} else if (status === '1') {
 				this.$router.push({ name: 'Declare3', params: { id: id}})
-			} else if (status === '4') {
+			} else if (status === '4'|| status === '3') {
 				this.$router.push({ name: 'Declare4', params: { id: id}})
 			} else {
 				this.$router.push({ name: 'Declare5', params: { id: id}})

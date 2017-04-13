@@ -41,6 +41,11 @@
 						<span>修改密码</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
+					<router-link to="/twopassword" tag="li">
+						<span>设置二级密码</span>
+						<i class="iconfont">&#xe606;</i>
+						<label for="" v-if="userinfo.twoPwd === '2'">未设置</label>
+					</router-link>
 					<router-link to="/alterphone" tag="li">
 						<span>更换注册手机</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -53,10 +58,10 @@
 						<span>使用指南</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<!-- <router-link to="/feedback" tag="li">
+					<router-link to="/feedback" tag="li">
 						<span>留言反馈</span>
 						<i class="iconfont" >&#xe606;</i>
-					</router-link> -->
+					</router-link>
 				 	<router-link to="/version" tag="li">
 						<span>关于我们</span>
 						<i class="iconfont" >&#xe606;</i>

@@ -176,21 +176,30 @@ export default {
 				Toast('请输入正确的身份证号码')
 				return;
 			}
+			_this.countdown = true
 			let _Promise = this.checkIdCard()
 			_Promise.then( function () {
 				//获取短信验证码
+				Indicator.open({
+				  text: '正在获取...',
+				  spinnerType: 'fading-circle'
+				})
 				axios.post('verify/sendPhoneCode',qs.stringify({
 					phone: _this.phone,
 					codeType: 6,
 					smsType: 1
 				})).then(res =>{
+					Indicator.close()
 					if (res.data.code === '10000') {
 						Toast('请查收您的短信')
 						_this.countdownFn();
 					} else {
 						Toast(res.data.msg)
+						_this.countdown = false
 					}
 				}).catch(function(){
+						Indicator.close()
+						_this.countdown = false
 						Toast('系统出错了，正在修复中...')
 				})
 			}).catch(function(err){
@@ -204,7 +213,6 @@ export default {
 		},
 		countdownFn () {
 			let _this = this
-			_this.countdown = true
 			_this.second = 120;
 			let timer = setInterval(function(){
 				_this.second -= 1

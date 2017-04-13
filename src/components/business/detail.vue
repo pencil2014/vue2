@@ -1,10 +1,11 @@
 <template>
 	<div class="ex-detail">
 	 <div class="ex-detail-box">
-		 	<div class="ex-topbar">
+		 	<!-- <div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 				<span>E积分明细</span>
-			</div>
+			</div> -->
+			<HeadTitle :title="modal" @callback="back"></HeadTitle>
 			<div class="ex-detail-integral">
 				<div class="ex-detail-integral-item">
 					<span>E积分总额</span>
@@ -58,7 +59,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Loadmore, InfiniteScroll ,Indicator, Toast} from 'mint-ui'
-
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -69,10 +70,15 @@ export default {
 			totalPage: 1,
 			pageSize: 20,
 			nodateStatus: false,
-			loading: false
+			loading: false,
+			modal: {
+				text:'E积分明细',
+				fixed: true
+			},
 		}
 	},
 	created () {
+
 	},	
 	methods: {
 		back () {
@@ -90,6 +96,8 @@ export default {
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.data.totalPage
 					_this.recordList = res.data.data.data.list || []
+					_this.integralA = res.data.data.integralA
+					_this.integralB = res.data.data.integralB
 					_this.page = 2
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
@@ -117,6 +125,8 @@ export default {
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.data.totalPage
+					_this.integralA = res.data.data.integralA
+					_this.integralB = res.data.data.integralB
 					_this.recordList.push(...res.data.data.data.list)
 					_this.page += 1
 					_this.loading = false
@@ -141,6 +151,9 @@ export default {
 			return [month,date].join('/')
 		}
 	},
+	components: {
+		HeadTitle,
+	},
 	destroyed () {
 		Indicator.close()
 	}
@@ -148,7 +161,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-detail-box{ position: fixed; top: 0; width: 100%; z-index: 2;}
+.ex-detail-box{ position: fixed; top: 58px; width: 100%; z-index: 2;}
 .ex-detail-integral {background-color: #2eadff; padding: 0.5rem 1.5rem;overflow: hidden; }
 .ex-detail-integral span {color: #cde5ff;font-size: 1.4rem;}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;}

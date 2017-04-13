@@ -36,10 +36,20 @@
 						<span>个人资料</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
+					<router-link to="/businessinfo" tag="li" v-if="isShop">
+						<img src="../../assets/images/business.png" alt="">
+						<span>商家信息</span>
+						<i class="iconfont">&#xe606;</i>
+					</router-link>
+					<router-link to="/qrcode2" tag="li" v-if="isShop">
+						<img src="../../assets/images/QR_code.png" alt="">
+						<span>商家收款二维码</span>
+						<i class="iconfont">&#xe606;</i>
+					</router-link>
 					<router-link to="/message/1" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
-						<i class="iconfont" >&#xe606;</i>
+						<i class="iconfont">&#xe606;</i>
 						<label for="" class="count" v-text="count" v-show="count!=0"></label>
 					</router-link>
 					<router-link to="/notice" tag="li">
@@ -109,6 +119,9 @@ export default {
 			}else{
 				return this.userinfo.logoImg
 			}
+		},
+		isShop () {
+			return (/^B/i.test(this.userinfo.userCode)? true : false);
 		}
 	},
 	created () {

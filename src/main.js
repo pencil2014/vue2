@@ -61,7 +61,7 @@ var _hmt = _hmt || [];
 Vue.prototype.$getcache = function getcache (api) {
   let time1 = window.localStorage.getItem(api)
   let time2 = new Date().getTime() - time1
-  if (time2 < 1000 * 60 * 2) {
+  if (time2 < 1000 * 60 * 1) {
     return true
   } else {
     return false

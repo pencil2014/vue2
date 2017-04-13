@@ -21,9 +21,9 @@
 					</tr>
 					<tbody v-show='tableList.length > 0'>
 						<tr v-for="(item, index) in tableList">
-							<td>{{item.userCode}}</td>
 							<td>{{item.createTime | formatTime}}</td>
 							<td>{{item.commodityName}}</td>
+							<td>{{item.userCode}}</td>
 							<td>{{item.consumptionMoney}}</td>
 						</tr>
 					</tbody>

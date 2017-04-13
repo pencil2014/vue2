@@ -79,7 +79,7 @@ export default {
 		axios.post('declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					let status = res.data.status
+					let status = res.data.data.status
 					switch (status) {
 						case '0':  //首次提交
 							_this.type = 1

@@ -1,7 +1,7 @@
 <template>
 	<div class="ex-rigster-box">
 		<div class="ex-rigster-header">
-			您的好友<span v-if="name !== ''">{{name}}</span><span v-else>{{userId}}</span><br>
+			您的好友<span v-if="name !== ''">{{name || userCode}}</span><span v-else>{{userId}}</span><br>
 			邀请您加入E享时代！
 		</div>
 		<div class="ex-rigster-info">
@@ -40,6 +40,7 @@ export default {
 	data () {
 		return {
 			userId: '',
+			userCode: '',
 			id: '',
 			name: '',
 			phone: '',
@@ -64,6 +65,7 @@ export default {
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.id = res.data.data.id
+					_this.userCode = res.data.data.userCode
 					_this.name = res.data.data.userName
 				} else {
 					MessageBox('提示', res.data.msg)

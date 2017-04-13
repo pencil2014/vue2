@@ -170,9 +170,9 @@ export default {
 		repeat () {
 			let status = this.checkdata.transferVoucher
 			if (status) {
-				_this.$router.push({ name: 'Declare4', params: { id: _this.id}})
+				this.$router.push({ name: 'Declare4', params: { id: this.id}})
 			} else {
-				_this.$router.push({ name: 'Declare2', params: { id: _this.id}})
+				this.$router.push({ name: 'Declare2', params: { id: this.id}})
 			}
 		}
 	},

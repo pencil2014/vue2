@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-declare">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家报单</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-declare-progress">
 			<p class="percent">
 				<span></span>
@@ -59,6 +60,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import lrz from 'lrz'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -71,7 +73,11 @@ export default {
 			type: '',
 			transferUserName: '',
 			transferMoney: '',
-			rangliMoney: ''
+			rangliMoney: '',
+			modal:{
+				text:'商家报单',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -213,7 +219,10 @@ export default {
 	},
 	destroyed () {
 		Indicator.close()
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 

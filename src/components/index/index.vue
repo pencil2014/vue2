@@ -142,6 +142,7 @@
 			</div>
 		</div> -->
 		<app-nav></app-nav>
+		<model :model='model' v-show='model.show' @hideModel='hidemodel'></model>
 	</div>	
 </template>
 
@@ -150,6 +151,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
+import model from "../common/model.vue"
 export default {
 	data () {
 		return {
@@ -181,13 +183,22 @@ export default {
 		  },
 		  userVipStatus: {},
 		  customerService: false,
-		  repeatBtn: false
+		  repeatBtn: false,
+		  model: {
+		  	show: false,
+		  	title: '提示',
+		  	text: '<p>这是测试文本！这是测试文本！这是测试文本！这是测试文本！这是测试文本！这是测试文本！这是测试文本！这是测试文本！</p>'
+		  }
 		}
 	},
 	components: {
-		appNav
+		appNav,
+		model
 	},
 	methods: {
+		hidemodel () {
+			this.model.show = false
+		},
 		changetoken () {
 			if (this.repeatBtn) {
 				return
@@ -281,8 +292,8 @@ export default {
 			axios.post('user/examine',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userVipStatus = res.data.data
-					window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/examine', new Date().getTime())
+					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
+					// window.localStorage.setItem('user/examine', new Date().getTime())
 				} else {
 					MessageBox('提示', res.data.msg)
 				}
@@ -330,12 +341,13 @@ export default {
 				this.getsysIndex()
 			}
 			//获取会员审核详情信息
-			let examine = this.$getcache('user/examine')
-			if (examine) {
-				this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-			} else {
-				this.getexamine()
-			}
+			this.getexamine()
+			// let examine = this.$getcache('user/examine')
+			// if (examine) {
+			// 	this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
+			// } else {
+			// 	this.getexamine()
+			// }
 		} else {
 			this.getuserinfo()
 			this.getsysIndex()
