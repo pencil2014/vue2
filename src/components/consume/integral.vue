@@ -73,7 +73,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 		let path = window.localStorage.getItem('integralPath')
 		if (path) {
@@ -121,7 +121,7 @@ export default {
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 
 		}

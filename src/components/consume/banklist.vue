@@ -53,7 +53,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 			axios.post('user/personal',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
@@ -62,7 +62,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 			})
 	},
 	methods: {
@@ -88,7 +88,7 @@ export default {
 							}
 						})
 						.catch(function(){
-							Toast('系统错误！')
+							Toast('网络请求超时！')
 						})
 					}
 				})
@@ -111,7 +111,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 			
 		},

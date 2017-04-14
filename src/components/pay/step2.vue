@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="form_bt">
-			<input type="button" value="支付" @click="submit">
+			<input type="button" value="支付" @click="submit"  :class="{disableBtn: type === '3' }">
 		</div>
 		<div class="modal_Bj" v-show="type === '3'">
 			<div class="modal">
@@ -144,7 +144,7 @@ export default {
 		},
 		submit () {
 			let _this = this;
-			if(_this.submitbtn){
+			if(_this.submitbtn || _this.type === '3'){
 				return 
 			}
 			_this.submitbtn = true
@@ -210,7 +210,7 @@ export default {
 .user .avatar .identity.vip{background: url(../../assets/images/identity_VIP.png) no-repeat center;background-size: 100%;text-indent: 1.8rem;}
 .user .avatar .identity.vip:before{content:'';width:30px;height:30px;background: url(../../assets/images/vip.png);background-size: 100%;position: absolute;left: 7px;bottom: 4px;}
 .user .message{width: 100%;height: 100%;color: rgb(88,100,133);line-height: 20px;}
-.user .message span{display: inline-block;}
+.user .message span{display: inline-block;word-break: break-all;max-width: 65%;}
 .user .message label.orange{color: rgb(245,174,38)}
 .user .message .name{font-size: 1.6rem;color: rgb(33,42,50);padding-top: 15px;}
 

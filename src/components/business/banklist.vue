@@ -59,7 +59,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 	},
 	methods: {
@@ -85,7 +85,7 @@ export default {
 							}
 						})
 						.catch(function(){
-							Toast('系统错误！')
+							Toast('网络请求超时！')
 						})
 					}
 				})
@@ -108,7 +108,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 			
 		},

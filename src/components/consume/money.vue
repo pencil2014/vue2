@@ -81,7 +81,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 			this.$refs.loadmore.onTopLoaded()
 		},
@@ -111,7 +111,7 @@ export default {
 			.catch(function(){
 				Indicator.close()
 				_this.nodateStatus = true
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 		}
 	},

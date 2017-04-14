@@ -256,4 +256,16 @@ export default {
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}
 .ex-field .ex-field-wrapper:last-child{border-bottom: none;}
 .readonly input{color: #586485}
+
+
+
+.ex-field .img {background-color: #fff; border-bottom: 1px solid #e5e5e5; padding: 0.5rem 1rem 1rem; position: relative;}
+.ex-field .img .tips {font-size: 1.2rem; color:#aaafb6; display: block;}
+.ex-field .img span {display: block; padding: 0.5rem 0;}
+.ex-field .instructions { position: absolute; right: 1rem; bottom: 1rem;  color: #007aff; font-size: 1.2rem;}
+.ex-field .upload {width: 8rem; height: 5rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem; position: relative; margin-left: 2rem; display: inline-block; margin-top: 0.5rem;} 
+.ex-field .upload i{ padding-top: 1rem; }
+.ex-field .upload b{display: block; font-weight: normal;color: #aaafb6;}
+.ex-field .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
+.ex-field .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
 </style>

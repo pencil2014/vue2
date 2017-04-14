@@ -228,7 +228,7 @@ export default {
 				.catch(function(){
 					Indicator.close()
 					_this.repeatBtn = false
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 				})
 		},
 		gouser () {
@@ -270,7 +270,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 			})
 		},
 		getsysIndex () {
@@ -284,7 +284,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 			})
 		},
 		getexamine () {
@@ -298,7 +298,7 @@ export default {
 					MessageBox('提示', res.data.msg)
 				}
 			}).catch(function(){
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 			})
 		}
 	},

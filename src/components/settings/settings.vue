@@ -58,10 +58,10 @@
 						<span>使用指南</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/feedback" tag="li">
+					<!-- <router-link to="/feedback" tag="li">
 						<span>留言反馈</span>
 						<i class="iconfont" >&#xe606;</i>
-					</router-link>
+					</router-link> -->
 				 	<router-link to="/version" tag="li">
 						<span>关于我们</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -114,7 +114,7 @@ export default {
 				MessageBox('提示', res.data.msg)
 			}
 		}).catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 		})
 	},
 	methods: {

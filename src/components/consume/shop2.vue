@@ -24,7 +24,7 @@
 		</div>
 		<div class="ex-shop2-cnt">
 			<div class="ex-shop2-cnt-item">
-				<span>*营业执照号</span><input type="text" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20">
+				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20">
 			</div>
 			<div class="img">
 				<span>*营业执照照片</span>
@@ -175,7 +175,7 @@ export default {
 				.catch(function(){
 					Indicator.close()
 					_this.repeatBtn = false
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 				})
 		}
 	},
@@ -244,7 +244,7 @@ export default {
 			.catch(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})	
 		},
 		getfile (id) {

@@ -101,7 +101,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Toast('系统错误！')
+			Toast('网络请求超时！')
 		})
 	},
 	watch: {
@@ -216,7 +216,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 		},
 		loadTop () {
@@ -251,7 +251,7 @@ export default {
 			.catch(function(){
 				Indicator.close()
 				_this.nodateStatus = true
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 		}
 	},

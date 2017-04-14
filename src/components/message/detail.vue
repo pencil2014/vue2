@@ -57,7 +57,7 @@ export default {
 				Toast('对不起数据加载失败！')
 			}
 		}).catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 		})
 	},
 	components: {

@@ -62,7 +62,7 @@ export default {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			Toast('系统错误！')
+			Toast('网络请求超时！')
 		})
 	},
 	methods: {
@@ -93,7 +93,7 @@ export default {
 			}).catch(function(){
 					Indicator.close();
 					_this.submitBtn = false
-					Toast('系统错误！')
+					Toast('网络请求超时！')
 			})
 		}
 	}

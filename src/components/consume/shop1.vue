@@ -29,13 +29,13 @@
 			<div class="ex-shop1-cnt-item">
 				<span>*联系地址</span>
 				<select v-model="provinceId" @change='changeProvince("")'>
-					<option v-for='item in province' :value='item.id'>{{item.name}}</option>
+					<option v-for='item in province' :value='item.id' v-if='item.name'>{{item.name}}</option>
 				</select>
 				<select v-model="cityId" @change='changeCity("")'>
-					<option v-for='item in cityArray' :value='item.id'>{{item.name}}</option>
+					<option v-for='item in cityArray' :value='item.id' v-if='item.name'>{{item.name}}</option>
 				</select>
 				<select v-model="districtId">
-					<option v-for='item in districtArray' :value='item.id'>{{item.name}}</option>
+					<option v-for='item in districtArray' :value='item.id' v-if='item.name'>{{item.name}}</option>
 				</select>
 			</div>
 			<div class="ex-shop1-cnt-item">
@@ -147,7 +147,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Toast('系统错误！')
+			Toast('网络请求超时！')
 		})
 	},
 	methods: {

@@ -72,7 +72,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 	},
 	methods: {
@@ -112,12 +112,12 @@ export default {
 					})
 					.catch(function(){
 						Indicator.close()
-						Toast('系统错误！')
+						Toast('网络请求超时！')
 					})
 				}
 			}).catch(function(){
 				Indicator.close()
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 
 		},
@@ -192,13 +192,13 @@ export default {
 						Indicator.close()
 						_this.second = 0
 						_this.repeatBtn = false
-						Toast('系统错误！')
+						Toast('网络请求超时！')
 					})
 				}
 			}).catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false 
-				Toast('系统错误！')
+				Toast('网络请求超时！')
 			})
 
 		}

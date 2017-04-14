@@ -22,8 +22,8 @@
 				</div>
 				<div class="text2" v-else><p class="name">{{userinfo.userCode}}</p></div>
 			</div>
-			<span class="identity" v-show="isLev">{{identity}}</span>
-			<span class="identity vip">
+			<span class="identity" v-show="!isLev">{{identity}}</span>
+			<span class="identity vip"  v-show="isLev">
 				<img src="../../assets/images/identity_VIP.png" alt="">
 				{{identity}}
 			</span>
@@ -142,7 +142,7 @@ export default {
 		 		Toast(count.data.msg)
 		 	}
 		 })).catch(function(){
-			Toast('系统错误！')
+			Toast('网络请求超时！')
 		})
 	},
 	methods: {
