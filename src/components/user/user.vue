@@ -131,8 +131,16 @@ export default {
 		 	axios.post('user/personal'),
         	axios.post('message/getCount')
 		 ]).then(axios.spread(function (personal,count){
-		 	_this.count = count.data.data.count;
-		 	_this.userinfo = personal.data.data;
+		 	if(personal.data.code === '10000'){
+		 		_this.userinfo = personal.data.data;
+		 	}else{
+		 		Toast(personal.data.msg)
+		 	}
+		 	if(count.data.code === '10000'){
+		 		_this.count = count.data.data.count;
+		 	}else{
+		 		Toast(count.data.msg)
+		 	}
 		 })).catch(function(){
 			Toast('系统错误！')
 		})

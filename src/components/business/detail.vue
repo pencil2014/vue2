@@ -37,12 +37,12 @@
 	  			infinite-scroll-distance="10" >
 						<tr v-for="(item, index) in recordList">
 							<td>{{ item.createTime | formatTime}}</td>
-							<td>{{ item.sellerCode }}</td>
-							<td>{{ item.buyersCode }}</td>
-							<td>{{ item.shoppName }}</td>
-							<td>{{ item.integralValue }}</td>
-							 <td>{{ item.integralValueE}}</td>
-							<td>{{ item.integralSource }}</td>
+							<td>{{ item.sellerCode || '--'}}</td>
+							<td>{{ item.buyersCode || '--' }}</td>
+							<td>{{ item.shoppName || '--' }}</td>
+							<td>{{ item.integralValue  || '--'}}</td>
+							 <td>{{ item.integralValueE || '--'}}</td>
+							<td>{{ item.integralSource  || '--'}}</td>
 						</tr>
 					</tbody>
 				</table>

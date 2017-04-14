@@ -27,9 +27,11 @@
 							<td>{{item.commodityName}}</td>
 							<td>{{item.consumptionMoney}}</td>
 							<td  @click='gotodec(item.status,item.id)'>
-								<span v-if='item.status==="1" || item.status ==="5"' >审核中 <i class='iconfont'>&#xe606;</i></span>
+								<span v-if='item.status==="1"' >初审中 <i class='iconfont'>&#xe606;</i></span>
+								<span v-if='item.status ==="5"' >终审中 <i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status==="2"'>已撤销 <i class='iconfont'>&#xe606;</i></span>
-								<span v-if='item.status==="3" || item.status ==="7"' >未通过审核 <i class='iconfont'>&#xe606;</i></span>
+								<span v-if='(item.status==="3" || item.status ==="7") && !item.transferVoucher' >未通过初审 <i class='iconfont'>&#xe606;</i></span>
+								<span v-if='(item.status==="3" || item.status ==="7") && item.transferVoucher' >未通过终审 <i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status==="6"'>审核通过 <i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status==="4"'><a href="javascript:;" >汇款凭证</a></span>
 								<span v-if='item.status==="0"' ><a href="javascript:;" class='links' >消费凭证</a><a href="javascript:;" @click.stop='gocancel(item.id)'>撤销</a></span>
@@ -134,8 +136,10 @@ export default {
 				this.$router.push({ name: 'Declare2', params: { id: id}})
 			} else if (status === '1') {
 				this.$router.push({ name: 'Declare3', params: { id: id}})
-			} else if (status === '4'|| status === '3') {
+			} else if (status === '4') {
 				this.$router.push({ name: 'Declare4', params: { id: id}})
+			} else if (status === '3') {
+				this.$router.push({ name: 'Declare5', params: { id: id}})
 			} else {
 				this.$router.push({ name: 'Declare5', params: { id: id}})
 			}

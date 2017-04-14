@@ -18,7 +18,7 @@
 			</div>
 			<div class="ex-rigster-from-item verycode">
 				<i class="iconfont">&#xe654;</i>
-				<input type="text" name="password"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
+				<input type="tel" name="password"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
 				<a href="javascript:;" @click='getcode' v-show='!countdown'>获取短信验证码</a>
 				<a href="javascript:;"  v-show='countdown'>{{second}}秒</a>
 			</div>

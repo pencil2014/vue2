@@ -67,7 +67,7 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.back();
+			this.$router.go(-1);
 		},
 		save () {
 			let _this = this;
@@ -85,7 +85,7 @@ export default {
 				Indicator.close();
 				_this.submitBtn = false
 				if (res.data.code === '10000') {
-					_this.$router.push('/personal');
+					_this.$router.back();
 					Toast('修改成功')
 				} else {
 					Toast(res.data.msg)

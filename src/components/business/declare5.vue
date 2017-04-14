@@ -164,9 +164,9 @@ export default {
 		repeat () {
 			let status = this.checkdata.transferVoucher
 			if (status) {
-				_this.$router.push({ name: 'Declare4', params: { id: _this.id}})
+				this.$router.push({ name: 'Declare4', params: { id: this.id}})
 			} else {
-				_this.$router.push({ name: 'Declare2', params: { id: _this.id}})
+				this.$router.push({ name: 'Declare2', params: { id: this.id}})
 			}
 		}
 	},
@@ -183,7 +183,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-declare{background-color: #f4f5f7; min-height: 100%;  position: absolute; width: 100%;}
+.ex-declare{background-color: #f4f5f7; min-height: 100%;  position: absolute; width: 100%; padding-bottom: 7rem;}
 .ex-declare-progress {padding: 2rem 0; text-align: center; overflow: hidden; position: relative;}
 .ex-declare-progress .percent { height: 0.4rem; background-color: #e3e3e3;position: absolute; top: 3.2rem; left: 3rem; right: 3rem;}
 .ex-declare-progress-item { width: 25%; float: left; height: 5rem;  text-align: center; z-index: 2; position: relative;}
@@ -206,6 +206,6 @@ export default {
 .ex-declare-item b,.ex-declare-item .img {float: right;}
 .ex-declare-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
 
-.ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
+.ex-declare-btn {display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; position: fixed;bottom: 1rem; left: 4%;}
 .ex-declare-btn:active{background-color:#0470b6; }
 </style>

@@ -46,29 +46,29 @@
 			<div class="ex-shop3-item">
 				<span>营业执照照片</span>
 				<div class="img">
-					<img :src="examineData.businessLicense" alt="">
+					<img :src="examineData.businessLicense" alt="" @click='preimg(examineData.businessLicense)'>
 				</div>
 			</div>
 			<div class="ex-shop3-item">
 				<span>法人身份证正反面</span>
 				<div class="img">
-					<img :src="examineData.legalPic" alt="">
-					<img :src="examineData.legalPic1" alt="">
+					<img :src="examineData.legalPic" alt="" @click='preimg(examineData.legalPic)'>
+					<img :src="examineData.legalPic1" alt="" @click='preimg(examineData.legalPic1)'>
 				</div>
 			</div>
 			<div class="ex-shop3-item">
 				<span>负责人手持身份证照片</span>
 				<div class="img">
-					<img :src="examineData.holdPic" alt="">
+					<img :src="examineData.holdPic" alt="" @click='preimg(examineData.holdPic)'>
 				</div>
 			</div>
 			<div class="ex-shop3-item">
 				<span>店面门头照片</span>
 				<div class="img">
-					<img :src="examineData.facadePhoto" alt="">
+					<img :src="examineData.facadePhoto" alt="" @click='preimg(examineData.facadePhoto)'>
 				</div>
 			</div>
-			<div class="ex-shop3-item" v-show="examineData.proxyPic">
+			<div class="ex-shop3-item" v-show="examineData.proxyPic" @click='preimg(examineData.proxyPic)'>
 				<span>委托书照片</span>
 				<div class="img">
 					<img :src="examineData.proxyPic" alt="">
@@ -77,6 +77,7 @@
 		</div>
 		</div>
 		<button type='button'  class="ex-shop3-btn" @click='next' v-if="examineData.auditStatus === '0'">重新申请</button>
+		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
 
@@ -85,6 +86,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import imgPreview from '../common/image'
 export default {
 	data () {
 		return {
@@ -93,6 +95,10 @@ export default {
 				text:'商家申请',
 				fixed: false,
 			},
+			imgpre: {
+				show: false,
+				url: ''
+			}
 		}
 	},
 	computed: {
@@ -114,6 +120,14 @@ export default {
 		})
 	},
 	methods: {
+		preimg (url) {
+			this.imgpre.url = url,
+			this.imgpre.show = true
+		},
+		hidepre () {
+			this.imgpre.show = false,
+			this.imgpre.url = ''
+		},
 		back () {
 			this.$router.push('/index')
 		},
@@ -123,6 +137,7 @@ export default {
 	},
 	components: {
 		HeadTitle,
+		imgPreview
 	},
 }	
 </script>

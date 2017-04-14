@@ -105,7 +105,7 @@
 			<ul>
 				<li><router-link to="/record"><i class="iconfont m1">&#xe631;</i><span>消费记录</span></router-link></li>
 				<li><router-link to="/integral"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
-				<li><router-link to="/detail"><i class="iconfont m3">&#xe680;</i><span>积分明细</span></router-link></li>
+				<li><router-link to="/detail"><i class="iconfont m3">&#xe680;</i><span>E积分明细</span></router-link></li>
 				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
 				<li><router-link to="/bank"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
 				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>

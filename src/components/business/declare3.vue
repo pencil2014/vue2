@@ -145,6 +145,10 @@ export default {
 				if (res.data.code === '10000') {
 					_this.auditOpinion = res.data.data.orderAudit.auditOpinion ? res.data.data.orderAudit.auditOpinion : ''
 					_this.checkdata = res.data.data
+
+					if (_this.checkdata.status === '4') {
+						_this.$router.push({ name: 'Declare4', params: { id: _this.id}})
+					}
 				} else {
 					MessageBox('提示', '数据请求失败！')
 				}

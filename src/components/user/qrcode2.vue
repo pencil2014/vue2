@@ -23,7 +23,6 @@ import HeadTitle from '../common/title.vue'
 export default {
 	data(){
 		return{
-			link:'',
 			modal: {
 				text:'推荐二维码和链接',
 				fixed: false
@@ -37,25 +36,33 @@ export default {
 	            }
 	        },
 	        qrCls: 'qrcode',
+	        userData:'',
+	        shopData:''
 		}
 	},
+	computed:{
+		link () {
+			return window.location.origin + '/#/pay?userCode='+ this.userData.userCode + '&userId=' + this.userData.userId + '&shopname=' + encodeURIComponent(this.shopData.shopsName)
+		} 
+	},
 	created () {
-		let _this = this 
-		// 获取用户详情
-		let pageUrl = window.location.origin + '/#/register';
-		axios.post('user/getQrcode',qs.stringify({
-			pageUrl: pageUrl
-		}),_this.config).then(function(res){
-			Indicator.close();
-			if (res.data.code === '10000') {
-				let link = res.data.url.split('?');
-				let usercode = link[1].split('=')[1];
-				_this.link = link[0] + '/' + usercode;
-			} else {
-				MessageBox('提示', res.data.msg)
-			}
-		}).catch(function(){
-			Indicator.close();
+		let _this = this
+
+		 axios.all([
+		 	axios.post('user/personal'),
+        	axios.post('shop/examine')
+		 ]).then(axios.spread(function (personal,shop){
+		 	if(personal.data.code === '10000') {
+		 		_this.userData = personal.data.data
+		 	}else{
+		 		Toast(personal.data.msg)
+		 	}
+		 	if(shop.data.code === '10000'){
+		 		_this.shopData = shop.data.data
+		 	}else{
+		 		Toast(shop.data.msg)
+		 	}
+		 })).catch(function(){
 			Toast('系统错误！')
 		})
 	},
