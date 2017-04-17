@@ -24,7 +24,8 @@
 		</div>
 		<div class="ex-shop2-cnt">
 			<div class="ex-shop2-cnt-item">
-				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20">
+				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20" >
+				<p class=tips>营业执照号不够15位的请用字母e补齐</p>
 			</div>
 			<div class="img">
 				<span>*营业执照照片</span>
@@ -124,7 +125,7 @@ export default {
 	computed: {
 		disableBtn () {
 			let rule = (this.imgbase64.businessLicense && this.imgbase64.legalPic1 && this.imgbase64.legalPic2 && this.imgbase64.holdPic  && this.imgbase64.facadePhoto)
-			let rule2 = /^\d{15,}$/.test(this.licenseNumber)
+			let rule2 = /^\d{13,}/.test(this.licenseNumber)
 			if (!rule || !rule2) {
 				return true
 			} else {
@@ -167,9 +168,10 @@ export default {
 					_this.repeatBtn = false
 					Indicator.close()
 					if (res.data.code === '10000') {
+						window.localStorage.removeItem('shopdata')
 						_this.$router.push('/shop3')
 					} else {
-						MessageBox('提示', '提交失败，请稍后重试！')
+						MessageBox('提示', res.data.msg)
 					}
 				})
 				.catch(function(){
@@ -184,7 +186,7 @@ export default {
 			this.$router.go(-1)
 		},
 		next () {
-			if (!(/^\d{15,}$/.test(this.licenseNumber))) {
+			if (!(/^\d{13,}/.test(this.licenseNumber))) {
 				MessageBox('提示', '企业营业执照号不正确!')
 				return
 			}
@@ -289,7 +291,7 @@ export default {
 .ex-shop2-cnt-item {background-color: #fff; padding: 0.5rem 1rem; margin-bottom: 1rem;}
 .ex-shop2-cnt-item span {display: inline-block; width: 30%; line-height: 3rem; vertical-align: middle;}
 .ex-shop2-cnt-item input { height: 3rem; width: 70%; border: none; vertical-align: middle; }
-
+.ex-shop2-cnt-item .tips {font-size: 1.2rem; color: #999; padding-left: 30%; border-top: 1px solid #eee; padding-top: 0.5rem;}
 
 
 .ex-shop2-cnt .img {background-color: #fff; border-bottom: 1px solid #e5e5e5; padding: 0.5rem 1rem 1rem; position: relative;}

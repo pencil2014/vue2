@@ -113,7 +113,7 @@ export default {
 					}
 
 				} else {
-					MessageBox('提示', '数据请求失败！')
+					MessageBox('提示', '网络请求超时！')
 				}
 			})
 			.catch(function(){

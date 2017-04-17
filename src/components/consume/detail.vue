@@ -18,7 +18,7 @@
 					<tr>
 						<th width="15%">结算日期</th>
 						<th width="15%">卖家ID</th>
-						<th width="15%">卖家ID</th>
+						<th width="15%">买家ID</th>
 						<th width="20%">商品名称</th>
 						<th width="20%">E积分</th>
 						<th width="15%">来源</th>

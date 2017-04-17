@@ -24,7 +24,7 @@
 					<tr>
 						<th>结算日期</th>
 						<th>卖家ID</th>
-						<th>卖家ID</th>
+						<th>买家ID</th>
 						<th>商品名称</th>
 						<th>E积分</th>
 						<th>激励E积分</th>

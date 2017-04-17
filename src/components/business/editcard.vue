@@ -2,13 +2,13 @@
 	<div class="ex-addcard">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>添加公司银行卡</span>
+			<span>编辑公司银行卡</span>
 		</div>
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
-			<!-- <div class="ex-addcard-num">
+			<div class="ex-addcard-num">
 				<label for="number">姓名:</label> <span>{{realName}}</span>
-			</div> -->
+			</div>
 			<div class="ex-addcard-num">
 				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
 			</div>

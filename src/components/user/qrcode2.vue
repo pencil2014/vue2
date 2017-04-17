@@ -8,9 +8,9 @@
 	<div class="qrcode-wrapper">
 		<div class="qrcode-content">
 			<div class="tip1">扫二维码向我付钱</div>
-			<qrcode :cls="qrCls" :value="link" type="image" :size="230" level = 'H'></qrcode>
+			<qrcode :cls="qrCls" :value="link" type="image" :size="250" level = 'H'></qrcode>
 			<div class="tip2">商家可以保存二维码图片，并打印作为支付台码</div>
-		</div>	
+		</div>
 	</div>
 </div>
 </template>

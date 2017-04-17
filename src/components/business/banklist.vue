@@ -7,11 +7,12 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-banklist-cnt">
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
-				<div class="bankinfo">
+				<div class="bankinfo" @click='gotoedit(item.cardNo,item.status)'>
 					<p>{{item.banks}}</p>
 					<p>{{item.accountName}}</p>
 					<p>{{item.cardNo | card}}</p>
-					<p class="right">{{item.status | status}}</p>
+					<p class="right" >{{item.status | status}}</p>
+					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
 				</div>
 				<div class="bankaction">
 					<span class='deleted' v-if='item.isDefault !== "1"' @click='delcard(item, index)'>删 除</span>
@@ -21,7 +22,7 @@
 					</span>
 				</div>
 			</div>
-			<div class="ex-banklist-add" @click='addcard'>
+			<div class="ex-banklist-add" @click='addcard' v-if='banks.length <= 0'>
 				<i class="iconfont">&#xe608;</i> 添加银行卡
 			</div>
 		</div>
@@ -65,6 +66,12 @@ export default {
 	methods: {
 		back () {
 			this.$router.go(-1)
+		},
+		gotoedit (id,status) {
+			if (status === '1') {
+				return
+			}
+			this.$router.push({ name: 'Editcard1', params: { id: id}})
 		},
 		delcard (item,index) {
 			let _this = this
@@ -149,7 +156,8 @@ export default {
 .ex-banklist {background-color: #f4f5f7;color: #586485; font-size: 1.4rem; overflow-x: hidden;min-height: 100%;padding-bottom: 5rem;}
 .ex-banklist-item	{background-color: #fff; margin: 1.5rem 0; padding: 1rem;}
 .ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; position: relative;}
-.ex-banklist-item	.bankinfo  .right {position: absolute;right: 10px;line-height: 20px;top: 50%;margin-top: -10px;color: red;}
+.ex-banklist-item	.bankinfo  .right {position: absolute;right: 4rem;line-height: 2rem;top: 50%;margin-top: -1rem;color: red;}
+.ex-banklist-item	.bankinfo .goto{ position: absolute; right: 1rem; top: 1.8rem; font-size: 2rem; }
 .bankaction { padding-top: 1rem; overflow: auto;}
 .bankaction span i{vertical-align: middle; margin-right: 0.4rem; font-size: 2rem; }
 .bankaction .deleted {padding: 0 2rem 0 0;}

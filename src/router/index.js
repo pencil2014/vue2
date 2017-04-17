@@ -19,6 +19,7 @@ const Money = resolve => require(['../components/consume/money'], resolve)
 const Bank = resolve => require(['../components/consume/bank'], resolve)
 const BankList = resolve => require(['../components/consume/banklist'], resolve)
 const Addcard = resolve => require(['../components/consume/addcard'], resolve)
+const Editcard = resolve => require(['../components/consume/editcard'], resolve)
 const Recommend = resolve => require(['../components/consume/recommend'], resolve)
 const Upgrade = resolve => require(['../components/consume/upgrade'], resolve)
 const Wechat = resolve => require(['../components/consume/wechat'], resolve)
@@ -27,6 +28,7 @@ const Shop1 = resolve => require(['../components/consume/shop1'], resolve)
 const Shop2 = resolve => require(['../components/consume/shop2'], resolve)
 const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
 const Integral2 = resolve => require(['../components/consume/integraldetail'], resolve)
+
 
 const Declare = resolve => require(['../components/business/declare'], resolve)
 const Declare2 = resolve => require(['../components/business/declare2'], resolve)
@@ -42,6 +44,7 @@ const Detail2 = resolve => require(['../components/business/detail'], resolve)
 const Bank1 = resolve => require(['../components/business/bank'], resolve)
 const BankList1 = resolve => require(['../components/business/banklist'], resolve)
 const Addcard1 = resolve => require(['../components/business/addcard'], resolve)
+const Editcard1 = resolve => require(['../components/business/editcard'], resolve)
 
 const School = resolve => require(['../components/school/school'], resolve)
 const Details = resolve => require(['../components/school/details'], resolve)
@@ -179,6 +182,16 @@ export default new Router({
       path: '/addcard1',
       name: 'Addcard1',
       component: Addcard1
+    },
+    {
+      path: '/editcard',
+      name: 'Editcard',
+      component: Editcard
+    },
+    {
+      path: '/editcard1',
+      name: 'Editcard1',
+      component: Editcard1
     },
     {
       path: '/shop1',

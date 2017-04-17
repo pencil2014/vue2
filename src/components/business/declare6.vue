@@ -82,7 +82,7 @@ export default {
 					_this.auditOpinion = res.data.data.orderAudit.auditOpinion ? res.data.data.orderAudit.auditOpinion : ''
 					_this.checkdata = res.data.data
 				} else {
-					MessageBox('提示', '数据请求失败！')
+					MessageBox('提示', '网络请求超时！')
 				}
 			})
 			.catch(function(){

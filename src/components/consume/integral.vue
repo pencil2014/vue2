@@ -50,7 +50,7 @@ export default {
 	},
 	computed: {
 		disableBtn () {
-			let rule1 = this.exchange % 100 === 0 ? true :false
+			let rule1 = (/^[1-9]\d+$/.test(this.exchange)) && (this.exchange % 100 === 0) ? true :false
 			let rule2 = this.exchange <= this.integral ? true : false
 			let rule3 = this.exchange > 0
 			let rule4 = rule1 && rule2 && rule3
@@ -85,7 +85,7 @@ export default {
 			this.$router.push(this.path)
 		},
 		submit () {
-			if (!/^\d+$/.test(this.exchange)) {
+			if (!/^[1-9]\d+$/.test(this.exchange)) {
 				MessageBox('提示', '兑换的享积分不合法！')
 				return
 			}

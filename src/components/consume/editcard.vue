@@ -2,15 +2,12 @@
 	<div class="ex-addcard">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>添加公司银行卡</span>
+			<span>编辑银行卡</span>
 		</div>
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
-			<!-- <div class="ex-addcard-num">
-				<label for="number">姓名:</label> <span>{{realName}}</span>
-			</div> -->
 			<div class="ex-addcard-num">
-				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
+				<label for="number">姓名:</label> <span>{{realName}}</span>
 			</div>
 			<div class="ex-addcard-num">
 				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard">
@@ -26,7 +23,7 @@
 						<input type="text" name=""  placeholder="请输入" v-model.trim='branch'>支行
 					</p>
 			</div>
-			<!-- <p class='tips'>*请填写您在银行预留的手机号码，以验证银行卡是否属于您本人</p>
+			<p class='tips'>*请填写您在银行预留的手机号码，以验证银行卡是否属于您本人</p>
 			<div class="ex-addcard-num">
 				<label for="number">手机号码:</label><input type="tel" name="" id="" placeholder="请输入手机号码" v-model='phone'>
 			</div>
@@ -34,7 +31,7 @@
 				<label for="number">验证码:</label><input type="text" name="" id="" placeholder="请输入验证码" v-model='phonecode'>
 				<a href="javascript:;" @click='getcode' v-show='!countdown'>获取验证码</a>
 				<a href="javascript:;"  v-show='countdown'>{{second}}秒</a>
-			</div> -->
+			</div>
 			<button type='button' :class="[ 'ex-bank-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
 		</div>
 	</div>
@@ -48,7 +45,6 @@ export default {
 	data () {
 		return {
 			realName: '',
-			accountName: '',
 			card:'', 
 			banks:'', 
 			phone:'',
@@ -68,8 +64,7 @@ export default {
 			let rule2 = this.city ? true :false
 			let rule3 = this.branch ? true :false
 			let rule4 = /^1\d{10}$/.test(this.phone) ? true :false
-			let rule5 = this.accountName ? true :false
-			if (rule1 && rule2 && rule3 && rule5) {
+			if (rule1 && rule2 && rule3 && rule4) {
 				return false
 			} else {
 				return true
@@ -103,7 +98,7 @@ export default {
 				_this.userphone =  res.data.data.phone
 				_this.realName =  res.data.data.realName
 			} else {
-				MessageBox('提示', res.data.msg)
+				MessageBox('提示', '请求数据失败！')
 			}
 		})
 		.catch(function(){
@@ -155,16 +150,16 @@ export default {
 			},1000)
 		},
 		submit () {
-			if (!this.accountName) {
-				MessageBox('提示', '银行开户名不能为空！')
-				return
-			}
 			if (!/^\d{16,}$/.test(this.card2)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
 			}
 			if (!this.city || !this.branch) {
 				MessageBox('提示', '支行名称不能为空！')
+				return
+			}
+			if (!/^1\d{10}$/.test(this.phone)) {
+				MessageBox('提示', '手机号码不正确！')
 				return
 			}
 			if (this.repeatBtn) {
@@ -179,10 +174,10 @@ export default {
 				cardNo: this.card2,
 				banks: this.bankname,
 				branch: this.branchname,
-				// phone: '1111',
-				cardType: 2,
-				accountName: this.accountName,
-				// phoneCode:'111'
+				phone: this.phone,
+				cardType: 1,
+				accountName: null,
+				phoneCode: this.phonecode
 			}))
 			.then(function(res){
 				Indicator.close()
@@ -198,7 +193,7 @@ export default {
 				Indicator.close()
 				Toast('网络请求超时！')
 			})
-		},
+		}
 	},
 	destroyed () {
 		Indicator.close()

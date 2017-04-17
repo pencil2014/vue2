@@ -18,7 +18,46 @@
 				</div>
 			</div>
 		</div>
-		<div class="ex-form">
+		<div class="UploadIMGfrom">
+			<div class="UpLoadIMG">
+				<label for="">身份证正、反面</label>
+				<div>
+					<div class="report-file">
+						<img :src="imgurl.frontPic" alt="" v-show="imgurl.frontPic">
+						<span>
+							<i class="iconfont">&#xe608;</i>
+							<br>
+							上传正面
+						</span>
+						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')"/>
+					</div>
+					<div class="report-file">
+						<img :src="imgurl.backPic" alt="" v-show="imgurl.backPic">
+						<span>
+							<i class="iconfont">&#xe608;</i>
+							<br>
+							上传反面
+						</span>
+						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')"/>
+					</div>
+				</div>
+			</div>
+			<div class="UpLoadIMG">
+				<label for="">手持身份证照片</label>
+				<div>
+					<div class="report-file">
+						<img :src="imgurl.fullPic" alt="" v-show="imgurl.fullPic">
+						<span>
+							<i class="iconfont">&#xe608;</i>
+							<br>
+							上传照片
+						</span>
+						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="ex-form">
 			<p>*验证你的注册手机号：{{phone}}</p>		
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
@@ -29,7 +68,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<Btn 
 			text="提交"  
 			:disableBtn="disable"
@@ -41,9 +80,10 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { Toast,MessageBox,Indicator } from 'mint-ui'
+import { Toast, MessageBox , Indicator } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 import Btn from '../common/button.vue'
+import lrz from 'lrz'
 export default {
 	data(){
 		return{
@@ -51,7 +91,17 @@ export default {
 				text:'实名认证',
 				fixed: false
 			},
-
+			imgurl:{
+				frontPic:'',
+				backPic:'',
+				fullPic:''
+			},
+			files: {
+				frontPic:'',
+				backPic:'',
+				fullPic:''
+			},
+			imgArray:[],
 			phone:'',
 			realName:'',
 			idCard:'',
@@ -76,7 +126,7 @@ export default {
 	},
 	computed:{
 		disable () {
-			let rule = !this.realName || !this.idCard || !this.phoneCode
+			let rule = !this.realName || !this.idCard || !this.imgurl.frontPic || !this.imgurl.backPic || !this.imgurl.fullPic
 			if(rule){
 				return true
 			}
@@ -110,6 +160,39 @@ export default {
 		standard(value) {
 		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')
 		},
+		getfile (id) {
+			let _this = this;
+			let _id = id;
+			let file = document.getElementById(_id).files[0];
+			_this.imgurl[id] = window.URL.createObjectURL(file);
+			lrz(file,{width:640})
+				.then(function (rst) {
+		        	_this.files[_id] = rst.base64;
+		        })
+		        .catch(function (err) {
+		         	console.log(err)
+		        })
+		},
+		uploadimg () {
+			let _this = this;
+			let formData = new FormData();
+			formData.append("imgStr", _this.files.frontPic)
+			formData.append("imgStr", _this.files.backPic)
+			formData.append("imgStr", _this.files.fullPic)
+
+			return new Promise(function(resolve, reject) {
+				axios.post('upload/pic_min',formData)
+				.then(function (res) {
+					if (res.data.code === '10000') {
+						resolve(res.data.urls)
+					} else {
+						reject('上传图片失败，请稍后重试！')
+					}
+				}).catch(function(){
+					reject('网络请求超时！')
+				})
+ 			})
+		},
 		submit(){
 			let _this = this;
 			let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
@@ -123,36 +206,62 @@ export default {
 			if(_this.submitBtn){
 				return 
 			}
-			let _Promise = this.checkIdCard()
-			_Promise.then( function () {
+			let _Promise = this.checkIdCard
+			let _Promise2 = this.uploadimg
+			_Promise().then( function (value) {
 				_this.submitBtn = true;
-				axios.post('verify/realName',qs.stringify({
-					realName: _this.realName,
-					idCard: _this.idCard,
-					phoneCode: _this.phoneCode
-				}),_this.config).then(res =>{
-					Indicator.close();
-					if (res.data.code === '10000') {
-						MessageBox('恭喜！',
-						'您已通过实名认证').then(action => {
-							_this.$router.back();
-							_this.submitBtn = false;
-						})
-					} else {
-						Indicator.close();
-						MessageBox({
-							title: '抱歉',
-							message: '实名认证未通过<br />原因是：'+res.data.msg,
-							confirmButtonText: '知道了'
-						}).then(action => {
-							_this.submitBtn = false;
-						})
-					}
-				}).catch(function(){
-						Toast('系统出错了，正在修复中...')
-						_this.submitBtn = false;
+				Indicator.open({
+				  text: '图片处理中...',
+				  spinnerType: 'fading-circle'
 				})
+				_Promise2().then(function(value){
+					_this.imgArray = value
+					Indicator.close();
+					Indicator.open({
+					  text: '正在提交...',
+					  spinnerType: 'fading-circle'
+					})
+					axios.post('verify/realName',qs.stringify({
+						realName: _this.realName,
+						idCard: _this.idCard,
+						frontPic: _this.imgArray[0],
+						backPic: _this.imgArray[1],
+						fullPic: _this.imgArray[2],
+					}),_this.config).then(res =>{
+						Indicator.close();
+						if (res.data.code === '10000') {
+							MessageBox('提示','提交成功').then(action => {
+								_this.$router.back();
+							})
+							// MessageBox('恭喜！',
+							// '您已通过实名认证').then(action => {
+							// 	_this.$router.back();
+							// 	_this.submitBtn = false;
+							// })
+						} else {
+							MessageBox('提示',res.data.msg).then(action => {
+								_this.submitBtn = false;
+							})
+							// MessageBox({
+							// 	title: '抱歉',
+							// 	message: '实名认证未通过<br />原因是：'+res.data.msg,
+							// 	confirmButtonText: '知道了'
+							// }).then(action => {
+							// 	_this.submitBtn = false;
+							// })
+						}
+					}).catch(function(err){
+						_this.submitBtn = false;
+						Indicator.close();
+						Toast('网络请求超时！')	
+					})
+				}).catch(function(err){
+					_this.submitBtn = false;
+					Toast(err)
+				})
+
 			}).catch(function(err){
+				console.log(err)
 				MessageBox({
 					title: '提示',
 					message: err,
@@ -200,7 +309,7 @@ export default {
 				}).catch(function(){
 						Indicator.close()
 						_this.countdown = false
-						Toast('系统出错了，正在修复中...')
+						Toast('网络请求超时！')
 				})
 			}).catch(function(err){
 				MessageBox({
@@ -230,12 +339,12 @@ export default {
 					idCard: _this.idCard
 				})).then(function (res) {
 					if (res.data.code === '10000') {
-						resolve()
+						resolve(res.data)
 					} else {
 						reject('该身份证号码已被其它用户使用，请更换身份证号码后进行实名认证')
 					}
 				}).catch(function(err){
-					reject('系统出错了，正在修复中...')
+					reject('网络请求超时！')
 				})
  			})
 		}
@@ -258,14 +367,12 @@ export default {
 .readonly input{color: #586485}
 
 
-
-.ex-field .img {background-color: #fff; border-bottom: 1px solid #e5e5e5; padding: 0.5rem 1rem 1rem; position: relative;}
-.ex-field .img .tips {font-size: 1.2rem; color:#aaafb6; display: block;}
-.ex-field .img span {display: block; padding: 0.5rem 0;}
-.ex-field .instructions { position: absolute; right: 1rem; bottom: 1rem;  color: #007aff; font-size: 1.2rem;}
-.ex-field .upload {width: 8rem; height: 5rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem; position: relative; margin-left: 2rem; display: inline-block; margin-top: 0.5rem;} 
-.ex-field .upload i{ padding-top: 1rem; }
-.ex-field .upload b{display: block; font-weight: normal;color: #aaafb6;}
-.ex-field .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
-.ex-field .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
+.UploadIMGfrom{background: #fff;padding: 0 0 0 15px;margin-top: 15px;}
+.UploadIMGfrom .UpLoadIMG{border-bottom: 1px solid #ebebeb;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;font-size: 1.4rem;}
+.UploadIMGfrom .UpLoadIMG:last-child{border-bottom: none;}
+.report-file{width: 8rem;height: 56px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 2%;margin-top: 6px;text-align: center;position: relative;}
+.report-file img{position: absolute;height: 100%;width: 100%;top: 0;left: 0;border:none;}
+.file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;height: 100%;width: 100%;z-index: 10;}
+.UpLoadIMG span{cursor: pointer;display: block;width: 100%;color: #aaafb6;font-size: 1.2rem;line-height: 20px;margin-top: 8px;}
+.UpLoadIMG span i.iconfont{font-size: 1.6rem;}
 </style>

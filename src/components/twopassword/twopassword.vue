@@ -148,7 +148,7 @@ export default {
 			}).catch(function(){
 					Indicator.close()
 					_this.countdown = false
-					Toast('系统出错了，正在修复中...')
+					Toast('网络请求超时！')
 			})
 
 		},

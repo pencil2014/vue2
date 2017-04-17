@@ -54,14 +54,14 @@ export default {
 			pickerValue: 0,
 			showAdd: false,
 			modal: {
-				text:'银行转存',
+				text:'转存银行',
 				fixed: false
 			},
 		}
 	},
 	computed: {
 		disableBtn () {
-			let rule1 = this.exchange >= 100 ? true :false
+			let rule1 = (/^[1-9]\d+.?\d*$/.test(this.exchange)) && (this.exchange >= 100) ? true :false
 			let rule2 = this.exchange <= this.userdata.overMoney ? true : false
 			let rule3 = rule1 && rule2 
 			if (rule3) {
@@ -131,7 +131,7 @@ export default {
 		submit () {
 			let _this = this
 
-			if (!/^\d+.?\d*$/.test(this.exchange)) {
+			if (!/^[1-9]\d+.?\d*$/.test(this.exchange)) {
 				MessageBox('提示', '提现金额不合法！')
 				return
 			}

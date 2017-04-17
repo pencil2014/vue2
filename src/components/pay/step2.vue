@@ -14,7 +14,7 @@
 		<div class="user">
 			<div class="avatar">
 				<img src="../../assets/images/head.png" alt="">
-				<span class="identity">E享会员</span>vip
+				<span class="identity" :class="{'vip': userData.userLev === '2'}">E享会员</span>
 			</div>
 			<div class="message">
 				<span class="name" v-if="userData.userName">
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="form_bt">
-			<input type="button" value="支付" @click="submit"  :class="{disableBtn: type === '3' }">
+			<input type="button" value="支付" @click="submit" :class="{disableBtn: type === '3' }">
 		</div>
 		<div class="modal_Bj" v-show="type === '3'">
 			<div class="modal">
@@ -111,32 +111,17 @@ export default {
 				return phone.replace(/^(\d{3})(\d{4})(\d{4})/,'$1****$3')
 			}
 		},
-		expired () {
-			let time1 = window.localStorage.getItem('initTIME')
-			let time2 = new Date().getTime() - time1
-			if (time2 >= 1000 * 60 * 60) {
-				return true
-			}else{
-				return false
-			}
-		}
 	},
 	watch:{
-		userData (to) {
-			if( to === 'expired' ){
-				this.$router.back();
-			} 	
-		}
+		
 	},
 	created () {
 		this.sel = this.type;
-		console.log(this.expired)
-		if (this.expired) {
-			window.localStorage.setItem('userData','expired')
-			this.userData = window.localStorage.userData
-		}else{
-			this.userData = JSON.parse(window.localStorage.getItem('userData')) || 'expired'
+		let token = window.localStorage.paytoken
+		if(!token){
+			this.$router.back()
 		}
+		this.userData = JSON.parse(window.localStorage.getItem('userData'))
 	},
 	methods: {
 		select (type) {
@@ -152,7 +137,9 @@ export default {
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('consume/toPay',qs.stringify({
+			axios.create({
+				headers: {'authorization': 'Bearer ' +　window.localStorage.paytoken}
+			}).post('consume/toPay',qs.stringify({
 				payType: _this.type,
 				shopId: _this.userData.shopId,
 				userId: _this.userData.userId,
@@ -166,9 +153,7 @@ export default {
 						confirmButtonText: '确定'
 					}).then(action =>{
 						if(action === "confirm"){
-							window.localStorage.setItem('token', '')
-							window.localStorage.setItem('userData', 'expired')
-							_this.userData = window.localStorage.userData
+							
 						}
 					});
 				}else{
@@ -207,7 +192,7 @@ export default {
 .user .avatar{width:94px;height:70px;position: relative;text-align: center;float: left;}
 .user .avatar img{width:60px;height:60px;border-radius: 50%;position: absolute;left: 17px;}
 .user .avatar .identity{display: inline-block;width: 100%;height: 23px;position: absolute;bottom: 0;right: 0;line-height: 20px;color: #fff;background: url(../../assets/images/identity.png) no-repeat center;background-size: 100%;}
-.user .avatar .identity.vip{background: url(../../assets/images/identity_VIP.png) no-repeat center;background-size: 100%;text-indent: 1.8rem;}
+.user .avatar .identity.vip{background: url(../../assets/images/header2.png) no-repeat center;background-size: 100%;text-indent: 1.8rem;}
 .user .avatar .identity.vip:before{content:'';width:30px;height:30px;background: url(../../assets/images/vip.png);background-size: 100%;position: absolute;left: 7px;bottom: 4px;}
 .user .message{width: 100%;height: 100%;color: rgb(88,100,133);line-height: 20px;}
 .user .message span{display: inline-block;word-break: break-all;max-width: 65%;}

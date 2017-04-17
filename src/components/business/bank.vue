@@ -1,9 +1,10 @@
 <template>
 	<div class="ex-bank">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>银行转存</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-bank-balance">
 			当前账户余额：<span class="orange">{{userdata.overMoney | checknum}}</span>
 		</div>
@@ -56,6 +57,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast ,Radio } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -68,7 +70,11 @@ export default {
 			repeatBtn: false,
 			pickerValue: 0,
 			showAdd: false,
-			selectType: 1 
+			selectType: 1,
+			modal:{
+				text:'转存银行',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -257,7 +263,10 @@ export default {
 	},
 	destroyed () {
 		Indicator.close()
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 

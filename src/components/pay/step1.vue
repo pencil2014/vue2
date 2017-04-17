@@ -92,26 +92,30 @@ export default {
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('consume/toChoosePayment',qs.stringify({
+			axios.create({
+				headers: {'authorization': ''}
+			}).post('consume/toChoosePayment',qs.stringify({
 				shopId: _this.userID,
 				amount: _this.money,
 				phone: _this.phone
 			})).then(res =>{
 				Indicator.close();
 				if (res.data.code === '10000') {
-					window.localStorage.setItem('token', res.data.data.token)
-					axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
+					window.localStorage.setItem('paytoken', res.data.data.token)
 
 					let userData = {};
 					userData.shopId = res.data.data.shopId
+					userData.shopCode = _this.$route.query.userCode
 					userData.userId = res.data.data.userId
 					userData.money = _this.money
 					userData.shopname = _this.shopname
 					userData.userCode = res.data.data.data.userCode
 					userData.integralA = res.data.data.data.integralA
 					userData.phone = res.data.data.data.phone
+					userData.userLev =  res.data.data.data.userLev
+					userData.userName =  res.data.data.data.userName
+
 					
-					window.localStorage.setItem('initTIME',new Date().getTime())
 					window.localStorage.setItem('userData',JSON.stringify(userData))
 					_this.$router.push('/pay/step2')
 				} else {

@@ -58,8 +58,8 @@
 				<a href="javascript:;" @click='exit' class='exit'>校 验</a>
 			</div>
 			<div class="ex-declare-cnt-item">
-				<span>*买家手机</span>
-				<input type="text" placeholder="请输入买家手机" v-model.trim='commodityPhone' maxlength="11">
+				<span>*买家手机号</span>
+				<input type="tel" placeholder="请输入买家手机号" v-model.trim='commodityPhone' maxlength="11">
 			</div>
 			<div class="ex-declare-cnt-item">
 				<span>*商品名称</span>
