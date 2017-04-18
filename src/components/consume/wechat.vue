@@ -11,7 +11,7 @@
 		</div>
 		<div class="ex-wechat-code">
 			<p class='code'>
-				<qrcode cls="qrcls"  :value="qrurl" level = 'H'  type='image' :size="200"></qrcode>
+				<qrcode cls="qrcls"  :value="qrurl" level = 'H'  type='image' :size="250"  :padding="10"></qrcode>
 			</p>
 			<p class='tips'>请长按保存此二维码图片或截屏到手机相册，然后打开微信，点击“扫一扫”，在页面右上角点击“相册”，选择相册中保存的二维码图片，点击“完成”。即可识别二维码，完成微信支付。</p>
 		</div>

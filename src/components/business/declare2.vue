@@ -34,7 +34,7 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
 					<img class='showpic' :src="imgurl" alt="" v-show='imgurl !==""'> 
-					<input type="file" class="uploadimg" id="uploadimg" @change='getfile'>
+					<input type="file" class="uploadimg" id="uploadimg" @change='getfile' accept="image/*">
 				</div>
 			</div>
 		</div>
@@ -226,11 +226,11 @@ export default {
 .ex-declare-cnt .img .tips {font-size: 1.2rem; color:#aaafb6; display: block;}
 .ex-declare-cnt .img span {display: block; padding: 0.5rem 0; font-size: 1.4rem;}
 .ex-declare-cnt .instructions { position: absolute; right: 1rem; bottom: 1rem;  color: #007aff; font-size: 1.2rem;}
-.ex-declare-cnt .upload {width: 8rem; height: 5rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem; position: relative; margin-left: 2rem; display: inline-block; margin-top: 0.5rem;} 
-.ex-declare-cnt .upload i{ padding-top: 1rem; }
+.ex-declare-cnt .upload {width: 6rem; height: 6rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem; position: relative; margin-left: 2rem; display: inline-block; margin-top: 0.5rem;} 
+.ex-declare-cnt .upload i{ padding-top: 1.3rem; }
 .ex-declare-cnt .upload b{display: block; font-weight: normal;color: #aaafb6;}
-.ex-declare-cnt .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
-.ex-declare-cnt .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
+.ex-declare-cnt .showpic {position: absolute; top: 0; left: 0; height: 6.2rem; width: 6.2rem; z-index: 2;}
+.ex-declare-cnt .uploadimg { position: absolute; height: 6rem; width: 6rem; opacity: 0; z-index: 3; left: 0; top: 0;}
 
 .ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
 .ex-declare-btn:active {background-color: #0470b6;}

@@ -41,11 +41,11 @@
 						<span>商家信息</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link>
-					<router-link to="/qrcode2" tag="li" v-if="isShop">
+					<!-- <router-link to="/qrcode2" tag="li" v-if="isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>商家收款二维码</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link>
+					</router-link> -->
 					<router-link to="/message/1" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
@@ -61,11 +61,17 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
-					<li @click="toRealName">
+					<!-- <li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
 						<i class="iconfont" v-show="!isRealName">&#xe606;</i>
 						<label for="" v-show="isRealName">已认证</label>
+					</li> -->
+					<li @click="toRealName">
+						<img src="../../assets/images/renzhen.png" alt="">
+						<span>实名认证</span>
+						<i class="iconfont" v-show="checkRealName.status !== ('1'||'2')">&#xe606;</i>
+						<label for="">{{realnamestatus}}</label>
 					</li>
 					<router-link to="/qrcode" tag="li">
 						<img src="../../assets/images/QR_code.png" alt="">
@@ -90,13 +96,14 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import {Indicator, Toast } from 'mint-ui'
+import {Indicator, Toast ,MessageBox} from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data(){
 		return{
 			userinfo:'',
 			count:'',
+			checkRealName:'',
 			modal: {
 				text:'设置',
 				fixed: false
@@ -106,6 +113,11 @@ export default {
 	computed:{
 		isRealName () {
 			return (this.userinfo.isRealName === '2'? true : false)
+		},
+		realnamestatus () {
+			let _index = this.checkRealName.status
+			let arr = ['未通过','审核中','已认证','']
+			return arr[_index]
 		},
 		identity () {
 			return (/^B/i.test(this.userinfo.userCode)?'E享商家':'E享会员');
@@ -129,8 +141,9 @@ export default {
 
 		 axios.all([
 		 	axios.post('user/personal'),
-        	axios.post('message/getCount')
-		 ]).then(axios.spread(function (personal,count){
+        	axios.post('message/getCount'),
+        	axios.post('verify/checkRealName'),
+		 ]).then(axios.spread(function (personal,count,realname){
 		 	if(personal.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
 		 	}else{
@@ -141,19 +154,44 @@ export default {
 		 	}else{
 		 		Toast(count.data.msg)
 		 	}
+		 	if(realname.data.code === '10000'){
+		 		_this.checkRealName = realname.data.data
+		 	}else{
+		 		Toast(realname.data.msg)
+		 	}
 		 })).catch(function(){
 			Toast('网络请求超时！')
 		})
-	},
+	},	
 	methods: {
 		back(){
 			this.$router.back();
 		},
 		toRealName () {
-			if(this.isRealName){
+			let status = this.checkRealName.status
+			if(status === '0'){
+				MessageBox({
+					title:'抱歉',
+					message:'实名认证失败，原因是：' + this.checkRealName.option,
+					showConfirmButton:true,
+					showCancelButton:true,
+					confirmButtonText:'确认',
+					cancelButtonText:'取消',
+				}).then(action =>{
+					if(action === "confirm"){
+						this.$router.push('/realname')
+					}
+				});
+			}else if(status === '1'){
 				return
+			}else if(status === '2'){
+				return
+			}else if(status === '3'){
+				this.$router.push('/realname')
+			}else{
+				this.$router.push('/realname')
 			}
-			this.$router.push('/realname')
+			
 		}
 	},
 	beforeRouteLeave (to,from,next) {

@@ -7,14 +7,14 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-banklist-cnt">
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
-				<div class="bankinfo" @click='gotoedit(item.cardNo,item.status)'>
+				<div class="bankinfo" @click='gotoedit(item.id,item.status)'>
 					<p>{{item.banks}}</p>
 					<p>{{item.accountName}}</p>
 					<p>{{item.cardNo | card}}</p>
 					<p class="right" >{{item.status | status}}</p>
 					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
 				</div>
-				<div class="bankaction">
+				<div class="bankaction" v-if='item.status !== "1"'>
 					<span class='deleted' v-if='item.isDefault !== "1"' @click='delcard(item, index)'>删 除</span>
 					<span class="default" @click='setdefault(item,index)'>
 						<i class="iconfont active" v-if='item.isDefault === "1"' >&#xe636;</i>
@@ -38,7 +38,7 @@ export default {
 	data () {
 		return {
 			banks: [],
-			userinfo: '',
+			checkRealName: '',
 			modal:{
 				text:'公司银行卡',
 				fixed: false,
@@ -49,14 +49,25 @@ export default {
 		
 	},
 	created () {
-		this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
 		let _this = this
 		axios.post('bankard/list',qs.stringify({cardType: 2}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data
 				} else {
-					MessageBox('提示', '请求数据失败！')
+					MessageBox('提示', res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+
+			axios.post('verify/checkRealName',qs.stringify({}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.checkRealName = res.data.data
+				} else {
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -109,7 +120,12 @@ export default {
 						element.isDefault = '0'
 					})
 					_this.banks[index].isDefault = '1'
-					_this.$router.back()
+					MessageBox({
+					  title: '提示',
+					  message: '设置默认银行卡成功！'
+					}).then(action => {
+						_this.$router.go(-1)
+					})
 				} else {
 					MessageBox('提示', '设置默认银行卡失败！')
 				}
@@ -120,7 +136,32 @@ export default {
 			
 		},
 		addcard () {
-			if (this.userinfo.isRealName !== '2') {
+			let _this = this
+
+			if (this.checkRealName.status === '1') {
+				MessageBox('提示', '实名认证审核中，目前不能添加银行卡！')
+				return
+			}
+			if (this.checkRealName.status === '0') {
+				MessageBox({
+				  title: '提示',
+				  message: '实名认证失败！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+				return
+			}
+
+			if (this.checkRealName.status === '2') {
+				this.$router.push('/addcard1')
+				return
+			}
+
+			if (this.checkRealName.status === '3') {
 				MessageBox({
 				  title: '提示',
 				  message: '请先进行实名认证！',
@@ -131,9 +172,9 @@ export default {
 						_this.$router.push('/realname')
 					}
 				})
-			} else {
-				this.$router.push('/addcard1')
+				return
 			}
+			
 		}
 	},
 	filters: {

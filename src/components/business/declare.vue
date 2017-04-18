@@ -161,9 +161,9 @@ export default {
 				if (res.data.msg === 'true') {
 					let str = ''
 					if (_this.realName) {
-						str = "<span>用户编号："+_this.userCode+"<br/>"+_this.realName+"<br/>"+"手机号："+ _this.buyerPhone+"</span>"
+						str = "<span>用户编号："+_this.userCode+"<br/>"+_this.realName+"<br/>"+"手机号："+ _this.buyerPhone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对买家号码，一旦报错单，损失无法追回！)</p>"
 					} else {
-						str = "<span>用户编号："+_this.userCode+"<br/>" + "手机号："+ _this.buyerPhone+"</span>"
+						str = "<span>用户编号："+_this.userCode+"<br/>" + "手机号："+ _this.buyerPhone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对买家号码，一旦报错单，损失无法追回！)</p>"
 					}
 						MessageBox('提示', str)
 

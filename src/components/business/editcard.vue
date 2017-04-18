@@ -6,9 +6,9 @@
 		</div>
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
-			<div class="ex-addcard-num">
+			<!-- <div class="ex-addcard-num">
 				<label for="number">姓名:</label> <span>{{realName}}</span>
-			</div>
+			</div> -->
 			<div class="ex-addcard-num">
 				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
 			</div>
@@ -47,7 +47,8 @@ import { MessageBox, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
-			realName: '',
+			id: '',
+			// realName: '',
 			accountName: '',
 			card:'', 
 			banks:'', 
@@ -96,12 +97,19 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('user/personal',qs.stringify({}))
+		this.id =  this.$route.params.id
+
+		axios.post('bankard/checkDetail',qs.stringify({bankcardId: this.id}))
 		.then(function(res){
 			if (res.data.code === '10000') {
+				_this.card = res.data.data.cardNo
+				_this.banks = res.data.data.banks === '中国银行' ? '' : res.data.data.banks.split('中国')[1].split('银行')[0]
+				_this.branch = res.data.data.branch
+				_this.accountName = res.data.data.accountName
+				_this.province = res.data.data.province
+				_this.city = res.data.data.city
 				_this.phone = res.data.data.phone
 				_this.userphone =  res.data.data.phone
-				_this.realName =  res.data.data.realName
 			} else {
 				MessageBox('提示', res.data.msg)
 			}
@@ -109,6 +117,7 @@ export default {
 		.catch(function(){
 			Toast('网络请求超时！')
 		})
+
 	},
 	methods: {
 		back () {
@@ -175,19 +184,20 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('bankard/add',qs.stringify({
+			axios.post('bankard/update',qs.stringify({
+				id: this.id,
 				cardNo: this.card2,
 				banks: this.bankname,
 				branch: this.branchname,
 				// phone: '1111',
 				cardType: 2,
-				accountName: this.accountName,
+				accountName: this.accountName
 				// phoneCode:'111'
 			}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					MessageBox.alert('银行卡添加成功！').then(action => {
+					MessageBox.alert('修改银行卡成功！').then(action => {
 						_this.$router.go(-1)
 					})
 				} else {

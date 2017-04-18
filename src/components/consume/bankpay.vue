@@ -33,7 +33,7 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
 					<img class='showpic' :src="imgurl" alt="" v-show='imgurl !==""'> <!--  v-show='imgurl !== ""'-->
-					<input type="file" class="uploadimg" id="uploadimg" @change='getfile'>
+					<input type="file" class="uploadimg" id="uploadimg" @change='getfile' accept="image/*">
 				</div>
 			</div>
 		</div>
@@ -187,11 +187,11 @@ export default {
 
 .ex-bankpay-sub .img { height: 6rem; position: relative;}
 .ex-bankpay-sub .img span {display: block; width: 30%; line-height: 5rem; float: left;}
-.ex-bankpay-sub .upload {margin-left: 30%; margin-top: 1rem; width: 8rem; height: 5rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem;}
-.ex-bankpay-sub .upload i{ padding-top: 1rem; }
+.ex-bankpay-sub .upload {margin-left: 30%; margin-top: 1rem; width: 6rem; height: 6rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem;}
+.ex-bankpay-sub .upload i{ padding-top: 1.3rem; }
 .ex-bankpay-sub .upload b{display: block; font-weight: normal;color: #aaafb6;}
-.ex-bankpay-sub .showpic {position: absolute;left: 30%;top: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
-.ex-bankpay-sub .uploadimg { position: absolute;left: 30%;top: 0; height: 5rem; width: 8rem; opacity: 0; z-index: 3; }
+.ex-bankpay-sub .showpic {position: absolute;left: 30%;top: 0; height: 6.2rem; width: 6.2rem; z-index: 2;}
+.ex-bankpay-sub .uploadimg { position: absolute;left: 30%;top: 0; height: 6rem; width: 6rem; opacity: 0; z-index: 3; }
 
 .ex-bankpay-btn {margin: 0 4%; display: block; width: 92%;  background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
 .ex-bankpay-btn:active{ background-color: #0470b6;}

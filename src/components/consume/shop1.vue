@@ -34,15 +34,15 @@
 				<select v-model="cityId" @change='changeCity("")'>
 					<option v-for='item in cityArray' :value='item.id' v-if='item.name'>{{item.name}}</option>
 				</select>
-				<select v-model="districtId">
+				<select v-model="districtId" v-if='districtArray.length > 0'>
 					<option v-for='item in districtArray' :value='item.id' v-if='item.name'>{{item.name}}</option>
 				</select>
 			</div>
 			<div class="ex-shop1-cnt-item">
-				<span>*详细地址</span><input type="text" name="" id="" placeholder="详细地址" maxlength="40" v-model.trim='addressDetail'>
+				<span>*详细地址</span><input type="text" name="" id="" placeholder="详细地址" maxlength="60" v-model.trim='addressDetail'>
 			</div>
 			<div class="ex-shop1-cnt-item">
-				<span>*姓名</span><input type="text" name="" id="" placeholder="负责人姓名" maxlength="10" v-model.trim='shopsLinkman'>
+				<span>*姓名</span><input type="text" name="" id="" placeholder="负责人姓名" maxlength="20" v-model.trim='shopsLinkman'>
 			</div>
 			<div class="ex-shop1-cnt-item">
 				<span>*联系电话</span><input type="tel" name="" id="" placeholder="联系人手机" maxlength="11" v-model.trim='shopsLinkphone'>
@@ -86,14 +86,19 @@ export default {
 			return (rule || !rule2)
 		},
 		area () {
-			let area = this.district.filter(function(item){
-				return item.id === this.districtId
-			}.bind(this))
-			if (area[0].name.indexOf('县')) {
-				return ''
+			if (this.districtArray.length > 0) {
+				let area = this.district.filter(function(item){
+					return item.id === this.districtId
+				}.bind(this))
+				if (area[0].name.indexOf('县')) {
+					return ''
+				} else {
+					return area.id
+				}
 			} else {
-				return area.id
+				return ''
 			}
+			
 		}
 	},
 	watch: {
@@ -160,25 +165,40 @@ export default {
 			}.bind(this))
 			this.cityArray = array
 			this.cityId = Id ? Id : array[0].id
-
-			let array2 = this.district.filter(function(item) {
+			if (this.district.length > 0) {
+				let array2 = this.district.filter(function(item) {
 				return item.parentId === this.cityId
-			}.bind(this))
-			if (array2.length > 0) {
-				this.districtArray = array2
-				this.districtId = Id ? Id : array2[0].id
+				}.bind(this))
+				if (array2.length > 0) {
+					this.districtArray = array2
+					this.districtId = Id ? Id : array2[0].id
+				} else {
+					this.districtArray = []
+					this.districtId = ''
+				}
 			} else {
-				this.districtArray = []
-				this.districtId = ''
+					this.districtArray = []
+					this.districtId = ''
 			}
+			
 			
 		},
 		changeCity (Id) {
-			let array = this.district.filter(function(item) {
+			if (this.district.length > 0) {
+				let array2 = this.district.filter(function(item) {
 				return item.parentId === this.cityId
-			}.bind(this))
-			this.districtArray = array
-			this.districtId = Id ? Id : array[0].id
+				}.bind(this))
+				if (array2.length > 0) {
+					this.districtArray = array2
+					this.districtId = Id ? Id : array2[0].id
+				} else {
+					this.districtArray = []
+					this.districtId = ''
+				}
+			} else {
+					this.districtArray = []
+					this.districtId = ''
+			}
 		},
 
 		next () {
@@ -201,6 +221,7 @@ export default {
 				MessageBox('提示', '联系电话不正确！')
 				return
 			}
+
 			this.repeatBtn = true
 			let shopdata = {
 				provinceId: this.provinceId,

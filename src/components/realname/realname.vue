@@ -2,25 +2,25 @@
 	<div class="ex-realname">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-form">
-			<p>*身份证信息只能提交一次，不能随意修改，请慎重填写</p>		
+			<p>*认证名将与后续绑定的银行卡挂钩，请谨慎填写有大陆银行卡的姓名或公司名</p>		
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
-					<label class="ex-field-title">真实姓名</label>
+					<label class="ex-field-title">认证名</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="请输入真实姓名" maxlength="10" v-model.trim="realName" @input="standard('realName')" ref="input">
+						<input type="text" placeholder="大陆银行卡户名(个人或公司名)" maxlength="10" v-model.trim="realName" @input="standard('realName')" ref="input">
 					</div>
 				</div>
 				<div class="ex-field-wrapper">
-					<label class="ex-field-title">身份证号码</label>
+					<label class="ex-field-title">证件号码</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="请输入身份证号码" maxlength="18" v-model.trim="idCard" >
+						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码" maxlength="18" v-model.trim="idCard" >
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="UploadIMGfrom">
 			<div class="UpLoadIMG">
-				<label for="">身份证正、反面</label>
+				<label for="">证件正、反面照片（反面照片若没有可不传）</label>
 				<div>
 					<div class="report-file">
 						<img :src="imgurl.frontPic" alt="" v-show="imgurl.frontPic">
@@ -126,7 +126,7 @@ export default {
 	},
 	computed:{
 		disable () {
-			let rule = !this.realName || !this.idCard || !this.imgurl.frontPic || !this.imgurl.backPic || !this.imgurl.fullPic
+			let rule = !this.realName || !this.idCard || !this.imgurl.frontPic || !this.imgurl.fullPic
 			if(rule){
 				return true
 			}
@@ -150,7 +150,7 @@ export default {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			Toast('系统出错了，正在修复中...')
+			Toast('网络请求超时！')
 		})
 	},
 	methods: {
@@ -177,9 +177,10 @@ export default {
 			let _this = this;
 			let formData = new FormData();
 			formData.append("imgStr", _this.files.frontPic)
-			formData.append("imgStr", _this.files.backPic)
+			if(_this.files.backPic){
+				formData.append("imgStr", _this.files.backPic)
+			}
 			formData.append("imgStr", _this.files.fullPic)
-
 			return new Promise(function(resolve, reject) {
 				axios.post('upload/pic_min',formData)
 				.then(function (res) {
@@ -221,12 +222,20 @@ export default {
 					  text: '正在提交...',
 					  spinnerType: 'fading-circle'
 					})
+					let backPic,fullPic;
+					if(_this.files.backPic){
+						backPic = _this.imgArray[1];
+						fullPic = _this.imgArray[2];
+					}else{
+						backPic = null;
+						fullPic = _this.imgArray[1];
+					}
 					axios.post('verify/realName',qs.stringify({
 						realName: _this.realName,
 						idCard: _this.idCard,
 						frontPic: _this.imgArray[0],
-						backPic: _this.imgArray[1],
-						fullPic: _this.imgArray[2],
+						backPic: backPic,
+						fullPic: fullPic,
 					}),_this.config).then(res =>{
 						Indicator.close();
 						if (res.data.code === '10000') {
@@ -354,12 +363,12 @@ export default {
 <style scoped>
 .ex-realname{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;}
 .ex-form{}
-.ex-form p{min-height: 30px;line-height: 30px;word-wrap: break-word;padding: 8px 0 8px 10px;color: rgb(93,100,110);}
+.ex-form p{min-height: 30px;line-height: 20px;word-wrap: break-word;padding: 10px 0 10px 10px;color: rgb(93,100,110);}
 .ex-field{background: #fff;padding: 0 0 0 15px;}
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
-.ex-field-wrapper .ex-field-title{display: block;float: left;width: 30%;height: 30px;}
+.ex-field-wrapper .ex-field-title{display: block;float: left;width: 25%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
-.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 65%;height: 30px;border: none;}
+.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 75%;height: 30px;border: none;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}
@@ -370,9 +379,9 @@ export default {
 .UploadIMGfrom{background: #fff;padding: 0 0 0 15px;margin-top: 15px;}
 .UploadIMGfrom .UpLoadIMG{border-bottom: 1px solid #ebebeb;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;font-size: 1.4rem;}
 .UploadIMGfrom .UpLoadIMG:last-child{border-bottom: none;}
-.report-file{width: 8rem;height: 56px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 2%;margin-top: 6px;text-align: center;position: relative;}
+.report-file{width: 64px;height: 64px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 5%;margin-top: 6px;text-align: center;position: relative;}
 .report-file img{position: absolute;height: 100%;width: 100%;top: 0;left: 0;border:none;}
 .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;height: 100%;width: 100%;z-index: 10;}
-.UpLoadIMG span{cursor: pointer;display: block;width: 100%;color: #aaafb6;font-size: 1.2rem;line-height: 20px;margin-top: 8px;}
+.UpLoadIMG span{cursor: pointer;display: block;width: 100%;color: #aaafb6;font-size: 1.2rem;line-height: 20px;margin-top: 12px;}
 .UpLoadIMG span i.iconfont{font-size: 1.6rem;}
 </style>

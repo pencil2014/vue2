@@ -24,8 +24,8 @@
 		</div>
 		<div class="ex-shop2-cnt">
 			<div class="ex-shop2-cnt-item">
-				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20" >
-				<p class=tips>营业执照号不够15位的请用字母e补齐</p>
+				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="30" >
+				<!-- <p class=tips>营业执照号不够15位的请用字母e补齐</p> -->
 			</div>
 			<div class="img">
 				<span>*营业执照照片</span>
@@ -33,7 +33,7 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
 					<img class='showpic' :src="imgurl.businessLicense" alt="" v-show='imgurl.businessLicense !==""'>
-					<input type="file" class="uploadimg" id="businessLicense" @change='getfile("businessLicense")'>
+					<input type="file" class="uploadimg" id="businessLicense" @change='getfile("businessLicense")' accept="image/*">
 				</div>
 			</div>
 			<div class="img">
@@ -42,13 +42,13 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传正面</b>
 					<img class='showpic' :src="imgurl.legalPic1" alt="" v-show='imgurl.legalPic1 !==""'>
-					<input type="file" class="uploadimg" id="legalPic1" @change='getfile("legalPic1")'>
+					<input type="file" class="uploadimg" id="legalPic1" @change='getfile("legalPic1")' accept="image/*">
 				</div>
 				<div class="upload">
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传反面</b>
 					<img class='showpic' :src="imgurl.legalPic2" alt="" v-show='imgurl.legalPic2 !==""'>
-					<input type="file" class="uploadimg" id="legalPic2" @change='getfile("legalPic2")'>
+					<input type="file" class="uploadimg" id="legalPic2" @change='getfile("legalPic2")' accept="image/*">
 				</div>
 			</div>
 			<div class="img">
@@ -58,7 +58,7 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
 					<img class='showpic' :src="imgurl.holdPic" alt="" v-show='imgurl.holdPic !==""'>
-					<input type="file" class="uploadimg" id="holdPic" @change='getfile("holdPic")'>
+					<input type="file" class="uploadimg" id="holdPic" @change='getfile("holdPic")' accept="image/*">
 				</div>
 			</div>
 			<div class="img">
@@ -67,7 +67,7 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
 					<img class='showpic' :src="imgurl.facadePhoto" alt=""  v-show='imgurl.facadePhoto !==""'>
-					<input type="file" class="uploadimg" id="facadePhoto" @change='getfile("facadePhoto")'>
+					<input type="file" class="uploadimg" id="facadePhoto" @change='getfile("facadePhoto")' accept="image/*">
 				</div>
 			</div>
 			<div class="img">
@@ -77,7 +77,7 @@
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>
 					<img class='showpic' :src="imgurl.proxyPic" alt=""  v-show='imgurl.proxyPic !==""'>
-					<input type="file" class="uploadimg" id="proxyPic" @change='getfile("proxyPic")'>
+					<input type="file" class="uploadimg" id="proxyPic" @change='getfile("proxyPic")' accept="image/*">
 				</div>
 				<a href="http://www.exgj.com.cn/exsdresc/commission.docx" class="instructions">(委托书范本)</a>
 			</div>
@@ -125,7 +125,7 @@ export default {
 	computed: {
 		disableBtn () {
 			let rule = (this.imgbase64.businessLicense && this.imgbase64.legalPic1 && this.imgbase64.legalPic2 && this.imgbase64.holdPic  && this.imgbase64.facadePhoto)
-			let rule2 = /^\d{13,}/.test(this.licenseNumber)
+			let rule2 = /\d+/.test(this.licenseNumber)
 			if (!rule || !rule2) {
 				return true
 			} else {
@@ -186,7 +186,7 @@ export default {
 			this.$router.go(-1)
 		},
 		next () {
-			if (!(/^\d{13,}/.test(this.licenseNumber))) {
+			if (!(/\d+/.test(this.licenseNumber))) {
 				MessageBox('提示', '企业营业执照号不正确!')
 				return
 			}
@@ -298,11 +298,11 @@ export default {
 .ex-shop2-cnt .img .tips {font-size: 1.2rem; color:#aaafb6; display: block;}
 .ex-shop2-cnt .img span {display: block; padding: 0.5rem 0;}
 .ex-shop2-cnt .instructions { position: absolute; right: 1rem; bottom: 1rem;  color: #007aff; font-size: 1.2rem;}
-.ex-shop2-cnt .upload {width: 8rem; height: 5rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem; position: relative; margin-left: 2rem; display: inline-block; margin-top: 0.5rem;} 
-.ex-shop2-cnt .upload i{ padding-top: 1rem; }
+.ex-shop2-cnt .upload {width: 6rem; height: 6rem; text-align: center; border: 1px dotted #d8d8d8; color: #aaafb6; font-size: 1.2rem; position: relative; margin-left: 2rem; display: inline-block; margin-top: 0.5rem;} 
+.ex-shop2-cnt .upload i{ padding-top: 1.3rem; }
 .ex-shop2-cnt .upload b{display: block; font-weight: normal;color: #aaafb6;}
-.ex-shop2-cnt .showpic {position: absolute; top: 0; left: 0; height: 5.2rem; width: 8.2rem; z-index: 2;}
-.ex-shop2-cnt .uploadimg { position: absolute; height: 5rem; width: 8rem; opacity: 0; z-index: 3; left: 0; top: 0;}
+.ex-shop2-cnt .showpic {position: absolute; top: 0; left: 0; height: 6.2rem; width: 6.2rem; z-index: 2;}
+.ex-shop2-cnt .uploadimg { position: absolute; height: 6rem; width: 6rem; opacity: 0; z-index: 3; left: 0; top: 0;}
 
 .ex-shop2-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto 1rem;}
 .ex-shop2-btn:active{background-color:#0470b6; }
