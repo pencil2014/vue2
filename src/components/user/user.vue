@@ -70,7 +70,7 @@
 					<li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
-						<i class="iconfont" v-show="checkRealName.status !== ('1'||'2')">&#xe606;</i>
+						<i class="iconfont" v-if="checkRealName.status !=='2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
 					<router-link to="/qrcode" tag="li">
@@ -116,7 +116,7 @@ export default {
 		},
 		realnamestatus () {
 			let _index = this.checkRealName.status
-			let arr = ['未通过','审核中','已认证','']
+			let arr = ['未通过','审核中','已认证','未认证']
 			return arr[_index]
 		},
 		identity () {
@@ -170,24 +170,11 @@ export default {
 		toRealName () {
 			let status = this.checkRealName.status
 			if(status === '0'){
-				MessageBox({
-					title:'抱歉',
-					message:'实名认证失败，原因是：' + this.checkRealName.option,
-					showConfirmButton:true,
-					showCancelButton:true,
-					confirmButtonText:'确认',
-					cancelButtonText:'取消',
-				}).then(action =>{
-					if(action === "confirm"){
-						this.$router.push('/realname')
-					}
-				});
+				this.$router.push('/realname/detail')
 			}else if(status === '1'){
-				return
+				this.$router.push('/realname/detail')
 			}else if(status === '2'){
-				return
-			}else if(status === '3'){
-				this.$router.push('/realname')
+				return 
 			}else{
 				this.$router.push('/realname')
 			}

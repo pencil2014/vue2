@@ -93,7 +93,7 @@ export default {
 					_this.isCreact = true
 					_this.personalData = res.data.data
 				} else {
-					Toast('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 				Indicator.open({ spinnerType: 'fading-circle'})

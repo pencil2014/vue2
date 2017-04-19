@@ -97,7 +97,7 @@ export default {
 					let name = res.data.data.province[0].name
 					_this.changeProvince(id,name)
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		})
 		.catch(function(){

@@ -57,7 +57,7 @@ export default {
 			if (res.data.code === '10000') {
 				_this.content = res.data.data
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		}).catch(function(){
 				Toast('网络请求超时！')

@@ -150,7 +150,7 @@ export default {
 						_this.$router.push({ name: 'Declare4', params: { id: _this.id}})
 					}
 				} else {
-					MessageBox('提示', '网络请求超时！')
+					Toast('网络请求超时！')
 				}
 			})
 			.catch(function(){

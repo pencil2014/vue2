@@ -181,7 +181,7 @@ export default {
 				_this.personalData = res.data.data
 				_this.sexSlots[0].defaultIndex = _this.personalData.sex == '0'? 1 : 0;
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		}).catch(function(){
 			Toast('网络请求超时！')

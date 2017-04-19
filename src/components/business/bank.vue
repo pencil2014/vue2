@@ -114,7 +114,7 @@ export default {
 			if (res.data.code === '10000') {
 				_this.userdata = res.data.data
 			} else {
-				MessageBox('提示', '请求数据失败！')
+				Toast('请求数据失败！')
 			}
 		})
 		.catch(function(){

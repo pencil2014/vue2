@@ -94,7 +94,7 @@ export default {
 				_this.money = res.data.data.money
 				_this.getstatus()
 			} else {
-				MessageBox('提示', '请求数据失败！')
+				Toast(res.data.msg)
 			}
 		})
 		.catch(function(){

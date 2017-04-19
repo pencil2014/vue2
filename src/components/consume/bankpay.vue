@@ -156,7 +156,7 @@ export default {
 			if (res.data.code === '10000') {
 				_this.usercode = res.data.data.userCode
 			} else {
-				MessageBox('提示', '请求数据失败！')
+				Toast(res.data.msg)
 			}
 		})
 		.catch(function(){

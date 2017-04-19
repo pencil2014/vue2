@@ -90,7 +90,7 @@ export default {
 			}
 		}).catch(function(){
 			Indicator.close()
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('网络请求超时！')
 		})
 	},
 	methods: {
@@ -124,7 +124,7 @@ export default {
 				}
 			}).catch(function(){
 				_this.submitBtn = false;
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('网络请求超时！')
 			})
 		},
 		sendCode () {

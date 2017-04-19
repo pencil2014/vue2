@@ -50,7 +50,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

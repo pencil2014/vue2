@@ -13,7 +13,7 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">证件号码</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码" maxlength="18" v-model.trim="idCard" >
+						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model.trim="idCard" maxlength="25">
 					</div>
 				</div>
 			</div>
@@ -196,12 +196,8 @@ export default {
 		},
 		submit(){
 			let _this = this;
-			let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
+			// let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
 			if(_this.disable){
-				return;
-			}
-			if(!rule1.test(_this.idCard)){
-				Toast('请输入正确的身份证号码')
 				return;
 			}
 			if(_this.submitBtn){
@@ -209,73 +205,51 @@ export default {
 			}
 			let _Promise = this.checkIdCard
 			let _Promise2 = this.uploadimg
-			_Promise().then( function (value) {
-				_this.submitBtn = true;
+			_this.submitBtn = true;
+			Indicator.open({
+			  text: '图片处理中...',
+			  spinnerType: 'fading-circle'
+			})
+			_Promise2().then(function(value){
+				_this.imgArray = value
+				Indicator.close();
 				Indicator.open({
-				  text: '图片处理中...',
+				  text: '正在提交...',
 				  spinnerType: 'fading-circle'
 				})
-				_Promise2().then(function(value){
-					_this.imgArray = value
+				let backPic,fullPic;
+				if(_this.files.backPic){
+					backPic = _this.imgArray[1];
+					fullPic = _this.imgArray[2];
+				}else{
+					backPic = null;
+					fullPic = _this.imgArray[1];
+				}
+				axios.post('verify/realName',qs.stringify({
+					realName: _this.realName,
+					idCard: _this.idCard,
+					frontPic: _this.imgArray[0],
+					backPic: backPic,
+					fullPic: fullPic,
+				}),_this.config).then(res =>{
 					Indicator.close();
-					Indicator.open({
-					  text: '正在提交...',
-					  spinnerType: 'fading-circle'
-					})
-					let backPic,fullPic;
-					if(_this.files.backPic){
-						backPic = _this.imgArray[1];
-						fullPic = _this.imgArray[2];
-					}else{
-						backPic = null;
-						fullPic = _this.imgArray[1];
+					if (res.data.code === '10000') {
+						MessageBox('提示','提交成功').then(action => {
+							_this.$router.back();
+						})
+					} else {
+						MessageBox('提示',res.data.msg).then(action => {
+							_this.submitBtn = false;
+						})
 					}
-					axios.post('verify/realName',qs.stringify({
-						realName: _this.realName,
-						idCard: _this.idCard,
-						frontPic: _this.imgArray[0],
-						backPic: backPic,
-						fullPic: fullPic,
-					}),_this.config).then(res =>{
-						Indicator.close();
-						if (res.data.code === '10000') {
-							MessageBox('提示','提交成功').then(action => {
-								_this.$router.back();
-							})
-							// MessageBox('恭喜！',
-							// '您已通过实名认证').then(action => {
-							// 	_this.$router.back();
-							// 	_this.submitBtn = false;
-							// })
-						} else {
-							MessageBox('提示',res.data.msg).then(action => {
-								_this.submitBtn = false;
-							})
-							// MessageBox({
-							// 	title: '抱歉',
-							// 	message: '实名认证未通过<br />原因是：'+res.data.msg,
-							// 	confirmButtonText: '知道了'
-							// }).then(action => {
-							// 	_this.submitBtn = false;
-							// })
-						}
-					}).catch(function(err){
-						_this.submitBtn = false;
-						Indicator.close();
-						Toast('网络请求超时！')	
-					})
 				}).catch(function(err){
 					_this.submitBtn = false;
-					Toast(err)
+					Indicator.close();
+					Toast('网络请求超时！')	
 				})
-
 			}).catch(function(err){
-				console.log(err)
-				MessageBox({
-					title: '提示',
-					message: err,
-					confirmButtonText: '知道了'
-				})
+				_this.submitBtn = false;
+				Toast(err)
 			})
 			
 		},
@@ -295,37 +269,29 @@ export default {
 				return;
 			}
 			_this.countdown = true
-			let _Promise = this.checkIdCard()
-			_Promise.then( function () {
-				//获取短信验证码
-				Indicator.open({
-				  text: '正在获取...',
-				  spinnerType: 'fading-circle'
-				})
-				axios.post('verify/sendPhoneCode',qs.stringify({
-					phone: _this.phone,
-					codeType: 6,
-					smsType: 1
-				})).then(res =>{
+
+			//获取短信验证码
+			Indicator.open({
+			  text: '正在获取...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('verify/sendPhoneCode',qs.stringify({
+				phone: _this.phone,
+				codeType: 6,
+				smsType: 1
+			})).then(res =>{
+				Indicator.close()
+				if (res.data.code === '10000') {
+					Toast('请查收您的短信')
+					_this.countdownFn();
+				} else {
+					Toast(res.data.msg)
+					_this.countdown = false
+				}
+			}).catch(function(){
 					Indicator.close()
-					if (res.data.code === '10000') {
-						Toast('请查收您的短信')
-						_this.countdownFn();
-					} else {
-						Toast(res.data.msg)
-						_this.countdown = false
-					}
-				}).catch(function(){
-						Indicator.close()
-						_this.countdown = false
-						Toast('网络请求超时！')
-				})
-			}).catch(function(err){
-				MessageBox({
-					title: '提示',
-					message: err,
-					confirmButtonText: '知道了'
-				})
+					_this.countdown = false
+					Toast('网络请求超时！')
 			})
 			
 		},
@@ -361,12 +327,12 @@ export default {
 }
 </script>
 <style scoped>
-.ex-realname{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;}
+.ex-realname{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
 .ex-form{}
 .ex-form p{min-height: 30px;line-height: 20px;word-wrap: break-word;padding: 10px 0 10px 10px;color: rgb(93,100,110);}
 .ex-field{background: #fff;padding: 0 0 0 15px;}
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
-.ex-field-wrapper .ex-field-title{display: block;float: left;width: 25%;height: 30px;}
+.ex-field-wrapper .ex-field-title{display: block;float: left;width: 20%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
 .ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 75%;height: 30px;border: none;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px}
@@ -379,7 +345,7 @@ export default {
 .UploadIMGfrom{background: #fff;padding: 0 0 0 15px;margin-top: 15px;}
 .UploadIMGfrom .UpLoadIMG{border-bottom: 1px solid #ebebeb;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;font-size: 1.4rem;}
 .UploadIMGfrom .UpLoadIMG:last-child{border-bottom: none;}
-.report-file{width: 64px;height: 64px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 5%;margin-top: 6px;text-align: center;position: relative;}
+.report-file{width: 64px;height: 64px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 5%;margin-top: 6px;text-align: center;position: relative;} 
 .report-file img{position: absolute;height: 100%;width: 100%;top: 0;left: 0;border:none;}
 .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;height: 100%;width: 100%;z-index: 10;}
 .UpLoadIMG span{cursor: pointer;display: block;width: 100%;color: #aaafb6;font-size: 1.2rem;line-height: 20px;margin-top: 12px;}

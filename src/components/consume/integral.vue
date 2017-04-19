@@ -69,7 +69,7 @@ export default {
 					let integral = res.data.data.integral >= 0 ? res.data.data.integral : 0
 					_this.integral = integral
 				} else {integral
-					MessageBox('提示', '请求数据失败！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

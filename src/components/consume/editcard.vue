@@ -104,7 +104,7 @@ export default {
 				_this.phone = res.data.data.phone
 				_this.userphone =  res.data.data.phone
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		})
 		.catch(function(){

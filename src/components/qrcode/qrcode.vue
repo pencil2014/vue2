@@ -2,17 +2,17 @@
 <div class="ex-qrcode">
 	<HeadTitle :title="modal" @callback="back"></HeadTitle>
 	<div class="ex-qrcode-wrapper">
-		<qrcode :cls="qrCls" :value="link" type="image" :size="250"   :padding="0"></qrcode>
+		<qrcode :cls="qrCls" :value="link" type="image" :size="250"   :padding="0" background='#f4f5f7'></qrcode>
 		
 		<p>请被推荐人扫描此二维码注册</p>
 	</div>
 	
 	<div class="ex-qrcode-link">
-		<p class="title">也可以复制下方地址发送给您的朋友注册</p>
+		<p class="title">长按复制下方地址发送给您的朋友注册</p>
 		<p class="link">{{link}}</p>
-		<p class="copy">
+		<!-- <p class="copy">
 			<a href="javascript:void(0)">长按文本复制链接</a>
-		</p>
+		</p> -->
       </dd>
 	</div>
 	</div>
@@ -56,7 +56,7 @@ export default {
 				let usercode = link[1].split('=')[1];
 				_this.link = link[0] + '/' + usercode;
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		}).catch(function(){
 				Toast('网络请求超时！')
@@ -88,8 +88,8 @@ export default {
 .ex-qrcode-wrapper p{margin-top: 20px;}
 
 .ex-qrcode-link{border-top: solid 1px #e5e5e5;margin: 30px auto;padding-top: 30px;width: 80%;text-align: center;line-height: 15px;}
-.ex-qrcode-link .title{padding-bottom: 5px;}
-.ex-qrcode-link .link{background: #fff}
+.ex-qrcode-link .title{padding-bottom: 10px;}
+.ex-qrcode-link .link{background: #fff; padding: 10px; }
 .ex-qrcode-link .copy{display: inline-block;margin-top: 12px;background: #fff;border: solid 1px #e5e5e5;padding: 10px 20px;border-radius: 4px;color: #5d646e;}
 .ex-qrcode-link .copy a{color: #5d646e;}
 .ex-qrcode-wrapper .qrcode{width: 240px;overflow: hidden;margin: auto}

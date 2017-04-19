@@ -103,7 +103,7 @@ export default {
 				_this.userphone =  res.data.data.phone
 				_this.realName =  res.data.data.realName
 			} else {
-				MessageBox('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		})
 		.catch(function(){

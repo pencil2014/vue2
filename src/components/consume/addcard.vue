@@ -98,7 +98,7 @@ export default {
 				_this.userphone =  res.data.data.phone
 				_this.realName =  res.data.data.realName
 			} else {
-				MessageBox('提示', '请求数据失败！')
+				Toast('请求数据失败！')
 			}
 		})
 		.catch(function(){

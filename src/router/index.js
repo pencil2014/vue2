@@ -71,12 +71,16 @@ const Guide2 = resolve => require(['../components/guide/step2'], resolve)
 const Feedback = resolve => require(['../components/feedback/feedback'], resolve)
 const Version = resolve => require(['../components/version/version'], resolve)
 const Realname = resolve => require(['../components/realname/realname'], resolve)
+const Realname2 = resolve => require(['../components/realname/detail'], resolve)
 const User = resolve => require(['../components/user/user'], resolve)
 const Notice1 = resolve => require(['../components/notice/step1'], resolve)
 const Notice2 = resolve => require(['../components/notice/step2'], resolve)
 const Twopassword = resolve => require(['../components/twopassword/twopassword'], resolve)
 const QRcode2 = resolve => require(['../components/user/qrcode2'], resolve)
 const Businessinfo = resolve => require(['../components/user/businessinfo'], resolve)
+const Pay = resolve => require(['../components/pay/step1'], resolve)
+const Pay2 = resolve => require(['../components/pay/step2'], resolve)
+
 
 // 导出路由配置
 export default new Router({
@@ -359,6 +363,11 @@ export default new Router({
       component: Realname
     },
     {
+      path: '/realname/detail',
+      name: 'Realname2',
+      component: Realname2
+    },
+    {
       path: '/user',
       name: 'User',
       component: User
@@ -392,6 +401,16 @@ export default new Router({
       path: '/businessinfo',
       name: 'Businessinfo',
       component: Businessinfo
+    },
+    {
+      path: '/pay',
+      name: 'Pay',
+      component: Pay
+    },
+    {
+      path: '/pay/step2',
+      name: 'Pay2',
+      component: Pay2
     },
     {
     	path:'*', 
