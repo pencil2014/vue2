@@ -75,6 +75,7 @@ export default {
 				text:'转存银行',
 				fixed: false,
 			},
+			checkRealName: ''
 		}
 	},
 	computed: {
@@ -121,8 +122,22 @@ export default {
 			Toast('网络请求超时！')
 		})
 
+		axios.post('verify/checkRealName',qs.stringify({}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.checkRealName = res.data.data
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+			
 		//获取默认银行卡列表
 		_this.getDefaultCard(_this.selectType)
+
+
 
 	},
 	methods: {
@@ -144,7 +159,31 @@ export default {
 		},
 		addcard () {
 			let _this = this
-			if (this.userdata.isRealName !== '2') {
+
+			if (this.checkRealName.status === '1') {
+				MessageBox('提示', '实名认证审核中，目前不能添加银行卡！')
+				return
+			}
+			if (this.checkRealName.status === '0') {
+				MessageBox({
+				  title: '提示',
+				  message: '实名认证失败！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+				return
+			}
+
+			if (this.checkRealName.status === '2') {
+				this.$router.push('/addcard1')
+				return
+			}
+
+			if (this.checkRealName.status === '3') {
 				MessageBox({
 				  title: '提示',
 				  message: '请先进行实名认证！',
@@ -155,8 +194,7 @@ export default {
 						_this.$router.push('/realname')
 					}
 				})
-			} else {
-				this.$router.push('/addcard1')
+				return
 			}
 		},
 		submit () {

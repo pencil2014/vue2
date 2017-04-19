@@ -216,7 +216,7 @@ export default {
 			this.repeatBtn = true
 			axios.post('declaration/insert',qs.stringify({
 				phone: this.commodityPhone,
-				userCode: this.userCode,
+				userCode: userCode,
 				commodityName: this.commodityName,
 				consumptionMoney: this.consumptionMoney
 			}))

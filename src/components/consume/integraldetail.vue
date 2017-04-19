@@ -2,7 +2,7 @@
 	<div class="ex-integral">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="topmenu">
-			<p>可用享积分：<span class="orange">{{total|num}}</span></p>
+			<p>可用享积分：<span class="orange">{{total|checknum}}</span></p>
 			<table class="date">
 				<tr>
 					<td class="left" @click="reduceyear">
@@ -43,7 +43,7 @@
 				    infinite-scroll-distance="10">
 					 	<tr v-for="(item, index) in list" >
 					 		<td>{{item.date}}</td>
-					 		<td>{{item.integralValue | num}}</td>
+					 		<td>{{item.integralValue | checknum}}</td>
 					 	</tr>			
 					</table>
 				</mt-loadmore>	
@@ -249,7 +249,14 @@ export default {
 			}else{
 				return value
 			}
-		} 
+		},
+		checknum (value) {
+			value += ''
+			let num = '0.00'
+			num = value >= 0 ? value : '0.00' 
+			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+			return num 
+		}
 	},
 	destroyed () {
 		Indicator.close()

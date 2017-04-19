@@ -91,7 +91,7 @@
 						</td>
 						<td>
 							<b>昨日分享平均值</b>
-							<span>{{sysData.yesterdayMoney | checknum}}（元）</span>
+							<span>{{sysData.yesterdayMoney | checknum}}</span>
 						</td>
 					</tr>
 				</table>

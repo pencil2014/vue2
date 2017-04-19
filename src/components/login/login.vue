@@ -25,7 +25,7 @@
 		<!-- <div class="ex-login-copyright" v-show='showcopyright'>
 			{{year}} E享时代 版权所有，并保留所有权利
 		</div> -->
-		<div class="ex-login-register">
+		<div class="ex-login-register" v-show='showcopyright'>
 			<router-link to="/register" >注册账号</router-link>|<router-link to="/forgot" >忘记密码？</router-link>
 		</div>
 	</div>
@@ -144,7 +144,7 @@ export default {
 .ex-login-cnt{margin:0 2rem; background-color: rgba(255,255,255,0.6); border-radius: 0.6rem; padding: 2rem 1rem ;}
 .ex-login-from-item { background-color: rgba(255, 255, 255, 1); padding: 0.5rem; margin-bottom: 1rem; border-radius: 0.4rem; }
 .ex-login-from-item i{ font-size: 2.2rem; vertical-align: middle; color: #657f84; padding-left: 0.5rem;}
-.ex-login-from-item input{ height:3rem;border: none; width: 85%;  vertical-align: middle; background-color: transparent;color: #657f84;  font-size: 1.6rem;}
+.ex-login-from-item input{ height:3rem;border: none; width: 84%;  vertical-align: middle; background-color: transparent;color: #657f84;  font-size: 1.6rem;}
 .ex-login-from-item input::-webkit-input-placeholder{color: #eee;}
 .ex-login-from-submit{margin-top: 1.5rem; }
 .ex-login-from-submit button {border: none; height: 5rem; width: 100%; border-radius: 0.4rem; background: #6bc8ec; box-shadow: 0px 1px 1px rgba(0,0,0,0.2); color: #fff; font-size: 1.8rem;}

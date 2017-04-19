@@ -7,13 +7,13 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">认证名</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="大陆银行卡户名(个人或公司名)" maxlength="10" v-model.trim="realName" @input="standard('realName')" ref="input">
+						<input type="text" placeholder="大陆银行卡户名(个人或公司名)" maxlength="10" v-model="realName" @input="standard('realName')">
 					</div>
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">证件号码</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model.trim="idCard" maxlength="25">
+						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model="idCard" maxlength="25" @input="standard('idCard')">
 					</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 							<br>
 							上传正面
 						</span>
-						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')"/>
+						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')" accept="image/*" />
 					</div>
 					<div class="report-file">
 						<img :src="imgurl.backPic" alt="" v-show="imgurl.backPic">
@@ -38,7 +38,7 @@
 							<br>
 							上传反面
 						</span>
-						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')"/>
+						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')" accept="image/*"/>
 					</div>
 				</div>
 			</div>
@@ -52,7 +52,7 @@
 							<br>
 							上传照片
 						</span>
-						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')"/>
+						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')" accept="image/*"/>
 					</div>
 				</div>
 			</div>
@@ -142,35 +142,28 @@ export default {
 	},
 	created () {
 		let _this = this;
-		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.phone = res.data.data.phone
-			} else {
-				Toast(res.data.msg)
-			}
-		}).catch(function(){
-			Toast('网络请求超时！')
-		})
 	},
 	methods: {
 		back(){
 			this.$router.back();
 		},
 		standard(value) {
-		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')
+		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]|\s/g,'')
 		},
 		getfile (id) {
 			let _this = this;
 			let _id = id;
 			let file = document.getElementById(_id).files[0];
-			_this.imgurl[id] = window.URL.createObjectURL(file);
+			if(!file){
+				return
+			}
+			_this.imgurl[_id] = window.URL.createObjectURL(file);
 			lrz(file,{width:640})
 				.then(function (rst) {
 		        	_this.files[_id] = rst.base64;
 		        })
 		        .catch(function (err) {
-		         	console.log(err)
+		         	_this.files[_id] = '';
 		        })
 		},
 		uploadimg () {
@@ -235,7 +228,7 @@ export default {
 					Indicator.close();
 					if (res.data.code === '10000') {
 						MessageBox('提示','提交成功').then(action => {
-							_this.$router.back();
+							_this.$router.push('/user');
 						})
 					} else {
 						MessageBox('提示',res.data.msg).then(action => {
