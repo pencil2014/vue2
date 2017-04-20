@@ -1,8 +1,8 @@
 <template v-cloak>
 	<div class="ex-user">
 		<div class="ex-header">
-			<div class="userdata">
-				<router-link to="/personal" tag="span" class="avatar">
+			<div class="wrapper">
+				<router-link to="/personal" tag="span" class="m1">
 					<img src="../../assets/images/head.png" alt="" v-if="avatar === 'default'">
 					<img src="../../assets/images/girl01.png" alt="" v-if="avatar === 'girl01'">
 					<img src="../../assets/images/girl02.png" alt="" v-if="avatar === 'girl02'">
@@ -15,18 +15,19 @@
 					<img src="../../assets/images/boy04.png" alt="" v-if="avatar === 'boy04'">
 					<img src="../../assets/images/boy05.png" alt="" v-if="avatar === 'boy05'">
 				</router-link>
-				
-				<div class="text" v-if="userinfo.userName">
-					<p class="name" v-text="userinfo.userName"></p>
-					<p class="userid">ID：{{userinfo.userCode}}</p>
-				</div>
-				<div class="text2" v-else><p class="name">{{userinfo.userCode}}</p></div>
+				<span class="m2" v-if="userinfo.userName">
+					{{userinfo.userName}} <br>
+					<label for="" class="usercode"> ID: {{userinfo.userCode}}</label>
+				</span>
+				<span class="m2" v-if="!userinfo.userName">
+					{{userinfo.userCode}} <br>
+				</span>
+				<span class="m3" :class="{'vip': isLev}">
+					<label for="">
+						{{identity}}
+					</label>
+				</span>
 			</div>
-			<span class="identity" v-show="!isLev">{{identity}}</span>
-			<span class="identity vip"  v-show="isLev">
-				<img src="../../assets/images/identity_VIP.png" alt="">
-				{{identity}}
-			</span>
 		</div>
 		<div class="ex-user-wrapper">
 			<div class="ex-user-item">
@@ -41,11 +42,11 @@
 						<span>商家信息</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link>
-					<!-- <router-link to="/qrcode2" tag="li" v-if="isShop">
+					<router-link to="/qrcode2" tag="li" v-if="isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>商家收款二维码</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link> -->
+					</router-link>
 					<router-link to="/message/1" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
@@ -70,7 +71,7 @@
 					<li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
-						<i class="iconfont" v-if="checkRealName.status !=='2'">&#xe606;</i>
+						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
 					<router-link to="/qrcode" tag="li">
@@ -174,8 +175,9 @@ export default {
 			}else if(status === '1'){
 				this.$router.push('/realname/detail')
 			}else if(status === '2'){
-				return 
-			}else{
+				return
+			}
+			else{
 				this.$router.push('/realname')
 			}
 			
@@ -196,17 +198,19 @@ export default {
 </script>
 <style scoped>
 [v-cloak]{display: none;}
-.ex-user{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 56px;}
-.ex-header{	width: 100%;height: 25%;background: url(../../assets/images/pc_bg.jpg) no-repeat;background-position: 50%;background-size: cover;zoom: 1 !important;position: relative;}
-.ex-header .userdata{position: absolute;top: 50%;margin: -3rem 0 0 1rem;}
-.ex-header .avatar{display: inline-block;border-radius: 50%;border: solid #fff 4px;width: 6rem;height: 6rem;overflow: hidden;float: left;background: #fff;}
-.ex-header .userdata img{overflow: hidden;}
-.ex-header .text{float: left;padding: 1rem 0 0 1rem;font-size: 1.6rem;color: rgba(255,255,255,0.5);}
-.ex-header .text2{float: left;color: #fff;font-size: 2rem;padding: 25px  0 0 1rem;}
-.ex-header .text .name{font-size: 2rem;color: #fff !important;max-width: 9rem;overflow: hidden;white-space:nowrap;text-overflow:ellipsis;}
-.ex-header .identity{display: inline-block;width: 10rem;background: #fff;text-align: center;text-indent: 2em;border-radius: 20px 0 0 20px;height: 32px;line-height: 32px;position: absolute;top: 50%;margin-top: -18px;right: 0px;background: rgb(170,231,255);color: rgb(12,135,213);font-size: 1.6rem;}
-.ex-header .vip{background: rgb(245,174,38);color: #fff;}
-.ex-header .vip img{width: 26px;position: absolute;top: 50%;margin-top: -13px;left: 3px;}
+.ex-user{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 106px;}
+
+.ex-header{	width: 100%;height: 200px;background: url(../../assets/images/pc_bg.jpg) no-repeat;background-size: cover;position: relative;}
+.ex-header .wrapper{width: 100%;height: 72px;position: absolute; top: 64px;}
+.ex-header .wrapper span{display: inline-block;vertical-align: middle;}
+.ex-header .wrapper .m1{padding:0 10px 0 15px;}
+.ex-header .wrapper .m1 img{width: 62px;height: 62px;border:solid 2px #fff;border-radius: 50%;background: #fff;}
+.ex-header .wrapper .m2{line-height: 25px;color: #fff;font-size: 1.8rem;text-align: left;}
+.ex-header .wrapper .m2 .usercode{font-size: 1.4rem;color: rgba(226, 241, 251 ,.8);}
+.ex-header .wrapper .m3{float: right;display: inline-block;background-color: #add6f1;border-radius: 20px 0 0 20px;width: 104px;height: 36px;text-align: right;font-size: 1.6rem;color: #4e92e6;margin-top: 18px;line-height: 36px;}
+.ex-header .wrapper .m3 label{;padding-right: 10px;}
+.ex-header .wrapper .vip{background-color: #ffa132;color: #fff;}
+.ex-header .wrapper .vip label:before{content: '';display: inline-block;width: 28px;height: 28px;background: url(../../assets/images/identity_VIP.png)no-repeat;background-size: 100%;vertical-align: top;margin-top: 4px;}
 
 .ex-user-item:nth-child(1){margin-top: 0px;}
 .ex-user-item{margin-top: 18px;padding: 0 0 0 15px;background: #fff;}

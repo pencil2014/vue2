@@ -57,10 +57,10 @@
 				<input type="tel" placeholder="请输入买家用户编号" v-model.trim='userCode'>
 				<a href="javascript:;" @click='exit' class='exit'>校 验</a>
 			</div>
-			<div class="ex-declare-cnt-item">
+			<!-- <div class="ex-declare-cnt-item">
 				<span>*买家手机号</span>
 				<input type="tel" placeholder="请输入买家手机号" v-model.trim='commodityPhone' maxlength="11">
-			</div>
+			</div> -->
 			<div class="ex-declare-cnt-item">
 				<span>*商品名称</span>
 				<input type="text" placeholder="请输入商品名称" v-model.trim='commodityName' maxlength="15">
@@ -98,6 +98,7 @@ export default {
 				text:'商家报单',
 				fixed: false,
 			},
+			code: ''
 		}
 	},
 	components: {
@@ -108,12 +109,12 @@ export default {
 			let rule1 = /^(M|m|B|b)?\d+$/.test(this.userCode)
 			let rule2 = this.commodityName ? true : false
 			let rule3 = /^\d+\.?\d{1,2}$/.test(this.consumptionMoney)
-			let rule4 = /^1\d{10}$/.test(this.commodityPhone)
-			return (rule1 && rule2 && rule3 && rule4) ? false : true
+			// let rule4 = /^1\d{10}$/.test(this.commodityPhone)
+			return (rule1 && rule2 && rule3 && this.hasEixt) ? false : true
 		},
 	},
 	created () {
-		let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		let userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
 		this.selfUserCode = userinfo.userCode.substring(1)
 	},
 	methods: {
@@ -139,6 +140,7 @@ export default {
 			.then(function(res){
 				_this.repeatBtn = false
 				if (res.data.code === '10000') {
+						_this.code = userCode
 						_this.hasEixt = true
 						_this.buyerPhone = res.data.data.phone
 						_this.realName = res.data.data.realName ? '姓名：'+res.data.data.realName : ''
@@ -192,14 +194,18 @@ export default {
 				MessageBox('提示', '请校验买家用户编号!')
 				return
 			}
-			if (!(/^1\d{10}$/.test(this.commodityPhone))) {
-				MessageBox('提示', '买家手机号码不正确!')
+			if (userCode !== this.code) {
+				MessageBox('提示', '请重新校验买家用户编号!')
 				return
 			}
-			if (this.buyerPhone !== this.commodityPhone) {
-				MessageBox('提示', '买家用户编号与买家手机不符！')
-				return
-			}
+			// if (!(/^1\d{10}$/.test(this.commodityPhone))) {
+			// 	MessageBox('提示', '买家手机号码不正确!')
+			// 	return
+			// }
+			// if (this.buyerPhone !== this.commodityPhone) {
+			// 	MessageBox('提示', '买家用户编号与买家手机不符！')
+			// 	return
+			// }
 			if (!this.commodityName || this.$emoji(this.commodityName)) {
 				MessageBox('提示', '商品名称不能为空或表情图片！')
 				return
@@ -215,7 +221,7 @@ export default {
 			let _this = this
 			this.repeatBtn = true
 			axios.post('declaration/insert',qs.stringify({
-				phone: this.commodityPhone,
+				phone: this.buyerPhone,
 				userCode: userCode,
 				commodityName: this.commodityName,
 				consumptionMoney: this.consumptionMoney

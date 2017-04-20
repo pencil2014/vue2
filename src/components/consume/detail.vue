@@ -150,10 +150,9 @@ export default {
 </script>
 
 <style scoped>
-.ex-detail-box{ position: fixed; top: 58px; width: 100%; z-index: 2;}
-.ex-detail-integral {background-color: #2eadff; padding: 0.5rem 1.5rem;}
-.ex-detail-integral span {color: #cde5ff;font-size: 1.4rem;}
-.ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;}
+.ex-detail-box{ width: 100%; z-index: 2;}
+.ex-detail-integral {margin-top: 4.5rem; padding: 0.5rem 1.5rem; background-color: #fff;border-bottom: solid 1px #ebebeb;}
+.ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
+.ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203)}
 /*.ex-detail-cnt { padding-top: 12rem; }*/
-.ex-detail-cnt{padding-top: 132px;}
 </style>

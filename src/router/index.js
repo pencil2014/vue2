@@ -50,8 +50,11 @@ const School = resolve => require(['../components/school/school'], resolve)
 const Details = resolve => require(['../components/school/details'], resolve)
 const Details2 = resolve => require(['../components/school/details2'], resolve)
 const News = resolve => require(['../components/school/news'], resolve)
-const Partner = resolve => require(['../components/partner/partner'], resolve)
+
+const Partner = resolve => require(['../components/partner/shop'], resolve)
+// const Partner = resolve => require(['../components/partner/partner'], resolve)
 const Partner2 = resolve => require(['../components/partner/detail'], resolve)
+
 
 const Message = resolve => require(['../components/message/message'], resolve)
 const Message2 = resolve => require(['../components/message/detail'], resolve)
@@ -383,7 +386,7 @@ export default new Router({
       component: Notice2
     },
     {
-      path: '/integraldetail/:id',
+      path: '/integraldetail',
       name: 'Integral2',
       component: Integral2
     },
@@ -414,11 +417,11 @@ export default new Router({
     },
     {
     	path:'*', 
-    	redirect:'/login'
+    	redirect:'/index'
     },
     { 
       path: '/', 
-      redirect: '/login' 
+      redirect: '/index' 
     }
   ]
 })

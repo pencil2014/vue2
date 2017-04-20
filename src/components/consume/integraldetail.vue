@@ -22,8 +22,8 @@
 				</tr>
 			</table>
 			<div class="tabbar">
-				<div class="m1" @click="tap(1)" :class="{active:searchType==1}">每日分享</div>
-				<div class="m2" @click="tap(2)" :class="{active:searchType==2}">享积分转余额</div>
+				<div class="m1" @click="tap('1')" :class="{active:searchType==1}">每日分享</div>
+				<div class="m2" @click="tap('2')" :class="{active:searchType==2}">享积分转余额</div>
 			</div>
 			<table class="table">
 				<tr>
@@ -69,8 +69,9 @@ export default {
 			pageSize: 20,
 			modal: {
 				text:'享积分明细',
-				fixed: true
+				fixed: false
 			},
+			searchType:'1',
 			loading:false,
 	        total:'',
 	        year:(value => {return new Date().getFullYear()})(),
@@ -87,9 +88,9 @@ export default {
 	mounted() {
       this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
     },
-	watch: {
-		'$route': 'loadTop' 
-	},
+	// watch: {
+	// 	'$route': 'loadTop' 
+	// },
 	computed: {
 		hasdata () {
 			if(this.nodateStatus && this.list.length === 0){
@@ -98,9 +99,9 @@ export default {
 				return true
 			}
 		},
-		searchType () {
-		    return this.$route.params.id
-		},
+		// searchType () {
+		//     return this.$route.params.id
+		// },
 		conditionDate () {
 			let month;
 			if (this.month < 10) {
@@ -172,10 +173,12 @@ export default {
 			this.getData ()
 		},
 		back () {
-			this.$router.push('/integral');
+			this.$router.back();
 		},
 		tap (id) {
-			this.$router.push({ name: 'Integral2', params: { id: id}})
+			//this.$router.push({ name: 'Integral2', params: { id: id}})
+			this.searchType = id;
+			this.loadTop()
 		},
 		loadTop () {
 			this.getData();
@@ -266,7 +269,7 @@ export default {
 <style scoped>
 .ex-integral{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
 
-.topmenu{position: fixed;top: 58px;width: 100%;font-size: 1.6rem;height: 149px;}
+.topmenu{width: 100%;font-size: 1.6rem;}
 .topmenu p{height: 30px;line-height: 30px;padding: 10px 0 10px 10px;background: #f4f5f7;}
 .topmenu .orange{color: rgb(255,161,50);}
 .topmenu .left .iconfont{transform: rotateY(180deg);}
@@ -279,7 +282,7 @@ export default {
 .topmenu .tabbar .m1{margin:0 5% 0 15%;width: 30%;float: left;}
 .topmenu .tabbar .m2{margin:0 15% 0 5%;width: 30%;float: left;}
 
-.list{margin-top: 253px;width: 100%;}
+.list{width: 100%;}
 .table{width: 100%;font-size: 1.4rem;color: rgb(170,175,182);background: #fff;}
 .table tr{border-bottom: solid 1px #ebebeb;}
 .table tr:first-child{border-top: solid 1px #ebebeb;}

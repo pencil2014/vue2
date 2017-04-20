@@ -139,5 +139,5 @@ export default {
 <style scoped>
 .ex-record-box {position: fixed; top: 0; width: 100%; z-index: 2; }
 /*.ex-record-cnt {padding-top: 5rem}*/
-.ex-record-cnt {padding-top: 58px;}
+.ex-record-cnt {padding-top: 4.5rem;}
 </style>

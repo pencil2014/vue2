@@ -7,7 +7,7 @@
 			>
 				<no-data :hasdata="hasdata"></no-data>
 				<div class="ex-guide-list">
-					<div class="ex-guide-item">
+					<div class="ex-guide-item" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 						<ul
 							v-infinite-scroll="loadMore" 	infinite-scroll-disabled="loading"
 							infinite-scroll-distance="10"
@@ -42,7 +42,8 @@ export default {
 			totalPage: 1,
 			pageSize: 20,
 			nodateStatus:false,
-			loading: false
+			loading: false,
+			wrapperHeight: 0,
 		}
 	},
 	computed: {
@@ -54,6 +55,9 @@ export default {
 			}
 		},
 	},
+	mounted() {
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    },
 	methods: {
 		back () {
 			this.$router.back();
@@ -123,9 +127,9 @@ export default {
 }
 </script>
 <style scoped>
-.ex-guide{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;}
+.ex-guide{width: 100%;background: #fff;color: #212a32;height: 100%;overflow:hidden;}
 .ex-guide-list{padding-bottom: 56px;min-height: 100%;}
-.ex-guide-list .ex-guide-item{background: #fff;}
+.ex-guide-list .ex-guide-item{background: #fff;overflow: scroll;}
 .ex-guide-list .ex-guide-item ul{list-style-type: none;display: block;}
 .ex-guide-list .ex-guide-item ul li{height: 30px;font-size: 1.4rem;width: 100%;padding: 15px 0;line-height: 30px;}
 .ex-guide-list .ex-guide-item ul li span{white-space:nowrap;display: inline-block;padding-left: 2rem;max-width: 82%;overflow: hidden;text-overflow: ellipsis;}

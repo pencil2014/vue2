@@ -133,7 +133,7 @@ export default {
 </script>
 <style>
 .ex-notice{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
-.ex-notice-item{padding-top: 58px;}
+.ex-notice-item{padding-top: 4.5rem;}
 .ex-notice-item li{display: block;font-size: 1.6rem;background: #fff;padding: 20px 10px 30px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
 .ex-notice-item li:last-child{border-bottom: none;}
 .ex-notice-item span.title:before{content:"●"; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}

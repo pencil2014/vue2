@@ -63,12 +63,13 @@
 						<span>{{userinfo.integralA | checknum}}</span>
 					</p>
 				</div>
-				<div class="integral">
+				<div class="integral" @click='gotodetail'>
 					<i class="iconfont">&#xe680;</i>
 					<p>
 						<label>享积分</label>
 						<span>{{userinfo.integral | checknum}}</span>
 					</p>
+					<i class="iconfont arrow">&#xe606;</i>
 				</div>
 			</div>
 
@@ -87,11 +88,11 @@
 					<tr>
 						<td>
 							<b>昨日交易总额</b>
-							<span>{{sysData.totalShareMoney | checknum}}（元）</span>
+							<span>{{sysData.yesterdayMoney | checknum}}（元）</span>
 						</td>
 						<td>
 							<b>昨日分享平均值</b>
-							<span>{{sysData.yesterdayMoney | checknum}}</span>
+							<span>{{sysData.totalShareMoney | checknum}}</span>
 						</td>
 					</tr>
 				</table>
@@ -103,25 +104,53 @@
 
 		<div class="ex-index-menu">
 			<ul>
-				<li><router-link to="/record"><i class="iconfont m1">&#xe631;</i><span>消费记录</span></router-link></li>
-				<li><router-link to="/integral"><i class="iconfont m2">&#xe604;</i><span>享积分操作</span></router-link></li>
-				<li><router-link to="/detail"><i class="iconfont m3">&#xe680;</i><span>E积分明细</span></router-link></li>
-				<li><router-link to="/money"><i class="iconfont m4">&#xe94b;</i><span>资金明细</span></router-link></li>
-				<li><router-link to="/bank"><i class="iconfont m5">&#xe6be;</i><span>转存银行</span></router-link></li>
-				<li><router-link to="/recommend"><i class="iconfont m6">&#xe603;</i><span>我的推荐</span></router-link></li>
+				<li><router-link to="/record">
+				<!-- <b class="m1"><i class="iconfont">&#xe631;</i></b> -->
+				<img src="../../assets/images/8.png" alt="">
+				<span>消费记录</span></router-link>
+				</li>
+				<li><router-link to="/integral">
+				<img src="../../assets/images/5.png" alt="">
+				<!-- <b class="m2"><i class="iconfont">&#xe604;</i></b> -->
+				<span>享积分操作</span></router-link>
+				</li>
+				<li><router-link to="/detail">
+				<img src="../../assets/images/4.png" alt="">
+				<!-- <b class="m3"><i class="iconfont">&#xe680;</i> -->
+				</b><span>E积分明细</span></router-link>
+				</li>
+				<li><router-link to="/money">
+				<img src="../../assets/images/3.png" alt="">
+				<!-- <b class="m4"><i class="iconfont">&#xe94b;</i> </b>-->
+				<span>资金明细</span></router-link>
+				</li>
+				<li><router-link to="/bank">
+				<img src="../../assets/images/2.png" alt="">
+				<!-- <b class="m5"><i class="iconfont">&#xe6be;</i></b> -->
+				<span>转存银行</span></router-link>
+				</li>
+				<li><router-link to="/recommend">
+				<img src="../../assets/images/7.png" alt="">
+				<!-- <b class="m6"><i class="iconfont">&#xe603;</i></b> -->
+				<span>我的推荐</span></router-link>
+				</li>
 				<li v-show='userinfo.userLev !=="2"'>
-					<a href="javascript:;" @click='gotovip'><i class="iconfont m7">&#xe642;</i><span>升级会员</span></a>
+					<a href="javascript:;" @click='gotovip'>
+					<img src="../../assets/images/10.png" alt="">
+					<!-- <b class="m7"><i class="iconfont">&#xe642;</i></b> -->
+					<span>升级会员</span></a>
 				</li>
 				<li v-show="userinfo.shopsStatus !== '2'">
 					<a href="javascript:;" @click='gotoshop'>
-					<i class="iconfont m8">&#xe600;</i>
+					<img src="../../assets/images/1.png" alt="">
+					<!-- <b class="m8"><i class="iconfont">&#xe600;</i></b> -->
 					<span v-if='userinfo.shopsStatus ==="-1" || userinfo.shopsStatus ==="0"'>商家申请</span>
 					<span v-if='userinfo.shopsStatus ==="1" || userinfo.shopsStatus ==="3"'>商家审核</span>
 					</a>
 				</li>
 			</ul>
 		</div>
-		<!-- <div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
+		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
 		<div class="ex-customer" v-show='customerService' @click.stop="hidecustomer">
 			<div class="ex-customer-cnt" @click.stop=''>
 				<div class="ex-customer-cnt-item">
@@ -140,7 +169,7 @@
 				</div>
 				<div class="ex-customer-close" @click.stop="hidecustomer">关闭</div>
 			</div>
-		</div> -->
+		</div>
 		<app-nav></app-nav>
 		<model :model='model' v-show='model.show' @hideModel='hidemodel'></model>
 	</div>	
@@ -233,6 +262,9 @@ export default {
 		},
 		gouser () {
 			this.$router.push('/personal')
+		},
+		gotodetail () {
+			this.$router.push('/integraldetail')
 		},
 		gotovip () {
 			let _this = this
@@ -382,10 +414,11 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 .ex-index-switch p{background-color: #0369aa; color: #b3d8f6;  border-radius: 3rem; height: 2.5rem; line-height: 2.5rem; text-align: center; margin-right: 0.5rem;}
 
 .ex-index-integral{background-color: #0473bb; color: #fff; overflow: hidden;padding: 0.5rem 1rem; margin-top: 1rem;}
-.ex-index-integral .integral { width: 50%; float: left; }
+.ex-index-integral .integral { width: 50%; float: left; position: relative;}
 .ex-index-integral .integral i{font-size: 3rem;float: left; margin-right: 1rem; line-height: 4rem;}
 .ex-index-integral .integral p{ float: left; font-size: 1.4rem;}
 .ex-index-integral .integral p label {display: block; line-height: 2rem;}
+.ex-index-integral .integral .arrow { position: absolute;right: 0; font-size: 2rem }
 
 .ex-index-table { width: 100%; background-color: #fff; color: #000; }
 .ex-index-table td {border-left: 1px solid #eee; margin-left: -0.05rem; margin-top: -0.05rem; font-size: 1.4rem;}
@@ -393,7 +426,7 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 .ex-index-table td span { color: #999; }
 /*改版css*/
 
-.ex-index {padding-bottom: 4rem;background-color: #e5e5e5;}
+.ex-index {padding-bottom: 5rem;background-color: #e5e5e5;}
 .ex-index-box { background-color: #2eadff; padding:0.5rem 1rem; }
 .ex-index-toplink { height: 2rem;  vertical-align: middle; margin-bottom: 1rem;}
 .ex-index-toplink .switch { float: left; line-height: 2rem; background-color: #258acc;    color: #b3d8f6;  border-radius: 1rem; height: 2rem; padding: 0 1rem; margin-left: 1rem; margin-top: 0.5rem;}
@@ -418,26 +451,31 @@ background-size: cover; height: 2rem; line-height: 2rem; width: 8rem; font-size:
 .ex-index-data li span {width: 50%; text-align: right;display: block;float: right;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
 .ex-index-menu{overflow: auto; background-color: #fff;}
 .ex-index-menu li{ float: left;  width: 33.33%;}
-.ex-index-menu li a{ display: block;  text-align: center; padding:2rem 0; border:1px solid #eee; margin-left: -1px; margin-top: -1px; color: #222; }
-.ex-index-menu li a i{font-size: 3rem; margin-bottom: 0.06rem;}
+.ex-index-menu li a{ display: block;  text-align: center; padding:1.5rem 0; border:1px solid #eee; margin-left: -1px; margin-top: -1px; color: #222;}
+.ex-index-menu li a i{font-size: 3rem;  color: #fff; }
 .ex-index-menu li a span{display: block; color: #222;}
 .ex-index-menu li a:active{background-color: #eee;}
-i.m1{color: #ffbc3d;}
-i.m2{color: #27b581;}
-i.m3{color: #45d0c9;}
-i.m4{color: #53a7f3;}
-i.m5{color: #ffa100;}
-i.m6{color: #f0544d;}
-i.m7{color: #5eb5ea;}
-i.m8{color: #66c476;}
-.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4.5rem; height: 4.5rem; line-height: 4.5rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff;}
+
+
+.ex-index-menu li img{ width: 4rem; margin-bottom: 0.5rem; }
+/*.ex-index-menu li a b{display:block;border-radius: 50%; width: 4rem; height: 4rem; margin: auto; line-height: 4rem; font-weight: normal; margin-bottom: 0.5rem;}
+b.m1{background-color: #ffbc3d;}
+b.m2{background-color: #27b581;}
+b.m3{background-color: #45d0c9;}
+b.m4{background-color: #53a7f3;}
+b.m5{background-color: #ffa100;}
+b.m6{background-color: #f0544d;}
+b.m7{background-color: #5eb5ea;}
+b.m8{background-color: #66c476;}*/
+
+.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff; }
 .ex-index-service i{font-size: 3rem;}
 .ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 4;}
-.ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; padding-top: 1rem;}
+.ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; padding-top: 1rem; border-radius: 0.4rem; padding-top: 2rem;}
 .ex-customer-cnt-item {padding-top:1rem; font-size: 1.6rem;}
 .ex-customer-cnt-item h3{ font-size: 1.4rem; font-weight: normal; padding-bottom: 0.5rem; }
 .ex-customer-cnt-item a{color: #2eadff;}
 .ex-customer-cnt-item p {padding-bottom: 0.5rem;}
-.ex-customer-close { line-height: 5rem; border-top: 1px solid #eee;  font-size: 1.6rem; background-color: #eee; margin-top: 1rem;}
+.ex-customer-close { line-height: 5rem; border-top: 1px solid #eee;  font-size: 1.6rem; background-color: #eee; margin-top: 2rem;}
 .ex-customer-close:active{background-color: #ddd;}
 </style>

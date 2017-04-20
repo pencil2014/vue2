@@ -6,7 +6,7 @@
 			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">系统</div>
 		</div>
 		<div class="ex-message-list">
-			<div class="ex-message-item" ref="wrapper">	
+			<div class="ex-message-item" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">	
 				
 				<ul
 				  v-infinite-scroll="loadMore"
@@ -44,7 +44,7 @@ export default {
 			pageSize: 20,
 			modal: {
 				text:'我的消息',
-				fixed: true
+				fixed: false
 			},
 			wrapperHeight: 0,
 			loading:false,
@@ -78,6 +78,9 @@ export default {
 		HeadTitle,
 		NoData
 	},
+	mounted() {
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+    },
 	methods: {
 		back () {
 			this.$router.push('/user')
@@ -154,12 +157,11 @@ export default {
 </script>
 <style scoped>
 .ex-message{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
-.tabbar{height: 44px;background: #fff;border-bottom: solid 1px #ebebeb;text-align: center;line-height: 44px;font-size: 1.6rem;padding:0 0 3px 0;color: rgb(170,175,182);
-position: fixed;width: 100%;top: 58px;z-index: 1000;}
+.tabbar{height: 44px;background: #fff;border-bottom: solid 1px #ebebeb;text-align: center;line-height: 44px;font-size: 1.6rem;padding:0 0 3px 0;color: rgb(170,175,182);z-index: 1000;}
 .tabbar .m1{margin:0 5% 0 15%;width: 30%;float: left;}
 .tabbar .m2{margin:0 15% 0 5%;width: 30%;float: left;}
 .active{border-bottom: solid 3px rgb(4,112,182);color: rgb(4,112,182);}
-.ex-message-item{padding-top: 106px;}
+.ex-message-item{overflow-y: scroll;}
 .ex-message-item li{display: block;font-size: 1.4rem;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;background: rgb(241,250,255)}
 .ex-message-item li:last-child{border-bottom: none;}
 .ex-message-item .title{}
