@@ -179,7 +179,7 @@ export default {
 					_this.resurl = res.data.urls
 					_this.check()
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -207,7 +207,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.$router.push({ name: 'Declare5', params: { id: _this.id}})
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast( res.data.msg)
 				}
 			})
 			.catch(function(){

@@ -76,7 +76,7 @@ export default {
 					_this.recordList = res.data.data.list || []
 					_this.page = 2
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -105,7 +105,7 @@ export default {
 					_this.recordList.push(...res.data.data.list)
 					_this.page += 1
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast( res.data.msg)
 				}
 			})
 			.catch(function(){

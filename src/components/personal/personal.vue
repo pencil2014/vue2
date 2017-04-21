@@ -208,7 +208,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.personalData.brithday = stamp/1000;
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Toast('网络请求超时！')
@@ -235,7 +235,7 @@ export default {
 					_this.personalData.sex = _this.sexIndex;
 					_this.openSexSlots = false;
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Toast('网络请求超时！')

@@ -10,6 +10,7 @@ a:visited,a:active{ text-decoration:none; }
 i{ display: inline-block; text-decoration: none;}
 img{max-width: 100%;}
 [v-cloak] {display: none;}
+li{list-style: none;}
 
 /* 清除浮动 */
 .fn-clear:after {visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}

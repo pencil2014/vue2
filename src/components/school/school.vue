@@ -163,7 +163,7 @@ export default {
 						}
 					
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

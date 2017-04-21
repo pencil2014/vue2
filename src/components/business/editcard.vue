@@ -143,9 +143,9 @@ export default {
 			}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					MessageBox('提示', '验证码已经发送，请注意查收！')
+					Toast('验证码已经发送，请注意查收！')
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -201,7 +201,7 @@ export default {
 						_this.$router.go(-1)
 					})
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

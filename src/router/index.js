@@ -52,8 +52,9 @@ const Details2 = resolve => require(['../components/school/details2'], resolve)
 const News = resolve => require(['../components/school/news'], resolve)
 
 const Partner = resolve => require(['../components/partner/shop'], resolve)
-// const Partner = resolve => require(['../components/partner/partner'], resolve)
-const Partner2 = resolve => require(['../components/partner/detail'], resolve)
+const Shopinfo = resolve => require(['../components/partner/info'], resolve)
+const Category = resolve => require(['../components/partner/category'], resolve)
+const Classify = resolve => require(['../components/partner/classify'], resolve)
 
 
 const Message = resolve => require(['../components/message/message'], resolve)
@@ -286,9 +287,19 @@ export default new Router({
       component: Partner
     },
     {
-      path: '/partner/:id',
-      name: 'Partner2',
-      component: Partner2
+      path: '/shopinfo/:id',
+      name: 'Shopinfo',
+      component: Shopinfo
+    },
+    {
+      path: '/category',
+      name: 'Category',
+      component: Category
+    },
+    {
+      path: '/classify',
+      name: 'Classify',
+      component: Classify
     },
     {
       path: '/message/:id',

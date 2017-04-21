@@ -122,6 +122,7 @@ export default {
 			this.$router.back();
 		},
 		logout(){
+			let _this = this
 			MessageBox({
 				title:'提示',
 				message:'是否退出登录?',
@@ -132,7 +133,7 @@ export default {
 			}).then(action =>{
 				if(action === "confirm"){
 					window.localStorage.setItem('token', '')
-					this.$router.push('/login')
+					_this.$router.push('/login')
 				}
 			});
 		},

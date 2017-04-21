@@ -211,7 +211,7 @@ export default {
 					_this.dataList = res.data.data.list || []
 					_this.page = 2;
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast( res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -245,7 +245,7 @@ export default {
 					_this.dataList.push(...res.data.data.list)
 					_this.page += 1
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast( res.data.msg)
 				}
 			})
 			.catch(function(){

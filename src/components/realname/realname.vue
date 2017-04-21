@@ -106,6 +106,7 @@ export default {
 			realName:'',
 			idCard:'',
 			phoneCode:'',
+			info:'',
 			config:{
 	            onUploadProgress (progressEvent) {
 	              	Indicator.open({
@@ -142,6 +143,19 @@ export default {
 	},
 	created () {
 		let _this = this;
+		axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
+			if (res.data.code === '10000') {
+				_this.info = res.data.data
+				if(_this.info.status === '4'){
+					_this.realName = _this.info.realName;
+					_this.idCard = _this.info.idCard;
+				}
+			} else {
+				Toast(res.data.msg)
+			}
+		}).catch(function(){
+				Toast('网络请求超时！')
+		})
 	},
 	methods: {
 		back(){

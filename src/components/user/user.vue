@@ -37,13 +37,13 @@
 						<span>个人资料</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/businessinfo" tag="li" v-if="isShop">
+					<router-link to="/display1" tag="li" v-if="isShop">
 						<img src="../../assets/images/business.png" alt="">
-						<span>商家信息</span>
+						<span>商家展示信息</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link>
 					<router-link to="/qrcode2" tag="li" v-if="isShop">
-						<img src="../../assets/images/QR_code.png" alt="">
+						<img src="../../assets/images/pay.png" alt="">
 						<span>商家收款二维码</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link>
@@ -117,7 +117,7 @@ export default {
 		},
 		realnamestatus () {
 			let _index = this.checkRealName.status
-			let arr = ['未通过','审核中','已认证','未认证']
+			let arr = ['未通过','审核中','已认证','未认证','需认证升级']
 			return arr[_index]
 		},
 		identity () {
@@ -198,7 +198,7 @@ export default {
 </script>
 <style scoped>
 [v-cloak]{display: none;}
-.ex-user{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 106px;}
+.ex-user{width: 100%;background: #f4f5f7;color: #212a32;padding-bottom: 106px;}
 
 .ex-header{	width: 100%;height: 200px;background: url(../../assets/images/pc_bg.jpg) no-repeat;background-size: cover;position: relative;}
 .ex-header .wrapper{width: 100%;height: 72px;position: absolute; top: 64px;}
@@ -207,7 +207,7 @@ export default {
 .ex-header .wrapper .m1 img{width: 62px;height: 62px;border:solid 2px #fff;border-radius: 50%;background: #fff;}
 .ex-header .wrapper .m2{line-height: 25px;color: #fff;font-size: 1.8rem;text-align: left;}
 .ex-header .wrapper .m2 .usercode{font-size: 1.4rem;color: rgba(226, 241, 251 ,.8);}
-.ex-header .wrapper .m3{float: right;display: inline-block;background-color: #add6f1;border-radius: 20px 0 0 20px;width: 104px;height: 36px;text-align: right;font-size: 1.6rem;color: #4e92e6;margin-top: 18px;line-height: 36px;}
+.ex-header .wrapper .m3{float: right;background-color: #add6f1;border-radius: 20px 0 0 20px;width: 104px;height: 36px;text-align: right;font-size: 1.6rem;color: #4e92e6;margin-top: 18px;line-height: 36px;}
 .ex-header .wrapper .m3 label{;padding-right: 10px;}
 .ex-header .wrapper .vip{background-color: #ffa132;color: #fff;}
 .ex-header .wrapper .vip label:before{content: '';display: inline-block;width: 28px;height: 28px;background: url(../../assets/images/identity_VIP.png)no-repeat;background-size: 100%;vertical-align: top;margin-top: 4px;}
@@ -218,8 +218,8 @@ export default {
 .ex-user-item ul li{min-height: 31px;font-size: 1.4rem;width: 100%;padding: 8px 4px 8px 0;line-height: 31px;border-bottom: solid 1px #e5e5e5;position: relative;}
 .ex-user-item ul li:last-child{border: none;}
 .ex-user-item ul li .iconfont{color: rgba(173,180,190,1);float: right;padding: 0 15px 0 0;}
-.ex-user-item ul li img{width: 30px;position: absolute;}
-.ex-user-item ul li span{padding-left: 35px;}
+.ex-user-item ul li img{width: 30px;vertical-align: middle;}
+.ex-user-item ul li span{}
 .ex-user-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
 label.count{border-radius: 50%;background: rgb(255,84,0);min-width: 16px;height: 16px;padding: 0 !important;margin-top: 5px;text-align: center;line-height: 18px;color: #fff!important;font-size: 1rem !important;border: solid 2px rgb(255,84,0);}
 </style>

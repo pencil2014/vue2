@@ -171,7 +171,7 @@ export default {
 						window.localStorage.removeItem('shopdata')
 						_this.$router.push('/shop3')
 					} else {
-						MessageBox('提示', res.data.msg)
+						Toast(res.data.msg)
 					}
 				})
 				.catch(function(){

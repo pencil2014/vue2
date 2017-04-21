@@ -115,7 +115,7 @@ export default {
 					_this.integral -= _this.exchange
 					_this.exchange = ''
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

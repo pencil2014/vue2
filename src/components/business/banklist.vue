@@ -82,6 +82,19 @@ export default {
 			if (status === '1') {
 				return
 			}
+			if (this.checkRealName.status === '4') {
+				MessageBox({
+				  title: '提示',
+				  message: '升级实名认证后才能编辑银行卡！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+				return
+			}
 			this.$router.push({ name: 'Editcard1', params: { id: id}})
 		},
 		delcard (item,index) {
@@ -146,6 +159,20 @@ export default {
 				MessageBox({
 				  title: '提示',
 				  message: '实名认证失败！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+				return
+			}
+
+			if (this.checkRealName.status === '4') {
+				MessageBox({
+				  title: '提示',
+				  message: '为保障您的账户安全，现在实名认证流程升级，为了不影响使用，请尽快进行资料补充！',
 				  showCancelButton: true,
 				  confirmButtonText: '去认证'
 				}).then(action => {

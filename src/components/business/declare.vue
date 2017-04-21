@@ -170,7 +170,7 @@ export default {
 						MessageBox('提示', str)
 
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -233,7 +233,7 @@ export default {
 					
 					_this.$router.push({ name: 'Declare2', params: { id: res.data.data.id}})
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

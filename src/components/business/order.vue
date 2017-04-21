@@ -90,7 +90,7 @@ export default {
 					_this.orderList = array || []
 					_this.page = 2
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

@@ -110,7 +110,7 @@ export default {
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 							_this.$router.push('/index')
 						} else {
-							MessageBox('提示', res.data.msg)
+							Toast(res.data.msg)
 						}
 					})
 					.catch(function(){

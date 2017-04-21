@@ -237,7 +237,7 @@ export default {
 						if (res.data.msg === '当前已是会员模式') {
 							_this.$router.push('/index')
 						} else {
-							MessageBox('提示', res.data.msg)
+							Toast(res.data.msg)
 						}
 					}
 				})
@@ -279,7 +279,7 @@ export default {
 					window.localStorage.setItem('businessinfo', JSON.stringify(res.data.data))
 					window.localStorage.setItem('user/personal', new Date().getTime())
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Toast('网络请求超时！')
@@ -293,7 +293,7 @@ export default {
 					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
 					window.localStorage.setItem('user/sysIndex', new Date().getTime())
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Toast('网络请求超时！')
@@ -307,7 +307,7 @@ export default {
 					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
 					// window.localStorage.setItem('user/examine', new Date().getTime())
 				} else {
-					MessageBox('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 					Toast('网络请求超时！')

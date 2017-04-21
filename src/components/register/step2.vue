@@ -68,7 +68,12 @@ export default {
 					_this.userCode = res.data.data.userCode
 					_this.name = res.data.data.userName
 				} else {
-					MessageBox('提示', res.data.msg)
+					MessageBox('提示', res.data.msg).then(action =>{
+				if(action === "confirm"){
+					_this.$router.push('/register')
+				}
+			});
+					
 				}
 			})
 			.catch(function(){
@@ -105,9 +110,9 @@ export default {
 					.then(function(res){
 						Indicator.close()
 						if (res.data.code === '10000') {
-							MessageBox('提示', '验证码已经发送，请注意查收！')
+							Toast('验证码已经发送，请注意查收！')
 						} else {
-							MessageBox('提示', res.data.msg)
+							Toast(res.data.msg)
 						}
 					})
 					.catch(function(){
@@ -185,7 +190,7 @@ export default {
 						} else {
 							Indicator.close()
 							_this.second = 0
-							MessageBox('提示', res.data.msg)
+							Toast(res.data.msg)
 						}
 					})
 					.catch(function(){
