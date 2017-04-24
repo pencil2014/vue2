@@ -37,9 +37,9 @@
 						<span>个人资料</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/display1" tag="li" v-if="isShop">
+					<router-link to="/businessinfo" tag="li" v-if="isShop">
 						<img src="../../assets/images/business.png" alt="">
-						<span>商家展示信息</span>
+						<span>商家信息</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link>
 					<router-link to="/qrcode2" tag="li" v-if="isShop">
@@ -221,5 +221,5 @@ export default {
 .ex-user-item ul li img{width: 30px;vertical-align: middle;}
 .ex-user-item ul li span{}
 .ex-user-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
-label.count{border-radius: 50%;background: rgb(255,84,0);min-width: 16px;height: 16px;padding: 0 !important;margin-top: 5px;text-align: center;line-height: 18px;color: #fff!important;font-size: 1rem !important;border: solid 2px rgb(255,84,0);}
+label.count{border-radius: 50%;background: rgb(255,84,0);min-width: 16px;height: 16px; line-height: 16px; padding: 0 !important;margin-top: 5px;text-align: center;line-height: 18px;color: #fff!important;font-size: 1rem !important;border: solid 2px rgb(255,84,0);}
 </style>

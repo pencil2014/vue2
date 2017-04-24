@@ -55,6 +55,7 @@ const Partner = resolve => require(['../components/partner/shop'], resolve)
 const Shopinfo = resolve => require(['../components/partner/info'], resolve)
 const Category = resolve => require(['../components/partner/category'], resolve)
 const Classify = resolve => require(['../components/partner/classify'], resolve)
+const Search = resolve => require(['../components/partner/search'], resolve)
 
 
 const Message = resolve => require(['../components/message/message'], resolve)
@@ -300,6 +301,11 @@ export default new Router({
       path: '/classify',
       name: 'Classify',
       component: Classify
+    },
+    {
+      path: '/search',
+      name: 'Search',
+      component: Search
     },
     {
       path: '/message/:id',

@@ -10,19 +10,38 @@
 				</mt-swipe>
 			</div>
 			<div class="ex-shop-top">
-				<div class="ex-shop-address">
+				<div class="ex-shop-address" @click="showcity">
 					<i class="iconfont icon1">&#xe634;</i>
-					<span>{{address}}</span>
+					<span v-if='countyname && cityname !=="全省"'>{{countyname}}</span>
+					<span v-else-if= 'cityname  && provincename !=="全国"'>{{cityname}}</span>
+					<span v-else>{{provincename}}</span>
 					<i class="iconfont icon2">&#xe60d;</i>
 					<!-- <i class="iconfont icon2">&#xe60e;</i> -->
 				</div>
-				<div class="ex-shop-search">
+				<div class="ex-shop-search" @click='gotosearch'>
 					<i class="iconfont">&#xe67a;</i>
-					<input type="search" name="" id="" placeholder="搜索关键字" @keypress.prevent='search' v-model='keyword'>
+					<input type="search" name="" id="" placeholder="搜索关键字"  v-model='keyword'>
+					<!-- @keypress.prevent='search' -->
 				</div>
 			</div>
 		</div>
-
+		<div class="ex-city-box" v-show='showsub'>
+			<div class="ex-province" v-show='province.length > 0'>
+				<ul>
+					<li v-for='item in province' @click='changeProvince(item.id,item.name)' :class="{active: item.id === provinceId}">{{item.name}}</li>
+				</ul>
+			</div>
+			<div class="ex-city"  v-show='cityArray.length > 0 && provincename !=="全国"'>
+				<ul>
+					<li v-for='item in cityArray'  @click='changeCity(item.id,item.name)' :class="{active: item.id === cityId}">{{item.name}}</li>
+				</ul>
+			</div>
+			<div class="ex-county" v-show='districtArray.length > 0 && provincename !=="全国"'>
+				<ul >
+					<li v-for='item in districtArray'  @click='changeCounty(item.id,item.name)' :class="{active: item.id === districtId}">{{item.name}}</li>
+				</ul>
+			</div>
+		</div>
 		<div class="ex-shop-menu">
 			<li><router-link to="/classify">
 				<img src="../../assets/images/shop1.png" alt="">
@@ -102,7 +121,7 @@
 			</div>
 			
 		</div>
-		
+		<app-nav></app-nav>
 	</div>
 </template>
 
@@ -111,11 +130,24 @@
 import axios from "axios"
 import qs from "qs"
 import {Loadmore, InfiniteScroll, Indicator, Toast, Swipe, SwipeItem  } from 'mint-ui'
+import appNav from "../common/tabbar.vue"
 export default {
 	data(){
 		return {
 			imgurl: [,,],
 			address: '深圳',
+			showsub: false,
+			province: [],
+			city: [],
+			district: [],
+			cityArray: [],
+			districtArray: [],
+			provinceId: '',
+			districtId: '',
+			cityId: '',
+			countyname: '',
+			cityname: '',
+			provincename: '',
 			localshop: [],
 			loading: false,
 			page: 1,
@@ -130,9 +162,15 @@ export default {
 			id:''
 		}
 	},
+	components: {
+		appNav
+	},
 	methods: {
-		search () {
-			alert(this.keyword)
+		// search () {
+		// 	alert(this.keyword)
+		// },
+		gotosearch () {
+			this.$router.push('/search')
 		},
 		getposition () {
 			let _this = this 
@@ -144,6 +182,74 @@ export default {
 						}
 					)
 			}
+		},
+		showcity () {
+			this.showsub = !this.showsub
+		},
+		hidecity () {
+			this.showsub = false
+		},
+		changeProvince (id,name) {
+			this.provinceId = id
+			this.provincename = name
+			if (name === '全国') {
+				this.showsub = false
+				this.districtId = ''
+				this.cityId = ''
+				this.countyname = ''
+				this.cityname = ''
+				this.getdata()
+				return
+			}
+			let array = this.city.filter(function(item) {
+				return item.parentId === this.provinceId
+			}.bind(this))
+			array.unshift({id: 0, name: "全市", parentId: 0})
+			this.cityArray = array
+			this.cityId = array[0].id
+			this.cityname = array[0].name
+
+			let array2 = this.district.filter(function(item) {
+				return item.parentId === this.cityId
+			}.bind(this))
+			if (array2.length>0) {
+				array2.unshift({id: 0, name: "全区", parentId: 0})
+				this.districtArray = array2
+				this.districtId = array2[0].id
+				this.countyname = array2[0].name
+			}
+			
+		},
+		changeCity (id,name) {
+			this.cityId = id
+			this.cityname = name
+			let array = this.district.filter(function(item) {
+				return item.parentId === this.cityId
+			}.bind(this))
+			
+			if (array.length > 0) {
+				array.unshift({id: 0, name: "全区", parentId: 0})
+				this.districtArray = array
+				this.districtId = array[0].id
+				this.countyname = array[0].name
+			} else {
+				this.districtArray = []
+				this.districtId = ''
+				this.countyname = ''
+				this.showsub = false
+				this.getdata()
+			}
+			
+			
+		},
+		changeCounty (id,name) {
+			this.districtId = id
+			this.countyname = name
+			this.showsub = false
+			this.getdata()
+		},
+		getdata() {
+
 		},
 		gotoinfo (id) {
 			this.$router.push({name:'Shopinfo',params:{id: id}})
@@ -204,20 +310,39 @@ export default {
 	created () {
 		this.getposition()
 		this.id = JSON.parse(window.localStorage.getItem('userinfo')).userId
+		let _this = this
+		axios.post('getBaseRegionAll',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+					_this.province = res.data.data.province 
+					_this.city = res.data.data.city
+					_this.district = res.data.data.district 
+					_this.province.unshift({id: 0, name: "全国", parentId: 0})
+					let id = res.data.data.province[0].id
+					let name = res.data.data.province[0].name
+					_this.changeProvince(id,name)
+			} else {
+				Toast(res.data.msg)
+			}
+		})
+		.catch(function(){
+			Toast('网络请求超时！')
+		})
 	}
 }	
 </script>
 
 <style scoped>
-.ex-shop{background-color: #efefef;}
+.ex-shop{background-color: #efefef;padding-bottom: 5rem;}
 .ex-shop-head{ height: 20rem; position: relative; }
 .ex-shop-head-banner { height: 100%;background-color: #eee;}
+.ex-shop-head-banner img{ height: 100%; min-width: 100%; }
 .ex-shop-top { position: absolute; top: 1rem; width: 100%; overflow: hidden;}
 .ex-shop-address {background-color: #13151d; color: #fff; float: left; height: 3rem; line-height: 3rem; border-radius: 2rem; width: 28%; margin: 0 2%; position: relative; overflow: hidden; text-align: center;}
 .ex-shop-address i {position: absolute;}
 .ex-shop-address .icon1 { left: 0.5rem; font-size: 2rem}
 .ex-shop-address .icon2 { right: 0.5rem; top: 0.3rem; font-size: 2.5rem;}
-.ex-shop-address span {font-size: 1.4rem}
+.ex-shop-address span {font-size: 1.4rem; width: 50%; white-space:  nowrap; text-overflow: ellipsis; overflow: hidden; display: inline-block;}
 .ex-shop-search { float: right; width: 64%;  margin-right: 2%; position: relative; color: #999;}
 .ex-shop-search input{ width: 100%; height: 3rem;  border: none; border-radius: 1.5rem; padding-left: 12%; }
 .ex-shop-search i{ position: absolute; left: 0.6rem; top: 0.8rem; }
@@ -243,5 +368,14 @@ export default {
 .ex-shop-localshop-item .info .name {font-weight: normal; font-size: 1.6rem; padding: 0.5rem 0;}
 .ex-shop-localshop-item .info .classify{ color: #09537e; }
 .ex-shop-localshop-item .info .phone{color: #666; padding-top: 0.5rem;}
-.ex-shop-localshop-item .info .distance {color: #666; text-align: right; font-weight: 600;}
+.ex-shop-localshop-item .info .distance {color: #666; text-align: right; font-weight: 600; font-size: 1.2rem;}
+
+.ex-city-box { height: 30rem; overflow: hidden; position: absolute; top: 5rem; left:0; width: 100%; z-index: 2;}
+.ex-province,.ex-city,.ex-county{ width: 33.3%; float: left; height: 100%; overflow: scroll;}
+.ex-province {background-color: #e5e5e5;}
+.ex-city {background-color: #f2f2f2;}
+.ex-county{background-color: #fff;}
+.ex-city-box li{ padding: 1rem; border-bottom: 1px solid #ddd; text-align: center;}
+.ex-city-box li.active { color: #2f91d8; border-color: #2f91d8;}
+
 </style>

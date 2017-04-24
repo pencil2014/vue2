@@ -4,11 +4,11 @@
 			<span class="m1"></span><br>
 			首页
 		</router-link>
-		<!-- <router-link to="/partner">
+		<router-link to="/partner">
 			<span class="m2"></span>
 			<br>
-			联盟商家
-		</router-link> -->
+			商家推广
+		</router-link>
 		<router-link to="/school">
 			<span class="m3"></span>
 			<br>
@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
 .ex-nav{background-color: #fafafa; border-top: 1px solid #e6e6e6;  position: fixed; bottom: 0; left: 0; width: 100%;display: table;}
-.ex-nav a {display: table-cell;color: #aaa;text-align: center;vertical-align: middle;width: 33.3%;}
+.ex-nav a {display: table-cell;color: #aaa;text-align: center;vertical-align: middle;width: 25%;}
 .ex-nav span{display: inline-block;width: 30px;height: 30px;}
 .ex-nav .m1{background:url(../../assets/images/home.png) no-repeat center;background-size: 100%;}
 .activeRouter .m1{background:url(../../assets/images/home_select.png) no-repeat center;background-size: 100%;}

@@ -14,7 +14,7 @@
 					<td>转存金额</td>
 					<td><input type="number" placeholder="请输入金额" v-model.trim='exchange' id="exchange" @input="maxmoney"></td>
 				</tr>
-				<tr class="option">
+				<!-- <tr class="option">
 					<td>请选择</td>
 					<td>
 						<span :class="{'select':selectType === 1}" @click="option(1)">
@@ -26,13 +26,13 @@
 							<label for="">公司卡</label>
 						</span>
 					</td>
-				</tr>
+				</tr> -->
 			</table>
 			<div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
 				<span class="m1">银行卡：</span>
 				<span class="m2">
 					<label for="" class="b1">{{bankdata.banks}}</label>
-					<label for="" class="b2" v-if="selectType === 2">{{ businessname }}</label>
+					<label for="" class="b2" v-if="bankdata.accountName">{{ bankdata.accountName }}</label>
 					<label for="" class="b3">{{bankdata.cardNo | card}}</label>
 				</span>
 				<span class="m3">
@@ -89,23 +89,24 @@ export default {
 				return true
 			}
 		},
-		businessname (){
-			let type = this.bankdata.cardType
-			if(type === '1'){
-				return 
-			}else{
-				return this.bankdata.accountName
-			}
-		},
+		// businessname (){
+		// 	let type = this.bankdata.cardType
+		// 	if(type === '1'){
+		// 		return 
+		// 	}else{
+		// 		return this.bankdata.accountName
+		// 	}
+		// },
 		cardstatus () {
 			let status = this.bankdata.status
-			let type = this.bankdata.cardType
+			// let type = this.bankdata.cardType
 			let allstatus = ['已删除','审核中','审核未通过','']
-			if(type === '1'){
-				return 
-			}else{
-				return allstatus[status]
-			}
+			// if(type === '1'){
+			// 	return 
+			// }else{
+			// 	return allstatus[status]
+			// }
+			return allstatus[status]
 		}
 	},
 	created () {
@@ -192,7 +193,7 @@ export default {
 			}
 
 			if (this.checkRealName.status === '2') {
-				this.$router.push('/addcard1')
+				this.$router.push('/addcard')
 				return
 			}
 
@@ -272,7 +273,7 @@ export default {
 		},
 		getDefaultCard (type) {
 			let _this = this;
-			axios.post('bankard/getDefault',qs.stringify({cardType: type}))
+			axios.post('bankard/findDefault',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					if (!!res.data.data ) {
@@ -282,7 +283,7 @@ export default {
 						_this.showAdd = true
 					}
 				} else {
-					MessageBox('提示', '请求数据失败！')
+					Toast('请求数据失败！')
 				}
 			})
 			.catch(function(){
@@ -292,9 +293,9 @@ export default {
 	},
 	beforeRouteLeave (to,from,next) {
 		if(to.path === '/banklist' && this.selectType === 2){
-			next('/banklist1')
+			next('/banklist')
 		}else if(to.path === '/addcard' && this.selectType === 2){
-			next('/addcard1')
+			next('/addcard')
 		}else{
 			next()
 		}

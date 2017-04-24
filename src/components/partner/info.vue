@@ -22,6 +22,9 @@
 </template>
 
 <script>
+import axios from "axios"
+import qs from "qs"
+import {Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -40,6 +43,21 @@ export default {
 		goback () {
 			this.$router.go(-1)
 		}
+	},
+	created () {
+		let _this = this
+		this.id = this.$route.params.id
+		axios.post('shop/examineUnion',qs.stringify({id: this.id}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				// _this.shopinfo = res.data.data
+			} else {
+				Toast(res.data.msg)
+			}
+		})
+		.catch(function(){
+			Toast('网络请求超时！')
+		})
 	}
 }	
 </script>

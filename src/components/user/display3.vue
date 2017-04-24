@@ -2,108 +2,116 @@
 	<div class="ex-display">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="wrapper">
-			<div class="item-wrapper"  ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
-				<div
-					v-infinite-scroll="loadMore"
-				 	infinite-scroll-disabled="loading"
-				    infinite-scroll-distance="10"
-				>
-				 	<no-data :hasdata="hasdata"></no-data>
-					<div  class="item">
-						<div class="item-content">
-							<span class="m1">
-							<div><img src="../../assets/images/girl01.png" alt=""></div>
+			<ul class="item-content">
+				<li class="item">
+					<span>产品名称</span>
+					<input type="text" placeholder="最多8个字符" maxlength="8">
+				</li>
+				<li class="item">
+					<span>产品价格</span>
+					<input type="text" placeholder="请输入价格" maxlength="8">
+				</li>
+				<li class="item picture">
+					<p>产品图片</p>
+					请上传比例为4:3，小于500K的图片
+					<div class="UpLoadIMG">
+						<div class="report-file">
+							<span>
+								<i class="iconfont">&#xe608;</i>
+								<br>
+								上传照片
 							</span>
-							<span class="m2">
-								<p class="caption">
-									电饭煲</p>
-								<p class="info">
-									&yen;650<label for="">分组：电器1</label></p>
-							</span>
+							<input type="file" name="" class="file-prew" id="frontPic" />
 						</div>
 					</div>
-				</div>
-				<div class="page-infinite-loading" v-show="loading">
-			       <mt-spinner type="fading-circle"></mt-spinner>
-			    </div>
-			</div>
-		</div>
-		<div class="bottom">
-			<span>删除</span>
-			<span>分组至</span>
+				</li>
+			</ul>
+			<ul class="item-content">
+				<li class="item">
+					<span>产品分类</span>
+					<label class="right">
+						房产
+						<i class="iconfont" >&#xe606;</i>
+					</label>
+				</li>
+			</ul>
+			<ul class="item-content">
+				<li class="item">
+					<span>店铺分组</span>
+					<label class="right">
+						编辑
+						<i class="iconfont">&#xe606;</i>
+					</label>
+				</li>
+				<li class="item-option">
+					<div class="select">
+						<span class="option"></span>
+						分组1
+					</div>
+					<div>
+						<span class="option"></span>
+						分组2
+					</div>
+				</li>
+			</ul>
 		</div>
 	</div>
 </template>
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Indicator, Toast , Loadmore ,InfiniteScroll} from 'mint-ui'
+import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-import NoData from '../common/nodata.vue'
 export default {
 	data(){
 		return{
-			list:[],
-			page: 1,
-			totalPage: 1,
-			pageSize: 20,
-			wrapperHeight: 0,
-			nodateStatus:false,
-			loading:false,
 			modal: {
-				text:'产品',
+				text:'产品编辑',
 				fixed: false
 			}
 		}
 	},
 	components: {
 		HeadTitle,
-		NoData
 	},
 	computed:{
-		hasdata () {
-			if(this.nodateStatus && this.list.length === 0){
-				return false
-			}else{
-				return true
-			}
-		},
+
 	},
 	created () {
-		
+
 	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
-		loadTop () {
-			this.$refs.loadmore.onTopLoaded();
-		},
 		loadMore () {
 			
 		}
 	},
-	mounted() {
-      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-    },
 }
 </script>
 <style scoped>
 .ex-display {width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;}
-.wrapper {margin-top: 15px;}
-.item-wrapper {width: 100%;border-bottom: 50px;overflow-y: hidden;overflow-x: auto;}
-.item {margin: 0 0 0 0;background: #fff;}
-.item-content{padding: 15px 10px 15px 10px;border-bottom: solid 1px #ebebeb;margin-left: 10px;}
-.item-wrapper .item:last-child .item-content{border: none;}
-.item span {vertical-align: middle;display: inline-block;}
-.item span.m1 {width: 30%;text-align: center;}
-.item span.m2 {width: 70%;}
-.item span.m1 img{width: 120px;border: solid 1px #ebebeb;}
-.item span.m2 p{padding-left: 10px;}
-.item span.m2 p.caption{font-size: 1.4rem;line-height: 20px;max-height: 40px;overflow-y: hidden;}
-.item span.m2 p.info{padding-top: 10px;color: #f16200;}
-.item span.m2 p.info label{padding-left: 15px;color: #999;}
-.ex-display .bottom{position: fixed;bottom: 0;left: 0;display: table;width: 100%;text-align: center;height: 50px;line-height: 50px;background: #fff;}
-.ex-display .bottom span{display: table-cell;width: 50%;font-size: 1.4rem;color: #6bc8ec;}
-.ex-display .bottom span:active{background: #ebebeb;}
+.ex-display .wrapper {}
+.ex-display .wrapper .item-content{background: #fff;margin-top: 15px;}
+.ex-display .wrapper .item {min-height: 30px;line-height: 30px;font-size: 1.4rem;padding: 9px 0;border-bottom: solid 1px #ebebeb;margin-left: 10px;}
+.ex-display .wrapper li.picture{color: #aaafb6;line-height: 25px;}
+.ex-display .wrapper li.picture p{color: #212a32;}
+.ex-display .wrapper .item:last-child{border-bottom: none;}
+.ex-display .wrapper .item span{width: 25%;display: inline-block;}
+.ex-display .wrapper .item input{border: none;width: 70%;}
+.ex-display .wrapper .item label.right{float: right;padding-right: 10px;color: #aaafb6;}
+
+.ex-display .wrapper .item-content .item-option{font-size: 1.4rem;padding: 9px 0 9px 25px;line-height: 30px;}
+.ex-display .wrapper .item-content .item-option div{}
+.ex-display .wrapper .item-content .item-option div .option{display: inline-block;width: 20px;height: 20px;background: url(../../assets/images/noselect.png) no-repeat;background-size: 100%;vertical-align: middle;}
+.ex-display .wrapper .item-content .item-option div.select{color: #0c87d5;	}
+.ex-display .wrapper .item-content .item-option div.select .option{background: url(../../assets/images/select.png) no-repeat;background-size: 100%;}
+
+.ex-display .wrapper .item .report-file {width: 64px;height: 64px;overflow: hidden;display: inline-flex;position: relative;border: dotted 1px #d8d8d8;text-align: center;}
+.ex-display .wrapper .item .report-file span{cursor: pointer;display: block;width: 100%;line-height: 20px;margin-top: 12px;}
+.ex-display .wrapper .item .report-file .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;z-index: 10;}
+.UpLoadIMG{margin: 15px 0 0 15px;}
+
+
 </style>

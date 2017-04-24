@@ -112,9 +112,6 @@ export default {
 			}
 		},
 	},
-	watch:{
-		
-	},
 	created () {
 		this.sel = this.type;
 		let token = window.localStorage.paytoken
@@ -147,15 +144,8 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if(res.data.code === '10000'){	
-					MessageBox({
-						title: '提示',
-						message:'支付成功',
-						confirmButtonText: '确定'
-					}).then(action =>{
-						if(action === "confirm"){
-							
-						}
-					});
+					// weixin://wxpay/bizpayurl?pr=7LuCWf1
+					window.location.href = res.data.data.url
 				}else{
 					_this.submitbtn = false
 					Toast(res.data.msg)

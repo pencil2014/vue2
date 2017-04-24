@@ -13,7 +13,7 @@
 				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
 			</div>
 			<div class="ex-addcard-num">
-				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard">
+				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
 			</div>
 			<div class="ex-addcard-name">
 				<label for="name">开户行:</label>中国<input type="text" name="" id="name" placeholder="请输入" v-model.trim='banks'>银行
@@ -180,14 +180,14 @@ export default {
 				banks: this.bankname,
 				branch: this.branchname,
 				// phone: '1111',
-				cardType: 2,
+				// cardType: 2,
 				accountName: this.accountName,
 				// phoneCode:'111'
 			}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					MessageBox.alert('银行卡添加成功！').then(action => {
+					MessageBox.alert('银行卡添加成功，请等待平台审核！').then(action => {
 						_this.$router.go(-1)
 					})
 				} else {

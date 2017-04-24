@@ -58,13 +58,13 @@
 						<label for="" v-text="phone"></label>
 					</router-link>
 					<router-link to="/banklist" tag="li">
-						<span>个人银行卡</span>
+						<span>银行卡</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>	
-					<router-link to="/banklist1" tag="li">
+					<!-- <router-link to="/banklist" tag="li">
 						<span>公司银行卡</span>
 						<i class="iconfont" >&#xe606;</i>
-					</router-link>		
+					</router-link>	 -->	
 				</ul>
 			</div>
 		</div>

@@ -15,7 +15,7 @@ Vue.use(Mint)
 
 // 判断用是否登录
 router.beforeEach((to, from, next) => {
-  let url = to.path.indexOf('login') > -1 || to.path.indexOf('register') > -1 || to.path.indexOf('forgot') > -1
+  let url = to.path.indexOf('login') > -1 || to.path.indexOf('register') > -1 || to.path.indexOf('forgot') > -1 || to.path.indexOf('pay') > -1
   let token = window.localStorage.getItem('token')
 	if (!token && !url ) {
 		next('/login')

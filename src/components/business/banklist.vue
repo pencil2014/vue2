@@ -15,14 +15,14 @@
 					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
 				</div>
 				<div class="bankaction" v-if='item.status !== "1"'>
-					<span class='deleted' v-if='item.isDefault !== "1"' @click='delcard(item, index)'>删 除</span>
-					<span class="default" @click='setdefault(item,index)'>
-						<i class="iconfont active" v-if='item.isDefault === "1"' >&#xe636;</i>
-						<i class="iconfont" v-else>&#xe668;</i>设为默认
+					<span class='deleted' @click='delcard(item, index)'>删 除</span>
+					<span class="default" @click='setdefault(item,index)' v-show='showSelectBtn'>
+						<!-- <i class="iconfont active" v-if='item.isDefault === "1"' >&#xe636;</i> -->
+						<i class="iconfont" >&#xe668;</i>选择此卡
 					</span>
 				</div>
 			</div>
-			<div class="ex-banklist-add" @click='addcard' v-if='banks.length <= 0'>
+			<div class="ex-banklist-add" @click='addcard' v-if='banks.length <= 0 && showaddBtn'>
 				<i class="iconfont">&#xe608;</i> 添加银行卡
 			</div>
 		</div>
@@ -43,6 +43,8 @@ export default {
 				text:'公司银行卡',
 				fixed: false,
 			},
+			showaddBtn: false,
+			showSelectBtn: false
 		}
 	},
 	computed: {
@@ -50,10 +52,11 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('bankard/list',qs.stringify({cardType: 2}))
+		axios.post('bankard/list',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data
+					_this.showaddBtn = true
 				} else {
 					Toast(res.data.msg)
 				}
@@ -95,7 +98,7 @@ export default {
 				})
 				return
 			}
-			this.$router.push({ name: 'Editcard1', params: { id: id}})
+			this.$router.push({ name: 'Editcard', params: { id: id}})
 		},
 		delcard (item,index) {
 			let _this = this
@@ -184,7 +187,7 @@ export default {
 			}
 
 			if (this.checkRealName.status === '2') {
-				this.$router.push('/addcard1')
+				this.$router.push('/addcard')
 				return
 			}
 
@@ -203,6 +206,13 @@ export default {
 			}
 			
 		}
+	},
+	beforeRouteEnter (to, from, next) {
+		next(vm => {
+    if (from.path.indexOf('bank') > -1) {
+				vm.showSelectBtn = true
+			}
+	  })
 	},
 	filters: {
 		card (value) { 

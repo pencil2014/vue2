@@ -130,7 +130,7 @@
 				<!-- <b class=" m4"><i class="iconfont">&#xe94b;</i></b> -->
 				<span>资金明细</span></router-link>
 				</li>
-				<li><router-link to="/bank1">
+				<li><router-link to="/bank">
 				<img src="../../assets/images/2.png" alt="">
 				<!-- <b class=" m5"><i class="iconfont">&#xe6be;</i></b> -->
 				<span>转存银行</span></router-link>

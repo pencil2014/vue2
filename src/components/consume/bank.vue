@@ -17,9 +17,13 @@
 				<label for="">银 行 卡：</label>
 				<div class='bankinfo'>
 					<p class="name">{{bankdata.banks}}</p>
+					<p class="accountName" v-if="bankdata.accountName">{{ bankdata.accountName }}</p>
 					<p class="number">{{bankdata.cardNo | card}}</p>
 				</div>
-				<span class='arrow'><i class='iconfont'>&#xe606;</i></span>
+				<span class='arrow'>
+					<label>{{cardstatus}}</label>
+					<i class='iconfont'>&#xe606;</i>
+				</span>
 			</div>
 			<div class="ex-bank-add" @click='addcard' v-else>
 				<i class="iconfont">&#xe608;</i> 添加银行卡
@@ -70,6 +74,11 @@ export default {
 			} else {
 				return true
 			}
+		},
+		cardstatus () {
+			let status = this.bankdata.status
+			let allstatus = ['已删除','审核中','审核未通过','']
+			return allstatus[status]
 		}
 	},
 	created () {
@@ -86,22 +95,29 @@ export default {
 			Toast('网络请求超时！')
 		})
 
-		axios.post('bankard/getDefault',qs.stringify({cardType: 1}))
-		.then(function(res){
-			if (res.data.code === '10000') {
-				if (!!res.data.data ) {
-					_this.showAdd = false
-					_this.bankdata = res.data.data
+		let defaultCard = window.localStorage.getItem('defaultCard')
+		if (!defaultCard) {
+			axios.post('bankard/findDefault',qs.stringify({}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					if (!!res.data.data ) {
+						_this.showAdd = false
+						_this.bankdata = res.data.data
+					} else {
+						_this.showAdd = true
+					}
 				} else {
-					_this.showAdd = true
+					Toast('请求数据失败！')
 				}
-			} else {
-				MessageBox('提示', '请求数据失败！')
-			}
-		})
-		.catch(function(){
-			Toast('网络请求超时！')
-		})
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+		} else {
+			_this.showAdd = false
+			_this.bankdata = JSON.parse(defaultCard)
+		}
+		
 
 		axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
@@ -280,7 +296,8 @@ export default {
 .ex-bank-card{background-color: #fff; margin: 1rem 0; padding: 0.5rem 1rem; min-height: 3rem; position: relative;}
 .ex-bank-card label{float: left; line-height: 3.5rem;}
 .ex-bank-card .bankinfo{ margin-left: 5rem; color: #586485; padding-left: 1rem; line-height: 1.5;}
-.ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 1.5rem;}
+.ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 2.2rem;}
+.ex-bank-card .arrow label{color: red; line-height: 1.4rem;}
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 .ex-bank-btn:active {background-color: #0470b6;}
 .ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }

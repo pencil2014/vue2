@@ -5,12 +5,13 @@
 			<span>添加银行卡</span>
 		</div>
 		<div class="ex-addcard-cnt">
-			<p class='tips'>*只能添加实名认证人的银行卡(注：如为中国银行开户行可不输入)</p>
+			<p class='tips'>*只能添加本人或所属公司的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
-				<label for="number">姓名:</label> <span>{{realName}}</span>
+				<label for="name">开户名:</label><!-- <span>{{realName}}</span> -->
+				<input type="text" name="" id="name" placeholder="请输入开户名" v-model.trim='name'>
 			</div>
 			<div class="ex-addcard-num">
-				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard">
+				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
 			</div>
 			<div class="ex-addcard-name">
 				<label for="name">开户行:</label>中国<input type="text" name="" id="name" placeholder="请输入" v-model.trim='banks'>银行
@@ -27,11 +28,11 @@
 			<div class="ex-addcard-num">
 				<label for="number">手机号码:</label><input type="tel" name="" id="" placeholder="请输入手机号码" v-model='phone'>
 			</div>
-			<div class="ex-addcard-num verycode" v-show='phone !== userphone'>
+			<!-- <div class="ex-addcard-num verycode" v-show='phone !== userphone'>
 				<label for="number">验证码:</label><input type="text" name="" id="" placeholder="请输入验证码" v-model='phonecode'>
 				<a href="javascript:;" @click='getcode' v-show='!countdown'>获取验证码</a>
 				<a href="javascript:;"  v-show='countdown'>{{second}}秒</a>
-			</div>
+			</div> -->
 			<button type='button' :class="[ 'ex-bank-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
 		</div>
 	</div>
@@ -45,6 +46,7 @@ export default {
 	data () {
 		return {
 			realName: '',
+			name: '',
 			card:'', 
 			banks:'', 
 			phone:'',
@@ -64,7 +66,8 @@ export default {
 			let rule2 = this.city ? true :false
 			let rule3 = this.branch ? true :false
 			let rule4 = /^1\d{10}$/.test(this.phone) ? true :false
-			if (rule1 && rule2 && rule3 && rule4) {
+			let rule5 = !!this.name ? true : false
+			if (rule1 && rule2 && rule3 && rule4 && rule5) {
 				return false
 			} else {
 				return true
@@ -96,7 +99,7 @@ export default {
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
 				_this.userphone =  res.data.data.phone
-				_this.realName =  res.data.data.realName
+				_this.name =  res.data.data.realName
 			} else {
 				Toast('请求数据失败！')
 			}
@@ -150,6 +153,10 @@ export default {
 			},1000)
 		},
 		submit () {
+			if (!this.name) {
+				MessageBox('提示', '开户名不能为空！')
+				return
+			}
 			if (!/^\d{16,}$/.test(this.card2)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
@@ -175,14 +182,14 @@ export default {
 				banks: this.bankname,
 				branch: this.branchname,
 				phone: this.phone,
-				cardType: 1,
-				accountName: null,
-				phoneCode: this.phonecode
+				// cardType: '',
+				accountName: this.name
+				// phoneCode: this.phonecode
 			}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					MessageBox.alert('银行卡添加成功！').then(action => {
+					MessageBox.alert('银行卡添加成功，请等待平台审核！').then(action => {
 						_this.$router.go(-1)
 					})
 				} else {

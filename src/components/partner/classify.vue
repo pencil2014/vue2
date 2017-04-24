@@ -115,5 +115,5 @@ export default {
 .ex-shop-classify-item .info .name {font-weight: normal; font-size: 1.6rem; padding: 0.5rem 0;}
 .ex-shop-classify-item .info .classify{ color: #09537e; }
 .ex-shop-classify-item .info .phone{color: #666; padding-top: 0.5rem;}
-.ex-shop-classify-item .info .distance {color: #666; text-align: right; font-weight: 600;}	
+.ex-shop-classify-item .info .distance {color: #666; text-align: right; font-weight: 600;font-size: 1.2rem;}	
 </style>

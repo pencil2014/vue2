@@ -9,18 +9,20 @@
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
 				<div class="bankinfo" @click='gotoedit(item.id, item.status)'>
 					<p>{{item.banks}}</p>
+					<p>{{item.accountName}}</p>
 					<p>{{item.cardNo | card}}</p>
-					<span class="goto"><i class="iconfont">&#xe606;</i></span>
+					<p class="right" >{{item.status | status}}</p>
+					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
 				</div>
-				<div class="bankaction">
-					<span class='deleted' v-if='item.isDefault !== "1"' @click='delcard(item, index)'>删 除</span>
-					<span class="default" @click='setdefault(item,index)'>
-						<i class="iconfont active" v-if='item.isDefault === "1"' >&#xe636;</i>
-						<i class="iconfont" v-else>&#xe668;</i>设为默认
+				<div class="bankaction"  v-if='item.status !== "1"'>
+					<span class='deleted'  @click='delcard(item, index)'>删 除</span>
+					<span class="default" @click='setdefault(item,index)' v-show='showSelectBtn'>
+						<!-- <i class="iconfont active" v-if='item.isDefault === "1"' >&#xe636;</i> -->
+						<i class="iconfont" >&#xe668;</i>选择此卡
 					</span>
 				</div>
 			</div>
-			<div class="ex-banklist-add" @click='addcard' v-if='banks.length <= 0'>
+			<div class="ex-banklist-add" @click='addcard' v-if='banks.length <= 0 && showaddBtn'>
 				<i class="iconfont">&#xe608;</i> 添加银行卡
 			</div>
 		</div>
@@ -41,14 +43,17 @@ export default {
 				text:'银行卡',
 				fixed: false,
 			},
+			showaddBtn: false,
+			showSelectBtn: false
 		}
 	},
 	created () {
 		let _this = this
-		axios.post('bankard/list',qs.stringify({cardType: 1}))
+		axios.post('bankard/list',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data
+					_this.showaddBtn = true
 				} else {
 					Toast(res.data.msg)
 				}
@@ -114,31 +119,34 @@ export default {
 				})
 		},
 		setdefault (item,index) {
-			if (item.isDefault === '1') {
-				return
-			}
-			let _this = this
-			axios.post('bankard/setDefault',qs.stringify({id: item.id}))
-			.then(function(res){
-				if (res.data.code === '10000') {
-					_this.banks.forEach( (element) => {
-						element.isDefault = '0'
-					})
-					_this.banks[index].isDefault = '1'
-					MessageBox({
-					  title: '提示',
-					  message: '设置默认银行卡成功！'
-					}).then(action => {
-						_this.$router.go(-1)
-					})
+			window.localStorage.setItem('defaultCard', JSON.stringify(item))
+			this.$router.go(-1)
+			// if (item.isDefault === '1') {
+			// 	this.$router.go(-1)
+			// 	return
+			// }
+			// let _this = this
+			// axios.post('bankard/setDefault',qs.stringify({id: item.id}))
+			// .then(function(res){
+			// 	if (res.data.code === '10000') {
+			// 		_this.banks.forEach( (element) => {
+			// 			element.isDefault = '0'
+			// 		})
+			// 		_this.banks[index].isDefault = '1'
+			// 		MessageBox({
+			// 		  title: '提示',
+			// 		  message: '设置默认银行卡成功！'
+			// 		}).then(action => {
+			// 			_this.$router.go(-1)
+			// 		})
 					
-				} else {
-					MessageBox('提示', '设置默认银行卡失败！')
-				}
-			})
-			.catch(function(){
-				Toast('网络请求超时！')
-			})
+			// 	} else {
+			// 		MessageBox('提示', '设置默认银行卡失败！')
+			// 	}
+			// })
+			// .catch(function(){
+			// 	Toast('网络请求超时！')
+			// })
 			
 		},
 		addcard () {
@@ -195,10 +203,21 @@ export default {
 			}
 		}
 	},
+	beforeRouteEnter (to, from, next) {
+		next(vm => {
+    if (from.path.indexOf('bank') > -1) {
+				vm.showSelectBtn = true
+			}
+	  })
+	},
 	filters: {
 		card (value) { 
 			value += ''
 			return value.replace(/^(\d{4})(\d*)(\d{4})$/, '$1*********$3')
+		},
+		status (value) {
+			let status = ['已删除','审核中','审核未通过','']
+			return status[value]
 		}
 	},
 	components: {
@@ -212,6 +231,7 @@ export default {
 .ex-banklist {overflow-x: hidden;min-height: 100%;padding-bottom: 56px;background-color: #f4f5f7;color: #586485; font-size: 1.4rem;}
 .ex-banklist-item	{background-color: #fff; margin: 1.5rem 0; padding: 1rem;}
 .ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; position: relative; overflow: hidden; }
+.ex-banklist-item	.bankinfo  .right {position: absolute;right: 4rem;line-height: 2rem;top: 50%;margin-top: -1rem;color: red;}
 .ex-banklist-item	.bankinfo .goto{ position: absolute; right: 1rem; top: 1rem; font-size: 2rem; }
 .bankaction { padding-top: 1rem; overflow: auto;}
 .bankaction span i{vertical-align: middle; margin-right: 0.4rem; font-size: 2rem; }

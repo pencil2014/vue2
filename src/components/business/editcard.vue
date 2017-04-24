@@ -13,7 +13,7 @@
 				<label for="accountName">银行开户名:</label><input type="text" name="" id="accountName" placeholder="银行开户名" v-model.trim='accountName'>
 			</div>
 			<div class="ex-addcard-num">
-				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard">
+				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
 			</div>
 			<div class="ex-addcard-name">
 				<label for="name">开户行:</label>中国<input type="text" name="" id="name" placeholder="请输入" v-model.trim='banks'>银行
@@ -190,7 +190,7 @@ export default {
 				banks: this.bankname,
 				branch: this.branchname,
 				// phone: '1111',
-				cardType: 2,
+				// cardType: '',
 				accountName: this.accountName
 				// phoneCode:'111'
 			}))
