@@ -41,10 +41,10 @@ const Order = resolve => require(['../components/business/order'], resolve)
 const Tables = resolve => require(['../components/business/tables'], resolve)
 const Detail2 = resolve => require(['../components/business/detail'], resolve)
 
-const Bank1 = resolve => require(['../components/business/bank'], resolve)
-const BankList1 = resolve => require(['../components/business/banklist'], resolve)
-const Addcard1 = resolve => require(['../components/business/addcard'], resolve)
-const Editcard1 = resolve => require(['../components/business/editcard'], resolve)
+// const Bank1 = resolve => require(['../components/business/bank'], resolve)
+// const BankList1 = resolve => require(['../components/business/banklist'], resolve)
+// const Addcard1 = resolve => require(['../components/business/addcard'], resolve)
+// const Editcard1 = resolve => require(['../components/business/editcard'], resolve)
 
 const School = resolve => require(['../components/school/school'], resolve)
 const Details = resolve => require(['../components/school/details'], resolve)
@@ -56,7 +56,7 @@ const Shopinfo = resolve => require(['../components/partner/info'], resolve)
 const Category = resolve => require(['../components/partner/category'], resolve)
 const Classify = resolve => require(['../components/partner/classify'], resolve)
 const Search = resolve => require(['../components/partner/search'], resolve)
-
+const City = resolve => require(['../components/partner/city'], resolve)
 
 const Message = resolve => require(['../components/message/message'], resolve)
 const Message2 = resolve => require(['../components/message/detail'], resolve)
@@ -147,21 +147,21 @@ export default new Router({
       name: 'Bank',
       component: Bank
     },
-    {
-      path: '/bank1',
-      name: 'Bank1',
-      component: Bank1
-    },
+    // {
+    //   path: '/bank1',
+    //   name: 'Bank1',
+    //   component: Bank1
+    // },
     {
       path: '/banklist',
       name: 'BankList',
       component: BankList
     },
-    {
-      path: '/banklist1',
-      name: 'BankList1',
-      component: BankList1
-    },
+    // {
+    //   path: '/banklist1',
+    //   name: 'BankList1',
+    //   component: BankList1
+    // },
     {
       path: '/upgrade',
       name: 'Upgrade',
@@ -187,21 +187,21 @@ export default new Router({
       name: 'Addcard',
       component: Addcard
     },
+    // {
+    //   path: '/addcard1',
+    //   name: 'Addcard1',
+    //   component: Addcard1
+    // },
     {
-      path: '/addcard1',
-      name: 'Addcard1',
-      component: Addcard1
-    },
-    {
-      path: '/editcard',
+      path: '/editcard/:id',
       name: 'Editcard',
       component: Editcard
     },
-    {
-      path: '/editcard1',
-      name: 'Editcard1',
-      component: Editcard1
-    },
+    // {
+    //   path: '/editcard1',
+    //   name: 'Editcard1',
+    //   component: Editcard1
+    // },
     {
       path: '/shop1',
       name: 'Shop1',
@@ -298,7 +298,7 @@ export default new Router({
       component: Category
     },
     {
-      path: '/classify',
+      path: '/classify/:id',
       name: 'Classify',
       component: Classify
     },
@@ -306,6 +306,11 @@ export default new Router({
       path: '/search',
       name: 'Search',
       component: Search
+    },
+    {
+      path: '/city',
+      name: 'City',
+      component: City
     },
     {
       path: '/message/:id',

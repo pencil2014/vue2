@@ -49,7 +49,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('bankard/list',qs.stringify({}))
+		axios.post('bankard/findDefault',qs.stringify({}))  // 'bankard/list'
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data
@@ -76,6 +76,7 @@ export default {
 			this.$router.go(-1)
 		},
 		gotoedit (id,status) {
+			let _this = this
 			if (status === '1') {
 				return
 			}

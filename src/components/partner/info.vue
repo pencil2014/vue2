@@ -15,7 +15,24 @@
 					<span></span>
 			</div>
 			<div class="ex-shop-info-cnt">
-				
+				<div class="ex-shop-info-classify">
+					<ul>
+						<li v-for='(item,index) in shopinfo.foods' :class='{active: index === num}' @click='num = index'> {{item.classify}}</li>
+					</ul>
+				</div>
+				<div class="ex-shop-info-list">
+					<ul>
+						<li class="ex-shop-item"  v-for='item in list'>
+							<div class="img" v-if='item.photo'>
+								<img :src="item.photo" alt="">
+							</div>
+							<div class="info">
+								<h3 class='name'>{{item.name}}</h3>
+								<p class='rice'>- {{item.rice}} -</p>
+							</div>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -35,13 +52,56 @@ export default {
 				shopsAddress: '广东深圳南山区南山讯美科技广场',
 				summary: '',
 				shopsLinkphone: '13418673136',
-				shopsLinkman: '陈文'
-			}
+				shopsLinkman: '陈文',
+				foods: [
+					{
+						classify: '我的分组1',
+						list: [
+							{
+								photo: '...',
+								name: '商品名称1',
+								rice: '520.00'
+							},
+							{
+								photo: '...',
+								name: '商品名称1',
+								rice: '520.00'
+							},
+							{
+								photo: '...',
+								name: '商品名称1',
+								rice: '520.00'
+							}
+						]
+					},
+					{
+						classify: '我的分组2',
+						list: [
+							{
+								photo: '...',
+								name: '商品名称2',
+								rice: '520.00'
+							},
+							{
+								photo: '...',
+								name: '商品名称2',
+								rice: '520.00'
+							}
+						]
+					}
+				]
+			},
+			num: 0
 		}
 	},
 	methods: {
 		goback () {
 			this.$router.go(-1)
+		}
+	},
+	computed: {
+		list () {
+			return this.shopinfo.foods[this.num].list
 		}
 	},
 	created () {
@@ -77,5 +137,19 @@ export default {
 .ex-shop-info-title {text-align: center; border-bottom: 1px solid #eee;background-color: #fff; margin-top: 1rem; position: relative;}
 .ex-shop-info-title h3 {font-size: 1.6rem; line-height: 5rem; position: relative; z-index: 2; background-color: #fff; display: inline-block; padding: 0 1rem;}
 .ex-shop-info-title span{display: block; width: 40%;  left: 30%; height: 1px; background-color: #ddd; position: absolute; top: 2.5rem; }
+
+.ex-shop-info-cnt { background-color: #fff; border-top:1px solid #fff; overflow: hidden; min-height: 20rem; margin-top: -1px;}
+.ex-shop-info-classify { width: 20%; float: left; background-color: #f5f5f5; height: 100%;  border-right: 1px solid #e4e1e1; padding-bottom: 1000rem; margin-bottom: -1000rem;}
+.ex-shop-info-classify li { padding: 1.5rem 0; text-align: center; border-bottom: 1px solid #e4e1e1; overflow: hidden;}
+.ex-shop-info-classify li.active{background-color: #fff; border-right:none; margin-right: -1px;}
+.ex-shop-info-list { margin-left: 25%; }
+.ex-shop-item {overflow: hidden; padding:0 1rem 1rem 0; border-bottom: 1px solid #eee; margin-top: 1rem; background-color: #fff;}
+.ex-shop-item .img { width: 7rem; height: 7rem; float: left; background-color: #f2f2f2; border-radius: 1rem; overflow: hidden; line-height: 7rem;vertical-align: middle;}
+.ex-shop-item .img img{ width: 7rem; vertical-align: middle;}
+.ex-shop-item .info {margin-left: 8rem;font-size: 1.4rem;}
+.ex-shop-item .info .name {font-weight: normal; font-size: 1.4rem; padding: 0.5rem 0;}
+.ex-shop-item .info .rice{ color: #ec5909; }
+.ex-shop-item .info .phone{color: #666; padding-top: 0.5rem;}
+
 
 </style>

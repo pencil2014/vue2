@@ -2,7 +2,7 @@
 	<div class="ex-shop-classify">
 	<div class="ex-shop-classify-top">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
-		<span class='search'><i class="iconfont">&#xe67a;</i></span>
+		<span class='search' @click='gotosearch'><i class="iconfont">&#xe67a;</i></span>
 	</div>
 	<div class="ex-shop-classify-cnt" >
 		<mt-loadmore :top-method="loadTop" ref="loadmore">
@@ -20,7 +20,7 @@
 								<h3 class='name'>{{item.shopsName}}</h3>
 								<a href="javascript:;" class='classify'>- {{item.classificationId}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
-								<p class='distance'>{{item.distance}}</p>
+								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
 						</li>
 					</ul>
@@ -37,11 +37,12 @@ import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
+			id: '',
 			modal: {
 				text:'餐饮美食',
 				fixed: true
 			},
-			shoplist: []
+			shoplist: [],
 		}
 	},
 	components: {
@@ -51,13 +52,16 @@ export default {
 		back () {
 			this.$router.go(-1)
 		},
+		gotosearch () {
+			this.$router.push('/search')
+		},
 		loadTop () {
 			Indicator.open({
 			  text: '正在刷新...',
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('shopClassification/queryShopsById',qs.stringify({pageSize: this.pageSize, page: 1,classificationId: this.id}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -84,10 +88,10 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('',qs.stringify({id:this.id, pageSize: this.pageSize, page: this.page}))
+			axios.post('shopClassification/queryShopsById',qs.stringify({classificationId:this.id, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
-				// _this.loading = false
+				_this.loading = false
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
@@ -103,11 +107,24 @@ export default {
 				Toast('网络请求超时！')
 			})
 		}
+	},
+	created () {
+		this.id = this.$route.params.id
+	},
+	filters: {
+		formatdis (value) {
+			let val = parseInt((value - 0)/1000,10) + 'KM'
+			return val
+		}
 	}
 }	
 </script>
 
 <style scoped>
+.ex-shop-classify-top { position: relative;  height: 4.5rem;}
+.ex-shop-classify-top .search { position: absolute; right: 1.5rem; top: 1.2rem;  z-index: 99999;}
+.ex-shop-classify-top .search i{font-size: 2rem;}
+
 .ex-shop-classify-item {overflow: hidden; padding:0 1rem 1rem 1.5rem; border-bottom: 1px solid #eee; margin-top: 1rem;}
 .ex-shop-classify-item .img { width: 8rem; height: 8rem; float: left; background-color: #f2f2f2; border-radius: 1rem; overflow: hidden; line-height: 8rem;vertical-align: middle;}
 .ex-shop-classify-item .img img{ width: 8rem; vertical-align: middle;}
@@ -116,4 +133,5 @@ export default {
 .ex-shop-classify-item .info .classify{ color: #09537e; }
 .ex-shop-classify-item .info .phone{color: #666; padding-top: 0.5rem;}
 .ex-shop-classify-item .info .distance {color: #666; text-align: right; font-weight: 600;font-size: 1.2rem;}	
+
 </style>

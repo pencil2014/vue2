@@ -62,12 +62,6 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
-					<!-- <li @click="toRealName">
-						<img src="../../assets/images/renzhen.png" alt="">
-						<span>实名认证</span>
-						<i class="iconfont" v-show="!isRealName">&#xe606;</i>
-						<label for="" v-show="isRealName">已认证</label>
-					</li> -->
 					<li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>

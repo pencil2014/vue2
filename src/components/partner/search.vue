@@ -18,13 +18,7 @@
 				</ul>
 			</div>
 			<div class="ex-search-box" >
-				<mt-loadmore :top-method="loadTop" ref="loadmore">
-							<ul 
-								v-show='shoplist.length > 0'
-								v-infinite-scroll="loadMore"
-				  			infinite-scroll-disabled="loading"
-				  			infinite-scroll-distance="10"
-							>
+							<ul>
 								<li v-for="(item, index) in shoplist" class="ex-search-item" @click='gotoinfo(item.id)'>
 									<div class="img" v-if='item.facadePhoto'>
 										<img :src="item.facadePhoto" alt="">
@@ -33,11 +27,10 @@
 										<h3 class='name'>{{item.shopsName}}</h3>
 										<a href="javascript:;" class='classify'>- {{item.classificationId}} -</a>
 										<p class='phone'>{{item.shopsLinkphone}}</p>
-										<p class='distance'>{{item.distance}}</p>
+										<p class='distance'>{{item.distance | formatdis}}</p>
 									</div>
 								</li>
 							</ul>
-						</mt-loadmore>
 			</div>
 		</div>
 	</div>
@@ -46,13 +39,35 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import {Loadmore, InfiniteScroll, Indicator, Toast} from 'mint-ui'
+import {Indicator, Toast} from 'mint-ui'
 export default {
 	data () {
 		return {
 			keyword: '',
 			historyKey: ['旅游','美食','汽车','美女','电影','雅居园','城市','花园','银行','环保'],
-			shoplist: [],
+			shoplist: [
+			{
+				facadePhoto: 'http://img.hb.aicdn.com/6fa97ba45995af5aa15073ffb1e3b14675f9defd28f06-bxO0u3_fw658',
+				shopsName: '商铺名称1',
+				classificationId: '餐饮',
+				shopsLinkphone: '15016458798',
+				distance: '10000'
+			},
+			{
+				facadePhoto: 'http://img.hb.aicdn.com/f278f6dfbc2a16821a44e6bf507789a744b5203910b373-RqOAFE_fw658',
+				shopsName: '商铺名称2',
+				classificationId: '餐饮',
+				shopsLinkphone: '15016458798',
+				distance: '10000'
+			},
+			{
+				facadePhoto: 'http://img.hb.aicdn.com/1810f306be605291d48279e353f56392e67cc0712f0fb-BRy011_fw658',
+				shopsName: '商铺名称3',
+				classificationId: '餐饮',
+				shopsLinkphone: '15016458798',
+				distance: '10000'
+			}
+			],
 			loading: false,
 			page: 1,
 			totalPage: 1,
@@ -65,77 +80,49 @@ export default {
 			this.$router.go(-1)
 		},
 		search () {
-			alert(this.keyword)
-		},
-		loadTop () {
-			Indicator.open({
-			  text: '正在刷新...',
-			  spinnerType: 'fading-circle'
-			})
-			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({pageSize: this.pageSize, page: 1}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
-					_this.shoplist = res.data.data.list || []
-					_this.page = 2
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Indicator.close()
-				Toast('网络请求超时！')
-			})
-			this.$refs.loadmore.onTopLoaded()
-		},
-		loadMore () {
-			if (this.page > this.totalPage) {
-				return
+			let historyKey = JSON.parse(window.localStorage.getItem('historyKey'))
+			let value = this.keyword 
+			if (!!historyKey && historyKey.indexOf(value) === -1 ) {
+				historyKey.unshift(value)
+			} 
+			if (!historyKey) {
+				historyKey = [value]
 			}
-			Indicator.open({
-			  text: '数据加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			this.loading = true
-			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({id:this.id, pageSize: this.pageSize, page: this.page}))
-			.then(function(res){
-				Indicator.close()
-				// _this.loading = false
-				_this.nodateStatus = true
-				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
-					_this.shoplist.push(...res.data.data.list)
-					_this.page += 1
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Indicator.close()
-				_this.nodateStatus = true
-				Toast('网络请求超时！')
-			})
+			if (historyKey.length > 10) {
+				historyKey.shift()
+			}
+			window.localStorage.setItem('historyKey', JSON.stringify(historyKey))
+		}
+	},
+	created () {
+		let historyKey = JSON.parse(window.localStorage.getItem('historyKey')) 
+		if (!!historyKey) {
+			this.historyKey = historyKey
+		}
+	},
+	filters: {
+		formatdis (value) {
+			let val = parseInt((value - 0)/1000,10) + 'KM'
+			return val
 		}
 	}
 }	
 </script>
 
 <style scoped>
-.ex-search-top { height: 5.5rem; position: fixed; top: 0; left: 0; width: 100%;line-height: 5.5rem; border-bottom: 1px solid #eee;}
+.ex-search-top { height: 5.5rem; position: fixed; top: 0; left: 0; width: 100%;line-height: 5.5rem; border-bottom: 1px solid #eee; background-color: #fff;z-index: 3;}
 .ex-search-back { width: 18%; float: left; height: 100%;  text-align: center; color: #047dcb;}
 .ex-search-back i {font-size: 3rem;}
 .ex-search-input { width: 82%; float: right; height: 4.5rem; position: relative;}
 .ex-search-input i{ float: left;  position: absolute; left: 3%; top: 0.1rem; color: #999;}
 .ex-search-input input { border:none; background-color: #eee; border-radius: 2rem; height: 3.5rem; width: 95%; padding-left: 12%; }
 .ex-search-cnt {margin-top: 5.5rem;}
+.ex-search-history { overflow: hidden; }
 .ex-search-history h3{ background-color: #f2f2f2; height: 4rem; line-height: 4rem;  padding-left: 2rem;  font-weight: normal; color: #666;}
 .ex-search-history ul { padding: 1rem 2rem; }
 .ex-search-history ul li{ float: left; border: 1px solid #eee; padding: 1rem; margin: 0 1rem 1rem 0; font-size: 1.4rem;}
 
-
+.ex-search-box {border-top: 1px solid #eee;}
 .ex-search-item {overflow: hidden; padding:0 1rem 1rem 1.5rem; border-bottom: 1px solid #eee; margin-top: 1rem;}
 .ex-search-item .img { width: 8rem; height: 8rem; float: left; background-color: #f2f2f2; border-radius: 1rem; overflow: hidden; line-height: 8rem;vertical-align: middle;}
 .ex-search-item .img img{ width: 8rem; vertical-align: middle;}

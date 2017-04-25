@@ -82,6 +82,11 @@ export default {
 		}
 	},
 	created () {
+		let exchange = window.localStorage.getItem('exchange')
+		if (!!exchange) {
+			this.exchange = exchange
+			window.localStorage.removeItem('exchange')
+		}
 		let _this = this
 		axios.post('user/personal',qs.stringify({}))
 		.then(function(res){
@@ -135,6 +140,9 @@ export default {
 			this.$router.go(-1)
 		},
 		gobank () {
+			if (!!this.exchange) {
+				window.localStorage.setItem('exchange', this.exchange)
+			}
 			this.$router.push('/banklist')
 		},
 		addcard () {

@@ -36,7 +36,7 @@
 				</li>
 			</ul>
 			<ul class="item-content">
-				<li class="item">
+				<li class="item" @click="todisplay4">
 					<span>店铺分组</span>
 					<label class="right">
 						编辑
@@ -84,8 +84,8 @@ export default {
 		back () {
 			this.$router.back();
 		},
-		loadMore () {
-			
+		todisplay4 () {
+
 		}
 	},
 }
@@ -109,7 +109,7 @@ export default {
 .ex-display .wrapper .item-content .item-option div.select .option{background: url(../../assets/images/select.png) no-repeat;background-size: 100%;}
 
 .ex-display .wrapper .item .report-file {width: 64px;height: 64px;overflow: hidden;display: inline-flex;position: relative;border: dotted 1px #d8d8d8;text-align: center;}
-.ex-display .wrapper .item .report-file span{cursor: pointer;display: block;width: 100%;line-height: 20px;margin-top: 12px;}
+.ex-display .wrapper .item .report-file span{cursor: pointer;display: block;width: 100%;line-height: 20px;padding-top: 12px;}
 .ex-display .wrapper .item .report-file .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;z-index: 10;}
 .UpLoadIMG{margin: 15px 0 0 15px;}
 

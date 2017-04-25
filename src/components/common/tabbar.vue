@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-nav{background-color: #fafafa; border-top: 1px solid #e6e6e6;  position: fixed; bottom: 0; left: 0; width: 100%;display: table;}
+.ex-nav{background-color: #fafafa; border-top: 1px solid #e6e6e6;  position: fixed; bottom: 0; left: 0; width: 100%;display: table; z-index: 5;}
 .ex-nav a {display: table-cell;color: #aaa;text-align: center;vertical-align: middle;width: 25%;}
 .ex-nav span{display: inline-block;width: 30px;height: 30px;}
 .ex-nav .m1{background:url(../../assets/images/home.png) no-repeat center;background-size: 100%;}

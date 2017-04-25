@@ -38,6 +38,28 @@
 			<span>删除</span>
 			<span>分组至</span>
 		</div> -->
+		<div class="modal_BJ">
+			<div class="modal">
+				<div class="modal_box">
+					<div class="title">店铺分组</div>
+					<div class="field">
+						<ul>
+							<li>
+								<span>分组1</span>
+								<i class="iconfont">&#xe636;</i>
+							</li>
+							<li>
+								<span>分组2</span>
+							</li>
+						</ul>
+					</div>
+					<div class="operate">
+						<span href="javascript:void(0)" class="link gray">取消</span>
+						<span href="javascript:void(0)" class="link">确定</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -127,4 +149,18 @@ export default {
 .ex-display .bottom span{display: table-cell;width: 50%;font-size: 1.4rem;}
 .ex-display .bottom span i{color: #999;}
 .ex-display .bottom span:active{background: #ebebeb}
+
+
+.ex-display .modal_BJ {background: rgba(0,0,0,0.42);width: 100%;height: 100%;position: fixed;top: 0px;left: 0px;z-index: 999;display: table;}
+.ex-display .modal_BJ .modal{display: table-cell;padding: 0 12%;vertical-align: middle;}
+.ex-display .modal_BJ .modal .modal_box{background: #fff;width: 100%;border-radius: 5px;overflow: hidden;text-align: center;padding: 10px 0 0 0;}
+.ex-display .modal_BJ .modal .modal_box .title{font-size: 1.6rem;}
+.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;line-height: 30px;}
+.ex-display .modal_BJ .modal .modal_box .field ul li{text-align: left;font-size: 1.4rem;}
+.ex-display .modal_BJ .modal .modal_box .field ul li i{color: #58c86b;font-size: 2.2rem;display: inline-block;float: right;}
+.ex-display .modal_BJ .modal .modal_box .operate{height: 46px;padding: 0;border-top: 1px solid #e5e5e5;}
+.ex-display .modal_BJ .modal .modal_box .operate .link{width: 50%;display: inline-block;float: left;line-height: 46px;border-right: solid 1px #e5e5e5;box-sizing: border-box;color: #212a32;font-size: 1.4rem;}
+.ex-display .modal_BJ .modal .modal_box .operate .gray{color: #596678;}
+.ex-display .modal_BJ .modal .modal_box .operate .link:last-child{border-right: none;}
+.ex-display .modal_BJ .modal .modal_box .operate .link:active{background: #ebebeb}
 </style>

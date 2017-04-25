@@ -19,9 +19,6 @@
 				<div class="content">
 					<div class="title">提示</div>
 					<div class="text">该功能不支持使用浏览器操作，请用微信或支付宝扫描二维码</div>
-					<!-- <div class="button">
-						<input type="button" value="知道了" />
-					</div> -->
 				</div>
 			</div>
 		</div>
@@ -71,7 +68,7 @@ export default {
 		},
 	},
 	created () {
-
+		console.log(this.type)
 	},
 	methods: {
 		maxlen (id) {
@@ -125,7 +122,7 @@ export default {
 			}).catch(function(){
 					_this.submitbtn = false
 					Indicator.close();
-					Toast('网络异常')
+					Toast('网络请求超时！')
 			})
 		} 
 	},

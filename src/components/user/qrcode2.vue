@@ -47,24 +47,48 @@ export default {
 	},
 	created () {
 		let _this = this
-
-		 axios.all([
-		 	axios.post('user/personal'),
-        	axios.post('shop/examine')
-		 ]).then(axios.spread(function (personal,shop){
-		 	if(personal.data.code === '10000') {
-		 		_this.userData = personal.data.data
-		 	}else{
-		 		Toast(personal.data.msg)
-		 	}
-		 	if(shop.data.code === '10000'){
-		 		_this.shopData = shop.data.data
-		 	}else{
-		 		Toast(shop.data.msg)
-		 	}
-		 })).catch(function(){
-			Toast('网络请求超时！')
+		Indicator.open({
+		  text: '加载中...',
+		  spinnerType: 'fading-circle'
 		})
+		axios.post('bankard/list',qs.stringify({})).then(function (res) {
+			Indicator.close();
+		 	if (res.data.code === '10000') {
+		 		let cardlist = res.data.data.length
+				if(cardlist === 0){
+					MessageBox({
+						title:'提示',
+						message:'请去添加银行卡',
+						showConfirmButton:true,
+						showCancelButton:true,
+						confirmButtonText:'确认',
+						cancelButtonText:'取消',
+					}).then(action =>{
+						if(action === "confirm"){
+							_this.$router.push('/addcard')
+						}
+					});
+					return;
+				}
+				axios.all([
+				 	axios.post('user/personal'),
+		        	axios.post('shop/examine')
+				 ]).then(axios.spread(function (personal,shop){
+				 	if(personal.data.code === '10000' &&　shop.data.code === '10000') {
+				 		_this.userData = personal.data.data
+				 		_this.shopData = shop.data.data
+				 	}else{
+				 		Toast('系统错误！')
+				 	}
+				 })).catch(function(){
+					Toast('网络请求超时！')
+				})
+		 	
+		 	}
+		}).catch(function(){
+			Indicator.close();
+			Toast('网络请求超时！')
+		})	 
 	},
 	methods: {
 		back () {

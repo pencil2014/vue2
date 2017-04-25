@@ -143,9 +143,8 @@ export default {
 				amount: _this.userData.money
 			})).then(res =>{
 				Indicator.close();
-				if(res.data.code === '10000'){	
-					// weixin://wxpay/bizpayurl?pr=7LuCWf1
-					window.location.href = res.data.data.url
+				if(res.data.code === '10000'){
+					window.location.href = res.data.data.payUrl
 				}else{
 					_this.submitbtn = false
 					Toast(res.data.msg)
@@ -153,7 +152,7 @@ export default {
 			}).catch(function(){
 					_this.submitbtn = false
 					Indicator.close();
-					Toast('网络异常')
+					Toast('网络请求超时！')
 			})
 		}
 	},
@@ -199,8 +198,8 @@ export default {
 .pay-option .table .m2 .title{font-size: 1.4rem;color: rgb(33,42,50);padding-bottom: 5px;}
 .pay-option .table .m3{width: 20%;text-align: right;padding-right: 3rem;vertical-align: middle;}
 .pay-option .table .m1 img{width: 40px;}
-.pay-option .table .m3 .option{width: 18px;height: 18px;background: url(../../assets/images/noselect.png) center no-repeat;background-size: 100%;}
-.pay-option .table .m3 .option.select{background: url(../../assets/images/select.png) center no-repeat;background-size: 100%;}
+.pay-option .table .m3 .option{width: 18px;height: 18px;background: url(../../assets/images/noselect1.png) center no-repeat;background-size: 100%;}
+.pay-option .table .m3 .option.select{background: url(../../assets/images/select1.png) center no-repeat;background-size: 100%;}
 
 .form_bt{padding: 18px 15px 56px 15px;}
 .form_bt input[type=button]{width: 100%;height: 48px;background: #3dbc3c;border: none;border-radius: 3px;color: #fff;font-size: 1.6rem;}

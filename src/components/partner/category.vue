@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import axios from "axios"
+import qs from "qs"
 import { IndexList, IndexSection } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
@@ -32,6 +34,7 @@ export default {
 				text:'全部分类',
 				fixed: true
 			},
+			shopClassification: []
 		}
 	},
 	components: {
@@ -41,6 +44,20 @@ export default {
 		back () {
 			this.$router.go(-1)
 		}
+	},
+	created () {
+		let _this = this
+		axios.post('shopClassification/list',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				_this.shopClassification = res.data.data
+			} else {
+				Toast(res.data.msg)
+			}
+		})
+		.catch(function(){
+			Toast('网络请求超时！')
+		})
 	}
 }	
 </script>

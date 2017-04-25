@@ -1,5 +1,9 @@
 <template>
 	<div class="ex-shop">
+		<div class="ex-topsearch" @click='gotosearch' v-show='showsearch'>
+			<i class="iconfont">&#xe67a;</i>
+			<input type="search" name="" id="" placeholder="搜索关键字"  v-model='keyword'>
+		</div>
 		<div class="ex-shop-head">
 			<div class="ex-shop-head-banner">
 				<mt-swipe :auto="5000">
@@ -10,11 +14,9 @@
 				</mt-swipe>
 			</div>
 			<div class="ex-shop-top">
-				<div class="ex-shop-address" @click="showcity">
+				<div class="ex-shop-address" @click="gocity">
 					<i class="iconfont icon1">&#xe634;</i>
-					<span v-if='countyname && cityname !=="全省"'>{{countyname}}</span>
-					<span v-else-if= 'cityname  && provincename !=="全国"'>{{cityname}}</span>
-					<span v-else>{{provincename}}</span>
+					<span>{{address}}</span>
 					<i class="iconfont icon2">&#xe60d;</i>
 					<!-- <i class="iconfont icon2">&#xe60e;</i> -->
 				</div>
@@ -25,58 +27,41 @@
 				</div>
 			</div>
 		</div>
-		<div class="ex-city-box" v-show='showsub'>
-			<div class="ex-province" v-show='province.length > 0'>
-				<ul>
-					<li v-for='item in province' @click='changeProvince(item.id,item.name)' :class="{active: item.id === provinceId}">{{item.name}}</li>
-				</ul>
-			</div>
-			<div class="ex-city"  v-show='cityArray.length > 0 && provincename !=="全国"'>
-				<ul>
-					<li v-for='item in cityArray'  @click='changeCity(item.id,item.name)' :class="{active: item.id === cityId}">{{item.name}}</li>
-				</ul>
-			</div>
-			<div class="ex-county" v-show='districtArray.length > 0 && provincename !=="全国"'>
-				<ul >
-					<li v-for='item in districtArray'  @click='changeCounty(item.id,item.name)' :class="{active: item.id === districtId}">{{item.name}}</li>
-				</ul>
-			</div>
-		</div>
 		<div class="ex-shop-menu">
-			<li><router-link to="/classify">
+			
+			<li><router-link to="/classify/1">
 				<img src="../../assets/images/shop1.png" alt="">
 				<span>餐饮美食</span>
 			</router-link></li>
-			<li><router-link to="/partner">
+			<li><router-link to="/classify/2">
 				<img src="../../assets/images/shop2.png" alt="">
-				<span>休闲娱乐</span>
+				<span>娱乐休闲</span>
 			</router-link></li>
-			<li><router-link to="/partner">
+			<li><router-link to="/classify/3">
 				<img src="../../assets/images/shop3.png" alt="">
 				<span>酒店住宿</span>
 			</router-link></li>
-			<li><router-link to="/partner">
+			<li><router-link to="/classify/8">
 				<img src="../../assets/images/shop4.png" alt="">
-				<span>娱乐休闲</span>
+				<span>房产物业</span>
 			</router-link></li>
-			<li><router-link to="/partner">
+			<li><router-link to="/classify/9">
 				<img src="../../assets/images/shop5.png" alt="">
-				<span>机动车服务</span>
+				<span>汽车服务</span>
 			</router-link></li>
-			<li><router-link to="/partner">
+			<li><router-link to="/classify/11">
 				<img src="../../assets/images/shop6.png" alt="">
-				<span>服装</span>
+				<span>零售批发</span>
 			</router-link></li>
-			<li><router-link to="/partner">
+			<li><router-link to="/classify/4">
 				<img src="../../assets/images/shop7.png" alt="">
-				<span>房产周边</span>
+				<span>办公家具</span>
 			</router-link></li>
 			<li><router-link to="/category">
 				<img src="../../assets/images/shop8.png" alt="">
 				<span>其他</span>
 			</router-link></li>
 		</div>
-
 		<div class="ex-shop-localshop">
 			<div class="ex-shop-localshop-title">
 					<h3>附近的商家</h3>
@@ -109,7 +94,7 @@
 								<h3 class='name'>{{item.shopsName}}</h3>
 								<a href="javascript:;" class='classify'>- {{item.classificationId}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
-								<p class='distance'>{{item.distance}}</p>
+								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
 						</li>
 					</ul>
@@ -136,18 +121,6 @@ export default {
 		return {
 			imgurl: [,,],
 			address: '深圳',
-			showsub: false,
-			province: [],
-			city: [],
-			district: [],
-			cityArray: [],
-			districtArray: [],
-			provinceId: '',
-			districtId: '',
-			cityId: '',
-			countyname: '',
-			cityname: '',
-			provincename: '',
 			localshop: [],
 			loading: false,
 			page: 1,
@@ -159,7 +132,8 @@ export default {
 				latitude: '',
 				longitude: ''
 			},
-			id:''
+			id:'',
+			showsearch: false
 		}
 	},
 	components: {
@@ -183,73 +157,8 @@ export default {
 					)
 			}
 		},
-		showcity () {
-			this.showsub = !this.showsub
-		},
-		hidecity () {
-			this.showsub = false
-		},
-		changeProvince (id,name) {
-			this.provinceId = id
-			this.provincename = name
-			if (name === '全国') {
-				this.showsub = false
-				this.districtId = ''
-				this.cityId = ''
-				this.countyname = ''
-				this.cityname = ''
-				this.getdata()
-				return
-			}
-			let array = this.city.filter(function(item) {
-				return item.parentId === this.provinceId
-			}.bind(this))
-			array.unshift({id: 0, name: "全市", parentId: 0})
-			this.cityArray = array
-			this.cityId = array[0].id
-			this.cityname = array[0].name
-
-			let array2 = this.district.filter(function(item) {
-				return item.parentId === this.cityId
-			}.bind(this))
-			if (array2.length>0) {
-				array2.unshift({id: 0, name: "全区", parentId: 0})
-				this.districtArray = array2
-				this.districtId = array2[0].id
-				this.countyname = array2[0].name
-			}
-			
-		},
-		changeCity (id,name) {
-			this.cityId = id
-			this.cityname = name
-			let array = this.district.filter(function(item) {
-				return item.parentId === this.cityId
-			}.bind(this))
-			
-			if (array.length > 0) {
-				array.unshift({id: 0, name: "全区", parentId: 0})
-				this.districtArray = array
-				this.districtId = array[0].id
-				this.countyname = array[0].name
-			} else {
-				this.districtArray = []
-				this.districtId = ''
-				this.countyname = ''
-				this.showsub = false
-				this.getdata()
-			}
-			
-			
-		},
-		changeCounty (id,name) {
-			this.districtId = id
-			this.countyname = name
-			this.showsub = false
-			this.getdata()
-		},
-		getdata() {
-
+		gocity () {
+			this.$router.push('/city')
 		},
 		gotoinfo (id) {
 			this.$router.push({name:'Shopinfo',params:{id: id}})
@@ -305,29 +214,24 @@ export default {
 				_this.nodateStatus = true
 				Toast('网络请求超时！')
 			})
+		},
+		handleScroll () {
+			this.showsearch = window.scrollY > 50
 		}
 	},
 	created () {
 		this.getposition()
 		this.id = JSON.parse(window.localStorage.getItem('userinfo')).userId
-		let _this = this
-		axios.post('getBaseRegionAll',qs.stringify({}))
-		.then(function(res){
-			if (res.data.code === '10000') {
-					_this.province = res.data.data.province 
-					_this.city = res.data.data.city
-					_this.district = res.data.data.district 
-					_this.province.unshift({id: 0, name: "全国", parentId: 0})
-					let id = res.data.data.province[0].id
-					let name = res.data.data.province[0].name
-					_this.changeProvince(id,name)
-			} else {
-				Toast(res.data.msg)
-			}
-		})
-		.catch(function(){
-			Toast('网络请求超时！')
-		})
+		
+	},
+	mounted () {
+		window.addEventListener('scroll', this.handleScroll)
+	},
+	filters: {
+		formatdis (value) {
+			let val = parseInt((value - 0)/1000,10) + 'KM'
+			return val
+		}
 	}
 }	
 </script>
@@ -369,13 +273,7 @@ export default {
 .ex-shop-localshop-item .info .classify{ color: #09537e; }
 .ex-shop-localshop-item .info .phone{color: #666; padding-top: 0.5rem;}
 .ex-shop-localshop-item .info .distance {color: #666; text-align: right; font-weight: 600; font-size: 1.2rem;}
-
-.ex-city-box { height: 30rem; overflow: hidden; position: absolute; top: 5rem; left:0; width: 100%; z-index: 2;}
-.ex-province,.ex-city,.ex-county{ width: 33.3%; float: left; height: 100%; overflow: scroll;}
-.ex-province {background-color: #e5e5e5;}
-.ex-city {background-color: #f2f2f2;}
-.ex-county{background-color: #fff;}
-.ex-city-box li{ padding: 1rem; border-bottom: 1px solid #ddd; text-align: center;}
-.ex-city-box li.active { color: #2f91d8; border-color: #2f91d8;}
-
+.ex-topsearch { position: fixed; top: 0; width: 100%; background-color: #fff;  z-index: 3;}
+.ex-topsearch input { width: 90%; height: 3rem; margin: 0.8rem 5%; background-color: #eee; border: none; border-radius: 2rem; padding-left: 10%;}
+.ex-topsearch i{ position: absolute; left: 8%; top: 1.7rem;  color: #999;}
 </style>
