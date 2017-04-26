@@ -18,7 +18,7 @@
 							</div>
 							<div class="info">
 								<h3 class='name'>{{item.shopsName}}</h3>
-								<a href="javascript:;" class='classify'>- {{item.classificationId}} -</a>
+								<a href="javascript:;" class='classify'>- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
 								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
@@ -113,7 +113,7 @@ export default {
 	},
 	filters: {
 		formatdis (value) {
-			let val = parseInt((value - 0)/1000,10) + 'KM'
+			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
 			return val
 		}
 	}

@@ -68,7 +68,7 @@
 					<span></span>
 			</div>
 			<div class="ex-shop-localshop-cnt">
-				<li class="ex-shop-localshop-item" @click='gotoinfo(25)'>
+				<!-- <li class="ex-shop-localshop-item" @click='gotoinfo(25)'>
 					<div class="img" >
 								<img src="../../assets/images/loreList.png" alt="">
 							</div>
@@ -78,13 +78,14 @@
 								<p class='phone'>15019435241</p>
 								<p class='distance'>100KM</p>
 							</div>	
-				</li>
-					<!-- <mt-loadmore :top-method="loadTop" ref="loadmore">
+				</li> -->
+				<mt-loadmore :top-method="loadTop" ref="loadmore">
 					<ul 
 						v-show='localshop.length > 0'
 						v-infinite-scroll="loadMore"
 		  			infinite-scroll-disabled="loading"
 		  			infinite-scroll-distance="10"
+		  			infinite-scroll-immediate-check="false"
 					>
 						<li v-for="(item, index) in localshop" class="ex-shop-localshop-item" @click='gotoinfo(item.id)'>
 							<div class="img" v-if='item.facadePhoto'>
@@ -92,13 +93,13 @@
 							</div>
 							<div class="info">
 								<h3 class='name'>{{item.shopsName}}</h3>
-								<a href="javascript:;" class='classify'>- {{item.classificationId}} -</a>
+								<a href="javascript:;" class='classify'>- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
 								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
 						</li>
 					</ul>
-				</mt-loadmore> -->
+				</mt-loadmore>
 				<div class="nodata" v-show='localshop.length === 0 && nodateStatus'>
 					<img src="../../assets/images/nodata.png" alt="">
 					<p>附近还没有商家哦~</p>
@@ -120,7 +121,7 @@ export default {
 	data(){
 		return {
 			imgurl: [,,],
-			address: '深圳',
+			address : '深圳',
 			localshop: [],
 			loading: false,
 			page: 1,
@@ -153,9 +154,30 @@ export default {
 						function (pos) {
 							_this.currentPosition.latitude = pos.coords.latitude
 							_this.currentPosition.longitude = pos.coords.longitude
+							_this.getcityid()
 						}
 					)
 			}
+		},
+		getcityid () {
+			let _this = this
+			axios.post('',qs.stringify({
+				lng: this.latitude,
+				lat: this.longitude
+			}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.id = res.data.data.id
+					_this.address =res.data.data.address
+					_this.loadMore()
+					window.localStorage.setItem('address', res.data.data.address)
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
 		},
 		gocity () {
 			this.$router.push('/city')
@@ -169,7 +191,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('shop/queryNearShop',qs.stringify({city:this.id, pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -196,7 +218,7 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({id:this.id, pageSize: this.pageSize, page: this.page}))
+			axios.post('shop/queryNearShop',qs.stringify({city:this.id, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				// _this.loading = false
@@ -220,16 +242,24 @@ export default {
 		}
 	},
 	created () {
-		this.getposition()
-		this.id = JSON.parse(window.localStorage.getItem('userinfo')).userId
+		// this.id = JSON.parse(window.localStorage.getItem('userinfo')).userId
+		let address = JSON.parse(window.localStorage.getItem('historycity'))
+		if(!!address) {
+			this.address = address[0].regionName
+			this.id = address[0].regionId
+			this.loadMore()
+		} else {
+			this.getposition()
+		}
 		
 	},
 	mounted () {
+		document.getElementsByTagName("html")[0].style.height = 'auto'
 		window.addEventListener('scroll', this.handleScroll)
 	},
 	filters: {
 		formatdis (value) {
-			let val = parseInt((value - 0)/1000,10) + 'KM'
+			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
 			return val
 		}
 	}

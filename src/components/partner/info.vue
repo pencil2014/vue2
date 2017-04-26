@@ -11,27 +11,51 @@
 		</div>
 		<div class="ex-shop-info-goods">
 			<div class="ex-shop-info-title">
-					<h3>商品信息</h3>
 					<span></span>
+					<h3>商品信息</h3>
 			</div>
 			<div class="ex-shop-info-cnt">
 				<div class="ex-shop-info-classify">
 					<ul>
-						<li v-for='(item,index) in shopinfo.foods' :class='{active: index === num}' @click='num = index'> {{item.classify}}</li>
+						<li v-for='(item,index) in shopinfo.commodityGroupEntitylist' :class='{active: item.id === groupId}' @click='changegroup(item.id)'> {{item.groupName}}</li>
 					</ul>
 				</div>
 				<div class="ex-shop-info-list">
-					<ul>
+					<mt-loadmore :top-method="loadTop" ref="loadmore">
+						<ul
+							v-show='list.length > 0'
+							v-infinite-scroll="loadMore"
+			  			infinite-scroll-disabled="loading"
+			  			infinite-scroll-distance="10" 
+			  			infinite-scroll-immediate-check="false"
+						>
+							<li class="ex-shop-item"  v-for='item in list' @click='showpic(item)'>
+								<div class="img" v-if='item.commodityPicture'>
+									<img :src="item.photo" alt="">
+								</div>
+								<div class="info">
+									<h3 class='name'>{{item.shopsName}}</h3>
+									<p class='price'>- {{item.price}} -</p>
+								</div>
+							</li>
+						</ul>
+					</mt-loadmore>
+					<!-- <ul>
 						<li class="ex-shop-item"  v-for='item in list'>
 							<div class="img" v-if='item.photo'>
 								<img :src="item.photo" alt="">
 							</div>
 							<div class="info">
 								<h3 class='name'>{{item.name}}</h3>
-								<p class='rice'>- {{item.rice}} -</p>
+								<p class='price'>- {{item.price}} -</p>
 							</div>
 						</li>
-					</ul>
+					</ul> -->
+
+					<div class="nodata" v-show='list.length === 0 && nodateStatus'>
+						<img src="../../assets/images/nodata.png" alt="">
+						<p>还没有数据哦~</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -41,7 +65,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import {Toast } from 'mint-ui'
+import {Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -53,55 +77,92 @@ export default {
 				summary: '',
 				shopsLinkphone: '13418673136',
 				shopsLinkman: '陈文',
-				foods: [
-					{
-						classify: '我的分组1',
-						list: [
-							{
-								photo: '...',
-								name: '商品名称1',
-								rice: '520.00'
-							},
-							{
-								photo: '...',
-								name: '商品名称1',
-								rice: '520.00'
-							},
-							{
-								photo: '...',
-								name: '商品名称1',
-								rice: '520.00'
-							}
-						]
-					},
-					{
-						classify: '我的分组2',
-						list: [
-							{
-								photo: '...',
-								name: '商品名称2',
-								rice: '520.00'
-							},
-							{
-								photo: '...',
-								name: '商品名称2',
-								rice: '520.00'
-							}
-						]
-					}
+				commodityGroupEntitylist:[
+				{
+          "id": 3,
+          "shopId": 2210,
+          "groupName": "测试",
+          "status": "0",
+          "createUser": 13244,
+          "createTime": 1492764302000,
+          "updateUser": null,
+          "updateTime": null,
+          "sort": 1
+        }
 				]
 			},
-			num: 0
+			list: [],
+			page: 1,
+			totalPage: 1,
+			pageSize: 20,
+			nodateStatus: false,
+			loading: false,
+			groupId:''
 		}
 	},
 	methods: {
 		goback () {
 			this.$router.go(-1)
-		}
-	},
-	computed: {
-		list () {
-			return this.shopinfo.foods[this.num].list
+		},
+		changegroup(id) {
+			this.groupId = id
+		},
+		showpic (item) {
+
+		},
+		loadTop () {
+			Indicator.open({
+			  text: '正在刷新...',
+			  spinnerType: 'fading-circle'
+			})
+			let _this = this
+			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: 1, shopsId: this.id,
+				groupId: this.groupId}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.totalPage = res.data.data.totalPage
+					_this.list = res.data.data.list || []
+					_this.page = 2
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('网络请求超时！')
+			})
+			this.$refs.loadmore.onTopLoaded()
+		},
+		loadMore () {
+			if (this.page > this.totalPage) {
+				return
+			}
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			this.loading = true
+			let _this = this
+			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: this.page, shopsId: this.id,
+				groupId: this.groupId}))
+			.then(function(res){
+				Indicator.close()
+				_this.loading = false
+				_this.nodateStatus = true
+				if (res.data.code === '10000') {
+					_this.totalPage = res.data.data.totalPage
+					_this.list.push(...res.data.data.list)
+					_this.page += 1
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				_this.nodateStatus = true
+				Toast('网络请求超时！')
+			})
 		}
 	},
 	created () {
@@ -110,7 +171,11 @@ export default {
 		axios.post('shop/examineUnion',qs.stringify({id: this.id}))
 		.then(function(res){
 			if (res.data.code === '10000') {
-				// _this.shopinfo = res.data.data
+				if (!!res.data.data) {
+					_this.shopinfo = res.data.data
+					_this.groupId = res.data.data.commodityGroupEntitylist[0].id
+					_this.loadMore()
+				}		
 			} else {
 				Toast(res.data.msg)
 			}
@@ -135,7 +200,7 @@ export default {
 .ex-shop-info-addr a{color: #000;}
 
 .ex-shop-info-title {text-align: center; border-bottom: 1px solid #eee;background-color: #fff; margin-top: 1rem; position: relative;}
-.ex-shop-info-title h3 {font-size: 1.6rem; line-height: 5rem; position: relative; z-index: 2; background-color: #fff; display: inline-block; padding: 0 1rem;}
+.ex-shop-info-title h3 {font-size: 1.6rem; line-height: 5rem; position: relative; background-color: #fff; display: inline-block; padding: 0 1rem;}
 .ex-shop-info-title span{display: block; width: 40%;  left: 30%; height: 1px; background-color: #ddd; position: absolute; top: 2.5rem; }
 
 .ex-shop-info-cnt { background-color: #fff; border-top:1px solid #fff; overflow: hidden; min-height: 20rem; margin-top: -1px;}
@@ -148,7 +213,7 @@ export default {
 .ex-shop-item .img img{ width: 7rem; vertical-align: middle;}
 .ex-shop-item .info {margin-left: 8rem;font-size: 1.4rem;}
 .ex-shop-item .info .name {font-weight: normal; font-size: 1.4rem; padding: 0.5rem 0;}
-.ex-shop-item .info .rice{ color: #ec5909; }
+.ex-shop-item .info .price{ color: #ec5909; }
 .ex-shop-item .info .phone{color: #666; padding-top: 0.5rem;}
 
 

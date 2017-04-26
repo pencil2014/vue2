@@ -133,6 +133,9 @@ export default {
 			this.showcopyright = true
 		}
 	},
+	mounted () {
+		document.getElementsByTagName("html")[0].style.height = '100%'
+	},
 	destroyed () {
 		Indicator.close()
 	}

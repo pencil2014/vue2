@@ -7,7 +7,7 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-banklist-cnt">
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
-				<div class="bankinfo" @click='gotoedit(item.id, item.status)'>
+				<div class="bankinfo" @click='gotoedit(item.id,item.status)'>
 					<p>{{item.banks}}</p>
 					<p>{{item.accountName}}</p>
 					<p>{{item.cardNo | card}}</p>
@@ -15,7 +15,7 @@
 					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
 				</div>
 				<div class="bankaction"  v-if='item.status !== "1"'>
-					<span class='deleted'  @click='delcard(item, index)'>删 除</span>
+					<span class='deleted'  @click='delcard(item,index)'>删 除</span>
 					<span class="default" @click='setdefault(item,index)' v-show='showSelectBtn'>
 						<!-- <i class="iconfont active" v-if='item.isDefault === "1"' >&#xe636;</i> -->
 						<i class="iconfont" >&#xe668;</i>选择此卡
@@ -37,7 +37,7 @@ import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
-			banks: [],
+			banks: {},
 			checkRealName: '',
 			modal:{
 				text:'银行卡',
@@ -49,7 +49,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('bankard/findDefault',qs.stringify({}))  // 'bankard/list'
+		axios.post('bankard/list',qs.stringify({})) 
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data

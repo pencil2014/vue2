@@ -6,7 +6,7 @@
 			</div>
 			<div class="ex-city-input">
 				<i class="iconfont">&#xe67a;</i>
-				<input type="search" name="" id="" placeholder="输入城市名称/首字母查询"  v-model='keyword' @keypress.prevent='search'>
+				<input type="search" name="" id="" placeholder="输入城市名称/首字母查询"  v-model.trim='keyword' @keypress.prevent='search'>
 			</div>
 		</div>
 		<div class="ex-city-cnt">
@@ -14,12 +14,12 @@
 				<h3 class="title">当前：{{city}}</h3>
 				<div class="ex-city-history-cnt">
 					<div class="item">
-						<div class="sub">
+						<div class="sub" v-if='historycity.length > 0'>
 							<p>历史访问城市</p>
 							<span></span>
 						</div>
 						<ul>
-							<li v-for='item in historycity'>{{item}}</li>
+							<li v-for='item in historycity' @click='setAddress(item)'>{{item.regionName}}</li>
 						</ul>
 					</div>
 					<div class="item hot">
@@ -28,28 +28,20 @@
 							<span></span>
 						</div>
 						<ul>
-							<li v-for='item in hotcity'>{{item}}</li>
+							<li v-for='item in hotcity' @click='setAddress(item)'>{{item.regionName}}</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 			<div class="ex-city-box">
-				<mt-index-list>
-				  <mt-index-section index="A">
-				    <mt-cell title="Aaron" @click.native='setAddress("Aaron")'></mt-cell>
-				    <mt-cell title="Alden"></mt-cell>
-				    <mt-cell title="Austin"></mt-cell>
-				  </mt-index-section>
-				  <mt-index-section index="B">
-				    <mt-cell title="Baldwin"></mt-cell>
-				    <mt-cell title="Braden"></mt-cell>
-				  </mt-index-section>
-				  ...
-				  <mt-index-section index="Z">
-				    <mt-cell title="Zack"></mt-cell>
-				    <mt-cell title="Zane"></mt-cell>
-				  </mt-index-section>
-				</mt-index-list>
+					<mt-index-list v-show='showcity'>
+					  <mt-index-section :index="key" v-for='(value, key) in citylist' :key='key' v-if='value.length > 0'>
+					    <mt-cell :title="i.regionName"  v-for='i in value' :key='i.regionId' @click.native='setAddress(i)'></mt-cell>
+					  </mt-index-section>
+					</mt-index-list>
+					<ul v-show='!showcity' class="searchitem">
+						<li v-for='item in searchcity'  @click='setAddress(item)'>{{item.regionName}}</li>
+					</ul>
 			</div>
 			
 		</div>
@@ -59,15 +51,41 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { IndexList, IndexSection } from 'mint-ui'
+import { IndexList, IndexSection, Toast} from 'mint-ui'
 export default {
 	data () {
 		return {
 			keyword: '',
 			city: '深圳市',
-			historycity: ['深圳','广州','惠州'],
-			hotcity: ['长沙','武汉','成都','厦门','重庆','杭州']
-
+			historycity: [],
+			hotcity: [],
+			citylist: [],
+			showcity: true
+		}
+	},
+	computed: {
+		searchcity () {
+			let _this = this
+			let city = []
+			for (var i in this.citylist) {
+				if (this.citylist.hasOwnProperty(i)) {
+					city.push(...this.citylist[i])
+				}
+			}
+			if (city.length <= 0) {
+				return
+			}
+			let array = city.filter(function(el,index) {
+				return el.regionName.indexOf(_this.keyword) > -1
+			})
+			return array
+		}
+	},
+	watch: {
+		keyword () {
+			if (!this.keyword) {
+				this.showcity = true
+			}
 		}
 	},
 	methods: {
@@ -75,27 +93,60 @@ export default {
 			this.$router.go(-1)
 		},
 		search () {
-			alert(this.keyword)
+			if (!this.keyword) {
+				this.showcity = true
+			} else {
+				this.showcity = false
+			}
+			
 		},
-		setAddress (value) {
+		setAddress (item) {
 			let historycity = JSON.parse(window.localStorage.getItem('historycity')) 
-			if (!!historycity && historycity.indexOf(value) === -1 ) {
-				historycity.unshift(value)
+			if (!!historycity) {
+				let x = historycity.filter(function(el,index) {
+					return el.regionId === item.regionId
+				})
+				console.log(x)
+				if (!x.length) {
+					historycity.unshift(item)
+				}	
 			}
 			if (!historycity) {
-				historycity = [value]
+				historycity = [item]
 			}
-			if (historycity.length > 10) {
-				historycity.shift()
+			if (historycity.length > 3) {
+				historycity.pop()
 			}
 			window.localStorage.setItem('historycity', JSON.stringify(historycity))
 		}
 	},
 	created () {
 		let historycity = JSON.parse(window.localStorage.getItem('historycity')) 
+		let address = window.localStorage.getItem('address')
+		if (address) {
+			this.city = address
+		} else {
+			this.city =historycity[0].regionName
+		}
 		if (!!historycity) {
 			this.historycity = historycity
 		}
+
+		let _this = this
+		this.id = this.$route.params.id
+		axios.post('cityList',qs.stringify({id: this.id}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				_this.hotcity = res.data.data.hot
+				delete res.data.data.hot
+				_this.citylist = res.data.data
+			} else {
+				Toast(res.data.msg)
+			}
+		})
+		.catch(function(){
+			Toast('网络请求超时！')
+		})
 	}
 }	
 </script>
@@ -117,4 +168,5 @@ export default {
 .ex-city-history .hot{margin-top: -1rem;} 
 .ex-city-history .item ul{ padding:0  2rem; overflow: hidden; }
 .ex-city-history .item ul li { width: 22%; margin-right: 2%; float: left;background-color: #fff; border:1px solid #ddd;  text-align: center; padding: 1rem 0; margin-bottom: 1rem;}
+.searchitem li{ padding: 1rem; border-bottom: 1px solid #eee; font-size: 16px; line-height: 1;}
 </style>

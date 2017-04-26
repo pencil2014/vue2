@@ -102,12 +102,12 @@ export default {
 
 		let defaultCard = window.localStorage.getItem('defaultCard')
 		if (!defaultCard) {
-			axios.post('bankard/findDefault',qs.stringify({}))
+			axios.post('bankard/list',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					if (!!res.data.data ) {
 						_this.showAdd = false
-						_this.bankdata = res.data.data
+						_this.bankdata = res.data.data[0]
 					} else {
 						_this.showAdd = true
 					}
@@ -121,6 +121,7 @@ export default {
 		} else {
 			_this.showAdd = false
 			_this.bankdata = JSON.parse(defaultCard)
+			window.localStorage.removeItem('defaultCard')
 		}
 		
 
@@ -243,6 +244,14 @@ export default {
 				}).then(action => {
 					_this.$router.push('/realname')
 				})
+				return
+			}
+			if (this.bankdata.status === '1') {
+				MessageBox('提示', '银行卡审核中，目前不能转存！')
+				return
+			}
+			if (this.bankdata.status === '2') {
+				MessageBox('提示', '银行卡审核不通过，目前不能转存！')
 				return
 			}
 			if (this.repeatBtn) {

@@ -6,7 +6,7 @@
 			</div>
 			<div class="ex-search-input">
 				<i class="iconfont">&#xe67a;</i>
-				<input type="search" name="" id="" placeholder="搜索关键字"  v-model='keyword' @keypress.prevent='search'>
+				<input type="search" name="" id="" placeholder="搜索关键字"  v-model.trim='keyword' @keypress.prevent='search'>
 			</div>
 		</div>
 		
@@ -18,19 +18,30 @@
 				</ul>
 			</div>
 			<div class="ex-search-box" >
-							<ul>
-								<li v-for="(item, index) in shoplist" class="ex-search-item" @click='gotoinfo(item.id)'>
-									<div class="img" v-if='item.facadePhoto'>
-										<img :src="item.facadePhoto" alt="">
-									</div>
-									<div class="info">
-										<h3 class='name'>{{item.shopsName}}</h3>
-										<a href="javascript:;" class='classify'>- {{item.classificationId}} -</a>
-										<p class='phone'>{{item.shopsLinkphone}}</p>
-										<p class='distance'>{{item.distance | formatdis}}</p>
-									</div>
-								</li>
-							</ul>
+				<mt-loadmore :top-method="loadTop" ref="loadmore">
+					<ul v-show='shoplist.length > 0'
+						v-infinite-scroll="loadMore"
+		  			infinite-scroll-disabled="loading"
+		  			infinite-scroll-distance="10"
+		  			>
+						<li v-for="(item, index) in shoplist" class="ex-search-item" @click='gotoinfo(item.id)'>
+							<div class="img" v-if='item.facadePhoto'>
+								<img :src="item.facadePhoto" alt="">
+							</div>
+							<div class="info">
+								<h3 class='name'>{{item.shopsName}}</h3>
+								<a href="javascript:;" class='classify'>- {{item.classificationName}} -</a>
+								<p class='phone'>{{item.shopsLinkphone}}</p>
+								<p class='distance'>{{item.distance | formatdis}}</p>
+							</div>
+						</li>
+					</ul>
+			</mt-loadmore>
+			<div class="nodata" v-show='shoplist.length === 0 && nodateStatus'>
+				<img src="../../assets/images/nodata.png" alt="">
+				<p>还没有数据哦~</p>
+			</div>
+							
 			</div>
 		</div>
 	</div>
@@ -45,29 +56,7 @@ export default {
 		return {
 			keyword: '',
 			historyKey: ['旅游','美食','汽车','美女','电影','雅居园','城市','花园','银行','环保'],
-			shoplist: [
-			{
-				facadePhoto: 'http://img.hb.aicdn.com/6fa97ba45995af5aa15073ffb1e3b14675f9defd28f06-bxO0u3_fw658',
-				shopsName: '商铺名称1',
-				classificationId: '餐饮',
-				shopsLinkphone: '15016458798',
-				distance: '10000'
-			},
-			{
-				facadePhoto: 'http://img.hb.aicdn.com/f278f6dfbc2a16821a44e6bf507789a744b5203910b373-RqOAFE_fw658',
-				shopsName: '商铺名称2',
-				classificationId: '餐饮',
-				shopsLinkphone: '15016458798',
-				distance: '10000'
-			},
-			{
-				facadePhoto: 'http://img.hb.aicdn.com/1810f306be605291d48279e353f56392e67cc0712f0fb-BRy011_fw658',
-				shopsName: '商铺名称3',
-				classificationId: '餐饮',
-				shopsLinkphone: '15016458798',
-				distance: '10000'
-			}
-			],
+			shoplist: [],
 			loading: false,
 			page: 1,
 			totalPage: 1,
@@ -80,6 +69,27 @@ export default {
 			this.$router.go(-1)
 		},
 		search () {
+			if (!this.keyword) {
+				return
+			}
+			let _this = this
+			axios.post('shopClassification/queryShopsById',qs.stringify({
+				keywords: this.keyword,
+				page: 1,
+				pageSize: this.pageSize
+			}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.shoplist = res.data.data.list || []
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+
+
 			let historyKey = JSON.parse(window.localStorage.getItem('historyKey'))
 			let value = this.keyword 
 			if (!!historyKey && historyKey.indexOf(value) === -1 ) {
@@ -89,9 +99,61 @@ export default {
 				historyKey = [value]
 			}
 			if (historyKey.length > 10) {
-				historyKey.shift()
+				historyKey.pop()
 			}
 			window.localStorage.setItem('historyKey', JSON.stringify(historyKey))
+		},
+		loadTop () {
+			Indicator.open({
+			  text: '正在刷新...',
+			  spinnerType: 'fading-circle'
+			})
+			let _this = this
+			axios.post('shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: 1}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.totalPage = res.data.data.totalPage
+					_this.shoplist = res.data.data.list || []
+					_this.page = 2
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('网络请求超时！')
+			})
+			this.$refs.loadmore.onTopLoaded()
+		},
+		loadMore () {
+			if (this.page > this.totalPage) {
+				return
+			}
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			this.loading = true
+			let _this = this
+			axios.post('shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: this.page}))
+			.then(function(res){
+				Indicator.close()
+				_this.loading = false
+				_this.nodateStatus = true
+				if (res.data.code === '10000') {
+					_this.totalPage = res.data.data.totalPage
+					_this.shoplist.push(...res.data.data.list)
+					_this.page += 1
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				_this.nodateStatus = true
+				Toast('网络请求超时！')
+			})
 		}
 	},
 	created () {
@@ -102,7 +164,7 @@ export default {
 	},
 	filters: {
 		formatdis (value) {
-			let val = parseInt((value - 0)/1000,10) + 'KM'
+			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
 			return val
 		}
 	}

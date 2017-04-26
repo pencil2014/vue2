@@ -37,13 +37,12 @@ export default {
 	        },
 	        qrCls: 'qrcode',
 	        userData:'',
-	        shopData:''
+	        shopData:'',
+	        link:''
 		}
 	},
 	computed:{
-		link () {
-			return window.location.origin + '/#/pay?userCode='+ this.userData.userCode + '&userId=' + this.userData.userId + '&shopname=' + encodeURIComponent(this.shopData.shopsName)
-		} 
+
 	},
 	created () {
 		let _this = this
@@ -51,24 +50,19 @@ export default {
 		  text: '加载中...',
 		  spinnerType: 'fading-circle'
 		})
-		axios.post('bankard/list',qs.stringify({})).then(function (res) {
+		axios.post('bankard/findDefault',qs.stringify({})).then(function (res) {
 			Indicator.close();
 		 	if (res.data.code === '10000') {
-		 		let cardlist = res.data.data.length
-				if(cardlist === 0){
+		 		if(!res.data.hasOwnProperty("data")){
 					MessageBox({
 						title:'提示',
 						message:'请去添加银行卡',
-						showConfirmButton:true,
-						showCancelButton:true,
-						confirmButtonText:'确认',
-						cancelButtonText:'取消',
 					}).then(action =>{
 						if(action === "confirm"){
 							_this.$router.push('/addcard')
 						}
 					});
-					return;
+					return
 				}
 				axios.all([
 				 	axios.post('user/personal'),
@@ -77,17 +71,18 @@ export default {
 				 	if(personal.data.code === '10000' &&　shop.data.code === '10000') {
 				 		_this.userData = personal.data.data
 				 		_this.shopData = shop.data.data
+				 		_this.link = window.location.origin + '/#/pay?userCode='+ _this.userData.userCode + '&userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
 				 	}else{
 				 		Toast('系统错误！')
 				 	}
 				 })).catch(function(){
 					Toast('网络请求超时！')
 				})
-		 	
 		 	}
 		}).catch(function(){
 			Indicator.close();
 			Toast('网络请求超时！')
+
 		})	 
 	},
 	methods: {

@@ -3,19 +3,8 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-shop-category-cnt" >
 			<mt-index-list>
-			  <mt-index-section index="A">
-			    <mt-cell title="Aaron"></mt-cell>
-			    <mt-cell title="Alden"></mt-cell>
-			    <mt-cell title="Austin"></mt-cell>
-			  </mt-index-section>
-			  <mt-index-section index="B">
-			    <mt-cell title="Baldwin"></mt-cell>
-			    <mt-cell title="Braden"></mt-cell>
-			  </mt-index-section>
-			  ...
-			  <mt-index-section index="Z">
-			    <mt-cell title="Zack"></mt-cell>
-			    <mt-cell title="Zane"></mt-cell>
+			  <mt-index-section :index="key" v-for='(value, key) in indexShopClassification' :key='key' v-if='value.length > 0'>
+			    <mt-cell :title="i.name"  v-for='i in value' :key='i.id'></mt-cell>
 			  </mt-index-section>
 			</mt-index-list>
 		</div>
@@ -25,8 +14,9 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { IndexList, IndexSection } from 'mint-ui'
+import { IndexList, IndexSection, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import pinyin from 'js-pinyin'
 export default {
 	data () {
 		return {
@@ -34,11 +24,50 @@ export default {
 				text:'全部分类',
 				fixed: true
 			},
-			shopClassification: []
+			shopClassification: [],
+			indexShopClassification: {
+				A:[],
+				B:[],
+				C:[],
+				D:[],
+				E:[],
+				F:[],
+				G:[],
+				H:[],
+				I:[],
+				J:[],
+				K:[],
+				L:[],
+				M:[],
+				N:[],
+				O:[],
+				P:[],
+				Q:[],
+				R:[],
+				S:[],
+				T:[],
+				U:[],
+				V:[],
+				W:[],
+				X:[],
+				Y:[],
+				Z:[]
+			}
 		}
 	},
 	components: {
 		HeadTitle,
+	},
+	watch: {
+		shopClassification () {
+			let _this = this
+			if (!!this.shopClassification && this.shopClassification.length > 0) {
+				this.shopClassification.forEach(function(item,index){
+					let x = pinyin.getCamelChars(item.name).charAt(0)
+					_this.indexShopClassification[x].push(item)
+				})
+			}
+		}
 	},
 	methods: {
 		back () {
