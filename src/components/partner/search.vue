@@ -30,7 +30,7 @@
 							</div>
 							<div class="info">
 								<h3 class='name'>{{item.shopsName}}</h3>
-								<a href="javascript:;" class='classify'>- {{item.classificationName}} -</a>
+								<a href="javascript:;" class='classify' @click.stop='gotoclassify(item.classificationId)'>- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
 								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
@@ -72,6 +72,10 @@ export default {
 			if (!this.keyword) {
 				return
 			}
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			let _this = this
 			axios.post('shopClassification/queryShopsById',qs.stringify({
 				keywords: this.keyword,
@@ -79,6 +83,7 @@ export default {
 				pageSize: this.pageSize
 			}))
 			.then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.shoplist = res.data.data.list || []
 				} else {
@@ -86,6 +91,7 @@ export default {
 				}
 			})
 			.catch(function(){
+				Indicator.close()
 				Toast('网络请求超时！')
 			})
 
@@ -102,6 +108,12 @@ export default {
 				historyKey.pop()
 			}
 			window.localStorage.setItem('historyKey', JSON.stringify(historyKey))
+		},
+		gotoinfo(id) {
+			this.$router.push({name:'Shopinfo',params:{id: id}})
+		},
+		gotoclassify(id) {
+			this.$router.push({name:'Classify',params:{id: id}})
 		},
 		loadTop () {
 			Indicator.open({
@@ -167,6 +179,9 @@ export default {
 			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
 			return val
 		}
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>

@@ -18,7 +18,7 @@
 							</div>
 							<div class="info">
 								<h3 class='name'>{{item.shopsName}}</h3>
-								<a href="javascript:;" class='classify'>- {{item.classificationName}} -</a>
+								<a href="javascript:;" class='classify' >- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
 								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
@@ -54,6 +54,9 @@ export default {
 		},
 		gotosearch () {
 			this.$router.push('/search')
+		},
+		gotoinfo(id) {
+			this.$router.push({name:'Shopinfo',params:{id: id}})
 		},
 		loadTop () {
 			Indicator.open({
@@ -116,6 +119,12 @@ export default {
 			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
 			return val
 		}
+	},
+	mounted () {
+		this.modal.text = window.localStorage.getItem('classifytitle')
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>

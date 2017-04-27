@@ -66,7 +66,7 @@ export default {
 	data(){
 		return{
 			modal: {
-				text:'产品编辑',
+				text:'添加产品',
 				fixed: false
 			}
 		}

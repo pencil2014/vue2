@@ -35,7 +35,7 @@
 			</div>
 			<div class="item-wrapper">
 				<div class="item">
-					<span class="left">产品照片</span>
+					<span class="left">产品管理</span>
 					<span class="right" @click="toproduct">
 						已编辑
 						<i class="iconfont" >&#xe606;</i>

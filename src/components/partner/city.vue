@@ -51,7 +51,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { IndexList, IndexSection, Toast} from 'mint-ui'
+import { IndexList, IndexSection, Toast, Indicator} from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -125,17 +125,22 @@ export default {
 		let address = window.localStorage.getItem('address')
 		if (address) {
 			this.city = address
-		} else {
+		} else if (!address && historycity) {
 			this.city =historycity[0].regionName
+		} else {
+			this.city = '无法获取定位'
 		}
 		if (!!historycity) {
 			this.historycity = historycity
 		}
-
 		let _this = this
-		this.id = this.$route.params.id
-		axios.post('cityList',qs.stringify({id: this.id}))
+		Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
+		axios.post('cityList',qs.stringify({}))
 		.then(function(res){
+			Indicator.close()			
 			if (res.data.code === '10000') {
 				_this.hotcity = res.data.data.hot
 				delete res.data.data.hot
@@ -145,8 +150,12 @@ export default {
 			}
 		})
 		.catch(function(){
+			Indicator.close()
 			Toast('网络请求超时！')
 		})
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>

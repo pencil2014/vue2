@@ -2,7 +2,7 @@
 	<div class="ex-shop-info">
 		<div class="ex-shop-info-banner">
 			<span class='back' @click='goback'><i class="iconfont">&#xe605;</i></span>
-			<img src="../../assets/images/food1.jpg" alt="">
+			<img :src="shopinfo.facadePhoto" alt="">
 			<h3>{{shopinfo.shopsName}}</h3>
 		</div>
 		<div class="ex-shop-info-addr">
@@ -21,7 +21,7 @@
 					</ul>
 				</div>
 				<div class="ex-shop-info-list">
-					<mt-loadmore :top-method="loadTop" ref="loadmore">
+					<mt-loadmore  ref="loadmore"> <!-- :top-method="loadTop" -->
 						<ul
 							v-show='list.length > 0'
 							v-infinite-scroll="loadMore"
@@ -30,8 +30,8 @@
 			  			infinite-scroll-immediate-check="false"
 						>
 							<li class="ex-shop-item"  v-for='item in list' @click='showpic(item)'>
-								<div class="img" v-if='item.commodityPicture'>
-									<img :src="item.photo" alt="">
+								<div class="img">
+									<img :src="item.commodityAffixEntityList[0].filePath" alt="">
 								</div>
 								<div class="info">
 									<h3 class='name'>{{item.shopsName}}</h3>
@@ -58,6 +58,7 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
 </template>
@@ -106,6 +107,7 @@ export default {
 		},
 		changegroup(id) {
 			this.groupId = id
+			this.loadTop()
 		},
 		showpic (item) {
 
@@ -173,7 +175,23 @@ export default {
 			if (res.data.code === '10000') {
 				if (!!res.data.data) {
 					_this.shopinfo = res.data.data
-					_this.groupId = res.data.data.commodityGroupEntitylist[0].id
+					if (res.data.data.commodityGroupEntitylist) {
+						_this.groupId = res.data.data.commodityGroupEntitylist[0].id
+					} else {
+						_this.shopinfo.commodityGroupEntitylist = [
+								{
+				          "id": '',
+				          "shopId": null,
+				          "groupName": "未分组",
+				          "status": "0",
+				          "createUser": null,
+				          "createTime": null,
+				          "updateUser": null,
+				          "updateTime": null,
+				          "sort": 1
+				        }
+								]
+					}
 					_this.loadMore()
 				}		
 			} else {
@@ -183,6 +201,9 @@ export default {
 		.catch(function(){
 			Toast('网络请求超时！')
 		})
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }	
 </script>
@@ -216,5 +237,6 @@ export default {
 .ex-shop-item .info .price{ color: #ec5909; }
 .ex-shop-item .info .phone{color: #666; padding-top: 0.5rem;}
 
+.ex-shop-nodata {background-color: #fff;}
 
 </style>

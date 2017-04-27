@@ -29,31 +29,31 @@
 		</div>
 		<div class="ex-shop-menu">
 			
-			<li><router-link to="/classify/1">
+			<li @click='settitle("餐饮美食")'><router-link to="/classify/1">
 				<img src="../../assets/images/shop1.png" alt="">
 				<span>餐饮美食</span>
 			</router-link></li>
-			<li><router-link to="/classify/2">
+			<li @click='settitle("娱乐休闲")'><router-link to="/classify/2">
 				<img src="../../assets/images/shop2.png" alt="">
 				<span>娱乐休闲</span>
 			</router-link></li>
-			<li><router-link to="/classify/3">
+			<li @click='settitle("酒店住宿")'><router-link to="/classify/3">
 				<img src="../../assets/images/shop3.png" alt="">
 				<span>酒店住宿</span>
 			</router-link></li>
-			<li><router-link to="/classify/8">
+			<li @click='settitle("房产物业")'><router-link to="/classify/8">
 				<img src="../../assets/images/shop4.png" alt="">
 				<span>房产物业</span>
 			</router-link></li>
-			<li><router-link to="/classify/9">
+			<li @click='settitle("汽车服务")'><router-link to="/classify/9">
 				<img src="../../assets/images/shop5.png" alt="">
 				<span>汽车服务</span>
 			</router-link></li>
-			<li><router-link to="/classify/11">
+			<li @click='settitle("零售批发")'><router-link to="/classify/11">
 				<img src="../../assets/images/shop6.png" alt="">
 				<span>零售批发</span>
 			</router-link></li>
-			<li><router-link to="/classify/4">
+			<li @click='settitle("办公家具")'><router-link to="/classify/4">
 				<img src="../../assets/images/shop7.png" alt="">
 				<span>办公家具</span>
 			</router-link></li>
@@ -79,7 +79,7 @@
 								<p class='distance'>100KM</p>
 							</div>	
 				</li> -->
-				<mt-loadmore :top-method="loadTop" ref="loadmore">
+				<mt-loadmore  ref="loadmore"> <!-- :top-method="loadTop" -->
 					<ul 
 						v-show='localshop.length > 0'
 						v-infinite-scroll="loadMore"
@@ -93,7 +93,7 @@
 							</div>
 							<div class="info">
 								<h3 class='name'>{{item.shopsName}}</h3>
-								<a href="javascript:;" class='classify'>- {{item.classificationName}} -</a>
+								<a href="javascript:;" class='classify' @click='gotoclassify(item.classificationId)'>- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
 								<p class='distance'>{{item.distance | formatdis}}</p>
 							</div>
@@ -130,8 +130,8 @@ export default {
 			nodateStatus: false,
 			keyword: '',
 			currentPosition: {
-				latitude: '',
-				longitude: ''
+				latitude: '22.545489',
+				longitude: '113.942283'
 			},
 			id:'',
 			showsearch: false
@@ -141,11 +141,11 @@ export default {
 		appNav
 	},
 	methods: {
-		// search () {
-		// 	alert(this.keyword)
-		// },
 		gotosearch () {
 			this.$router.push('/search')
+		},
+		settitle (title) {
+			window.localStorage.setItem('classifytitle', title)
 		},
 		getposition () {
 			let _this = this 
@@ -157,20 +157,26 @@ export default {
 							_this.getcityid()
 						}
 					)
+			} else {
+				this.getcityid()
 			}
+			
 		},
 		getcityid () {
 			let _this = this
-			axios.post('',qs.stringify({
-				lng: this.latitude,
-				lat: this.longitude
+			axios.post('getAddressByLngAndLat',qs.stringify({
+				lat: this.currentPosition.latitude,
+				lng: this.currentPosition.longitude
 			}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					_this.id = res.data.data.id
-					_this.address =res.data.data.address
+					if (res.data.data) {
+						_this.id = res.data.data.regionId
+						_this.address =res.data.data.regionName
+						window.localStorage.setItem('address', res.data.data.regionName)
+					}
 					_this.loadMore()
-					window.localStorage.setItem('address', res.data.data.address)
+					
 				} else {
 					Toast(res.data.msg)
 				}
@@ -185,13 +191,17 @@ export default {
 		gotoinfo (id) {
 			this.$router.push({name:'Shopinfo',params:{id: id}})
 		},
+		gotoclassify(id) {
+			this.$router.push({name:'Classify',params:{id: id}})
+		},
 		loadTop () {
 			Indicator.open({
 			  text: '正在刷新...',
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({city:this.id, pageSize: this.pageSize, page: 1}))
+			axios.post('shop/queryNearShop',qs.stringify({city:this.id, lat: this.currentPosition.latitude,
+				lng: this.currentPosition.longitude, pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -218,7 +228,8 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({city:this.id, pageSize: this.pageSize, page: this.page}))
+			axios.post('shop/queryNearShop',qs.stringify({city:this.id, lat: this.currentPosition.latitude,
+				lng: this.currentPosition.longitude, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				// _this.loading = false
@@ -262,6 +273,10 @@ export default {
 			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
 			return val
 		}
+	},
+	destroyed () {
+		document.getElementsByTagName("html")[0].style.height = '100%'
+		Indicator.close()
 	}
 }	
 </script>
