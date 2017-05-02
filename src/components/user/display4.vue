@@ -2,41 +2,35 @@
 	<div class="ex-display">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="wrapper">
-			<ul class="item-content">
-				<li class="item">
+			<ul class="item-content" v-if='groupList.length > 0'>
+				<li class="item" v-for='(item,index) in groupList'>
 					<span>
-						<i class="iconfont">&#xe6b3;</i>
-						分组1
+						<i class="iconfont" @click='delgroup(item.id,index)'>&#xe6b3;</i>
+						{{item.groupName}}
 					</span>
-					<span class="right">重命名</span>
-				</li>
-				<li class="item">
-					<span>
-						<i class="iconfont">&#xe6b3;</i>
-						分组1
-					</span>
-					<span class="right">重命名</span>
+					<span class="right" @click='rename(index,item.id,item.groupName)'>重命名</span>
 				</li>
 			</ul>
 		</div>
-		<div class="bottom" @click="addgroup" >
+		<div class="bottom" @click="showGroup" >
 			<i class="iconfont" >&#xe608;</i>
 			添加分组
 		</div>
 		<div class="modal_BJ" v-show="isaddgroup">
 			<div class="modal">
 				<div class="modal_box">
-					<div class="title">添加店铺分组</div>
+					<div class="title">{{modalTitle}}</div>
 					<div class="field">
-						<input type="text" placeholder="请输入分组名称" maxlength="8">
+						<input type="text" placeholder="请输入分组名称" maxlength="8" v-model='newGroupName'>
 					</div>
 					<div class="operate">
-						<span href="javascript:void(0)" class="link gray">取消</span>
-						<span href="javascript:void(0)" class="link">确定</span>
+						<span href="javascript:void(0)" class="link gray" @click='cancleGroup'>取消</span>
+						<span href="javascript:void(0)" class="link" @click='addGroup'>确定</span>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </template>
 <script>
@@ -51,7 +45,12 @@ export default {
 				text:'店铺分组',
 				fixed: false
 			},
-			isaddgroup: false
+			isaddgroup: false,
+			groupList: [],
+			newGroupName: '',
+			id: '',
+			editstatus: false,
+			modalTitle: '添加分组'
 		}
 	},
 	components: {
@@ -61,19 +60,119 @@ export default {
 
 	},
 	created () {
-
+		this.getList()
 	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
+		getList () {
+			let _this = this
+			axios.post('commodityGroup/list',qs.stringify({})) 
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.groupList = res.data.data.list
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+		},
+		rename (index,id,groupName) {
+			this.editstatus = true
+			this.newGroupName = groupName
+			this.id = id
+			this.modalTitle = '编辑分组'
+			this.isaddgroup = true
+		},
+		renameFun (id,groupName) {
+			
+		},
+		delgroup (id,index) {
+			let _this = this
+			MessageBox({
+				  title: '提示',
+				  message: '确认删除该分组吗？',
+				  showCancelButton: true,
+				  confirmButtonText: '删除'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.delgroupFun(id,index)
+					}
+				})
+		},
+		delgroupFun (id,index) {
+			let _this = this	
+			axios.post('commodityGroup/delete',qs.stringify({groupId: id})) 
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.groupList.splice(index, 1)
+					Toast('删除分组成功！')
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+		},
 		loadMore () {
 			
 		},
-		addgroup () {
+		showGroup () {
+			this.editstatus = false
+			this.modalTitle = '添加分组'
 			this.isaddgroup = true
+		},
+		cancleGroup () {
+			this.isaddgroup = false
+			this.newGroupName = ''
+		},
+		addGroup () {
+			this.isaddgroup = false
+			if (this.editstatus) {
+				this.editGroupFun(this.id,this.newGroupName)
+			} else {
+				this.addGroupFun()
+			}
+		},
+		addGroupFun () {
+			let _this = this
+			axios.post('commodityGroup/add',qs.stringify({groupName: this.newGroupName})) 
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.getList()
+					_this.newGroupName = ''
+					_this.toast =Toast('添加分组成功！')
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
+		},
+		editGroupFun (id,groupName) {
+			let _this = this
+			axios.post('commodityGroup/update',qs.stringify({id: id, groupName: groupName})) 
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.getList()
+					_this.newGroupName = ''
+					Toast('修改分组成功！')
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('网络请求超时！')
+			})
 		}
 	},
+	destroyed () {
+	}
 }
 </script>
 <style scoped>

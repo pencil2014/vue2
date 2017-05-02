@@ -55,7 +55,7 @@ export default {
 		return{
 			info:'',
 			modal: {
-				text:'商家展示信息',
+				text:'店铺管理',
 				fixed: false
 			}
 		}
@@ -88,9 +88,8 @@ export default {
 		toproduct () {
 			this.$router.push({
 				name: 'Display2',
-				query:{
-					shopsId: this.info.id,
-					commodityTypeId: null
+				params:{
+					id: this.info.id
 				}
 			})
 		}

@@ -44,12 +44,7 @@
 					</router-link> -->
 					<router-link to="/display1" tag="li" v-if="isShop">
 						<img src="../../assets/images/business.png" alt="">
-						<span>商家展示信息</span>
-						<i class="iconfont">&#xe606;</i>
-					</router-link>
-					<router-link to="/qrcode2" tag="li" v-if="isShop">
-						<img src="../../assets/images/pay.png" alt="">
-						<span>商家收款二维码</span>
+						<span>店铺管理</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link>
 					<router-link to="/message/1" tag="li">
@@ -77,6 +72,11 @@
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
 						<i class="iconfont" >&#xe606;</i>
+					</router-link>
+					<router-link to="/qrcode2" tag="li" v-if="isShop">
+						<img src="../../assets/images/pay.png" alt="">
+						<span>商家收款二维码</span>
+						<i class="iconfont">&#xe606;</i>
 					</router-link>
 				</ul>
 			</div>

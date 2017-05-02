@@ -105,7 +105,7 @@ export default {
 			axios.post('bankard/list',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					if (!!res.data.data ) {
+					if (!!res.data.data[0] ) {
 						_this.showAdd = false
 						_this.bankdata = res.data.data[0]
 					} else {

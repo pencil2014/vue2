@@ -13,15 +13,15 @@
 				</li>
 				<li class="item picture">
 					<p>产品图片</p>
-					请上传比例为4:3，小于500K的图片
+					请上传比例为4:3,不超过500K的图片,最多4张
 					<div class="UpLoadIMG">
-						<div class="report-file">
+						<div class="report-file" v-show='true'>
 							<span>
 								<i class="iconfont">&#xe608;</i>
 								<br>
-								上传照片
+								上传图片
 							</span>
-							<input type="file" name="" class="file-prew" id="frontPic" />
+							<input type="file" name="" class="file-prew" id="photo" @change='getfile' />
 						</div>
 					</div>
 				</li>
@@ -36,9 +36,9 @@
 				</li>
 			</ul>
 			<ul class="item-content">
-				<li class="item" @click="todisplay4">
+				<li class="item" @click="gotoGroup">
 					<span>店铺分组</span>
-					<label class="right">
+					<label class="right" >
 						编辑
 						<i class="iconfont">&#xe606;</i>
 					</label>
@@ -84,8 +84,23 @@ export default {
 		back () {
 			this.$router.back();
 		},
-		todisplay4 () {
-
+		getfile () {
+			let _this = this
+			let img = document.getElementById('photo').files[0]
+			if (img) {
+				this.imgurl[id] = window.URL.createObjectURL(img)
+				this.file = img
+				lrz(img,{width:640})
+				.then(function (rst) {
+	        _this.imgbase64[id] = rst.base64
+	       })
+	       .catch(function (err) {
+	       _this.imgbase64[id] = ''
+	       })  
+			}
+		},
+		gotoGroup () {
+			this.$router.push('/display4')
 		}
 	},
 }

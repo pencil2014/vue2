@@ -22,7 +22,7 @@
 							<li v-for='item in historycity' @click='setAddress(item)'>{{item.regionName}}</li>
 						</ul>
 					</div>
-					<div class="item hot">
+					<!-- <div class="item hot">
 						<div class="sub">
 							<p>热门城市</p>
 							<span></span>
@@ -30,7 +30,7 @@
 						<ul>
 							<li v-for='item in hotcity' @click='setAddress(item)'>{{item.regionName}}</li>
 						</ul>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="ex-city-box">
@@ -58,7 +58,7 @@ export default {
 			keyword: '',
 			city: '深圳市',
 			historycity: [],
-			hotcity: [],
+			// hotcity: [],
 			citylist: [],
 			showcity: true
 		}
@@ -142,8 +142,8 @@ export default {
 		.then(function(res){
 			Indicator.close()			
 			if (res.data.code === '10000') {
-				_this.hotcity = res.data.data.hot
-				delete res.data.data.hot
+				// _this.hotcity = res.data.data.hot
+				// delete res.data.data.hot
 				_this.citylist = res.data.data
 			} else {
 				Toast(res.data.msg)

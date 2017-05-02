@@ -10,7 +10,7 @@
 				<span>{{userData.shopname}}</span>
 			</div>
 		</div>
-		<div class="points">*登录密码会发送至您的手机号{{phone}}，请注意查收</div>
+		<div class="points" v-if="userData.isNewUser === 1">*登录密码会发送至您的手机号{{phone}}，请注意查收</div>
 		<div class="user">
 			<div class="avatar">
 				<img src="../../assets/images/head.png" alt="">
@@ -20,7 +20,7 @@
 				<span class="name" v-if="userData.userName">
 					{{userData.userName}} (ID:{{userData.userCode}})
 				</span>
-				<span class="name" v-else>
+				<span class="name" v-if="!userData.userName">
 					ID:{{userData.userCode}}
 				</span><br>
 				<span>E积分{{userData.integralA |checknum}},支付后将获得E积分<label for="" class="orange">{{userData.money | checknum}}</label></span>
@@ -28,7 +28,7 @@
 		</div>
 		<div class="pay-option">
 			<div class="tip" v-if="type!=='3'">请选择付款方式</div>
-			<div class="table" v-if="type === '1'" @click="select('1')">
+			<div class="table" :class="{disable: type!=='1'}">
 				<span class="m1">
 					<img src="../../assets/images/wechat.png" alt="">
 				</span>
@@ -41,7 +41,7 @@
 					<i class="option" :class="{select: sel == '1'}"></i>
 				</span>
 			</div>
-			<div class="table" v-if="type === '2'" @click="select('2')">
+			<div class="table" :class="{disable: type!=='2'}">
 				<span class="m1">
 					<img src="../../assets/images/zhifubao.png" alt="">
 				</span>
@@ -54,7 +54,7 @@
 					<i class="option" :class="{select: sel == '2'}"></i>
 				</span>
 			</div>
-			<div class="table" @click="select('3')">
+			<!-- <div class="table" @click="select('3')">
 				<span class="m1">
 					<img src="../../assets/images/bank.png" alt="">
 				</span>
@@ -67,11 +67,21 @@
 				<span class="m3" >
 					<i class="option" :class="{select: sel == '3'}" v-if="type!=='3'"></i>
 				</span>
-			</div>
+			</div> -->
 		</div>
 		<div class="form_bt">
 			<input type="button" value="支付" @click="submit" :class="{disableBtn: type === '3' }">
 		</div>
+		<div class="qrcode_modal" v-show="qrcode.show">
+	        <div class="qrcode_box">
+	            <div class="qrcode_content">
+	                <p class="tip">长按二维码付款</p>
+	                <div class="code">
+	                    <qrcode :cls="qrCls" :value="qrcode.link" type="image" :size="250"></qrcode>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
 		<div class="modal_Bj" v-show="type === '3'">
 			<div class="modal">
 				<div class="content">
@@ -85,12 +95,18 @@
 <script>
 import axios from "axios"
 import qs from "qs"
+import Qrcode from 'v-qrcode'
 import { Toast , Indicator , MessageBox} from 'mint-ui'
 export default {
 	data () {
 		return{
 			sel: '',
 			userData: '',
+			qrcode:{
+				show:false,
+				link:''
+			},
+			qrCls: 'qrcode',
 			submitbtn:false
 		}
 	},
@@ -119,6 +135,7 @@ export default {
 			this.$router.back()
 		}
 		this.userData = JSON.parse(window.localStorage.getItem('userData'))
+		console.log(this.userData.isNewUser)
 	},
 	methods: {
 		select (type) {
@@ -144,7 +161,25 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if(res.data.code === '10000'){
-					window.location.href = res.data.data.payUrl
+					if(res.data.code === '10000'){
+						if(_this.type === '1'){
+							_this.qrcode = {
+								show: true,
+								link: res.data.data.url
+							}
+						}else{
+							_this.qrcode = {
+								show: false,
+								link: ''
+							}
+							window.location.href = res.data.data.url
+						}
+					}else{
+						_this.submitbtn = false
+						_this.appAlert({
+							text: res.data.msg
+						})
+					}
 				}else{
 					_this.submitbtn = false
 					Toast(res.data.msg)
@@ -164,7 +199,10 @@ export default {
 			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
 			return num 
 		},
-	}
+	},
+	components: {
+		Qrcode
+	},
 }
 </script>
 <style scoped>
@@ -190,7 +228,7 @@ export default {
 
 .pay-option{background: #fff;margin-top: 18px;font-size: 1.4rem;color: rgb(88,100,133)}
 .pay-option .tip{margin-left: 10px;line-height: 30px;border-bottom: solid 1px #ebebeb;}
-.pay-option .table{display: table;width: 100%;margin-left: 10px;border-bottom: solid 1px #ebebeb;padding: 15px 0;}
+.pay-option .table{display: table;width: 100%;border-bottom: solid 1px #ebebeb;padding: 15px 0 0 10px;}
 .pay-option .table:last-child{border-bottom: none;}
 .pay-option .table span{display: table-cell;}
 .pay-option .table .m1{width: 20%;text-align: left;vertical-align: top;text-align: center;}
@@ -200,6 +238,7 @@ export default {
 .pay-option .table .m1 img{width: 40px;}
 .pay-option .table .m3 .option{width: 18px;height: 18px;background: url(../../assets/images/noselect1.png) center no-repeat;background-size: 100%;}
 .pay-option .table .m3 .option.select{background: url(../../assets/images/select1.png) center no-repeat;background-size: 100%;}
+.pay-option .disable{background: #d6d6d6;}
 
 .form_bt{padding: 18px 15px 56px 15px;}
 .form_bt input[type=button]{width: 100%;height: 48px;background: #3dbc3c;border: none;border-radius: 3px;color: #fff;font-size: 1.6rem;}
@@ -213,4 +252,11 @@ export default {
 .modal_Bj .modal .content .button{padding: 20px;}
 .modal_Bj .modal .content .button input{width: 100%;height: 40px;border: none;background: #3dbc3c;color: #fff;border-radius: 3px;}
 .modal_Bj .modal .content .button input:active{background: rgba(61,188,60,0.8);}
+
+.qrcode_modal{width: 100%;height: 100%;background:#0470b6;position: fixed;top: 0;left: 0;z-index: 999;display: table;}
+.qrcode_modal .qrcode_box{vertical-align: middle;display: table-cell;padding: 0 12%;}
+.qrcode_modal .qrcode_box .qrcode_content{background: #fff;width: 100%;border-radius: 5px;text-align: center;padding: 0 0 50px 0;}
+.qrcode_modal .qrcode_box .qrcode_content .qrcode img{}
+.qrcode_modal .qrcode_box .qrcode_content .tip{line-height: 50px;font-size: 1.6rem;padding: 20px 0;}
+.qrcode{padding-left: 15px;}
 </style>

@@ -454,7 +454,7 @@ export default new Router({
       component: Display1
     },
     {
-      path: '/display2',
+      path: '/display2/:id',
       name: 'Display2',
       component: Display2
     },

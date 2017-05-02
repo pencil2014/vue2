@@ -68,7 +68,7 @@ export default {
 		},
 	},
 	created () {
-		console.log(this.type)
+		
 	},
 	methods: {
 		maxlen (id) {
@@ -82,6 +82,10 @@ export default {
 		submit () {
 			let _this = this;
 			if(_this.disableBtn || _this.submitbtn){
+				return
+			}
+			if(_this.money > 50000){
+				Toast('每笔不能大于50000')
 				return
 			}
 			_this.submitbtn = true
@@ -111,7 +115,7 @@ export default {
 					userData.phone = res.data.data.data.phone
 					userData.userLev =  res.data.data.data.userLev
 					userData.userName =  res.data.data.data.userName
-
+					userData.isNewUser = res.data.data.isNewUser
 					
 					window.localStorage.setItem('userData',JSON.stringify(userData))
 					_this.$router.push('/pay/step2')
