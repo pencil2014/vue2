@@ -35,7 +35,7 @@
 								</div>
 								<div class="info">
 									<h3 class='name'>{{item.shopsName}}</h3>
-									<p class='price'>- {{item.price}} -</p>
+									<p class='price'>- ￥{{item.price}} -</p>
 								</div>
 							</li>
 						</ul>
@@ -60,13 +60,25 @@
 			</div>
 
 		</div>
+		<div class="showpicbox" v-show='showpicitem.show' @click='hideshowpicbox'>
+			<div class="showpicbox-cnt">
+				<mt-swipe :auto="0" >
+				  <mt-swipe-item v-for='item in showpicitem.data.commodityAffixEntityList' :key='item.id'>
+				  	<img :src="item.filePath" alt=""  @click.stop=''>
+				  	<p class="info"><span class="title">{{showpicitem.data.shopsName}}</span><span class="price">￥{{showpicitem.data.price}}</span></p>
+				  </mt-swipe-item>
+				</mt-swipe>
+				
+			</div>
+			
+		</div>
 	</div>
 </template>
 
 <script>
 import axios from "axios"
 import qs from "qs"
-import {Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
+import {Loadmore, InfiniteScroll, Indicator, Toast, Swipe, SwipeItem  } from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -98,7 +110,11 @@ export default {
 			pageSize: 20,
 			nodateStatus: false,
 			loading: false,
-			groupId:''
+			groupId:'',
+			showpicitem: {
+				show: false,
+				data: ''
+			}
 		}
 	},
 	methods: {
@@ -110,7 +126,11 @@ export default {
 			this.loadTop()
 		},
 		showpic (item) {
-
+			this.showpicitem.data = item
+			this.showpicitem.show = true
+		},
+		hideshowpicbox () {
+			this.showpicitem.show = false
 		},
 		loadTop () {
 			Indicator.open({
@@ -239,4 +259,12 @@ export default {
 
 .ex-shop-nodata {background-color: #fff;}
 
+
+
+.showpicbox {position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); width: 100%; height: 100%; z-index: 3;}
+.showpicbox-cnt { width: 85%; height: 80%;  margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.showpicbox-cnt img { max-width: 100%; height: auto; }
+.showpicbox-cnt .info {position: absolute; background-color: #fff; width: 100%; padding: 1.5rem 0; font-size: 1.4rem; line-height: 1; margin-top: -0.3rem;}
+.showpicbox-cnt .info .title { display: block; width: 64%; padding: 0 2%; overflow: hidden; float: left;}
+.showpicbox-cnt .info .price { display: block; width: 30%; overflow: hidden; color:#ec5909; text-align: center; float: right;}
 </style>

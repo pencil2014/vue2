@@ -37,7 +37,7 @@ import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
-			banks: {},
+			banks: [],
 			checkRealName: '',
 			modal:{
 				text:'银行卡',
@@ -52,7 +52,7 @@ export default {
 		axios.post('bankard/list',qs.stringify({})) 
 			.then(function(res){
 				if (res.data.code === '10000') {
-					_this.banks = res.data.data
+					_this.banks = !res.data.data[0] ? [] : res.data.data
 					_this.showaddBtn = true
 				} else {
 					Toast(res.data.msg)
