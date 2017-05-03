@@ -96,7 +96,7 @@ export default {
 			nodateStatus:false,
 			loading:false,
 			modal: {
-				text:'产品',
+				text:'商品',
 				fixed: false
 			},
 			picked: [],

@@ -138,26 +138,17 @@ export default {
 	},
 	created () {
 		let _this = this
-
 		 axios.all([
 		 	axios.post('user/personal'),
         	axios.post('message/getCount'),
         	axios.post('verify/checkRealName'),
 		 ]).then(axios.spread(function (personal,count,realname){
-		 	if(personal.data.code === '10000'){
+		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
-		 	}else{
-		 		Toast(personal.data.msg)
-		 	}
-		 	if(count.data.code === '10000'){
 		 		_this.count = count.data.data.count;
-		 	}else{
-		 		Toast(count.data.msg)
-		 	}
-		 	if(realname.data.code === '10000'){
 		 		_this.checkRealName = realname.data.data
 		 	}else{
-		 		Toast(realname.data.msg)
+		 		Toast('系统错误')
 		 	}
 		 })).catch(function(){
 			Toast('网络请求超时！')

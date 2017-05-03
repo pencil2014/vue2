@@ -240,7 +240,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.imgArray = res.data.urls
 				} else {
-					MessageBox('提示', '上传图片失败，请稍后重试！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(res){
@@ -254,7 +254,7 @@ export default {
 			let img = document.getElementById(id).files[0]
 			if (img) {
 				this.imgurl[id] = window.URL.createObjectURL(img)
-				this.file = img
+				// this.file = img
 				lrz(img,{width:640})
 				.then(function (rst) {
 	        _this.imgbase64[id] = rst.base64

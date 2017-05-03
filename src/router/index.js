@@ -47,9 +47,11 @@ const Detail2 = resolve => require(['../components/business/detail'], resolve)
 // const Editcard1 = resolve => require(['../components/business/editcard'], resolve)
 
 const School = resolve => require(['../components/school/school'], resolve)
-const Details = resolve => require(['../components/school/details'], resolve)
-const Details2 = resolve => require(['../components/school/details2'], resolve)
-const News = resolve => require(['../components/school/news'], resolve)
+const Word = resolve => require(['../components/school/word'], resolve)
+// const School = resolve => require(['../components/school/school'], resolve)
+// const Details = resolve => require(['../components/school/details'], resolve)
+// const Details2 = resolve => require(['../components/school/details2'], resolve)
+// const News = resolve => require(['../components/school/news'], resolve)
 
 const Partner = resolve => require(['../components/partner/shop'], resolve)
 const Shopinfo = resolve => require(['../components/partner/info'], resolve)
@@ -274,20 +276,25 @@ export default new Router({
       component: School
     },
     {
-      path: '/details/:id',
-      name: 'Details',
-      component: Details
+      path: '/word/:id',
+      name: 'Word',
+      component: Word
     },
-    {
-      path: '/details2/:id',
-      name: 'Details2',
-      component: Details2
-    },
-    {
-      path: '/news/:id',
-      name: 'News',
-      component: News
-    },
+    // {
+    //   path: '/details/:id',
+    //   name: 'Details',
+    //   component: Details
+    // },
+    // {
+    //   path: '/details2/:id',
+    //   name: 'Details2',
+    //   component: Details2
+    // },
+    // {
+    //   path: '/news/:id',
+    //   name: 'News',
+    //   component: News
+    // },
     {
       path: '/partner',
       name: 'Partner',

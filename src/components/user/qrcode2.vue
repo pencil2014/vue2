@@ -8,7 +8,9 @@
 	<div class="qrcode-wrapper">
 		<div class="qrcode-content">
 			<div class="tip1">扫二维码向我付钱</div>
-			<qrcode :cls="qrCls" :value="link" type="image" :size="250" :padding="25"></qrcode>
+			<div class="code">
+				<div id="qrcode"></div>
+			</div>
 			<div class="tip2">商家可以保存二维码图片，并打印作为支付台码</div>
 		</div>
 	</div>
@@ -17,8 +19,8 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import Qrcode from 'v-qrcode'
 import { MessageBox,Indicator,Toast } from 'mint-ui'
+import Qrcode from '../../assets/lib/qrcode.js'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
@@ -35,7 +37,6 @@ export default {
 					});
 	            }
 	        },
-	        qrCls: 'qrcode',
 	        userData:'',
 	        shopData:'',
 	        link:''
@@ -45,6 +46,9 @@ export default {
 
 	},
 	created () {
+		 
+	},
+	mounted () {
 		let _this = this
 		Indicator.open({
 		  text: '加载中...',
@@ -53,7 +57,8 @@ export default {
 		axios.post('bankard/list',qs.stringify({})).then(function (res) {
 			Indicator.close();
 		 	if (res.data.code === '10000') {
-		 		if(res.data.data[0] === null){
+		 		var card = res.data.data
+		 		if(card[0] === null){
 					MessageBox({
 						title:'提示',
 						message:'请去添加银行卡',
@@ -68,6 +73,10 @@ export default {
 					});
 					return
 				}
+				if(card[0].status !== '3'){
+					MessageBox('提示','请先通过银行卡审核！')
+	        		return
+				}
 				axios.all([
 				 	axios.post('user/personal'),
 		        	axios.post('shop/examine')
@@ -75,7 +84,26 @@ export default {
 				 	if(personal.data.code === '10000' &&　shop.data.code === '10000') {
 				 		_this.userData = personal.data.data
 				 		_this.shopData = shop.data.data
-				 		_this.link = window.location.origin + '/#/pay?userCode='+ _this.userData.userCode + '&userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
+				 		_this.link = window.location.origin + '/#/pay?userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
+				 		let qrcode = new Qrcode('qrcode', {
+							text:  _this.link,
+							width : 230,	
+							height : 230,
+							colorDark: '#123'
+						});
+						// axios.post('shop/getQRImg',qs.stringify({
+						// 	url: _this.link
+						// }))
+						// .then(function(res){
+						// 	if (res.data.code === '10000') {
+						// 		console.log(res)
+						// 	} else {
+						// 		Toast(res.data.msg)
+						// 	}
+						// })
+						// .catch(function(){
+						// 	Toast('网络请求超时！')
+						// })
 				 	}else{
 				 		Toast('系统错误！')
 				 	}
@@ -86,7 +114,7 @@ export default {
 		}).catch(function(){
 			Indicator.close();
 			Toast('网络请求超时！')
-		})	 
+		})	
 	},
 	methods: {
 		back () {
@@ -107,7 +135,8 @@ export default {
 .ex-qrcode .head i{font-size: 2rem;}
 .ex-qrcode .qrcode-wrapper{width: 100%;}
 .ex-qrcode .qrcode-content{background: #fff;border-radius: 5px;color: rgb(170,175,182);text-align: center;font-size: 1.4rem;margin: 15% 15px 0 15px;}
-.ex-qrcode .qrcode{}
+.ex-qrcode .qrcode-content .code { height: 230px; }
+.ex-qrcode .qrcode-content #qrcode{width: 230px;margin: auto;}
 .ex-qrcode .qrcode-content .tip1{color: rgb(33,42,50);padding: 20px 0;}
 .ex-qrcode .qrcode-content .tip2{padding: 30px 60px;}
 </style>

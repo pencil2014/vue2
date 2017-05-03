@@ -7,7 +7,7 @@
 				<input type="tel" placeholder="请输入金额" v-model.trim="money" @input="currency('money')">
 			</div>
 			<div class="form">
-				<div class="tip">输入手机号参加平台全返购物款</div>
+				<div class="tip">输入手机号参与商家分享</div>
 				<input type="tel" placeholder="请输入手机号" v-model.trim="phone" @input="maxlen('phone')">
 			</div>
 			<div class="form_bt">

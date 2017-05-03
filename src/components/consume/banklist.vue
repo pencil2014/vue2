@@ -204,13 +204,13 @@ export default {
 			}
 		}
 	},
-	beforeRouteEnter (to, from, next) {
-		next(vm => {
-    if (from.path.indexOf('bank') > -1) {
-				vm.showSelectBtn = true
-			}
-	  })
-	},
+	// beforeRouteEnter (to, from, next) {
+	// 	next(vm => {
+ //    if (from.path.indexOf('bank') > -1) {
+	// 			vm.showSelectBtn = true
+	// 		}
+	//   })
+	// },
 	filters: {
 		card (value) { 
 			value += ''

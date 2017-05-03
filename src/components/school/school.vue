@@ -1,244 +1,225 @@
 <template>
 	<div class="ex-school">
 		<div class="ex-school-title">
-			商学院
+			平台规则
 		</div>
-		<div class="ex-school-nav" >
-			<span :class="{active: tabnum === 1}" @click='changetab(1)'><b>讲师风采</b></span><span :class="{active: tabnum === 2}"  @click='changetab(2)'><b>E享文化</b></span><span :class="{active: tabnum === 3}"  @click='changetab(3)'><b>行业资讯</b></span>
-		</div>
-		<div class="ex-school-cnt">
-			<div v-show='tabnum === 1'>
-				<mt-loadmore :top-method="loadTop" ref="loadmore">
-					<ul class='ex-school-item'
-						v-show='dataList.length > 0'
-						v-infinite-scroll="loadMore"
-		  			infinite-scroll-disabled="loading"
-		  			infinite-scroll-distance="10" 
-					>
-						<li v-for='item in dataList' @click='godetails(item.id)'>
-							<p class="img"><img :src="item.cover" alt=""></p>
-							<p class="title">{{item.articleTitle}}</p>
-							<p class="time">{{item.createTime | formatTime}}</p>
-						</li>
-					</ul>
-				</mt-loadmore>
-			</div>
+		<div class="ex-word-cnt">
+		<h3>“e 享时代”创新消费商业服务平台基本规则</h3>
+		<b>一、“e 享时代”简介</b>
+		<p>“e享时代”是深圳前海易享时代商业服务有限公司（以下简称“本公司”）经
+		过多年的研究并学习海内外分享经济的成功模式，自主研发出来的实体经济+移动互联
+		网+大数据服务+全球市场化的集广大企业（即卖家）与消费者（即买家）于一体的商
+		业服务平台（ 以下简称为“e享时代”或“平台” ），并在 2016年 9 月至 11月份
+		期间申请并获得了多项独立自主研发的知识产权。平台是以服务中国中小企业的需求
+		为目的，以消费者的消费福利为原则，携手全国运营商（即深圳易享时代运营服务公
+		司）、代理商（即各地省、市、县区域代理公司）、供货家（即商家）及合作方（即
+		独立第三方与战略合作伙伴单位）一起共建的“跨界资源整合、合作分享共赢”的商
+		业服务模式，实现线上线下全品类商业链接、联动、互通，赋予消费者更多权益，从
+		消费者转变成为消费商，真正创造一个以共赢精神为核心的未来。</p>
+		<p>“e享时代”为解决当前企业面临全球竞争的挑战，助力实体产业结构性革新和
+		农村产业化结构调整，深化供给侧改革，助力农村致富，让改革促进消费，让消费拉
+		动国内经济增值，让消费市场良性流通循环，使消费者实质受益，让消费者敢消费、
+		愿消费、不断促进消费。同时积极协助中国企业拓展国际合作空间，围绕“一带一路”
+		国际战略，为中国企业增加新的全球市场机遇和跑道，让世界了解中国品牌，让中国
+		品牌服务世界。</p>
+		<p>深圳前海易享时代商业服务有限公司坚决拥护中办、国办关于《促进移动互联网
+		健康有序发展的意见》，以公正、开放、透明的态度，承诺严格遵守国家法律、法规
+		和地方政府政策，并愿意接受相关政府部门的监督和指导。</p>
+		<b>二、会员</b>
+		<p>凡认可 e享时代商业服务平台规则的企业与消费者均可自愿申请成为 e享时代的
+		会员，成为平台的免费会员或 VIP会员即可获得平台的相关权益。本规则的最终解释
+		权属于深圳前海易享时代商业服务有限公司。
+		<p>1、申请免费会员。不论是商家而是消费者，只要认可《会员服务协议》，均可自
+		愿经会员推荐申请或通过公司注册登录页面直接申请成为免费消费者会员或商家会员。</p>
 
-			<div v-show='tabnum === 2'>
-				<mt-loadmore :top-method="loadTop" ref="loadmore">
-					<ul class='ex-school-item'
-						v-show='dataList.length > 0'
-						v-infinite-scroll="loadMore"
-		  			infinite-scroll-disabled="loading"
-		  			infinite-scroll-distance="10" 
-					>
-						<li v-for='item in dataList' @click='godetails2(item.id)'>
-							<p class="img"><img :src="item.cover" alt=""></p>
-							<p class="title">{{item.articleTitle}}</p>
-							<p class="time">{{item.createTime | formatTime}}</p>
-						</li>
-					</ul>
-				</mt-loadmore>
-			</div>
+		<p>2、升级 VIP会员。任何免费会员一次性交 998元终身会费即升级为 VIP会员，同
+		时获得会费等额 e积分。VIP会员如果退会，其所交会费不予退回。</p>
+		<p>3、入会原则：实行“入会自愿，退会自由；交费升级，会费不退”的原则。</p>
+		<p>4、会员的权力与收益：</p>
+		<p>⑴.推荐会员；</p>
+		<p>⑵.获得联盟商家赠送的消费金额等额 e积分或联盟商家自愿赠送的相应 e积分；</p>
+		<p>⑶.每天通过 e积分分享规则获得对应比例的享积分；</p>
+		<p>⑷.随时将享积分兑现为平台资金；</p>
+		<p>⑸.随时将平台资金转存银行；</p>
+		<p>⑹.获得会员消费推荐收益和 VIP会员升级推荐收益。不论是免费会员而是 VIP会
+		员，每推荐一名会员升级为 VIP会员，均能获得 180元现金推荐收益，同时免费会员
+		还能获得升级费用等额 e收益 0.5%的推荐收益，VIP会员获得免费会员十倍即 5%的推
+		荐收益；</p>
+		<p>⑺.VIP会员消费推荐收益是免费会员的十倍，即享受消费者消费积分 5%的 e积分
+		收益，消费推荐收益享受一代；</p>
+		<p>⑻. VIP会员有权推荐代理商，并获得运营商给予的代理保证金 10%的 e积分和 5%
+		的现金推荐收益；</p>
+		<p>⑼.VIP会员有权推荐权限管理员，并获得运营商给予的 10%的现金推荐收益；</p>
+		<p>⑽.VIP会员有权申请成为区域权限管理员。成为区域权限管理员的 VIP会员，有
+		权推荐权限管理员，有权独立开展业务，有权在全国范围内开拓市场和服务联盟商家，
+		并有权获得运营商给予的 10%的权限管理员现金推荐奖、10%的权限管理员现金促成奖、
+		商家让利额 20%的商家 e积分服务奖；</p>
+		<p>⑾.平台规定的其他权益。</p>
+		<p>5、有效消费者会员帐号。一个消费者用一个手机号，对应自己的身份证号，只能
+		注册申请一个会员帐号即会员 ID号，通过实名认证，绑定与身份证相同姓名的银行卡
+		号或帐号。银行帐号的户名必须与身份证的姓名一致。</p>
+		<p>6、有效商家会员帐号。一个商家用一个手机号，对应商家唯一的营业执照号码，
+		只能注册申请一个商家会员帐号即会员 ID号，通过公司法定代表人或负责人的实名认
+		证，绑定与公司法定代表人身份证相同姓名的银行卡号或帐号。银行帐号的户名必须
+		与公司法定代表人或负责人身份证的姓名一致。</p>
 
-		 	<div v-show='tabnum === 3'>
-		 		<mt-loadmore :top-method="loadTop" ref="loadmore">
-					<ul class='ex-school-item2'
-						v-show='dataList.length > 0'
-						v-infinite-scroll="loadMore"
-		  			infinite-scroll-disabled="loading"
-		  			infinite-scroll-distance="10" 
-					>
-						<li v-for='item in dataList' @click='gonews(item.id)'>
-							<p class="img"><img :src="item.cover" alt=""></p>
-							<p class="title">{{item.articleTitle}}</p>
-							<!-- <p class="time">{{item.createTime | formatTime}}</p> -->
-						</li>
-					</ul>
-				</mt-loadmore>
-		 	</div>
-			
+		<p>商家会员实名认证：①法人营业执照为法定代表人实名认证；②非法人分支机构
+		或个体工商户为营业执照负责人实名认证；③如果是商家法定代表人或负责人委托他
+		人申请商家入驻注册的会员，则必须出具商家法定代表人或负责人亲自授权的《商家
+		入驻授权委托书》（统一文本格式）。</p>
+		<p>7、每个会员只能注册一个通过实名认证的有效会员帐号（即会员 ID号），即一
+		个有效身份证号码或有效营业执照号码绑定一个手机号码均只能申请注册一个有效会
+		员帐号。</p>
+		<p>8、会员注册流程（详见相关资料公开示意图介绍）</p>
+		<p>9、会员注册申请时必须网签《会员服务协议》，会员必须严格遵守协议约定内容。</p>
+		<b>三、商家加盟</b>
+		<p>每个合法企业均可先申请成为平台的免费会员，然后按入驻要求申请成为联盟商
+		家，并可自愿申请成为 VIP商家会员。</p>
+		<p>1、商家入驻加盟必须符合以下条件，将相应清晰的证照图片上传 e 享时代平台后，
+		经后台审核通过。</p>
+		<p>（1）、按要求填写相关详细内容,包括店铺名称、法定代表人姓名、地址、电话、
+		邮箱等；</p>
+		<p>（2）、门头照；</p>
+		<p>（3）、店内商品存列照片两张以上；</p>
+		<p>（4）、上传营业执照。不是三证合一的老营业执照，还必须上传税务登记证、机
+		构代码证；</p>
+		<p>（5）、如果是特许经营行业，必须上传特许行业经营许可证；</p>
+		<p>(6)、法定代表人身份证正反面照片，非法人经营机构或个体工商户上传负责人身
+		份证。</p>
+		<p>(7)、法定代表人手持身份证照片。个体工商户上传负责人手持身份证照片。</p>
+		<p>(8)、如果商家法定代表人或负责人委托他人注册申请商家会员，则必须出具商家
+		法定代表人或负责人亲自授权的《商家入驻授权委托书》(统一文本格式)。</p>
+		<p>(9)、法定代表人或负责人或授权委托人个人银行帐户，包括开户银行及其开户分
+		支行规范的名称、入驻申请人户名、帐号。</p>
+		<p>(10)、填写完整并签名盖章的《e享时代网上联盟商城联盟商家承诺书》照片</p>
 
-		</div>
-		<div class="nodata" v-show='dataList.length === 0  && nodateStatus'>
-			<img src="../../assets/images/nodata.png" alt="">
-			<p>还没有数据哦~</p>
+		<p>(11)、网签《联盟商城入驻协议书》</p>
+		<p>2、联盟商家的监管。</p>
+		<p>联盟商家按公司注册地址归属于当地运营中心代理公司监管，还没有成立运营中
+		心代理公司的区域由上一级代理公司监管，如果当地省、市、县都还没有成立运营中
+		心代理公司，则由运营总公司监管。
+		监管内容包括是否严格履约、是否涉嫌违规或虚假交易。</p>
+		<p>3、联盟商家书面承诺书包括如下内容：</p>
+		<p>（1）、在系统注册时提交的资料是真实且合法；</p>
+		<p>（2）、不对 e享时代会员销售假冒伪劣商品；</p>
+		<p>（3）、不对 e享时代会员出现虚抬物价行为；</p>
+		<p>（4）、不在 e享时代平台做出虚假消费行为；</p>
+		<p>（5）、不对 e享时代平台做出误导及虚假传播行为；</p>
+		<p>（6）、不违反合同约定迟延支付或止付约定让利款的行为。</p>
+		<p>4、商家加盟的限制和禁止性规定如下。</p>
+		<p>（1）、限制加盟的商家范围：大宗商品行业（如：房地产销售、汽车销售等）、
+		高档商品行业（如：珠宝、贵金属商品、字画、古董、高档艺术品、高档侈奢品等）、
+		非商品咨询代理服务行业（如：租金、工资等）、金融资产服务行业（如：理财产品、
+		金融资产产品、非上市公司股权资产产品等）、服务类行业（如：油卡代理服务、汽
+		车服务、家政服务、非证券理财服务、保险代理服务等）等行业的商家。目的是为了
+		①保证平台健康平稳发展；②有效保证真实交易；③便于促进行业联动发展；④属于
+		国家特殊的特许经营行业。这类商家仅允许与当地代理公司实行行业联盟合作经营。</p>
+		<p>（2）、禁止入驻加盟的商家范围。</p>
+		<p>行政、非盈利性单位或协会，非法经营企业或单位、政策性银行、国家控股商业
+		银行、国有资产参股控股银行、保险公司、国家管控物资（商品）、公益事业（学校、
+		医疗、公益基金等）、证券公司、公募基金、无固定经营场所企业或单位、虚拟产品
+		企业、生物技术、非企业类科研院所等。</p>
+		<p>5、商家让利规则。商家让利 15%参与消费分享联盟，消费分享实行 T+3日合规性
+		和真实性审核， “T”在此表示时间“天”。“T+3”表述的意思如下：</p>
+		<p>1、第一天（即 T 日），发生商品销售的当天，商家将通过平台销售的商品，在当
+		天规定申报截止时间点之前按消费者逐人申报到平台审核。</p>
+
+		<p>2、第二天（即 T+1 日），次日规定截止时间点之前，商家将平台审核通过的消费
+		金额逐人将 15%的消费分享让利款足额汇入 e享时代消费分享专用银行帐户，汇款到账
+		视为收讫。</p>
+		<p>3、第三天（即 T+2 日），销售让利款审核无误后，平台软件系统在每天设置的时
+		间截点（现在为下午 4点），按规则在当天下午 24 点之前自动将消费 e 享分和商家激
+		励 e积分分配到相应的会员 ID。</p>
+		<p>4、第四天（即 T+3 日），按平台积分分享管理规则，平台软件系统将消费者和商
+		家会员 ID 的消费“e 积分”和商家让利激励“e 积分” ，在每天设置的时间截点（现
+		在为上午 0点至 0点 30分）自动转换成为“享积分”。</p>
+		<b>四、消费分享与分享转换规则</b>
+		<p>（一）、商家让利消费者及其消费者消费分享规则。</p>
+		<p>平台将消费者的消费金额或商家的让利金额记录为等量 e积分（即消费积分或让
+		利激利积分），其积分转换规则如下：</p>
+		<p>100 元人民币消费或商家让利，转换为 100 个消费 e 积分或让利激励 e积分；</p>
+		<p>1 个单元 e 积分=100 个 e 积分；1 个消费 e 积分等值于 1 个让利激励 e积分；</p>
+		<p>1 个 e 积分可转换为 1 个享积分。</p>
+		<p>1、商家销售让利给消费者分享的让利比例为消费金额的 15%，平台将该让利款分成两部分：</p>
+		<p>①将商家让利的 10/15归入“消费分享储备金”(亦称“消费分享储备金”)，其
+		中商家让利的 9/15用于会员每天剩余 e积分总量的 1‰左右转换为享积分，商家让利
+		的 1/15用于运营商的业务推广与市场开发。</p>
+		<p>②同时将商家让利的 5/15归入“激励分享储备金”，其中商家让利的 4/15用于
+		商家当天实际剩余总量“激励 e 积分”按当天的激励值转换为享积分、全国公益活动，
+		商家让利的 1/15用于软件开发及平台的运营维护与管理。</p>
+		<img src="../../assets/images/word1.png" alt="">
+		<center>（商家让利消费者及其消费者消费分享规则示意图）</center>
+		<p>（二）、消费者的消费金额与联盟商家的销售让利款的 e 积分录入规则，与两种 不同转换为“享积分”的 方式。</p>
+		<p>1、消费者每完成一次消费行为，则①将其消费金额录入等量消费 e 积分；②将该 笔联盟商家 15%的让利款分别录入 10%(指销售额的 10%)的等量让利消费 e 积分和10%(指销售额的 10%)的等量让利激励 e 积分。</p>
+		<p>2、“e 积分”经过一定的时间按平台规则约定的一定比例逐天转换为“享积分”。 其转换成享积分的规则如下：</p>
+		<p>（1）、消费 e 积分。根据平台消费增长或下降的幅度得出当天消费分享系数（即 1‰左右），会员当天“e 积分” 实际总剩余量乘以消费分享系数”，即为当天应转换 的等量“享积分”。</p>
+		<p>（2）、商家让利激励 e 积分。根据平台当天消费增减情况，计算出商家让利激励 e 积分当天的激励分享系数，得出每个商家当天应转换的等量“享积分”如下：</p>
+
+		<p>3、让利分享资金严格专项存管与逐天分配运行。凡用于消费分享和商家让利激励 的资金严格进入银行专户，根据公司章程规定和股东会决议，任何人无权动用，只能 按规则进行分享。平台财务部门严格按要求设立特定会计科目进行核算，并严格按财 务制度进行监管与操作。平台必须建立严格的风控体系和内审制度，确保商家让利资 金严格按规则运行。</p>
+
+			<b>五、享积分兑现与转存</b>
+
+		<p>1、享积分兑现。会员 ID 的“享积分”随时以 100 的倍数，扣除 5%的代扣代缴税 金后，可兑现为税后享积分，平台简称为：平台资金。</p>
+		<p>2、平台资金兑现转存。平台资金随时可以 100 的倍数等额兑现转存为人民币存款。 </p>转存为人民币存款须绑定会员的银行帐号或第三方支付系统帐号（目前暂不支持向第 三方支付系统帐号转存）。国内单笔转存不得超过 5 万元人民币，转存手续费每笔代
+			收 5 元。</p>
+	  <p>3、转存前提。会员平台资金转存必须通过银行实名认证，且存款人银行帐户的户 名必须与会员身份证姓名一致。
+		<p>4、转存在途时间。平台资金转存银行为 T+2 个工作日。T 在此表示为工作日当天。</p>
+
+			<b>六、每个环节都充分体现“三公”与“三合”的原则</b>
+
+		<p>为了符合我国市场经济的客观要求，充分体现“公平、公正、公开”和“合理、 合法、合规”的原则，平台规则的每一个环节均与第三方携手合作或委托第三方监督 或审计。</p>
+		<p>1、市场委托运营商运营管理。e 享时代的运营商为深圳易享时代运营服务有限公
+
+			司。</p>
+		<p>2、平台软件委托软件开发商开发。e 享时代的软件开发商为深圳易享时代软件科
+
+			技有限公司。</p>
+		<p>3、代理商委托运营商管理。全国各地按省市县行政区域设立三级区域代理商。</p>
+
+		<p>4、平台资金委托开户银行专户存入，严格按平台规则使用。</p>
+		<p>5、联盟商家让利资金的规范使用，委托签约第三方会计师事务所审计监督，并按 月或按季出具专项审计报告。</p>
+
+			<b>七、特别声明</b>
+
+		<p>本平台是一个以商业服务模式服务于所有工商业、农业、服务业企业的公司，目 的在平台简介中讲得非常明确，在此，特声明如下：</p>
+		<p>1、严禁运营商、代理商、关联合作方、会员使用“全返、返利、乐返、返还……” 等诱惑性词语去误导消费者做投资性虚假消费，扰乱消费经济秩序；</p>
+		<p>2、严禁联盟商家做虚假消费单套取消费让利分享资金；</p>
+		<p>3、本公司丌卖股权和代理，也严禁运营商、代理商等合作方以任何名义或方式卖 股权或代理；</p>
+		<p>4、本平只有一代会员消费推荐奖励，坚决反对一代以上的多级多层次推荐奖励；</p>
+		<p>5、本公司的每一个环节均不第三方携手合作或委托第三方监督或审计，做到“公 平、公正、公开”和“合理、合法、合规”；</p>
+		<p>6、本公司秉着公正、开放、透明的态度，承诺严格遵守国家政策和法律法规，遵
+			循我国市场经济的经济规律，坚决拥护中办、国办关于《促进移动互联网健康有序发 展的意见》，愿意接受相关政府职能部门的监督和指导。</p>
 		</div>
 		<app-nav></app-nav>
 	</div>
 </template>
 
 <script>
-import axios from "axios"
-import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data () {
 		return {
-			teacherList: [],
-			cultureList: [],
-			newsList: [],
-			tabnum: 1,
-			page: 1,
-			totalPage: 1,
-			pageSize: 20,
-			nodateStatus: false,
-			loading: false
 		}
 	},
-	computed: {
-		dataList () {
-			switch (this.tabnum) {
-				case 1:
-					return this.teacherList
-					break
-				case 2:
-					return this.cultureList
-					break
-				case 3:
-					return this.newsList
-					break	
-				default:
-					return this.teacherList
-					break
-			}
-		}
-	},
+
 	components: {
 		appNav
 	},
 	methods: {
-		changetab (num) {
-			this.tabnum = num
-			this.page = 1
-		},
-		godetails (id) {
-			this.$router.push({ name: 'Details', params: { id: id}})
-		},
-		godetails2 (id) {
-			this.$router.push({ name: 'Details2', params: { id: id}})
-		},
-		gonews (id) {
-			this.$router.push({ name: 'News', params: { id: id}})
-		},
-		getdata (value,refresh) {
-			Indicator.open({
-			  text: '数据加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			let _this = this
-			let page = refresh ? 1 : this.page
-			axios.post('artic/list',qs.stringify({
-				article_type_name: value,
-				pageSize: this.pageSize, 
-				page: page
-			}))
-			.then(function(res){
-				Indicator.close()
-				_this.nodateStatus = true
-				_this.loading = false
-				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
-					_this.page += 1
-					if (page === 1) {
-							if (value === '讲师风采') {
-								_this.teacherList = res.data.data.list || []
-								_this.page = 2
-							} else if (value === 'E享文化') {
-								_this.cultureList = res.data.data.list || []
-								_this.page = 2
-							} else {
-								_this.newsList = res.data.data.list || []
-								_this.page = 2
-							}
-						} else {
-							if (value === '讲师风采') {
-								_this.teacherList.push(...res.data.data.list)
-							} else if (value === 'E享文化') {
-								_this.cultureList.push(...res.data.data.list)
-							} else {
-								_this.newsList.push(...res.data.data.list)
-							}
-						}
-					
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Indicator.close()
-				_this.nodateStatus = true
-				Toast('网络请求超时！')
-			})
-		},
-
-		loadTop () {
-			if (this.tabnum === 1) {
-				this.getdata ('讲师风采', 1)
-			} else if (this.tabnum === 2) {
-				this.getdata ('E享文化', 1)
-			} else {
-				this.getdata ('行业资讯', 1)
-			}
-			this.$refs.loadmore.onTopLoaded()
-		},
-		loadMore () {
-			if (this.page > this.totalPage) {
-				return
-			}
-			this.loading = true
-			if (this.tabnum === 1) {
-				this.getdata ('讲师风采')
-			} else if (this.tabnum === 2) {
-				this.getdata ('E享文化')
-			} else {
-				this.getdata ('行业资讯')
-			}
-		}
+	
 	},
 	created () {
-		this.getdata ('E享文化')
-		this.getdata ('行业资讯')
-	},
-	filters: {
-		formatTime (value) {
-			let time = new Date(value * 1000)
-			let year = time.getFullYear()
-			let month = time.getMonth() + 1
-			let date = time.getDate()
-			return [year,month,date].join('/')
-		}
-	},
-	beforeRouteLeave (to,from,next) {
-		let path = window.localStorage.getItem('integralPath')
-		if(to.path !== path && to.path === '/index'){
-			next(path)
-		}else{
-			next()
-		}
-	},
-	destroyed () {
-		Indicator.close()
+		
 	}
 }	
 </script>
 
 <style scoped>
 .ex-school{padding-bottom: 3rem;}
-.ex-school-title { height: 5rem; line-height: 5rem; text-align: center; font-size: 2rem; }
-.ex-school-nav { height: 3rem; line-height: 3rem; margin-bottom: 0.5rem;}
-.ex-school-nav span {display: inline-block; width: 33.3%; text-align: center;  font-size: 1.5rem;}
-.ex-school-nav span b{border-bottom: 2px solid #fff; padding-bottom: 0.5rem; font-weight: normal;}
-.ex-school-nav span.active b{border-color: #047dcb; color: #047dcb; }
-.ex-school-cnt { padding: 1rem 0; }
-.ex-school-item .img{ text-align: center; background-color: #eee;}
-.ex-school-item .img img{ max-height: 20rem;}
-.ex-school-item .title { padding: 1rem 1rem 0.5rem 1rem; font-size: 1.4rem;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.ex-school-item .time { padding: 0 1rem 1rem 1rem;border-bottom: 1px solid #eee; color: #aaafb6;margin-bottom: 1rem;}
-
-.ex-school-item2 { border-top: 1px solid #eee; }
-.ex-school-item2  li{ height: 7rem; padding: 1rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; overflow: hidden;}
-.ex-school-item2 .img{ width: 12rem; height: 7rem; overflow: hidden; float: left; margin-right: 1rem; background-color: #eee;}
-.ex-school-item2 .title { font-size: 1.4rem; padding-top: 0.5rem; }
+.ex-school-title { height: 5rem; line-height: 5rem; text-align: center; font-size: 2rem; border-bottom: 1px solid #eee; }
+.ex-word-cnt {margin: 0 4%; padding-bottom: 2rem;}
+.ex-word-cnt h3{text-align: center; font-size: 2rem; padding: 2rem 0;}
+.ex-word-cnt b{font-size: 1.6rem;display: inline-block; margin: 1rem 0;}
+.ex-word-cnt p{line-height: 1.8; margin-bottom: 0.5rem; text-indent: 2rem; font-size: 1.4rem;}
+.ex-word-cnt p.right {padding-left: 4rem;}
 </style>

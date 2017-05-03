@@ -34,8 +34,8 @@
 				</span>
 				<span class="m2">
 					<p class="title">微信支付</p>
-					<p>自然日6:00-7:00到账，单笔限额3000 <br>
-					参与微信支付奖励活动</p>
+					<!-- <p>自然日6:00-7:00到账，单笔限额3000 <br>
+					参与微信支付奖励活动</p> -->
 				</span>
 				<span class="m3">
 					<i class="option" :class="{select: sel == '1'}"></i>
@@ -47,8 +47,8 @@
 				</span>
 				<span class="m2">
 					<p class="title">支付宝支付</p>
-					<p>交易时间段 9:00-22:00 <br>
-					不在此时间段内的交易自动转换为T+1到账</p>
+					<!-- <p>交易时间段 9:00-22:00 <br>
+					不在此时间段内的交易自动转换为T+1到账</p> -->
 				</span>
 				<span class="m3">
 					<i class="option" :class="{select: sel == '2'}"></i>
@@ -77,7 +77,11 @@
 	            <div class="qrcode_content">
 	                <p class="tip">长按二维码付款</p>
 	                <div class="code">
-	                    <qrcode :cls="qrCls" :value="qrcode.link" type="image" :size="250"></qrcode>
+	                    <div id="qrcode"></div>
+	                </div>
+	                <div class="tip2">
+	                	<p>支付完成后可前往 <br>
+	                	<a href="http://www.exgj.com.cn"></a></p>
 	                </div>
 	            </div>
 	        </div>
@@ -95,7 +99,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import Qrcode from 'v-qrcode'
+import Qrcode from '../../assets/lib/qrcode'
 import { Toast , Indicator , MessageBox} from 'mint-ui'
 export default {
 	data () {
@@ -135,7 +139,6 @@ export default {
 			this.$router.back()
 		}
 		this.userData = JSON.parse(window.localStorage.getItem('userData'))
-		console.log(this.userData.isNewUser)
 	},
 	methods: {
 		select (type) {
@@ -146,6 +149,25 @@ export default {
 			if(_this.submitbtn || _this.type === '3'){
 				return 
 			}
+			if(_this.userData.money > 5000){
+				MessageBox({
+					title:'温馨提示',
+					message:'您的订单交易金额大于5000，报单需要人工审核',
+					showConfirmButton:true,
+					showCancelButton:true,
+					confirmButtonText:'确认',
+					cancelButtonText:'取消',
+				}).then(action =>{
+					if(action === "confirm"){
+						_this.pay()
+					}
+				});
+				return
+			}
+			_this.pay()
+		},
+		pay () {
+			let _this = this;
 			_this.submitbtn = true
 			Indicator.open({
 			  text: '提交中...',
@@ -167,11 +189,13 @@ export default {
 								show: true,
 								link: res.data.data.url
 							}
+							let qrcode = new Qrcode('qrcode', {
+								text: _this.qrcode.link ,
+								width : 230,	
+								height : 230,
+								colorDark: '#123'
+							});
 						}else{
-							_this.qrcode = {
-								show: false,
-								link: ''
-							}
 							window.location.href = res.data.data.url
 						}
 					}else{
@@ -185,9 +209,9 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					_this.submitbtn = false
-					Indicator.close();
-					Toast('网络请求超时！')
+				_this.submitbtn = false
+				Indicator.close();
+				Toast('网络请求超时！')
 			})
 		}
 	},
@@ -228,11 +252,11 @@ export default {
 
 .pay-option{background: #fff;margin-top: 18px;font-size: 1.4rem;color: rgb(88,100,133)}
 .pay-option .tip{margin-left: 10px;line-height: 30px;border-bottom: solid 1px #ebebeb;}
-.pay-option .table{display: table;width: 100%;border-bottom: solid 1px #ebebeb;padding: 15px 0 0 10px;}
+.pay-option .table{display: table;width: 100%;border-bottom: solid 1px #ebebeb;padding: 15px 0 15px 10px;}
 .pay-option .table:last-child{border-bottom: none;}
-.pay-option .table span{display: table-cell;}
-.pay-option .table .m1{width: 20%;text-align: left;vertical-align: top;text-align: center;}
-.pay-option .table .m2{width: 60%;color: rgb(153,153,153)}
+.pay-option .table span{display: table-cell;vertical-align: middle;}
+.pay-option .table .m1{width: 20%;text-align: left;text-align: center;}
+.pay-option .table .m2{width: 60%;color: rgb(153,153,153);}
 .pay-option .table .m2 .title{font-size: 1.4rem;color: rgb(33,42,50);padding-bottom: 5px;}
 .pay-option .table .m3{width: 20%;text-align: right;padding-right: 3rem;vertical-align: middle;}
 .pay-option .table .m1 img{width: 40px;}
@@ -255,8 +279,11 @@ export default {
 
 .qrcode_modal{width: 100%;height: 100%;background:#0470b6;position: fixed;top: 0;left: 0;z-index: 999;display: table;}
 .qrcode_modal .qrcode_box{vertical-align: middle;display: table-cell;padding: 0 12%;}
-.qrcode_modal .qrcode_box .qrcode_content{background: #fff;width: 100%;border-radius: 5px;text-align: center;padding: 0 0 50px 0;}
+.qrcode_modal .qrcode_box .qrcode_content{background: #fff;width: 100%;border-radius: 5px;text-align: center;padding: 0 0 0 0;}
 .qrcode_modal .qrcode_box .qrcode_content .qrcode img{}
 .qrcode_modal .qrcode_box .qrcode_content .tip{line-height: 50px;font-size: 1.6rem;padding: 20px 0;}
+.qrcode_modal .qrcode_box .qrcode_content .tip2{padding: 20px 0 30px 0;}
+.qrcode_modal .qrcode_box .qrcode_content .tip2 a:after{content: " (" attr(href) ")"}
 .qrcode{padding-left: 15px;}
+.qrcode_modal .qrcode_box .qrcode_content .code #qrcode{width: 230px;margin: auto;}
 </style>

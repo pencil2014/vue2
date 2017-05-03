@@ -12,7 +12,7 @@
 		<router-link to="/school">
 			<span class="m3"></span>
 			<br>
-			商学院
+			平台规则
 		</router-link>
 		<router-link to="/user">
 			<span class="m4"></span>

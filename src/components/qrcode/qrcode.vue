@@ -2,8 +2,9 @@
 <div class="ex-qrcode">
 	<HeadTitle :title="modal" @callback="back"></HeadTitle>
 	<div class="ex-qrcode-wrapper">
-		<qrcode :cls="qrCls" :value="link" type="image" :size="250"   :padding="0" background='#f4f5f7'></qrcode>
-		
+ 		<div class="code">
+            <div id="qrcode"></div>
+        </div>
 		<p>请被推荐人扫描此二维码注册</p>
 	</div>
 	
@@ -21,7 +22,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import Qrcode from 'v-qrcode'
+import Qrcode from '../../assets/lib/qrcode'
 import { MessageBox,Indicator,Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
@@ -44,17 +45,24 @@ export default {
 		}
 	},
 	created () {
+		
+	},
+	mounted () {
 		let _this = this 
-		// 获取用户详情
 		let pageUrl = window.location.origin + '/#/register';
 		axios.post('user/getQrcode',qs.stringify({
 			pageUrl: pageUrl
 		}),_this.config).then(function(res){
 			Indicator.close();
 			if (res.data.code === '10000') {
-				let link = res.data.url.split('?');
-				let usercode = link[1].split('=')[1];
-				_this.link = link[0] + '/' + usercode;
+				_this.link = res.data.url
+				_this.userCode = _this.link.split('?')[1].split('=')[1]
+				let qrcode = new Qrcode('qrcode', {
+					text: pageUrl + '/' + _this.userCode,
+					width : 230,	
+					height : 230,
+					colorDark: '#123'
+				});
 			} else {
 				Toast(res.data.msg)
 			}
@@ -86,7 +94,7 @@ export default {
 .ex-qrcode{width: 100%;background: #f4f5f7;color: #5d646e;overflow-x: hidden;height: 100%;min-height: 100%;}
 .ex-qrcode-wrapper{margin-top: 50px;width: 100%;text-align: center;}
 .ex-qrcode-wrapper p{margin-top: 20px;}
-
+.ex-qrcode-wrapper .code #qrcode{width: 230px;margin: auto;}
 .ex-qrcode-link{border-top: solid 1px #e5e5e5;margin: 30px auto;padding-top: 30px;width: 80%;text-align: center;line-height: 15px;}
 .ex-qrcode-link .title{padding-bottom: 10px;}
 .ex-qrcode-link .link{background: #fff; padding: 10px; }
