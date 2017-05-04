@@ -162,7 +162,8 @@ export default {
 				province: applyshops.provinceId,
 				city: applyshops.cityId,
 				county: applyshops.districtId,
-				area: applyshops.areaId
+				area: applyshops.areaId,
+				classificationId: applyshops.classifyId
 			}))
 				.then(function(res){
 					_this.repeatBtn = false

@@ -95,6 +95,9 @@ const Display4 = resolve => require(['../components/user/display4'], resolve)
 const Display5 = resolve => require(['../components/user/display5'], resolve)
 
 
+const Info = resolve => require(['../components/user/info'], resolve)
+const EditInfo = resolve => require(['../components/user/editinfo'], resolve)
+
 // 导出路由配置
 export default new Router({
   mode: 'hash',
@@ -475,10 +478,20 @@ export default new Router({
       name: 'Display4',
       component: Display4
     },
+    // {
+    //   path: '/display5',
+    //   name: 'Display5',
+    //   component: Display5
+    // },
     {
-      path: '/display5',
-      name: 'Display5',
-      component: Display5
+      path: '/info',
+      name: 'Info',
+      component: Info
+    },
+    {
+      path: '/editinfo',
+      name: 'EditInfo',
+      component: EditInfo
     },
     {
     	path:'*', 

@@ -26,7 +26,7 @@
 	            <td class="m3"><div class="title">{{item.commodityName}}</div><label for="" class="orange">&yen;{{item.price}}</label>
 					分组：{{item.groupName}}
 	            </td>
-	            <td class="m4"><i class="iconfont" >&#xe606;</i>
+	            <td class="m4" @click='gotoInfo(item)'><i class="iconfont" >&#xe606;</i>
 	            </td>
 	          </tr>
 		    </table>
@@ -77,17 +77,7 @@ export default {
 	data(){
 		return{
 			id:'',
-			list:[{id: '1',
-				commodityAffixEntityList: [{path:'...'}],
-				commodityName: '商品名称',
-				groupName: '分组',
-				price: '800'
-			},{id:'2',
-				commodityAffixEntityList: [{path:'...'}],
-				commodityName: '商品名称',
-				groupName: '分组',
-				price: '800'
-			}],
+			list:[],
 			status: '2',
 			groupId: '',
 			page: 1,
@@ -117,11 +107,20 @@ export default {
 			this.$router.back();
 		},
 		changetab (status) {
+			Indicator.close()
 			this.status = status
 			this.nodateStatus = false
 			this.page = 1
 			this.picked = []
 			this.getLsit()
+		},
+		gotoInfo (item) {
+			window.localStorage.setItem('goodsInfo', JSON.stringify(item))
+			if (item.status !== '1') {
+				this.$router.push('/info')
+			} else {
+				this.$router.push('/editinfo')
+			}
 		},
 		getLsit () {
 			let _this = this
@@ -134,7 +133,7 @@ export default {
 			})).then(function(res){
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
-					// _this.list = res.data.data.list
+					_this.list = res.data.data.list
 					_this.totalPage = res.data.data.totalPage
 				} else {
 					Toast(res.data.msg)
@@ -352,6 +351,7 @@ export default {
 .ex-display .table-wrapper .table tr{}
 /*.ex-display .table-wrapper .table tr:last-child{border-bottom: none;}*/
 .ex-display .table-wrapper .table td{color: #aaafb6;}
+.ex-display .table-wrapper .table td.m2 img{ width: 6rem; height: 6rem; }
 .ex-display .table-wrapper .table td.m3{word-break: break-all;line-height: 20px;}
 .ex-display .table-wrapper .table td.m3 {}
 .ex-display .table-wrapper .table td.m3 .title{padding-bottom: 10px;color: #212a32;}

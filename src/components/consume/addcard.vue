@@ -7,8 +7,8 @@
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加本人或所属公司的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
-				<label for="name">开户名:</label><!-- <span>{{realName}}</span> -->
-				<input type="text" name="" id="name" placeholder="请输入开户名" v-model.trim='name'>
+				<label for="name">开户名:</label><span>{{realName}}</span>
+				<!-- <input type="text" name="" id="name" placeholder="请输入开户名" v-model.trim='name'> -->
 			</div>
 			<div class="ex-addcard-num">
 				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
@@ -66,8 +66,7 @@ export default {
 			let rule2 = this.city ? true :false
 			let rule3 = this.branch ? true :false
 			let rule4 = /^1\d{10}$/.test(this.phone) ? true :false
-			let rule5 = !!this.name ? true : false
-			if (rule1 && rule2 && rule3 && rule4 && rule5) {
+			if (rule1 && rule2 && rule3 && rule4) {
 				return false
 			} else {
 				return true
@@ -99,7 +98,7 @@ export default {
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
 				_this.userphone =  res.data.data.phone
-				_this.name =  res.data.data.realName
+				_this.realName =  res.data.data.realName
 			} else {
 				Toast('请求数据失败！')
 			}
@@ -153,10 +152,6 @@ export default {
 			},1000)
 		},
 		submit () {
-			if (!this.name) {
-				MessageBox('提示', '开户名不能为空！')
-				return
-			}
 			if (!/^\d{16,}$/.test(this.card2)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
@@ -183,7 +178,7 @@ export default {
 				branch: this.branchname,
 				phone: this.phone,
 				// cardType: '',
-				accountName: this.name
+				accountName: this.realName
 				// phoneCode: this.phonecode
 			}))
 			.then(function(res){

@@ -17,6 +17,7 @@
 					<span class="title">商品图片</span>
 					<label class="tips">请上传比例为4:3，不超过500K的图片，最多4张</label>
 					<div class="ex-addgoods-photo" >
+						<span v-for='(item,index) in imgArray' @click='delphoto2(index)'><i class="iconfont">&#xe614;</i><img :src="item" alt=""></span>
 						<span v-for='(item,index) in imgurl' @click='delphoto(index)'><i class="iconfont">&#xe614;</i><img :src="item" alt=""></span>
 					</div>
 					<div class="upload" v-show='imgurl.length < 4'>
@@ -40,7 +41,7 @@
 					<li v-for='item in groupList' >
 					  <span class="checkboxGroup" >
 					  	<input type="radio" :value="item.id" v-model="selectGroupId" :id='item.id'>
-							<i class="iconfont" v-show='selectGroupId != item.id'>&#xe646;</i>
+							<i class="iconfont" v-show='selectGroupId !== item.id'>&#xe646;</i>
 							<i class="iconfont select" v-show='selectGroupId === item.id && selectGroupId !== ""'>&#xe630;</i>
 					  </span>
 						<label :for="item.id" class='name'>{{item.groupName}}</label> 
@@ -89,9 +90,10 @@ export default {
 	data(){
 		return{
 			modal: {
-				text:'添加商品',
+				text:'编辑商品',
 				fixed: false
 			},
+			id:'',
 			name: '',
 			price: '',
 			imgurl: [],
@@ -111,7 +113,7 @@ export default {
 	},
 	computed:{
 		disableBtn () {
-			let rule = !!this.name && !!this.price && this.imgurl.length > 0
+			let rule = !!this.name && !!this.price && (this.imgurl.length > 0 ||this.imgArray.length > 0 )
 			if (!rule) {
 				return true
 			} else {
@@ -121,6 +123,19 @@ export default {
 	},
 	created () {
 		this.getList()
+		let info =JSON.parse(window.localStorage.getItem('goodsInfo'))
+		this.id = info.id
+		this.name = info.commodityName
+		this.price = info.price
+		this.classify = info.typeName
+		this.classifyId = info.commodityTypeId
+		this.groupName = info.groupName
+		this.selectGroupId = info.groupId
+		let array = info.commodityAffixEntityList.map(function(elem) {
+			return elem.filePath
+		})
+		this.imgArray = array
+		// window.localStorage.removeItem('goodsInfo')
 	},
 	components: {
 		HeadTitle
@@ -174,6 +189,21 @@ export default {
 					}
 				})
 		},
+		delphoto2 (index) {
+			let _this = this
+			MessageBox({
+				  title: '提示',
+				  message: '确认删除改图片吗？',
+				  showCancelButton: true,
+				  confirmButtonText: '删除'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.imgArray.splice(index, 1)
+					} else {
+						return
+					}
+				})
+		},
 		save () {
 			if (!this.name) {
 				MessageBox('提示', '商品名称不能为空!')
@@ -183,7 +213,7 @@ export default {
 				MessageBox('提示', '商品价格不合法!')
 				return
 			}
-			if (this.imgurl.length === 0) {
+			if (this.imgurl.length === 0 && this.imgArray.length === 0) {
 				MessageBox('提示', '商品图片不能为空!')
 				return
 			}
@@ -196,6 +226,10 @@ export default {
 
 		},
 		uploadimg () {
+			if (this.imgbase64.length  === 0) {
+				this.addGoods()
+				return
+			}
 			let _this = this
 			let formData = new FormData()
 			for (let i =0, j = this.imgbase64.length; i<j; i++) {
@@ -209,7 +243,8 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					 _this.imgArray = res.data.urls
+					 _this.imgArray.push(res.data.urls)
+					 _this.imgurl = []
 					 _this.addGoods()
 				} else {
 					Toast(res.data.msg)
@@ -227,7 +262,8 @@ export default {
 			  text: '商品保存中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('commodityInfo/add',qs.stringify({
+			axios.post('commodityInfo/update',qs.stringify({
+				id: this.id,
 				commodityName: this.name,
 				commodityTypeId: this.classifyId,
 				groupId: this.selectGroupId,
@@ -239,7 +275,7 @@ export default {
 				if (res.data.code === '10000') {
 					 MessageBox({
 				  title: '提示',
-				  message: '商品添加成功！',
+				  message: '修改商品成功！',
 				}).then(action => {
 					_this.$router.go(-1)
 				})
@@ -260,15 +296,15 @@ export default {
 			axios.post('commodityInfo/listSet',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.classifyList = res.data.data.typeList || []
-					if (_this.classifyList.length > 0) {
-						_this.classify = _this.classifyList[0].typeName
-						_this.classifyId = _this.classifyList[0].id
-					}
+					// if (_this.classifyList.length > 0) {
+					// 	_this.classify = _this.classifyList[0].typeName
+					// 	_this.classifyId = _this.classifyList[0].id
+					// }
 					_this.groupList = res.data.data.groupList || []
-					if (_this.groupList.length > 0) {
-						_this.groupName = _this.groupList[0].groupName
-						_this.selectGroupId = _this.groupList[0].id
-					}
+					// if (_this.groupList.length > 0) {
+					// 	_this.groupName = _this.groupList[0].groupName
+					// 	_this.selectGroupId = _this.groupList[0].id
+					// }
 
 				} else {
 					Toast(res.data.msg)

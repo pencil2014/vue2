@@ -39,6 +39,12 @@
 				</select>
 			</div>
 			<div class="ex-shop1-cnt-item">
+				<span>*所属行业</span>
+				<select v-model="classifyId" >
+					<option v-for='item in classifyList' :value='item.id' >{{item.typeName}}</option>
+				</select>
+			</div>
+			<div class="ex-shop1-cnt-item">
 				<span>*详细地址</span><input type="text" name="" id="" placeholder="详细地址" maxlength="60" v-model.trim='addressDetail'>
 			</div>
 			<div class="ex-shop1-cnt-item">
@@ -77,6 +83,8 @@ export default {
 				text:'商家申请',
 				fixed: false,
 			},
+			classifyList:[],
+			classifyId: ''
 		}
 	},
 	computed: {
@@ -154,6 +162,21 @@ export default {
 		.catch(function(){
 			Toast('网络请求超时！')
 		})
+
+		axios.post('commodityInfo/listSet',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.classifyList = res.data.data.typeList || []
+					if (_this.classifyList.length > 0) {
+						_this.classifyId = _this.classifyList[0].id
+					}
+
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				_this.nodateStatus = true
+					Toast('网络请求超时！')
+			})
 	},
 	methods: {
 		back () {
@@ -231,7 +254,8 @@ export default {
 				addressDetail: this.addressDetail,
 				shopsLinkman: this.shopsLinkman,
 				shopsLinkphone: this.shopsLinkphone,
-				area: this.area
+				area: this.area,
+				classifyId: this.classifyId
 			}
 			window.localStorage.setItem('shopdata', JSON.stringify(shopdata))
 			this.$router.push('/shop2')

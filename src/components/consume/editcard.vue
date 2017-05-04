@@ -7,8 +7,8 @@
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加本人或所属公司的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
-				<label for="name">开户名:</label><!-- <span>{{realName}}</span> -->
-				<input type="text" name="" id="name" placeholder="请输入开户名" v-model.trim='name'>
+				<label for="name">开户名:</label><span>{{realName}}</span>
+				<!-- <input type="text" name="" id="name" placeholder="请输入开户名" v-model.trim='name'> -->
 			</div>
 			<div class="ex-addcard-num">
 				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
@@ -100,7 +100,7 @@ export default {
 				_this.card = res.data.data.cardNo
 				_this.banks = res.data.data.banks === '中国银行' ? '' : res.data.data.banks.split('中国')[1].split('银行')[0]
 				_this.branch = res.data.data.branch
-				_this.name = res.data.data.accountName
+				_this.realName = res.data.data.accountName
 				_this.province = res.data.data.province
 				_this.city = res.data.data.city
 				_this.phone = res.data.data.phone
@@ -158,10 +158,6 @@ export default {
 			},1000)
 		},
 		submit () {
-			if (!this.name) {
-				MessageBox('提示', '开户名不能为空！')
-				return
-			}
 			if (!/^\d{16,}$/.test(this.card2)) {
 				MessageBox('提示', '银行卡号不正确！')
 				return
@@ -189,7 +185,7 @@ export default {
 				branch: this.branchname,
 				phone: this.phone,
 				// cardType: '',
-				accountName: this.name
+				accountName: this.realName
 				// phoneCode: this.phonecode
 			}))
 			.then(function(res){
