@@ -40,8 +40,8 @@
 			</div>
 			<div class="ex-shop1-cnt-item">
 				<span>*所属行业</span>
-				<select v-model="classifyId" >
-					<option v-for='item in classifyList' :value='item.id' >{{item.typeName}}</option>
+				<select v-model="classifyId" style="width:8rem" >
+					<option v-for='item in classifyList' :value='item.id' >{{item.name}}</option>
 				</select>
 			</div>
 			<div class="ex-shop1-cnt-item">
@@ -163,9 +163,9 @@ export default {
 			Toast('网络请求超时！')
 		})
 
-		axios.post('commodityInfo/listSet',qs.stringify({})).then(function(res){
+		axios.post('shopClassification/list',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
-					_this.classifyList = res.data.data.typeList || []
+					_this.classifyList = res.data.data|| []
 					if (_this.classifyList.length > 0) {
 						_this.classifyId = _this.classifyList[0].id
 					}

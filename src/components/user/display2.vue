@@ -50,9 +50,9 @@
 							<li v-for='item in groupList'>
 								<span class="name">{{item.groupName}}</span>
 								<span class="checkboxGroup">
-		          		<input type="radio" :value="item.id" v-model="selectGroupId">
-		          		<i class="iconfont" v-show='selectGroupId != item.id'>&#xe64a;</i>
-		          		<i class="iconfont select" v-show='selectGroupId == item.id && selectGroupId != ""'>&#xe64d;</i>
+		          		<input type="radio" :value="item.id" v-model="batchGroupId">
+		          		<i class="iconfont" v-show='batchGroupId !== item.id'>&#xe64a;</i>
+		          		<i class="iconfont select" v-show='batchGroupId === item.id && batchGroupId !== ""'>&#xe64d;</i>
 		          	</span>
 							</li>
 						</ul>
@@ -280,7 +280,7 @@ export default {
 				shopsId: this.id,
 				groupId: this.groupId,
 				status: this.status,
-				page: this.page,
+				page: 1,
 				pageSize: this.pageSize
 			}))
 			.then(function(res){

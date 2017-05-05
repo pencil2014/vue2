@@ -37,7 +37,7 @@
 				<div class="item" @click="toproduct">
 					<span class="left">商品管理</span>
 					<span class="right" >
-						已编辑
+						<!-- 已编辑 -->
 						<i class="iconfont" >&#xe606;</i>
 					</span>
 				</div>
