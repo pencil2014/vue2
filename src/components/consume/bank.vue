@@ -235,17 +235,56 @@ export default {
 				MessageBox('提示', '可提现金额不足！')
 				return
 			}
-			if (this.userdata.isRealName !== '2') {
+
+			if (this.checkRealName.status === '0') {
+				MessageBox({
+				  title: '提示',
+				  message: '实名认证失败，目前不能转存！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+				return
+			}
+
+			if (this.checkRealName.status === '1') {
+				MessageBox('提示', '实名认证审核中，目前不能转存！')
+				return
+			}
+
+			if (this.checkRealName.status === '3') {
 				MessageBox({
 				  title: '提示',
 				  message: '请先进行实名认证！',
 				  showCancelButton: true,
 				  confirmButtonText: '去认证'
 				}).then(action => {
-					_this.$router.push('/realname')
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
 				})
 				return
 			}
+
+			if (this.checkRealName.status === '4') {
+				MessageBox({
+				  title: '提示',
+				  message: '实名认证需要升级，目前不能转存！',
+				  showCancelButton: true,
+				  confirmButtonText: '去认证'
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/realname')
+					}
+				})
+				return
+			}
+
+
+
 			if (this.bankdata.status === '1') {
 				MessageBox('提示', '银行卡审核中，目前不能转存！')
 				return

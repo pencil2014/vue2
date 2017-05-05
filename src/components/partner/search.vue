@@ -7,6 +7,7 @@
 			<div class="ex-search-input">
 				<i class="iconfont">&#xe67a;</i>
 				<input type="search" name="" id="" placeholder="搜索关键字"  v-model.trim='keyword' @keypress.prevent='search'>
+				<span @click='search'>搜索</span>
 			</div>
 		</div>
 		
@@ -55,7 +56,7 @@ export default {
 	data () {
 		return {
 			keyword: '',
-			historyKey: ['旅游','美食','汽车','美女','电影','雅居园','城市','花园','银行','环保'],
+			historyKey: [],
 			shoplist: [],
 			loading: false,
 			page: 1,
@@ -69,9 +70,6 @@ export default {
 			this.$router.go(-1)
 		},
 		search () {
-			if (!this.keyword) {
-				return
-			}
 			Indicator.open({
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
@@ -95,10 +93,12 @@ export default {
 				Toast('网络请求超时！')
 			})
 
-
+			if (!this.keyword) {
+				return
+			}
 			let historyKey = JSON.parse(window.localStorage.getItem('historyKey'))
 			let value = this.keyword 
-			if (!!historyKey && historyKey.indexOf(value) === -1 ) {
+			if (!!historyKey && historyKey.indexOf(value) === -1) {
 				historyKey.unshift(value)
 			} 
 			if (!historyKey) {
@@ -108,6 +108,7 @@ export default {
 				historyKey.pop()
 			}
 			window.localStorage.setItem('historyKey', JSON.stringify(historyKey))
+			this.historyKey = JSON.parse(window.localStorage.getItem('historyKey')) 
 		},
 		gotoinfo(id) {
 			this.$router.push({name:'Shopinfo',params:{id: id}})
@@ -192,7 +193,8 @@ export default {
 .ex-search-back i {font-size: 3rem;}
 .ex-search-input { width: 82%; float: right; height: 4.5rem; position: relative;}
 .ex-search-input i{ float: left;  position: absolute; left: 3%; top: 0.1rem; color: #999;}
-.ex-search-input input { border:none; background-color: #eee; border-radius: 2rem; height: 3.5rem; width: 95%; padding-left: 12%; }
+.ex-search-input input { border:none; background-color: #eee; border-radius: 2rem; height: 3.5rem; width: 80%; padding-left: 12%; }
+.ex-search-input span { color: #047dcb; font-size: 1.4rem; padding-left: 1rem;}
 .ex-search-cnt {margin-top: 5.5rem;}
 .ex-search-history { overflow: hidden; }
 .ex-search-history h3{ background-color: #f2f2f2; height: 4rem; line-height: 4rem;  padding-left: 2rem;  font-weight: normal; color: #666;}

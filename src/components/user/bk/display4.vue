@@ -145,7 +145,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.getList()
 					_this.newGroupName = ''
-					Toast('添加分组成功！')
+					_this.toast =Toast('添加分组成功！')
 				} else {
 					Toast(res.data.msg)
 				}

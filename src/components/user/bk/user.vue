@@ -68,7 +68,7 @@
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
-					<router-link to="/qrcode" tag="li" v-if="!isShop">
+					<router-link to="/qrcode" tag="li">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
 						<i class="iconfont" >&#xe606;</i>

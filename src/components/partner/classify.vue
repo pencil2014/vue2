@@ -25,6 +25,10 @@
 						</li>
 					</ul>
 				</mt-loadmore>
+				<div class="nodata" v-show='shoplist.length === 0 && nodateStatus'>
+				<img src="../../assets/images/nodata.png" alt="">
+				<p>还没有数据哦~</p>
+			</div>
 	</div>
 	</div>
 </template>
@@ -39,10 +43,11 @@ export default {
 		return {
 			id: '',
 			modal: {
-				text:'餐饮美食',
+				text:'',
 				fixed: true
 			},
 			shoplist: [],
+			nodateStatus: false
 		}
 	},
 	components: {
@@ -113,6 +118,22 @@ export default {
 	},
 	created () {
 		this.id = this.$route.params.id
+		let _this = this
+		axios.post('shopClassification/list',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				let title = res.data.data.filter(function(item) {
+					return item.id == _this.id
+				})
+				_this.modal.text = title[0].name
+
+			} else {
+				Toast(res.data.msg)
+			}
+		})
+		.catch(function(){
+			Toast('网络请求超时！')
+		})
 	},
 	filters: {
 		formatdis (value) {
@@ -121,7 +142,6 @@ export default {
 		}
 	},
 	mounted () {
-		this.modal.text = window.localStorage.getItem('classifytitle')
 	},
 	destroyed () {
 		Indicator.close()

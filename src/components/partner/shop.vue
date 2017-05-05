@@ -29,31 +29,31 @@
 		</div>
 		<div class="ex-shop-menu">
 			
-			<li @click='settitle("餐饮美食")'><router-link to="/classify/1">
+			<li><router-link to="/classify/1">
 				<img src="../../assets/images/shop1.png" alt="">
 				<span>餐饮美食</span>
 			</router-link></li>
-			<li @click='settitle("娱乐休闲")'><router-link to="/classify/2">
+			<li><router-link to="/classify/2">
 				<img src="../../assets/images/shop2.png" alt="">
 				<span>娱乐休闲</span>
 			</router-link></li>
-			<li @click='settitle("酒店住宿")'><router-link to="/classify/3">
+			<li ><router-link to="/classify/3">
 				<img src="../../assets/images/shop3.png" alt="">
 				<span>酒店住宿</span>
 			</router-link></li>
-			<li @click='settitle("房产物业")'><router-link to="/classify/8">
+			<li><router-link to="/classify/8">
 				<img src="../../assets/images/shop4.png" alt="">
 				<span>房产物业</span>
 			</router-link></li>
-			<li @click='settitle("汽车服务")'><router-link to="/classify/9">
+			<li><router-link to="/classify/9">
 				<img src="../../assets/images/shop5.png" alt="">
 				<span>汽车服务</span>
 			</router-link></li>
-			<li @click='settitle("零售批发")'><router-link to="/classify/11">
+			<li><router-link to="/classify/11">
 				<img src="../../assets/images/shop6.png" alt="">
 				<span>零售批发</span>
 			</router-link></li>
-			<li @click='settitle("办公家具")'><router-link to="/classify/4">
+			<li><router-link to="/classify/4">
 				<img src="../../assets/images/shop7.png" alt="">
 				<span>办公家具</span>
 			</router-link></li>
@@ -144,9 +144,6 @@ export default {
 		gotosearch () {
 			this.$router.push('/search')
 		},
-		settitle (title) {
-			window.localStorage.setItem('classifytitle', title)
-		},
 		getposition () {
 			let _this = this 
 			if (navigator.geolocation) {
@@ -200,8 +197,12 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({city:this.id, lat: this.currentPosition.latitude,
-				lng: this.currentPosition.longitude, pageSize: this.pageSize, page: 1}))
+			axios.post('shop/queryNearShop',qs.stringify({
+				city:this.id, 
+				lat: this.currentPosition.latitude,
+				lng: this.currentPosition.longitude, 
+				pageSize: this.pageSize, 
+				page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

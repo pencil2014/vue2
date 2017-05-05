@@ -13,7 +13,7 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">证件号码</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model="idCard" maxlength="25" @input="standard('idCard')">
+						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model="idCard" maxlength="20" @input="inputIdCard('idCard')">
 					</div>
 				</div>
 			</div>
@@ -163,6 +163,9 @@ export default {
 		},
 		standard(value) {
 		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]|\s/g,'')
+		},
+		inputIdCard(value){
+			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')
 		},
 		getfile (id) {
 			let _this = this;
@@ -352,7 +355,7 @@ export default {
 .UploadIMGfrom{background: #fff;padding: 0 0 0 15px;margin-top: 15px;}
 .UploadIMGfrom .UpLoadIMG{border-bottom: 1px solid #ebebeb;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;font-size: 1.4rem;}
 .UploadIMGfrom .UpLoadIMG:last-child{border-bottom: none;}
-.report-file{width: 64px;height: 64px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 5%;margin-top: 6px;text-align: center;position: relative;} 
+.report-file{width: 64px;height: 64px;overflow:hidden;border: dotted 1px #d8d8d8; display: inline-flex;margin-left: 5%;margin-top: 6px;text-align: center;position: relative;}
 .report-file img{position: absolute;height: 100%;width: 100%;top: 0;left: 0;border:none;}
 .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;height: 100%;width: 100%;z-index: 10;}
 .UpLoadIMG span{cursor: pointer;display: block;width: 100%;color: #aaafb6;font-size: 1.2rem;line-height: 20px;margin-top: 12px;}

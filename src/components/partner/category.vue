@@ -74,7 +74,7 @@ export default {
 			this.$router.go(-1)
 		},
 		settitle (title,id) {
-			window.localStorage.setItem('classifytitle', title)
+			// window.localStorage.setItem('classifytitle', title)
 			this.$router.push({name:'Classify', params: { id: id}})
 		},
 	},
@@ -105,5 +105,5 @@ export default {
 </script>
 
 <style scoped>
-.ex-shop-category-cnt{margin-top: 4.5rem;}	
+.ex-shop-category-cnt{margin-top: 4.5rem;}
 </style>
