@@ -457,11 +457,6 @@ export default new Router({
       component: Pay3
     },
     {
-      path: '/pay/step3',
-      name: 'Pay3',
-      component: Pay3
-    },
-    {
       path: '/display1',
       name: 'Display1',
       component: Display1

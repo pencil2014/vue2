@@ -73,7 +73,7 @@ export default {
 .ex-realname{width: 100%;background: #fff;color: #212a32;overflow-x: hidden;min-height: 100%;}
 .ex-content{width: 100%;text-align: center;margin-top: 20%;}
 .ex-content .title{font-size: 2rem;padding-top: 5px;}
-.ex-content .gray{color: rgb(153,153,153);font-size: 1.8rem;padding-top: 8px;max-width: 50%;word-break: break-all;margin: auto;}
+.ex-content .gray{color: rgb(153,153,153);font-size: 1.8rem;padding-top: 8px;max-width: 80%;word-break: break-all;margin: auto;}
 .ex-content .iconfont{font-size: 5rem;}
 .ex-content i.examine{color: #ffa100;}
 .ex-content i.unsuc{color: #f0544d;}

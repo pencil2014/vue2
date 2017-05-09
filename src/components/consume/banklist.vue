@@ -78,6 +78,7 @@ export default {
 		gotoedit (id,status) {
 			let _this = this
 			if (status === '1') {
+				MessageBox('提示', '银行卡审核中，无法操作！')
 				return
 			}
 			if (this.checkRealName.status === '4') {

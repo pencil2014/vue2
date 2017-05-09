@@ -98,7 +98,15 @@ export default {
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.card = res.data.data.cardNo
-				_this.banks = res.data.data.banks === '中国银行' ? '' : res.data.data.banks.split('中国')[1].split('银行')[0]
+				if (res.data.data.banks && res.data.data.banks.indexOf('中国') > -1 &&  res.data.data.banks.indexOf('银行') > -1) {
+					_this.banks = res.data.data.banks === '中国银行' ? '' : res.data.data.banks.split('中国')[1].split('银行')[0]
+				} else if (res.data.data.banks && res.data.data.banks.indexOf('中国') === -1 &&  res.data.data.banks.indexOf('银行') > -1) {
+					_this.banks = res.data.data.banks.split('银行')[0]
+				} else if(res.data.data.banks && res.data.data.banks.indexOf('中国') === -1 &&  res.data.data.banks.indexOf('银行') === -1) {
+					_this.banks = res.data.data.banks
+				} else {
+					_this.banks = ''
+				}		
 				_this.branch = res.data.data.branch
 				_this.realName = res.data.data.accountName
 				_this.province = res.data.data.province
@@ -216,17 +224,17 @@ export default {
 .ex-addcard-cnt .tips{ color: #5d646e; padding: 1.5rem 1rem; line-height: 1.5; font-size: 1.2rem;}
 .ex-addcard-cnt div {background-color: #fff;  vertical-align: middle;}
 .ex-addcard-cnt div label {display: inline-block; width: 25%; height: 3rem; line-height: 3rem;}
-.ex-addcard-cnt input {border: none;  color: #2eadff;vertical-align: middle; }
+.ex-addcard-cnt input {border: none;  color: #2eadff;vertical-align: middle;  font-size: 1.4rem;}
 .ex-addcard-num {border-bottom: 1px solid #e5e5e5; padding: 0.5rem 1rem;}
 .ex-addcard-num input {width: 70%; height: 3rem;}
 .ex-addcard-name {line-height: 3rem; padding: 0.5rem 1rem;}
 .ex-addcard-name input { height: 3rem; width: 40%; text-align: center;}
 .ex-addcard-subname {padding: 0 1rem;}
 .ex-addcard-subname p{border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;}
-.ex-addcard-subname p input {  text-align: center; height: 3rem; }
+.ex-addcard-subname p input {  text-align: center; height: 3rem;}
 .ex-addcard-subname .provice input { width: 22%; }
 .ex-addcard-subname .address{padding-left: 20%;}
-.ex-addcard-subname .address input { width: 35%; }
+.ex-addcard-subname .address input { width: 35%;}
 .ex-addcard-subname .provice span {color:#ffa132; font-size: 1.2rem;}
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 .verycode {position: relative;}

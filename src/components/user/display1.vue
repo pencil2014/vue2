@@ -28,7 +28,10 @@
 				<div class="item">
 					<span class="left">门头照片</span>
 					<span class="right">
-						<img :src="info.facadePhoto" alt="">
+						<div class="uploadimg">
+							<img :src="info.facadePhoto" alt="">
+							<input type="file" class="file-prew" id="frontPic" @change="getfile">
+						</div>	
 						<i class="iconfont" >&#xe606;</i>
 					</span>
 				</div>
@@ -48,12 +51,15 @@
 <script>
 import axios from "axios"
 import qs from "qs"
+import lrz from 'lrz'
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
 		return{
-			info:'',
+			info: '',
+			imgurl:'',
+			imgbase64: '',
 			modal: {
 				text:'店铺管理',
 				fixed: false
@@ -70,7 +76,6 @@ export default {
 	},
 	created () {
 		let _this = this 
-		// 获取用户详情
 		axios.post('shop/examine',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.info = res.data.data;
@@ -84,6 +89,62 @@ export default {
 	methods: {
 		back () {
 			this.$router.back();
+		},
+		getfile () {
+			let _this = this
+			let img = document.getElementById('frontPic').files[0]
+			if (img) {
+				lrz(img,{width:640})
+				.then(function (rst) {
+					_this.info.facadePhoto = window.URL.createObjectURL(img)
+			        _this.imgbase64 = rst.base64
+			        _this.upload()
+			    })
+	       		.catch(function (err) {
+	      			 _this.imgbase64.push('') 
+	       		})  
+			}
+		},
+		upload () {
+			let _this = this;
+			let formData = new FormData()
+			formData.append('imgStr',_this.imgbase64)
+			Indicator.open({
+			  text: '图片上传中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('upload/pic_min',formData)
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.imgurl = res.data.urls[0]
+					_this.changephoto()
+				} else {
+					Indicator.close()
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(res){
+				Indicator.close()
+				Toast('网络请求超时！')
+			})
+		},
+		changephoto () {
+			let _this = this;
+			axios.post('shop/updateShopInfo',qs.stringify({
+				id: _this.info.id,
+				facadePhoto: _this.imgurl
+			})).then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					Toast('修改门头照片成功')
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(res){
+				Indicator.close()
+				Toast('网络请求超时！')
+			})
 		},
 		toproduct () {
 			this.$router.push({
@@ -103,6 +164,9 @@ export default {
 .item-wrapper{margin-bottom: 1.5rem;background: #fff;}
 .item-wrapper .item{padding:15px 10px 15px 0;border-bottom: solid 1px #ebebeb;margin: 0 0 0 10px;}
 .item-wrapper .item:last-child{border-bottom: none;}
+.item-wrapper .item .right{}
+.item-wrapper .item .right .uploadimg {display: inline-block;position: relative;}
+.item-wrapper .item .right .uploadimg .file-prew{position: absolute;right: 0px;top: 0px;width: 84px;height: 100%;z-index: 10;opacity: 0;filter: alpha(opacity=0);cursor: pointer;}
 .item span{display: inline-block;vertical-align: top;}
 .item .left{width: 29%;font-size: 1.4rem;}
 .item .right{width: 70%;text-align: right;color: #aaafb6}

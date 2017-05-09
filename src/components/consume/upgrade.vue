@@ -18,6 +18,10 @@
 			<a href="javascript:;" @click='gowechat' class='wechat'><i class="iconfont">&#xe734;</i> 微信支付</a>
 			<a href="javascript:;" @click='gobank' class='bank'><i class="iconfont">&#xe66f;</i> 银行转账</a>
 		</div>
+		<div class="ex-argument">
+			<input type="checkbox" name="argument" id="checkbox" v-model="checked">
+			<a href="javascript:;">同意会员升级协议</a>
+		</div>
 		<div class="ex-upgrade-info">
 			<div class="ex-upgrade-item">
 				<b> 1. VIP用户权益</b>
@@ -37,7 +41,7 @@
 
 <script>
 import HeadTitle from '../common/title.vue'
-
+import { MessageBox } from 'mint-ui'
 	export default {
 		data () {
 			return {
@@ -45,6 +49,7 @@ import HeadTitle from '../common/title.vue'
 					text:'会员升级',
 					fixed: false,
 				},
+				checked: true
 			}
 		},
 		methods: {
@@ -52,9 +57,17 @@ import HeadTitle from '../common/title.vue'
 				this.$router.go(-1)
 			},
 			gowechat () {
+				if (!this.checked) {
+					MessageBox('提示', '请勾选会员升级协议!')
+					return
+				}
 				this.$router.push('/wechat')
 			},
 			gobank () {
+				if (!this.checked) {
+					MessageBox('提示', '请勾选会员升级协议!')
+					return
+				}
 				this.$router.push('/bankpay')
 			}
 		},
@@ -79,4 +92,7 @@ import HeadTitle from '../common/title.vue'
 .ex-upgrade-item {padding-bottom: 2rem;}
 .ex-upgrade-item b{ line-height: 2; }
 .ex-upgrade-item p{ color:#5d646e; line-height: 1.5;  }
+.ex-argument{ padding: 0 2rem 1rem 2rem;  vertical-align: middle;}
+.ex-argument input{ width: 1.5rem; height: 1.5rem; }
+.ex-argument a{ color: #047dcb; }
 </style>

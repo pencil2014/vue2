@@ -15,6 +15,7 @@
 	  			infinite-scroll-distance="10" >
 					<tr>
 						<th>编号</th>
+						<th>卖家ID</th>
 						<th>日期</th>
 						<th>商品</th>
 						<th>金额</th>
@@ -22,6 +23,7 @@
 					<tbody v-show='recordList.length > 0'>
 						<tr v-for="(item, index) in recordList">
 							<td>{{index+1}}</td>
+							<td>{{item.shopId}}</td>
 							<td>{{item.createTime | formatTime}}</td>
 							<td>{{item.commodityName}}</td>
 							<td>{{item.consumptionMoney}}</td>

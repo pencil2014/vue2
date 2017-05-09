@@ -19,6 +19,7 @@
 	 </div>
 	 <div class="ex-detail-hack"></div>
 		<div class="ex-detail-cnt">
+			<div class="ex-detail-cnt-table">
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table">
 					<tr>
@@ -47,6 +48,7 @@
 					</tbody>
 				</table>
 			</mt-loadmore>
+			</div>
 			<div class="nodata" v-show='recordList.length === 0 && nodateStatus'>
 				<img src="../../assets/images/nodata.png" alt="">
 				<p>还没有数据哦~</p>
@@ -166,6 +168,7 @@ export default {
 .ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203)}
 .ex-detail-integral-item { width: 50%; text-align: center; float: left; color: rgb(4,125,203)}
-.ex-detail-cnt {width: 120%;}
+.ex-detail-cnt{overflow: auto;}
+.ex-detail-cnt-table {width: 120%;}
 .ex-detail-cnt .nodata { margin-left: -20%; }
 </style>

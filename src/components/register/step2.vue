@@ -138,6 +138,9 @@ export default {
 			},1000)
 		},
 		register () {
+			if (this.repeatBtn) {
+				return
+			}
 			if (!this.userId) {
 				this.$router.push('/register')
 			}

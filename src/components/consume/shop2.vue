@@ -134,7 +134,6 @@ export default {
 		}
 	},
 	created () {
-
 	},
 	watch: {
 		imgArray () {
@@ -310,4 +309,5 @@ export default {
 .agreement {padding-left: 2%; font-size: 1.2rem; margin-bottom: 1rem;}
 .agreement input{ width: 1.4rem; height: 1.4rem; border-radius: 0.5rem; vertical-align: middle; }
 .agreement a{color:#1b6798; vertical-align: middle; }
+
 </style> 

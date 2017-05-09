@@ -214,7 +214,7 @@ export default {
 .ex-addcard-cnt div label {display: inline-block; width: 25%; height: 3rem; line-height: 3rem;}
 .ex-addcard-cnt input {border: none;  color: #2eadff;vertical-align: middle; }
 .ex-addcard-num {border-bottom: 1px solid #e5e5e5; padding: 0.5rem 1rem;}
-.ex-addcard-num input {width: 70%; height: 3rem;}
+.ex-addcard-num input {width: 70%; height: 3rem; font-size: 1.4rem;}
 .ex-addcard-name {line-height: 3rem; padding: 0.5rem 1rem;}
 .ex-addcard-name input { height: 3rem; width: 40%; text-align: center;}
 .ex-addcard-subname {padding: 0 1rem;}

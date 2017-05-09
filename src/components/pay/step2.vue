@@ -149,10 +149,10 @@ export default {
 			if(_this.submitbtn || _this.type === '3'){
 				return 
 			}
-			if(_this.userData.money > 10){
+			if(_this.userData.money > 5000){
 				MessageBox({
 					title:'温馨提示',
-					message:'您的订单交易金额大于10，报单需要人工审核',
+					message:'您的订单交易金额大于5000，报单需要人工审核',
 					showConfirmButton:true,
 					showCancelButton:true,
 					confirmButtonText:'确认',

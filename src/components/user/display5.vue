@@ -4,15 +4,15 @@
 		<div class="wrapper">
 			<ul class="item-content">
 				<li class="item">
-					<span>产品名称</span>
+					<span>商品名称</span>
 					<input type="text" placeholder="最多8个字符" maxlength="8" v-model.trim="commodityName">
 				</li>
 				<li class="item">
-					<span>产品价格</span>
+					<span>商品价格</span>
 					<input type="text" placeholder="请输入价格" maxlength="8" v-model.trim="price">
 				</li>
 				<li class="item picture">
-					<p>产品图片</p>
+					<p>商品图片</p>
 					<!-- 请上传小于500K的图片 -->
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
@@ -32,7 +32,7 @@
 			</ul>
 			<ul class="item-content">
 				<li class="item" @click="openTypeList">
-					<span>产品分类</span>
+					<span>商品分类</span>
 					<label class="right">
 						{{typeName}}
 						<i class="iconfont" >&#xe606;</i>

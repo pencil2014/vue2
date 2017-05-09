@@ -55,8 +55,9 @@ export default {
 		}),_this.config).then(function(res){
 			Indicator.close();
 			if (res.data.code === '10000') {
-				_this.link = res.data.url
-				_this.userCode = _this.link.split('?')[1].split('=')[1]
+				// _this.link = res.data.url
+				_this.userCode = res.data.url.split('?')[1].split('=')[1]
+				_this.link = window.location.origin + '/#/register/' + _this.userCode
 				let qrcode = new Qrcode('qrcode', {
 					text: pageUrl + '/' + _this.userCode,
 					width : 230,	

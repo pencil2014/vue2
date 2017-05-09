@@ -27,7 +27,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { Toast , Indicator } from 'mint-ui'
+import { Toast , Indicator, MessageBox } from 'mint-ui'
 export default {
 	data(){
 		return{
@@ -89,6 +89,49 @@ export default {
 				return
 			}
 			_this.submitbtn = true
+
+			Indicator.open({
+			  text: '用户检测中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('user/isEixt',qs.stringify({phone: this.phone}))
+			.then(function(res){
+				Indicator.close()
+				let str = ''	
+				if (res.data.code === '10000') {
+					if (res.data.msg === 'true') {
+						if(!res.data.data.realName){
+							str = "<span>用户编号："+res.data.data.userCode+"<br/>手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对信息，报错单损失无法追回！)</p>"
+						}else{
+							str = "<span>用户编号："+res.data.data.userCode+"<br/>姓名："+res.data.data.realName+"<br />手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对信息，报错单损失无法追回！)</p>"
+						}
+					} else {
+						str = "您还不是易享时代会员，系统会自动帮您注册成为会员！"
+					}
+					MessageBox({
+					  title: '提示',
+					  message: str,
+					  showCancelButton: true
+					}).then(action => {
+						if (action === 'confirm') {
+							_this.submitFun()
+						} else {
+							_this.submitbtn = false
+						}
+					})
+				}
+				else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('网络请求超时！')
+			})
+			
+		},
+		submitFun () {
+			let _this = this;
 			Indicator.open({
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
@@ -125,7 +168,7 @@ export default {
 				}
 			}).catch(function(){
 					_this.submitbtn = false
-					Indicator.close();
+					Indicator.close();	
 					Toast('网络请求超时！')
 			})
 		} 

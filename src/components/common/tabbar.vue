@@ -4,7 +4,7 @@
 			<span class="m1"></span><br>
 			首页
 		</router-link>
-		<router-link to="/partner">
+		<!-- <router-link to="/partner">
 			<span class="m2"></span>
 			<br>
 			商家推广
@@ -13,7 +13,17 @@
 			<span class="m3"></span>
 			<br>
 			平台规则
-		</router-link>
+		</router-link> -->
+		<a href="javascript:;" @click='disabled'>
+			<span class="m2"></span>
+			<br>
+			商家推广
+		</a>
+		<a href="javascript:;" @click='disabled'>
+			<span class="m3"></span>
+			<br>
+			平台规则
+		</a>
 		<router-link to="/user">
 			<span class="m4"></span>
 			<br>
@@ -23,6 +33,7 @@
 </template>
 
 <script>
+import { MessageBox, Indicator, Toast} from 'mint-ui'
 export default {
 	data () {
 		return {
@@ -35,6 +46,11 @@ export default {
 			} else {
 				return false
 			}
+		}
+	},
+	methods: {
+		disabled () {
+			Toast('功能暂未开放，敬请期待！')
 		}
 	}
 }	

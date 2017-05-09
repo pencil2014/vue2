@@ -51,3 +51,5 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 
 .nodata { height: 20rem; line-height: 2; text-align: center; color: #a6a9b0; font-size: 1.4rem;}
 .nodata img{ width: 15rem; height: auto;  padding-top: 5rem;}
+
+input{font-size: 1.4rem;}

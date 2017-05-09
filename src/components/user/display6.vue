@@ -4,15 +4,15 @@
 		<div class="wrapper">
 			<ul class="item-content">
 				<li class="item">
-					<span>产品名称</span>
+					<span>商品名称</span>
 					<input type="text" placeholder="" maxlength="8" v-model.trim="commodityName" readonly>
 				</li>
 				<li class="item">
-					<span>产品价格</span>
+					<span>商品价格</span>
 					<input type="text" placeholder="" maxlength="8" v-model.trim="price" readonly>
 				</li>
 				<li class="item picture">
-					<p>产品图片</p>
+					<p>商品图片</p>
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
 							<img :src="item">
@@ -22,7 +22,7 @@
 			</ul>
 			<ul class="item-content">
 				<li class="item">
-					<span>产品分类</span>
+					<span>商品分类</span>
 					<label class="right">
 						{{typeName}}
 					</label>

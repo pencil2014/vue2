@@ -41,13 +41,17 @@
 						<span>修改密码</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/twopassword" tag="li">
+					<!-- <router-link to="/twopassword" tag="li">
 						<span>设置二级密码</span>
 						<i class="iconfont">&#xe606;</i>
 						<label for="" v-if="userinfo.twoPwd === '2'">未设置</label>
-					</router-link>
+					</router-link> -->
 					<router-link to="/alterphone" tag="li">
 						<span>更换注册手机</span>
+						<i class="iconfont" >&#xe606;</i>
+					</router-link>
+					<router-link to="/businessinfo" tag="li" v-if="isShop">
+						<span>商家申请资料</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
 				</ul>

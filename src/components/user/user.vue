@@ -39,14 +39,14 @@
 					</router-link>
 					<!-- <router-link to="/businessinfo" tag="li" v-if="isShop">
 						<img src="../../assets/images/business.png" alt="">
-						<span>商家信息</span>
+						<span>商家申请资料</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link> -->
-					<router-link to="/display1" tag="li" v-if="isShop">
+					<!-- <router-link to="/display1" tag="li" v-if="isShop">
 						<img src="../../assets/images/business.png" alt="">
 						<span>店铺管理</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link>
+					</router-link> -->
 					<router-link to="/message/1" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>

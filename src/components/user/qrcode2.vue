@@ -46,112 +46,131 @@ export default {
 
 	},
 	created () {
-		 
+		 this.getData()
 	},
 	mounted () {
-		let _this = this
-		Indicator.open({
-		  text: '加载中...',
-		  spinnerType: 'fading-circle'
-		})		 		
-		axios.all([
-		 	axios.post('user/personal'),
-        	axios.post('shop/examine'),
-        	axios.post('bankard/list'),
-		 ]).then(axios.spread(function (personal,shop,card){
-		 	Indicator.close();
-		 	if(personal.data.code === '10000' &&　shop.data.code === '10000' && card.data.code === '10000') {
-		 		_this.userData = personal.data.data
-		 		let cardlist = card.data.data
-		 		let isRealName = _this.userData.isRealName
-		 		if(isRealName === '1'){
-		 			MessageBox({
-						title:'提示',
-						message:'请去实名认证！',
-						showConfirmButton:true,
-						showCancelButton:true,
-						confirmButtonText:'确认',
-						cancelButtonText:'取消',
-					}).then(action =>{
-						if(action === "confirm"){
-							_this.$router.push('/realname')
-						}
-					});
-					return
-				}
-				if (isRealName === '4') {
-					MessageBox('提示','实名认证审核中，请先通过实名认证！')
-					return
-				}
-				if (isRealName === '5') {
-					MessageBox({
-						title:'提示',
-						message:'实名认证失败，请先通过实名认证！',
-						showConfirmButton:true,
-						showCancelButton:true,
-						confirmButtonText:'确认',
-						cancelButtonText:'取消',
-					}).then(action =>{
-						if(action === "confirm"){
-							_this.$router.push('realname/detail')
-						}
-					});
-					return
-				}
-				if( isRealName === '6' ){
-		 			MessageBox({
-						title:'提示',
-						message:'为了保障您的账户安全，<br />现在实名认证流程需要升级，<br />为了不影响您的正常使用，<br />请尽快进行资料的补充！',
-						showConfirmButton:true,
-						showCancelButton:true,
-						confirmButtonText:'确认',
-						cancelButtonText:'取消',
-					}).then(action =>{
-						if(action === "confirm"){
-							_this.$router.push('realname')
-						}
-					});
-	        		return
-		 		}
-				if(cardlist.length === 0){
-					MessageBox({
-						title:'提示',
-						message:'请去添加银行卡',
-						showConfirmButton:true,
-						showCancelButton:true,
-						confirmButtonText:'确认',
-						cancelButtonText:'取消',
-					}).then(action =>{
-						if(action === "confirm"){
-							_this.$router.push('/addcard')
-						}
-					});
-					return
-				}
-				if(cardlist[0].status !== '3'){
-					MessageBox('提示','请先通过银行卡审核！')
-	        		return
-				}
-		 		_this.shopData = shop.data.data
-		 		_this.link = window.location.origin + '/#/pay?userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
-		 		let qrcode = new Qrcode('qrcode', {
-					text:  _this.link,
-					width : 230,	
-					height : 230,
-					colorDark: '#123'
-				});
-		 	}else{
-		 		Toast('系统错误！')
-		 	}
-		 })).catch(function(){
-		 	Indicator.close();
-			Toast('网络请求超时！')
-		})
+		
 	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
+		getData () {
+			let _this = this
+			_this.makeqrcode()
+		},
+		makeqrcode () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})		 		
+			axios.all([
+			 	axios.post('user/personal'),
+	        	axios.post('shop/examine'),
+	        	axios.post('bankard/list'),
+			 ]).then(axios.spread(function (personal,shop,card){
+			 	Indicator.close();
+			 	if(personal.data.code === '10000' &&　shop.data.code === '10000' && card.data.code === '10000') {
+			 		_this.userData = personal.data.data
+			 		let cardlist = card.data.data
+			 		let isRealName = _this.userData.isRealName
+			 		if(isRealName === '1'){
+			 			MessageBox({
+							title:'提示',
+							message:'请去实名认证！',
+							showConfirmButton:true,
+							showCancelButton:true,
+							confirmButtonText:'确认',
+							cancelButtonText:'取消',
+						}).then(action =>{
+							if(action === "confirm"){
+								_this.$router.push('/realname')
+							}else{
+								_this.$router.push('user')
+							}
+						});
+						return
+					}
+					if (isRealName === '4') {
+						MessageBox('提示','实名认证审核中，请先通过实名认证！').then(action =>{
+							if(action === "confirm"){
+								_this.$router.push('/user')
+							}
+						});
+						return
+					}
+					if (isRealName === '5') {
+						MessageBox({
+							title:'提示',
+							message:'实名认证失败，请先通过实名认证！',
+							showConfirmButton:true,
+							showCancelButton:true,
+							confirmButtonText:'确认',
+							cancelButtonText:'取消',
+						}).then(action =>{
+							if(action === "confirm"){
+								_this.$router.push('realname/detail')
+							}else{
+								_this.$router.push('user')
+							}
+						});
+						return
+					}
+					if( isRealName === '6' ){
+			 			MessageBox({
+							title:'提示',
+							message:'为了保障您的账户安全，<br />现在实名认证流程需要升级，<br />为了不影响您的正常使用，<br />请尽快进行资料的补充！',
+							showConfirmButton:true,
+							showCancelButton:true,
+							confirmButtonText:'确认',
+							cancelButtonText:'取消',
+						}).then(action =>{
+							if(action === "confirm"){
+								_this.$router.push('realname')
+							}else{
+								_this.$router.push('user')
+							}
+						});
+		        		return
+			 		}
+					if(cardlist.length === 0){
+						MessageBox({
+							title:'提示',
+							message:'请去添加银行卡',
+							showConfirmButton:true,
+							showCancelButton:true,
+							confirmButtonText:'确认',
+							cancelButtonText:'取消',
+						}).then(action =>{
+							if(action === "confirm"){
+								_this.$router.push('/addcard')
+							}else{
+								_this.$router.push('user')
+							}
+						});
+						return
+					}
+					if(cardlist[0].status !== '3'){
+						MessageBox('提示','请先通过银行卡审核！')
+		        		return
+					}
+			 		_this.shopData = shop.data.data
+			 		_this.link = window.location.origin + '/#/pay?userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
+			 		let qrcode = new Qrcode('qrcode', {
+						text:  _this.link,
+						width : 230,	
+						height : 230,
+						colorDark: '#123'
+					});
+			 	}else{
+			 		Toast('系统错误！')
+			 	}
+			 })).catch(function(){
+			 	Indicator.close();
+				Toast('网络请求超时！')
+			})
+		}
 	},
 	components: {
 		HeadTitle,
