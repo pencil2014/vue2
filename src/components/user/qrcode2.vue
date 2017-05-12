@@ -116,14 +116,14 @@ export default {
 							}
 						});
 						return
-					}
+					}	
 					if( isRealName === '6' ){
 			 			MessageBox({
 							title:'提示',
-							message:'为了保障您的账户安全，<br />现在实名认证流程需要升级，<br />为了不影响您的正常使用，<br />请尽快进行资料的补充！',
+							message:'实名认证升级后才能获取商家收款二维码！',
 							showConfirmButton:true,
 							showCancelButton:true,
-							confirmButtonText:'确认',
+							confirmButtonText:'去认证',
 							cancelButtonText:'取消',
 						}).then(action =>{
 							if(action === "confirm"){
@@ -152,7 +152,11 @@ export default {
 						return
 					}
 					if(cardlist[0].status !== '3'){
-						MessageBox('提示','请先通过银行卡审核！')
+						MessageBox('提示','请先通过银行卡审核！').then(action =>{
+							if(action === "confirm"){
+								_this.$router.push('user')
+							}
+						});
 		        		return
 					}
 			 		_this.shopData = shop.data.data

@@ -20,7 +20,8 @@
 		</div>
 		<div class="ex-argument">
 			<input type="checkbox" name="argument" id="checkbox" v-model="checked">
-			<a href="javascript:;">同意会员升级协议</a>
+			<!-- <label for="checkbox">同意会员升级协议</label> -->
+			<a href="http://exgj.com.cn/exsdresc/file/e-m-xy.docx">同意会员升级协议</a>
 		</div>
 		<div class="ex-upgrade-info">
 			<div class="ex-upgrade-item">

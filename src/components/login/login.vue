@@ -8,10 +8,12 @@
 				<div class="ex-login-from-item">
 					<i class="iconfont">&#xe6f2;</i>
 					<input type="tel" name="phone" @focus='hidecopy' @blur='showcopy' v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
+					<i class="iconfont clear" v-show='phone !==""' @click='clear(1)'>&#xe6b3;</i>
 				</div>
 				<div class="ex-login-from-item">
 					<i class="iconfont">&#xe61e;</i>
 					<input type="password" name="password" @focus='hidecopy' @blur='showcopy'  v-model.trim="password" placeholder="请输入密码" maxlength="20">
+					<i class="iconfont clear" v-show='password !==""' @click='clear(2)'>&#xe6b3;</i>
 				</div>
 				<div class="ex-login-from-submit">
 					<button type="button" @click="login" :class="{disableBtn:disableBtn}">登 录</button>
@@ -67,6 +69,13 @@ export default {
 		// ...mapActions([
   //     'changeLoginStatus'
   //   ]),
+    clear (id) {
+    	if (id === 1) {
+    		this.phone = ''
+    	} else {
+    		this.password =''
+    	}
+    },
 		login () {
 			if (this.repeatBtn) {
 				return
@@ -144,8 +153,10 @@ export default {
 .ex-login{ min-height:100%; background: url('../../assets/images/logo.jpg') no-repeat fixed center; background-size: cover; }
 .ex-login-logo{ text-align: center; }
 .ex-login-cnt{margin:0 2rem; background-color: rgba(255,255,255,0.6); border-radius: 0.6rem; padding: 2rem 1rem ;}
-.ex-login-from-item { background-color: rgba(255, 255, 255, 1); padding: 0.5rem; margin-bottom: 1rem; border-radius: 0.4rem; }
+.ex-login-from-item { background-color: rgba(255, 255, 255, 1); padding: 0.5rem; margin-bottom: 1rem; border-radius: 0.4rem; position: relative; }
 .ex-login-from-item i{ font-size: 2.2rem; vertical-align: middle; color: #657f84; padding-left: 0.5rem;}
+.ex-login-from-item .clear { position: absolute; right: 1rem; top: 1rem; color: #eee;}
+
 .ex-login-from-item input{ height:3rem;border: none; width: 84%;  vertical-align: middle; background-color: transparent;color: #657f84;  font-size: 1.6rem;}
 .ex-login-from-item input::-webkit-input-placeholder{color: #eee;}
 .ex-login-from-submit{margin-top: 1.5rem; }

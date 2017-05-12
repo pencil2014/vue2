@@ -299,6 +299,12 @@ export default {
 					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
 					window.localStorage.setItem('user/personal', new Date().getTime())
 				} else {
+					if (res.data.msg==='token无效') {
+						window.localStorage.removeItem('token')
+						axios.defaults.headers.common['authorization'] = ''
+						_this.$router.push('/login')
+						return
+					}
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
@@ -313,6 +319,12 @@ export default {
 					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
 					window.localStorage.setItem('user/sysIndex', new Date().getTime())
 				} else {
+					if (res.data.msg==='token无效') {
+						window.localStorage.removeItem('token')
+						axios.defaults.headers.common['authorization'] = ''
+						_this.$router.push('/login')
+						return
+					}
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
@@ -327,6 +339,12 @@ export default {
 					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
 					// window.localStorage.setItem('user/examine', new Date().getTime())
 				} else {
+					if (res.data.msg==='token无效') {
+						window.localStorage.removeItem('token')
+						axios.defaults.headers.common['authorization'] = ''
+						_this.$router.push('/login')
+						return
+					}
 					Toast(res.data.msg)
 				}
 			}).catch(function(){

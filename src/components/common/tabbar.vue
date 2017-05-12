@@ -4,26 +4,26 @@
 			<span class="m1"></span><br>
 			首页
 		</router-link>
+		<a href="javascript:;" @click='disabled'>
+			<span class="m2"></span>
+			<br>
+			商家推广
+		</a>
 		<!-- <router-link to="/partner">
 			<span class="m2"></span>
 			<br>
 			商家推广
-		</router-link>
+		</router-link> -->
 		<router-link to="/school">
 			<span class="m3"></span>
 			<br>
 			平台规则
-		</router-link> -->
-		<a href="javascript:;" @click='disabled'>
-			<span class="m2"></span>
-			<br>
-			商家推广
-		</a>
-		<a href="javascript:;" @click='disabled'>
+		</router-link>
+		<!-- <a href="javascript:;" @click='disabled'>
 			<span class="m3"></span>
 			<br>
 			平台规则
-		</a>
+		</a> -->
 		<router-link to="/user">
 			<span class="m4"></span>
 			<br>
@@ -50,7 +50,11 @@ export default {
 	},
 	methods: {
 		disabled () {
-			Toast('功能暂未开放，敬请期待！')
+			// Toast('功能暂未开放，敬请期待！')
+			Toast({
+			  message: '功能暂未开放，敬请期待！',
+			  duration: 1000
+			})
 		}
 	}
 }	

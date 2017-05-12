@@ -6,6 +6,7 @@ import store from './store'
 import axios from "axios"
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
+
 // import filter from './filters' 
 
 Vue.config.productionTip = false
@@ -13,7 +14,7 @@ Vue.config.productionTip = false
 // 引入mint-ui插件
 Vue.use(Mint)
 
-// 判断用是否登录
+// 判断是否登录
 router.beforeEach((to, from, next) => {
   let url = to.path.indexOf('login') > -1 || to.path.indexOf('register') > -1 || to.path.indexOf('forgot') > -1 || to.path.indexOf('pay') > -1
   let token = window.localStorage.getItem('token')
@@ -40,7 +41,7 @@ new Vue({
 Vue.prototype.$bus = new Vue()  // this.$bus调用
 
 // 配置全局ajax请求域名
-axios.defaults.baseURL = 'https://exsd-test.exgj.com.cn/exsd-web/'  // 'https://exsd-test.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'http://120.25.77.33:8999/exsd-web/'
+axios.defaults.baseURL = 'http://www.exgj.com.cn/exsd-web/'  // 'https://exsd-test.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'http://120.25.77.33:8999/exsd-web/'
 
 if (!!window.localStorage.getItem('token')) {
 	axios.defaults.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('token')

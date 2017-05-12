@@ -27,7 +27,7 @@
 							<td>{{item.commodityName}}</td>
 							<td>{{item.consumptionMoney}}</td>
 							<td  @click='gotodec(item.status,item.id)'>
-								<span v-if='item.status==="1"' >初审中 <i class='iconfont'>&#xe606;</i></span>
+								<span v-if='item.status==="1"' >消费凭证审核<i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status ==="5"' >转账审核 <i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status==="2"'>已撤销 <i class='iconfont'>&#xe606;</i></span>
 								<span v-if='(item.status==="3" || item.status ==="7") && !item.transferVoucher' >未通过初审 <i class='iconfont'>&#xe606;</i></span>

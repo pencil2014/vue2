@@ -20,11 +20,11 @@
 						<th>金额</th>
 					</tr>
 					<tbody v-show='tableList.length > 0'>
-						<tr v-for="(item, index) in tableList">
+						<tr v-for="(item, index) in tableList" @click='godetail(item.id)'>
 							<td>{{item.createTime | formatTime}}</td>
 							<td>{{item.commodityName}}</td>
 							<td>{{item.userCode}}</td>
-							<td>{{item.consumptionMoney}}</td>
+							<td>{{item.consumptionMoney}}<i class='iconfont'>&#xe606;</i></td>
 						</tr>
 					</tbody>
 				</table>
@@ -60,7 +60,10 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.go(-1)
+			this.$router.push('/business')
+		},
+		godetail (id) {
+			this.$router.push({ name: 'Tableinfo', params: { id: id}})
 		},
 		loadTop () {
 			Indicator.open({

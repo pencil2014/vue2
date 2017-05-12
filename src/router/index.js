@@ -40,6 +40,7 @@ const Declare6 = resolve => require(['../components/business/declare6'], resolve
 const Order = resolve => require(['../components/business/order'], resolve)
 const Tables = resolve => require(['../components/business/tables'], resolve)
 const Detail2 = resolve => require(['../components/business/detail'], resolve)
+const Tableinfo = resolve => require(['../components/business/tableinfo'], resolve)
 
 // const Bank1 = resolve => require(['../components/business/bank'], resolve)
 // const BankList1 = resolve => require(['../components/business/banklist'], resolve)
@@ -265,6 +266,11 @@ export default new Router({
       path: '/tables',
       name: 'Tables',
       component: Tables
+    },
+    {
+      path: '/tableinfo/:id',
+      name: 'Tableinfo',
+      component: Tableinfo
     },
     {
       path: '/detail2',

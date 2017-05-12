@@ -4,7 +4,21 @@
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>银行转存</span>
 		</div> -->
-		<HeadTitle :title="modal" @callback="back"></HeadTitle>
+		<!-- <HeadTitle :title="modal" @callback="back"></HeadTitle> -->
+		<div class="ex-header">
+			<span>
+				<a href="javascript:void(0);" @click="back">
+					<i class="iconfont" >&#xe605;</i>
+					返回
+				</a>
+			</span>
+			<span>转存银行</span>
+			<span class="finish">
+				<router-link to="/money" >
+					资金明细
+				</router-link>
+			</span>
+		</div>
 		<div class="ex-bank-cnt">
 			<div class="ex-bank-balance">
 				当前账户余额：<span class="orange">{{userdata.overMoney | checknum}}</span>
@@ -35,8 +49,6 @@
 			<p>1、提现金额每笔不少于100不超过5万</p>
 			<p>2、每笔提现收取5元手续费</p>
 		</div>
-
-
 	</div>	
 </template>
 
@@ -358,4 +370,14 @@ export default {
 .ex-bank-btn:active {background-color: #0470b6;}
 .ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
+
+.ex-header{width: 100%;display: table;height: 4.5rem;background-color: rgb(255,255,255);color: rgb( 33,42,50);box-shadow:1px 1px 0px #ebebeb;position: relative;z-index: 9999;}
+.ex-header span{display: table-cell;width: 33.3%;vertical-align: middle;font-size: 1.6rem;}
+.ex-header span:nth-child(1){text-align: left;padding-left: 0.5rem;}
+.ex-header span:nth-child(1) a{height: 100%;display: inline-block;line-height: 4.5rem;color: rgb(4,125,203);}
+.ex-header span:nth-child(1) a i{font-size: 2rem;}
+.ex-header span:nth-child(1) a label {height: 100%;display: inline-block;}
+.ex-header span:nth-child(2){text-align: center;font-size: 1.8rem;}
+.ex-header span:nth-child(3){text-align: right;}
+.ex-header span:nth-child(3) a{height: 100%;display: inline-block;line-height: 4.5rem;color: #333;text-align: center;margin-right: 10px;}
 </style>

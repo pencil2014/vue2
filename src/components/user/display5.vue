@@ -157,15 +157,15 @@ export default {
 		},
 		cancle () {
 			this.isTypeList = false
-			if(!this.typeName){
-				this.typeindex = ''
-			}
+			this.selcommodityTypeId = this.commodityTypeId
 		},
 		confirm () {
 			let _this = this;
 			this.isTypeList = false
-			this.typeName = this.seltypeName
-			this.commodityTypeId = this.selcommodityTypeId
+			if(this.selcommodityTypeId !== this.commodityTypeId){
+				this.typeName = this.seltypeName
+				this.commodityTypeId = this.selcommodityTypeId
+			}
 		},
 		seltype (id,typeName) {
 			this.selcommodityTypeId = id
@@ -190,6 +190,7 @@ export default {
 			    })
 	       		.catch(function (err) {
 	      			 _this.imgbase64.push('') 
+	      			 _this.imgurl.push('')
 	       		})  
 			}
 		},
@@ -235,10 +236,6 @@ export default {
 				MessageBox('提示', '请选择商品分类!')
 				return
 			}
-			// if (this.imgurl.length !== (this.imgbase64).concat(this.).length) {
-			// 	MessageBox('提示', '图片压缩中请稍后...')
-			// 	return
-			// }
 			this.submitbtn = true
 			this.UpLoadIMG()
 		},
@@ -301,7 +298,6 @@ export default {
 				} else {
 					_this.submitbtn = false
 					Toast(res.data.msg)
-					console.log(1)
 				}
 			})
 			.catch(function(res){
@@ -407,7 +403,7 @@ export default {
 .ex-display .wrapper .item .report-file {overflow: hidden;position: relative;border: dotted 1px #d8d8d8;text-align: center;}
 .ex-display .wrapper .item .report-file span{cursor: pointer;display: block;width: 100%;line-height: 20px;padding-top: 12px;}
 .ex-display .wrapper .item .report-file .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;z-index: 10;width: 100%;height: 100%;}
-.UpLoadIMG{margin: 15px 0 0 15px;}
+.UpLoadIMG{margin: 15px 0 0 0;}
 .ex-display .wrapper .item .UpLoadIMG div{/*display: inline-flex;*/display: inline-block;width: 64px;height: 64px;margin: 0 9px;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic {border: solid 1px #ebebeb;position: relative;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic img{;width: 100%;height: 100%;}

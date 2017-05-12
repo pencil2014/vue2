@@ -106,8 +106,7 @@ export default {
 				phoneCode: _this.VeryCode
 			})).then(res =>{
 				if (res.data.code === '10000') {
-					this.$router.push('/alterphone/step2')
-					_this.submitBtn = false;
+					_this.$router.push('/alterphone/step2')
 				} else {
 					_this.submitBtn = false;
 					Toast(res.data.msg)
@@ -166,7 +165,7 @@ export default {
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
 .ex-field-wrapper .ex-field-title{display: block;float: left;width: 30%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
-.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 65%;height: 30px;border: none;}
+.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 65%;height: 30px;border: none;font-size: 1.4rem;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}

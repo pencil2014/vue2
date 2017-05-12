@@ -118,7 +118,8 @@ export default {
 	        _Promise:'',
 			countdown: false,
 			second: '短信验证码',
-			submitBtn: false
+			submitBtn: false,
+			islrz:false
 		}
 	},
 	components: {
@@ -175,11 +176,14 @@ export default {
 				return
 			}
 			_this.imgurl[_id] = window.URL.createObjectURL(file);
+			_this.islrz = true
 			lrz(file,{width:640})
 				.then(function (rst) {
+					_this.islrz = false
 		        	_this.files[_id] = rst.base64;
 		        })
 		        .catch(function (err) {
+		        	_this.islrz = false
 		         	_this.files[_id] = '';
 		        })
 		},
@@ -207,11 +211,16 @@ export default {
 		submit(){
 			let _this = this;
 			// let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
+			let rule1 = /base64/ig
 			if(_this.disable){
 				return;
 			}
 			if(_this.submitBtn){
 				return 
+			}
+			if(_this.islrz){
+				Toast('图片压缩中...')
+				return
 			}
 			let _Promise = this.checkIdCard
 			let _Promise2 = this.uploadimg
@@ -344,7 +353,7 @@ export default {
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
 .ex-field-wrapper .ex-field-title{display: block;float: left;width: 20%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
-.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 75%;height: 30px;border: none;}
+.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 75%;height: 30px;border: none;font-size: 1.4rem;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}

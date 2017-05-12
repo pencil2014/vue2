@@ -84,10 +84,10 @@ export default {
 			if(_this.disableBtn || _this.submitbtn){
 				return
 			}
-			if(_this.money > 50000){
-				Toast('每笔不能大于50000')
-				return
-			}
+			// if(_this.money > 50000){
+			// 	Toast('每笔不能大于50000')
+			// 	return
+			// }
 			_this.submitbtn = true
 
 			Indicator.open({

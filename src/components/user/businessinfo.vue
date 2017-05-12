@@ -9,6 +9,10 @@
 				<b>{{examineData.shopsName}}</b>
 			</div>
 			<div class="ex-shop3-item">
+				<span>所属行业</span>
+				<b>{{examineData.classificationName}}</b>
+			</div>
+			<div class="ex-shop3-item">
 				<span>联系地址</span>
 				<b>{{examineData.shopsAddress2}}</b>
 			</div>
@@ -76,7 +80,7 @@ export default {
 		return {
 			examineData: '',
 			modal:{
-				text:'商家信息',
+				text:'商家申请资料',
 				fixed: false,
 			},
 			imgpre: {

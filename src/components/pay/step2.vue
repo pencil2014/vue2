@@ -149,30 +149,12 @@ export default {
 			if(_this.submitbtn || _this.type === '3'){
 				return 
 			}
-			if(_this.userData.money > 5000){
-				MessageBox({
-					title:'温馨提示',
-					message:'您的订单交易金额大于5000，报单需要人工审核',
-					showConfirmButton:true,
-					showCancelButton:true,
-					confirmButtonText:'确认',
-					cancelButtonText:'取消',
-				}).then(action =>{
-					if(action === "confirm"){
-						_this.pay()
-					}
-				});
-				return
-			}
-			_this.pay()
-		},
-		pay () {
-			let _this = this;
-			_this.submitbtn = true
+			
 			Indicator.open({
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			})
+			_this.submitbtn = true
 			axios.create({
 				headers: {'authorization': 'Bearer ' +　window.localStorage.paytoken}
 			}).post('consume/toPay',qs.stringify({
@@ -183,27 +165,42 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if(res.data.code === '10000'){
-					if(res.data.code === '10000'){
-						if(_this.type === '1'){
-							_this.qrcode = {
-								show: true,
-								link: res.data.data.url
+					let data = res
+
+					if(res.data.data.hasOwnProperty('option')){
+						MessageBox({
+							title:'提示',
+							message: data.data.data.option,
+							showConfirmButton:true,
+							showCancelButton:true,
+						}).then(action => {
+							if(action === "confirm"){
+								_this.pay(data.data.data)
+							}else{
+								_this.submitbtn = false
 							}
-							let qrcode = new Qrcode('qrcode', {
-								text: _this.qrcode.link ,
-								width : 230,	
-								height : 230,
-								colorDark: '#123'
-							});
-						}else{
-							window.location.href = res.data.data.url
-						}
-					}else{
-						_this.submitbtn = false
-						_this.appAlert({
-							text: res.data.msg
 						})
+						return 
 					}
+
+					if(_this.userData.money > 20){
+						MessageBox({
+							title:'提示',
+							message:'您的订单交易金额大于2000，报单需要人工审核',
+							showConfirmButton:true,
+							showCancelButton:true,
+						}).then(action =>{
+							if(action === "confirm"){
+								_this.pay(data.data.data)
+							}else{
+								_this.submitbtn = false
+							}
+						});
+						return
+					}
+
+					_this.pay(data.data.data)
+
 				}else{
 					_this.submitbtn = false
 					Toast(res.data.msg)
@@ -213,6 +210,20 @@ export default {
 				Indicator.close();
 				Toast('网络请求超时！')
 			})
+		},
+		pay (data) {
+			let _this = this
+			if(_this.type === '1'){
+				_this.qrcode = {show: true,link: data.url}
+				let qrcode = new Qrcode('qrcode', {
+					text: _this.qrcode.link,
+					width : 230,	
+					height : 230,
+					colorDark: '#123'
+				});
+			}else{
+				window.location.href = data.url
+			}
 		}
 	},
 	filters: {

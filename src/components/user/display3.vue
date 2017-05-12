@@ -47,7 +47,7 @@
 						<i class="iconfont">&#xe606;</i>
 					</label>
 				</li>
-				<li class="item-option" v-for="(item,index) in groupList" @click="selground(item.id)">
+				<li class="item-option" v-for="(item,index) in groupList" @click="selground(item.id)" v-if='item.id !==0'>
 					<div :class="{'select': groupId === item.id}">
 						<span class="option"></span>
 						{{item.groupName}}
@@ -65,9 +65,9 @@
 					<div class="title">店铺分组</div>
 					<div class="field">
 						<ul>
-							<li v-for="(item,index) in TypeList" @click="seltype(item.id,index,item.typeName)">
+							<li v-for="(item,index) in TypeList" @click="seltype(item.id,item.typeName)" >
 								<span>{{item.typeName}}</span>
-								<span class="option" :class="{'select': typeindex === index}"></span>
+								<span class="option" :class="{'select': selcommodityTypeId === item.id}"></span>
 							</li>
 						</ul>
 					</div>
@@ -154,25 +154,24 @@ export default {
 		},
 		cancle () {
 			this.isTypeList = false
-			if(!this.typeName){
-				this.typeindex = ''
+			if(!this.commodityTypeId){
+				this.selcommodityTypeId = ''
+				this.seltypeName = ''
+				return
 			}
+			this.selcommodityTypeId = this.commodityTypeId
 		},
 		confirm () {
-			let _this = this;
 			this.isTypeList = false
 			this.typeName = this.seltypeName
-			this.	commodityTypeId = this.selcommodityTypeId
+			this.commodityTypeId = this.selcommodityTypeId
 		},
-		seltype (id,index,typeName) {
-			// console.log(id,index)
-			this.typeindex = index
+		seltype (id,typeName) {
 			this.selcommodityTypeId = id
 			this.seltypeName = typeName
 		},
 		selground (id) {
 			this.groupId = id
-			console.log(this.groupId,id)
 		},
 		getfile () {
 			let _this = this
@@ -286,7 +285,6 @@ export default {
 				} else {
 					this.submitbtn = false
 					Toast(res.data.msg)
-					console.log(1)
 				}
 			})
 			.catch(function(res){
@@ -362,7 +360,7 @@ export default {
 .ex-display .wrapper .item .report-file {overflow: hidden;position: relative;border: dotted 1px #d8d8d8;text-align: center;}
 .ex-display .wrapper .item .report-file span{cursor: pointer;display: block;width: 100%;line-height: 20px;padding-top: 12px;}
 .ex-display .wrapper .item .report-file .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;z-index: 10;width: 100%;height: 100%;}
-.UpLoadIMG{margin: 15px 0 0 15px;}
+.UpLoadIMG{margin: 15px 0 0 0;}
 .ex-display .wrapper .item .UpLoadIMG div{/*display: inline-flex;*/display: inline-block;width: 64px;height: 64px;margin: 0 9px;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic {border: solid 1px #ebebeb;position: relative;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic img{;width: 100%;height: 100%;}

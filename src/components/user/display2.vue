@@ -228,7 +228,7 @@ export default {
 						ids: this.optionList.join(',')
 					})).then(function(res){
 						if (res.data.code === '10000') {
-							Toast('商品已申请上架！')
+							Toast('商品上架成功！')
 							_this.getData()
 						} else {
 							Toast(res.data.msg)
