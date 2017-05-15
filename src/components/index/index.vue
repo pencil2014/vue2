@@ -171,7 +171,8 @@
 			</div>
 		</div>
 		<app-nav></app-nav>
-		<model :model='model' v-show='model.show' @hideModel='hidemodel'></model>
+
+		<model :model='model' v-show='model.show && showmodel' @hideModel='hidemodel'></model>
 	</div>	
 </template>
 
@@ -215,9 +216,10 @@ export default {
 		  repeatBtn: false,
 		  model: {
 		  	show: false,
-		  	title: '提示',
-		  	text: '<p>这是测试文本！</p>'
-		  }
+		  	title: '公告',
+		  	text: ''
+		  },
+		  showmodel: false
 		}
 	},
 	components: {
@@ -227,6 +229,7 @@ export default {
 	methods: {
 		hidemodel () {
 			this.model.show = false
+			window.localStorage.setItem('showmodel',false)
 		},
 		changetoken () {
 			if (this.repeatBtn) {
@@ -403,7 +406,12 @@ export default {
 			this.getsysIndex()
 			this.getexamine()
 		}
-		
+		// 显示公告
+		// this.showmodel = (window.localStorage.getItem('showmodel') === "false") ? false : true 
+		// if (!!this.model.text) {
+		// 	this.model.show = true
+		// }
+
 	},
 	monuted () {
 	},
