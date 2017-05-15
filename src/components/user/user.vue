@@ -42,12 +42,12 @@
 						<span>商家申请资料</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link> -->
-					<!-- <router-link to="/display1" tag="li" v-if="isShop">
+					<router-link to="/display1" tag="li" v-if="isShop">
 						<img src="../../assets/images/business.png" alt="">
 						<span>店铺管理</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link> -->
-					<router-link to="/message/1" tag="li">
+					</router-link>
+					<router-link to="/message" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
 						<i class="iconfont">&#xe606;</i>
@@ -68,7 +68,7 @@
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
-					<router-link to="/qrcode" tag="li">
+					<router-link to="/qrcode" tag="li" v-if="!isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
 						<i class="iconfont" >&#xe606;</i>
@@ -145,7 +145,11 @@ export default {
 		 ]).then(axios.spread(function (personal,count,realname){
 		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
-		 		_this.count = count.data.data.count;
+		 		if(count.data.data.count<=99){
+		 			_this.count = count.data.data.count;
+		 		}else{
+		 			_this.count = '99+'
+		 		}
 		 		_this.checkRealName = realname.data.data
 		 	}else{
 		 		Toast('系统错误')
@@ -211,5 +215,5 @@ export default {
 .ex-user-item ul li img{width: 30px;vertical-align: middle;}
 .ex-user-item ul li span{}
 .ex-user-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
-label.count{border-radius: 50%;background: rgb(255,84,0);min-width: 16px;height: 16px; line-height: 16px; padding: 0 !important;margin-top: 5px;text-align: center;line-height: 18px;color: #fff!important;font-size: 1rem !important;border: solid 2px rgb(255,84,0);}
+label.count{display: inline-block;border-radius: 50%;background: rgb(255,84,0);min-width: 24px;max-height: 24px;line-height: 20px; padding: 2px !important;text-align: center;color: #fff!important;font-size: 1rem !important;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;margin-top: 3px;}
 </style>

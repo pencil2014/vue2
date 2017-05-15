@@ -91,7 +91,10 @@ export default {
 			list:[],
 			groupList: [],
 			display1: false, 	// 显示按钮
-			status: '2',		// 0删除 1下架 2待审核 3上架
+			status: (function(){
+				let productstatus = window.localStorage.productstatus
+				return productstatus ? productstatus : '2'
+			})(),				// 0删除 1下架 2待审核 3上架
 			isedit: false,
 			optionList: [],
 			optionIndex: [],
@@ -125,7 +128,9 @@ export default {
 	methods: {
 		tap (status) {
 			this.status = status
+			window.localStorage.setItem('productstatus',status)
 			this.isedit = false
+			this.optionIndex = []
 			this.optionList = []
 			this.getData()
 		},
@@ -135,6 +140,7 @@ export default {
 		finish () {
 			this.isedit = false
 			this.optionList = []
+			this.optionIndex = []
 		},
 		select (id,index) {
 			Array.prototype.remove = function(val) {
@@ -201,6 +207,8 @@ export default {
 					})).then(function(res){
 						if (res.data.code === '10000') {
 							Toast('商品下架成功！')
+							_this.optionIndex = []
+							_this.optionList = []
 							_this.getData()
 						} else {
 							Toast(res.data.msg)
@@ -229,6 +237,8 @@ export default {
 					})).then(function(res){
 						if (res.data.code === '10000') {
 							Toast('商品上架成功！')
+							_this.optionIndex = []
+							_this.optionList = []
 							_this.getData()
 						} else {
 							Toast(res.data.msg)
@@ -263,6 +273,8 @@ export default {
 						Indicator.close()
 						if (res.data.code === '10000') {
 							Toast('删除成功！')
+							_this.optionIndex = []
+							_this.optionList = []
 							_this.getData()
 						} else {
 							Toast(res.data.msg)
@@ -353,6 +365,7 @@ export default {
 		},
 		back () {
 			this.$router.back();
+			window.localStorage.setItem('productstatus','');
 		},
 		todisplay3 () {
 			if(this.isedit){
@@ -361,14 +374,16 @@ export default {
 			this.$router.push('/display3')
 		},
 		toedict (status,id,typeName,groupName,groupId) {
+			let _groupId = groupId ? groupId : 0
+			let _typeName = typeName ? typeName : '未分组'
 			if (this.isedit) {
 				return 
 			}
 			if (status!=='1') {
-				this.$router.push({query:{id:id,typeName:typeName,groupName:groupName},path:'/display6'})
+				this.$router.push({query:{id:id,typeName:_typeName,groupName:groupName},path:'/display6'})
 				return 
 			}
-			this.$router.push({query:{id:id,typeName:typeName,groupId:groupId},path:'/display5'})
+			this.$router.push({query:{id:id,typeName:_typeName,groupId:_groupId},path:'/display5'})
 		}
 	},
 	created () {

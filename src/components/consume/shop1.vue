@@ -160,7 +160,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Toast('网络请求超时！')
+			Toast('连接失败，请检查网络是否正常!')
 		})
 
 		axios.post('shopClassification/list',qs.stringify({})).then(function(res){
@@ -175,7 +175,7 @@ export default {
 				}
 			}).catch(function(){
 				_this.nodateStatus = true
-					Toast('网络请求超时！')
+					Toast('连接失败，请检查网络是否正常!')
 			})
 	},
 	methods: {

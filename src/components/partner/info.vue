@@ -65,10 +65,9 @@
 				<mt-swipe :auto="0" >
 				  <mt-swipe-item v-for='item in showpicitem.data.commodityAffixEntityList' :key='item.id'>
 				  	<img :src="item.filePath" alt=""  @click.stop=''>
-				  	<p class="info"><span class="title">{{showpicitem.data.shopsName}}</span><span class="price">￥{{showpicitem.data.price}}</span></p>
 				  </mt-swipe-item>
 				</mt-swipe>
-				
+				<p class="info"><span class="title">{{showpicitem.data.shopsName}}</span><span class="price">￥{{showpicitem.data.price}}</span></p>
 			</div>
 			
 		</div>
@@ -84,25 +83,13 @@ export default {
 		return {
 			shopinfo: {
 				id: 28,
-				shopsName: '测试商家',
+				shopsName: '',
 				facadePhoto: '',
-				shopsAddress: '广东深圳南山区南山讯美科技广场',
+				shopsAddress: '',
 				summary: '',
-				shopsLinkphone: '13418673136',
-				shopsLinkman: '陈文',
-				commodityGroupEntitylist:[
-				{
-          "id": 3,
-          "shopId": 2210,
-          "groupName": "测试",
-          "status": "0",
-          "createUser": 13244,
-          "createTime": 1492764302000,
-          "updateUser": null,
-          "updateTime": null,
-          "sort": 1
-        }
-				]
+				shopsLinkphone: '',
+				shopsLinkman: '',
+				commodityGroupEntitylist:[]
 			},
 			list: [],
 			page: 1,
@@ -152,7 +139,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 			this.$refs.loadmore.onTopLoaded()
 		},
@@ -183,7 +170,7 @@ export default {
 			.catch(function(){
 				Indicator.close()
 				_this.nodateStatus = true
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	},
@@ -219,7 +206,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Toast('网络请求超时！')
+			Toast('连接失败，请检查网络是否正常!')
 		})
 	},
 	destroyed () {
@@ -262,9 +249,10 @@ export default {
 
 
 .showpicbox {position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); width: 100%; height: 100%; z-index: 3;}
-.showpicbox-cnt { width: 85%; height: 80%;  margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
-.showpicbox-cnt img { max-width: 100%; height: auto; }
-.showpicbox-cnt .info {position: absolute; background-color: #fff; width: 100%; padding: 1.5rem 0; font-size: 1.4rem; line-height: 1; margin-top: -0.3rem;}
+.showpicbox-cnt { width: 85%; height: 80%;  margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
+.showpicbox-cnt .mint-swipe-items-wrap { position: relative; }
+.showpicbox-cnt img { max-height: 80%; width: 100%; }
+.showpicbox-cnt .info {position: absolute; top:80%; background-color: #fff; width: 100%; padding: 1.5rem 0; font-size: 1.4rem; line-height: 1; margin-top: -0.3rem; border-top: 1px solid #eee;}
 .showpicbox-cnt .info .title { display: block; width: 64%; padding: 0 2%; overflow: hidden; float: left;}
 .showpicbox-cnt .info .price { display: block; width: 30%; overflow: hidden; color:#ec5909; text-align: center; float: right;}
 </style>

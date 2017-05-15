@@ -87,7 +87,7 @@ export default {
 							if(action === "confirm"){
 								_this.$router.push('/realname')
 							}else{
-								_this.$router.push('user')
+								_this.$router.back()
 							}
 						});
 						return
@@ -95,7 +95,7 @@ export default {
 					if (isRealName === '4') {
 						MessageBox('提示','实名认证审核中，请先通过实名认证！').then(action =>{
 							if(action === "confirm"){
-								_this.$router.push('/user')
+								_this.$router.back()
 							}
 						});
 						return
@@ -112,7 +112,7 @@ export default {
 							if(action === "confirm"){
 								_this.$router.push('realname/detail')
 							}else{
-								_this.$router.push('user')
+								_this.$router.back()
 							}
 						});
 						return
@@ -129,7 +129,7 @@ export default {
 							if(action === "confirm"){
 								_this.$router.push('realname')
 							}else{
-								_this.$router.push('user')
+								_this.$router.back()
 							}
 						});
 		        		return
@@ -146,7 +146,7 @@ export default {
 							if(action === "confirm"){
 								_this.$router.push('/addcard')
 							}else{
-								_this.$router.push('user')
+								_this.$router.back()
 							}
 						});
 						return
@@ -154,7 +154,7 @@ export default {
 					if(cardlist[0].status !== '3'){
 						MessageBox('提示','请先通过银行卡审核！').then(action =>{
 							if(action === "confirm"){
-								_this.$router.push('user')
+								_this.$router.back()
 							}
 						});
 		        		return

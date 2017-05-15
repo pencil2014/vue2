@@ -62,7 +62,7 @@
 		<div class="modal_BJ" v-show="isTypeList">
 			<div class="modal">
 				<div class="modal_box">
-					<div class="title">店铺分组</div>
+					<div class="title">商品分类</div>
 					<div class="field">
 						<ul>
 							<li v-for="(item,index) in TypeList" @click="seltype(item.id,item.typeName)" >
@@ -122,7 +122,8 @@ export default {
 				text:'添加产品',
 				fixed: false
 			},
-			submitbtn: false
+			submitbtn: false,
+			islrz: false
 		}
 	},
 	components: {
@@ -140,13 +141,72 @@ export default {
 		},
 	},
 	created () {
-
+		let addgoods = this.getdata('addgoods')
+		if(!!addgoods){
+			this.commodityName = addgoods.commodityName;
+			this.selcommodityTypeId = addgoods.selcommodityTypeId;
+			this.commodityTypeId = addgoods.commodityTypeId;
+			this.price = addgoods.price;
+			this.imgurl = addgoods.imgurl;
+			this.imgbase64 = addgoods.imgbase64;
+			this.groupId = addgoods.groupId;
+			this.typeName = addgoods.typeName;
+		}
+		this.getGroupList()
+		this.getList()
 	},
 	methods: {
 		back () {
-			this.$router.back();
+			let _this = this
+			if(!!this.getdata('addgoods')){
+				MessageBox({
+					title:'提示',
+					message:'确定退出添加产品?',
+					showConfirmButton:true,
+					showCancelButton:true,
+					confirmButtonText:'确认退出并保存',
+					cancelButtonText:'取消',
+				}).then(action =>{
+					if(action === "confirm"){
+						let obj = {
+							commodityName: this.commodityName,
+							selcommodityTypeId: this.selcommodityTypeId,
+							commodityTypeId: this.commodityTypeId,
+							price: this.price,
+							imgurl: this.imgurl,
+							imgbase64: this.imgbase64,
+							groupId: this.groupId,
+							typeName: this.typeName
+						};
+						localStorage.setItem('addgoods',JSON.stringify(obj))
+						_this.$router.back();
+					}
+				});
+				return
+			}
+			_this.$router.back();
+		},
+		getdata (k) {
+			let v = localStorage.getItem(k);
+            try {
+                v = JSON.parse(v);
+            } catch(e) {
+
+            }
+            return v;
 		},
 		todisplay4 () {
+			let obj = {
+				commodityName: this.commodityName,
+				selcommodityTypeId: this.selcommodityTypeId,
+				commodityTypeId: this.commodityTypeId,
+				price: this.price,
+				imgurl: this.imgurl,
+				imgbase64: this.imgbase64,
+				groupId: this.groupId,
+				typeName: this.typeName
+			};
+			localStorage.setItem('addgoods',JSON.stringify(obj))
 			this.$router.push('/display4')
 		},
 		openTypeList () {
@@ -163,8 +223,11 @@ export default {
 		},
 		confirm () {
 			this.isTypeList = false
-			this.typeName = this.seltypeName
-			this.commodityTypeId = this.selcommodityTypeId
+			// console.log(this.selcommodityTypeId,this.commodityTypeId)
+			if(this.selcommodityTypeId !== this.commodityTypeId){
+				this.typeName = this.seltypeName
+				this.commodityTypeId = this.selcommodityTypeId
+			}
 		},
 		seltype (id,typeName) {
 			this.selcommodityTypeId = id
@@ -181,13 +244,23 @@ export default {
 				// 	MessageBox('提示', '图片大于500K无法使用!')
 				// 	return
 				// }
+				Indicator.open({
+				  text: '图片压缩中...',
+				  spinnerType: 'fading-circle'
+				})
+				this.islrz = true
 				this.imgurl.push(window.URL.createObjectURL(img))
 				lrz(img,{width:640})
 				.then(function (rst) {
-			        _this.imgbase64.push(rst.base64) 
+					Indicator.close()
+			        _this.imgbase64.push(rst.base64)
+			        _this.islrz = false
 			    })
 	       		.catch(function (err) {
-	      			 _this.imgbase64.push('') 
+	       			Indicator.close()
+	       			_this.islrz = false
+	      			_this.imgbase64.push('') 
+	      			Toast('图片压缩失败')
 	       		})  
 			}
 		},
@@ -226,7 +299,7 @@ export default {
 				MessageBox('提示', '请选择商品分类!')
 				return
 			}
-			if (this.imgurl.length !== this.imgbase64.length) {
+			if (this.islrz) {
 				MessageBox('提示', '图片压缩中请稍后...')
 				return
 			}
@@ -250,12 +323,12 @@ export default {
 					 _this.imgArray = res.data.urls
 					 _this.addgoods()
 				} else {
-					this.submitbtn = false
+					_this.submitbtn = false
 					Toast(res.data.msg)
 				}
 			})
 			.catch(function(res){
-				this.submitbtn = false
+				_this.submitbtn = false
 				Indicator.close()
 				Toast('网络请求超时！')
 			})	
@@ -267,15 +340,16 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			axios.post('commodityInfo/add',qs.stringify({
-				commodityName: this.commodityName,
-				commodityTypeId: this.commodityTypeId,
-				groupId: this.groupId,
-				price: this.price,
-				commodityPictures: this.imgArray.join(',')
+				commodityName: _this.commodityName,
+				commodityTypeId: _this.commodityTypeId,
+				groupId: _this.groupId,
+				price: _this.price,
+				commodityPictures: _this.imgArray.join(',')
 			}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
+					localStorage.setItem('addgoods','')
 					MessageBox({
 					  title: '提示',
 					  message: '添加成功！',
@@ -283,12 +357,12 @@ export default {
 						_this.$router.go(-1)
 					})
 				} else {
-					this.submitbtn = false
+					_this.submitbtn = false
 					Toast(res.data.msg)
 				}
 			})
 			.catch(function(res){
-				this.submitbtn = false
+				_this.submitbtn = false
 				Indicator.close()
 				Toast('网络请求超时！')
 			})
@@ -316,15 +390,12 @@ export default {
 				}
 			}).catch(function(){
 				_this.nodateStatus = true
-					Toast('网络请求超时！')
+				Toast('网络请求超时！')
 			})
 		},
 		currency (id) {
 			let value = this[id];
 			this[id] = value.replace(/\s/g,'').replace(/^([0-9]{1,})(\.+)$/,'$1.').replace(/^([0-9]{1,})(\.[0-9]{1,2})(.*)$/,'$1$2')
-		},
-		back () {
-			this.$router.back();
 		},
 		todisplay3 () {
 			if(this.isedit){
@@ -332,10 +403,6 @@ export default {
 			}
 			this.$router.push('/display3')
 		},
-	},
-	created () {
-		this.getGroupList()
-		this.getList()
 	},
 }
 </script>
@@ -381,7 +448,7 @@ export default {
 .ex-display .modal_BJ .modal{display: table-cell;padding: 0 12%;vertical-align: middle;}
 .ex-display .modal_BJ .modal .modal_box{background: #fff;width: 100%;border-radius: 5px;overflow: hidden;text-align: center;padding: 10px 0 0 0;}
 .ex-display .modal_BJ .modal .modal_box .title{font-size: 1.6rem;}
-.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;}
+.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;max-height: 200px;overflow-y: scroll;}
 .ex-display .modal_BJ .modal .modal_box .field ul li{text-align: left;font-size: 1.4rem;height: 40px;line-height: 40px;}
 .ex-display .modal_BJ .modal .modal_box .field span.option{display: inline-block;background: url(../../assets/images/noselect1.png) no-repeat;background-size: 100%;width: 20px;height: 20px;float: right;margin-top: 10px;}
 .ex-display .modal_BJ .modal .modal_box .field span.select{background: url(../../assets/images/select1.png) no-repeat;background-size: 100%;}

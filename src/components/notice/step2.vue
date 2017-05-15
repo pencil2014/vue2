@@ -60,7 +60,7 @@ export default {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 		})
 	},
 	methods: {

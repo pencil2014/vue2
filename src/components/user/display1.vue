@@ -46,6 +46,7 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 </template>
 <script>
@@ -54,12 +55,16 @@ import qs from "qs"
 import lrz from 'lrz'
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+
 export default {
 	data(){
 		return{
 			info: '',
 			imgurl:'',
 			imgbase64: '',
+			cropper: {
+				imgStr:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoL…KWiuds6ErBRRRSGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAH/2Q=='
+			},
 			modal: {
 				text:'店铺管理',
 				fixed: false
@@ -168,7 +173,7 @@ export default {
 .item-wrapper .item .right .uploadimg {display: inline-block;position: relative;}
 .item-wrapper .item .right .uploadimg .file-prew{position: absolute;right: 0px;top: 0px;width: 84px;height: 100%;z-index: 10;opacity: 0;filter: alpha(opacity=0);cursor: pointer;}
 .item span{display: inline-block;vertical-align: top;}
-.item .left{width: 29%;font-size: 1.4rem;}
+.item .left{width: 28%;font-size: 1.4rem;}
 .item .right{width: 70%;text-align: right;color: #aaafb6}
 .item .right label{color: #212a32;}
 .item .right img{width: 7rem;vertical-align: middle;}

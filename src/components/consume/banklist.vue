@@ -59,7 +59,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 			axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
@@ -68,7 +68,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Toast('网络请求超时！')
+					Toast('连接失败，请检查网络是否正常!')
 			})
 	},
 	methods: {
@@ -115,7 +115,7 @@ export default {
 							}
 						})
 						.catch(function(){
-							Toast('网络请求超时！')
+							Toast('连接失败，请检查网络是否正常!')
 						})
 					}
 				})
@@ -147,7 +147,7 @@ export default {
 			// 	}
 			// })
 			// .catch(function(){
-			// 	Toast('网络请求超时！')
+			// 	Toast('连接失败，请检查网络是否正常!')
 			// })
 			
 		},

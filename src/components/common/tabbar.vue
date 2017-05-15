@@ -4,16 +4,16 @@
 			<span class="m1"></span><br>
 			首页
 		</router-link>
-		<a href="javascript:;" @click='disabled'>
+		<!-- <a href="javascript:;" @click='disabled'>
 			<span class="m2"></span>
 			<br>
 			商家推广
-		</a>
-		<!-- <router-link to="/partner">
+		</a> -->
+		<router-link to="/partner">
 			<span class="m2"></span>
 			<br>
 			商家推广
-		</router-link> -->
+		</router-link>
 		<router-link to="/school">
 			<span class="m3"></span>
 			<br>

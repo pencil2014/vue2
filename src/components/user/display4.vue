@@ -111,7 +111,7 @@ export default {
 					_this.groupList.splice(index, 1)
 					Toast('删除分组成功！')
 				} else {
-					Toast(res.data.msg)
+					Toast('删除分组失败！')
 				}
 			})
 			.catch(function(){

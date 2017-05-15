@@ -1,4 +1,4 @@
-<template>
+`<template>
 	<div class="ex-username">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-field">
@@ -105,5 +105,5 @@ export default {
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;}
 .ex-field-wrapper .ex-field-title{display: block;float: left;width: 30%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
-.ex-field-wrapper .ex-field-value input{display: block;width: 65%;height: 30px;border: none;}
+.ex-field-wrapper .ex-field-value input{display: block;width: 65%;height: 30px;font-size: 1.4rem;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;border:none;}
 </style> 

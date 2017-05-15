@@ -177,7 +177,7 @@ export default {
 				.catch(function(){
 					Indicator.close()
 					_this.repeatBtn = false
-					Toast('网络请求超时！')
+					Toast('连接失败，请检查网络是否正常!')
 				})
 		}
 	},
@@ -246,7 +246,7 @@ export default {
 			.catch(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})	
 		},
 		getfile (id) {

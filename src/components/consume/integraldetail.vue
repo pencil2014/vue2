@@ -2,7 +2,6 @@
 	<div class="ex-integral">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="topmenu">
-			<p>可用享积分：<span class="orange">{{total|checknum}}</span></p>
 			<table class="date">
 				<tr>
 					<td class="left" @click="reduceyear">
@@ -52,6 +51,7 @@
 			    </div>
 			</div>
 		</div>
+		<div class="bottom">可用享积分：<span class="orange">{{total|checknum}}</span></div>
 	</div>
 </template>
 <script>
@@ -86,7 +86,7 @@ export default {
 		}
 	},
 	mounted() {
-      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+      this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top - 50;
     },
 	// watch: {
 	// 	'$route': 'loadTop' 
@@ -294,4 +294,6 @@ export default {
 
 i.disable{background: #ebebeb;}
 .wrapper{overflow-y: scroll;}
+.bottom{position: fixed;bottom: 0;left: 0;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;height: 50px;line-height: 50px;text-align: center; width: 100%;background: #fff;border-top: solid 1px #ebebeb;}
+.bottom .orange{color: rgb(255,161,50);font-size: 1.6rem;}
 </style>

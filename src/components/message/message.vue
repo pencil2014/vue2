@@ -6,8 +6,7 @@
 			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">系统</div>
 		</div>
 		<div class="ex-message-list">
-			<div class="ex-message-item" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">	
-				
+			<div class="ex-message-item" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<ul
 				  v-infinite-scroll="loadMore"
 				  infinite-scroll-disabled="loading"
@@ -42,6 +41,7 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
+			messageType: 1,
 			modal: {
 				text:'我的消息',
 				fixed: false
@@ -59,13 +59,13 @@ export default {
 	        nodateStatus:false
 		}
 	},
-	watch: {
-		'$route': 'loadTop' 
-	},
+	// watch: {
+	// 	'$route': 'loadTop' 
+	// },
 	computed: {
-		messageType () {
-		    return this.$route.params.id
-		},
+		// messageType () {
+		//     return this.$route.params.id
+		// },
 		hasdata () {
 			if(this.nodateStatus && this.list.length === 0){
 				return false
@@ -83,15 +83,21 @@ export default {
     },
 	methods: {
 		back () {
-			this.$router.push('/user')
+			this.$router.back()
 		},
 		tap (id) {
-			this.$router.push({ name: 'Message', params: { id: id}})
+			// this.$router.push({ name: 'Message', params: { id: id}})
+			this.messageType = id;
+			this.getData();
 		},
 		todetail (id) {
 			this.$router.push({name: 'Message2', params: { id: id}})
 		},
 		loadTop () {
+			this.getData();
+			this.$refs.loadmore.onTopLoaded();
+		},
+		getData () {
 			let _this = this;
 			_this.nodateStatus = false
 			axios.post('message/list',qs.stringify({
@@ -112,7 +118,6 @@ export default {
 				Indicator.close();
 				Indicator.open({ spinnerType: 'fading-circle'})
 			})
-			_this.$refs.loadmore.onTopLoaded();
 		},
 		loadMore () {
 			let _this = this;

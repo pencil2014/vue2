@@ -62,7 +62,7 @@
 		<div class="modal_BJ" v-show="isTypeList">
 			<div class="modal">
 				<div class="modal_box">
-					<div class="title">店铺分组</div>
+					<div class="title">商品分类</div>
 					<div class="field">
 						<ul>
 							<li v-for="(item,index) in TypeList" @click="seltype(item.id,item.typeName)">
@@ -117,15 +117,16 @@ export default {
 			selcommodityTypeId:'',
 			imgurl: [],
 			imgbase64: [],
-			imgArray:[],
+			imgArray: [],
 			groupId: '',
-			commodityName:'',
+			commodityName: '',
 			price:'',
 			modal: {
 				text:'产品编辑',
 				fixed: false
 			},
-			submitbtn: false
+			submitbtn: false,
+			islrz: false,
 		}
 	},
 	components: {
@@ -157,10 +158,14 @@ export default {
 		},
 		cancle () {
 			this.isTypeList = false
+			if(!this.commodityTypeId){
+				this.selcommodityTypeId = ''
+				this.seltypeName = ''
+				return
+			}
 			this.selcommodityTypeId = this.commodityTypeId
 		},
 		confirm () {
-			let _this = this;
 			this.isTypeList = false
 			if(this.selcommodityTypeId !== this.commodityTypeId){
 				this.typeName = this.seltypeName
@@ -178,6 +183,11 @@ export default {
 			let _this = this
 			let img = document.getElementById('frontPic').files[0]
 			if (img) {
+				this.islrz = true
+				Indicator.open({
+				  text: '图片压缩中...',
+				  spinnerType: 'fading-circle'
+				})
 				lrz(img,{width:640})
 				.then(function (rst) {
 					// console.log(rst,rst.file.size/1024)
@@ -185,12 +195,17 @@ export default {
 					// 	MessageBox('提示', '图片大于500K无法使用!')
 					// 	return
 					// }
+					Indicator.close()
 			        _this.imgbase64.push(rst.base64)
 			        _this.imgurl.push(rst.base64)
+			        _this.islrz = false
 			    })
 	       		.catch(function (err) {
-	      			 _this.imgbase64.push('') 
-	      			 _this.imgurl.push('')
+	       			Indicator.close()
+	       			_this.islrz = false
+	      			_this.imgbase64.push('') 
+	      			_this.imgurl.push('')
+	      			Toast('图片压缩失败')
 	       		})  
 			}
 		},
@@ -212,6 +227,7 @@ export default {
 					_this.imgurl.remove(value)
 					_this.imgArray.remove(value)
 					_this.imgbase64.remove(value)
+					// console.log(_this.imgurl,_this.imgArray,_this.imgbase64)
 				} else {
 					return
 				}
@@ -234,6 +250,10 @@ export default {
 			}
 			if (this.commodityTypeId === '') {
 				MessageBox('提示', '请选择商品分类!')
+				return
+			}
+			if (this.islrz) {
+				MessageBox('提示', '图片压缩中请稍后...')
 				return
 			}
 			this.submitbtn = true
@@ -272,7 +292,7 @@ export default {
 		},
 		edictgoods () {
 			let _this = this
-			console.log(this.imgArray)
+			// console.log(this.imgArray)
 			Indicator.open({
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
@@ -284,7 +304,7 @@ export default {
 				groupId: _this.groupId,
 				price: _this.price,
 				status: _this.status,
-				commodityPictures: this.imgArray.join(',')
+				commodityPictures: _this.imgArray.join(',')
 			}))
 			.then(function(res){
 				Indicator.close()
@@ -341,7 +361,6 @@ export default {
 					_this.detailList = res.data.data
 					_this.commodityName = res.data.data.commodityName
 					_this.price = res.data.data.price
-					_this.groupId = res.data.data.groupId
 					_this.groupName = res.data.data.groupName
 					_this.selcommodityTypeId = res.data.data.commodityTypeId
 					_this.commodityTypeId = res.data.data.commodityTypeId

@@ -109,7 +109,7 @@ export default {
 			}
 		})
 		.catch(function(){
-			Toast('网络请求超时！')
+			Toast('连接失败，请检查网络是否正常!')
 		})
 
 		let defaultCard = window.localStorage.getItem('defaultCard')
@@ -128,7 +128,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		} else {
 			_this.showAdd = false
@@ -144,7 +144,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Toast('网络请求超时！')
+					Toast('连接失败，请检查网络是否正常!')
 			})
 
 	},
@@ -329,7 +329,7 @@ export default {
 			.catch(function(){
 				Indicator.close()
 				_this.repeatBtn = false
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 
 		}

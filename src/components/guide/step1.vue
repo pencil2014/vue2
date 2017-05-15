@@ -84,7 +84,7 @@ export default {
 				}
 			}).catch(function(){
 				Indicator.close()
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 			_this.$refs.loadmore.onTopLoaded();
 		},
@@ -112,7 +112,7 @@ export default {
 				}
 			})
 			.catch(function(){
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		toDetail (id) {

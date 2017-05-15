@@ -95,7 +95,7 @@ export default {
 			})
 			.catch(function(){
 				Indicator.close()
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 			this.$refs.loadmore.onTopLoaded()
 		},
@@ -128,7 +128,7 @@ export default {
 			.catch(function(){
 				Indicator.close()
 				_this.nodateStatus = true
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		gotodec (status,id) {

@@ -47,6 +47,23 @@ if (!!window.localStorage.getItem('token')) {
 	axios.defaults.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('token')
 }
 
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    if (response.data.msg==='token无效') {
+      window.localStorage.removeItem('token')
+      axios.defaults.headers.common['authorization'] = ''
+      router.push('/login')
+    }
+    return response
+  }, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  })
+
+
+
+
 // 百度统计代码
 var _hmt = _hmt || [];
 (function() {
