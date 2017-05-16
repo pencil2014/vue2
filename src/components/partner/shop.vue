@@ -8,9 +8,7 @@
 			<div class="ex-shop-head-banner">
 				<mt-swipe :auto="5000">
 				  <!-- <mt-swipe-item v-for='item in imgurl'>{{item}}</mt-swipe-item> -->
-				  <mt-swipe-item><img src="../../assets/images/food1.jpg" alt=""></mt-swipe-item>
-				  <mt-swipe-item><img src="../../assets/images/food2.jpg" alt=""></mt-swipe-item>
-				  <mt-swipe-item><img src="../../assets/images/food3.jpg" alt=""></mt-swipe-item>
+				  <mt-swipe-item><img src="../../assets/images/banner.png" alt=""></mt-swipe-item>
 				</mt-swipe>
 			</div>
 			<div class="ex-shop-top">
@@ -64,8 +62,8 @@
 		</div>
 		<div class="ex-shop-localshop">
 			<div class="ex-shop-localshop-title">
-					<h3>附近的商家</h3>
 					<span></span>
+					<h3>附近的商家</h3>		
 			</div>
 			<div class="ex-shop-localshop-cnt">
 				<!-- <li class="ex-shop-localshop-item" @click='gotoinfo(25)'>
@@ -121,7 +119,7 @@ export default {
 	data(){
 		return {
 			imgurl: [,,],
-			address : '深圳',
+			address : '北京',
 			localshop: [],
 			loading: false,
 			page: 1,
@@ -130,8 +128,8 @@ export default {
 			nodateStatus: false,
 			keyword: '',
 			currentPosition: {
-				latitude: '22.545489',
-				longitude: '113.942283'
+				latitude: '39.915',
+				longitude: '116.404'
 			},
 			id:'',
 			showsearch: false
@@ -233,12 +231,13 @@ export default {
 				lng: this.currentPosition.longitude, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
-				// _this.loading = false
+				
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.localshop.push(...res.data.data.list)
 					_this.page += 1
+					_this.loading = false
 				} else {
 					Toast(res.data.msg)
 				}
@@ -268,6 +267,7 @@ export default {
 	mounted () {
 		document.getElementsByTagName("html")[0].style.height = 'auto'
 		window.addEventListener('scroll', this.handleScroll)
+
 	},
 	filters: {
 		formatdis (value) {
@@ -284,9 +284,9 @@ export default {
 
 <style scoped>
 .ex-shop{background-color: #efefef;padding-bottom: 5rem;}
-.ex-shop-head{ height: 20rem; position: relative; }
-.ex-shop-head-banner { height: 100%;background-color: #eee;}
-.ex-shop-head-banner img{ height: 100%; min-width: 100%; }
+.ex-shop-head{ height:16rem; position: relative; }
+.ex-shop-head-banner { height: 100%;background-color: #fff; text-align: center;}
+.ex-shop-head-banner img{ height: 100%; width: 100%;}
 .ex-shop-top { position: absolute; top: 1rem; width: 100%; overflow: hidden;}
 .ex-shop-address {background-color: #13151d; color: #fff; float: left; height: 3rem; line-height: 3rem; border-radius: 2rem; width: 28%; margin: 0 2%; position: relative; overflow: hidden; text-align: center;}
 .ex-shop-address i {position: absolute;}
@@ -307,7 +307,7 @@ export default {
 .ex-shop-localshop{ margin-top: 1rem;background-color: #fff; position: relative;}
 .ex-shop-localshop-title {text-align: center; border-bottom: 1px solid #eee; }
 .ex-shop-localshop-title h3 {font-size: 1.6rem; line-height: 5rem; position: relative; z-index: 2; background-color: #fff; display: inline-block; padding: 0 1rem;}
-.ex-shop-localshop-title span{display: block; width: 40%;  left: 30%; height: 1px; background-color: #ddd; position: absolute; top: 2.5rem; }
+.ex-shop-localshop-title span{display: inline-block; width: 40%;  left: 30%; height: 1px; background-color: #ddd; position: absolute; top: 2.5rem;}
 
 
 .ex-shop-localshop-cnt {}

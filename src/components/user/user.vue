@@ -215,5 +215,5 @@ export default {
 .ex-user-item ul li img{width: 30px;vertical-align: middle;}
 .ex-user-item ul li span{}
 .ex-user-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
-label.count{display: inline-block;border-radius: 50%;background: rgb(255,84,0);min-width: 24px;max-height: 24px;line-height: 20px; padding: 2px !important;text-align: center;color: #fff!important;font-size: 1rem !important;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;margin-top: 3px;}
+label.count{display: inline-block;border-radius: 50%;background: rgb(255,84,0);min-width: 24px;max-height: 24px;line-height: 24px; padding: 2px !important;text-align: center;color: #fff!important;font-size: 1rem !important;margin-top: 3px;font-size: 1.4rem !important;}
 </style>

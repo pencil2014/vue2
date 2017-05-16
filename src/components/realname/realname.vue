@@ -7,13 +7,13 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">认证名</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="大陆银行卡户名(个人或公司名)" maxlength="10" v-model="realName" @input="standard('realName')">
+						<input type="text" placeholder="大陆银行卡户名(个人或公司名)" v-model="realName" @input="standard('realName')">
 					</div>
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">证件号码</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model="idCard" maxlength="20" @input="inputIdCard('idCard')">
+						<input type="text" placeholder="与认证名相符的身份证号或营业执照号码"  v-model="idCard" maxlength="25" @input="inputIdCard('idCard')">
 					</div>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 							<br>
 							上传正面
 						</span>
-						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')" accept="image/*" />
+						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')"  />
 					</div>
 					<div class="report-file">
 						<img :src="imgurl.backPic" alt="" v-show="imgurl.backPic">
@@ -38,7 +38,7 @@
 							<br>
 							上传反面
 						</span>
-						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')" accept="image/*"/>
+						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')" />
 					</div>
 				</div>
 			</div>
@@ -52,7 +52,7 @@
 							<br>
 							上传照片
 						</span>
-						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')" accept="image/*"/>
+						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')" />
 					</div>
 				</div>
 			</div>
@@ -115,7 +115,6 @@ export default {
 					});
 	            }
 	        },
-	        _Promise:'',
 			countdown: false,
 			second: '短信验证码',
 			submitBtn: false,
@@ -175,102 +174,103 @@ export default {
 			if(!file){
 				return
 			}
+			Indicator.open({
+			  text: '图片压缩中，请稍候...',
+			  spinnerType: 'fading-circle'
+			});
 			_this.imgurl[_id] = window.URL.createObjectURL(file);
 			_this.islrz = true
 			lrz(file,{width:640})
 				.then(function (rst) {
+					Indicator.close();
 					_this.islrz = false
 		        	_this.files[_id] = rst.base64;
 		        })
 		        .catch(function (err) {
+		        	Indicator.close();
 		        	_this.islrz = false
 		         	_this.files[_id] = '';
+		         	Toast('图片压缩失败！')
 		        })
 		},
 		uploadimg () {
-			let _this = this;
-			let formData = new FormData();
-			formData.append("imgStr", _this.files.frontPic)
-			if(_this.files.backPic){
+ 			let _this = this;
+ 			let formData = new FormData();
+ 			formData.append("imgStr", _this.files.frontPic)
+ 			if(_this.files.backPic){
 				formData.append("imgStr", _this.files.backPic)
 			}
 			formData.append("imgStr", _this.files.fullPic)
-			return new Promise(function(resolve, reject) {
-				axios.post('upload/pic_min',formData)
-				.then(function (res) {
-					if (res.data.code === '10000') {
-						resolve(res.data.urls)
-					} else {
-						reject('上传图片失败，请稍后重试！')
-					}
-				}).catch(function(){
-					reject('网络请求超时！')
-				})
- 			})
-		},
-		submit(){
-			let _this = this;
-			// let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
-			let rule1 = /base64/ig
-			if(_this.disable){
-				return;
-			}
-			if(_this.submitBtn){
-				return 
-			}
-			if(_this.islrz){
-				Toast('图片压缩中...')
-				return
-			}
-			let _Promise = this.checkIdCard
-			let _Promise2 = this.uploadimg
-			_this.submitBtn = true;
 			Indicator.open({
-			  text: '图片处理中...',
+			  text: '图片上传中...',
 			  spinnerType: 'fading-circle'
 			})
-			_Promise2().then(function(value){
-				_this.imgArray = value
+			axios.post('upload/pic_min',formData)
+			.then(function (res) {
 				Indicator.close();
-				Indicator.open({
-				  text: '正在提交...',
-				  spinnerType: 'fading-circle'
-				})
-				let backPic,fullPic;
-				if(_this.files.backPic){
-					backPic = _this.imgArray[1];
-					fullPic = _this.imgArray[2];
-				}else{
-					backPic = null;
-					fullPic = _this.imgArray[1];
-				}
-				axios.post('verify/realName',qs.stringify({
-					realName: _this.realName,
-					idCard: _this.idCard,
-					frontPic: _this.imgArray[0],
-					backPic: backPic,
-					fullPic: fullPic,
-				}),_this.config).then(res =>{
-					Indicator.close();
-					if (res.data.code === '10000') {
-						MessageBox('提示','提交成功').then(action => {
-							_this.$router.push('/user');
-						})
-					} else {
-						MessageBox('提示',res.data.msg).then(action => {
-							_this.submitBtn = false;
-						})
-					}
-				}).catch(function(err){
+				if (res.data.code === '10000') {
+					_this.imgArray = res.data.urls
+					_this.toRealname()
+				} else {
 					_this.submitBtn = false;
-					Indicator.close();
-					Toast('连接失败，请检查网络是否正常!')	
-				})
+					Toast('上传图片失败，请稍后重试！')
+				}
+			}).catch(function(){
+				Indicator.close()
+				_this.submitBtn = false;
+				Toast('连接失败，请检查网络是否正常!')	
+			})
+		},
+		toRealname () {
+			let _this = this;
+			let backPic,fullPic;
+			if(_this.files.backPic){
+				backPic = _this.imgArray[1];
+				fullPic = _this.imgArray[2];
+			}else{
+				backPic = null;
+				fullPic = _this.imgArray[1];
+			}
+			Indicator.open({
+			  text: '正在提交...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('verify/realName',qs.stringify({
+				realName: _this.realName,
+				idCard: _this.idCard,
+				frontPic: _this.imgArray[0],
+				backPic: backPic,
+				fullPic: fullPic,
+			})).then(res =>{
+				Indicator.close();
+				if (res.data.code === '10000') {
+					MessageBox('提示','提交成功').then(action => {
+						_this.$router.push('/user');
+					})
+				} else {
+					_this.submitBtn = false;
+					MessageBox('提示',res.data.msg)
+				}
 			}).catch(function(err){
 				_this.submitBtn = false;
-				Toast(err)
+				Indicator.close();
+				Toast('连接失败，请检查网络是否正常!')	
 			})
-			
+		},
+		submit(){
+			// let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
+			if(this.disable){
+				return;
+			}
+			if(this.submitBtn){
+				return 
+			}
+			if(this.islrz){
+				Toast('图片上传中，请稍候...')
+				return
+			}
+			this.submitBtn = true;
+			this.uploadimg()
 		},
 		sendCode () {
 			let _this = this;
@@ -326,22 +326,6 @@ export default {
 				}
 			},1000)
 		},
-		checkIdCard () {
-			let _this = this;
-			 return new Promise(function(resolve, reject) {
-				axios.post('verify/isIdCard',qs.stringify({
-					idCard: _this.idCard
-				})).then(function (res) {
-					if (res.data.code === '10000') {
-						resolve(res.data)
-					} else {
-						reject('该身份证号码已被其它用户使用，请更换身份证号码后进行实名认证')
-					}
-				}).catch(function(err){
-					reject('网络请求超时！')
-				})
- 			})
-		}
 	}
 }
 </script>
@@ -353,7 +337,7 @@ export default {
 .ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
 .ex-field-wrapper .ex-field-title{display: block;float: left;width: 20%;height: 30px;}
 .ex-field-wrapper .ex-field-value{}
-.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 75%;height: 30px;border: none;font-size: 1.4rem;}
+.ex-field-wrapper .ex-field-value input[type=text]{display: block;width: 75%;height: 30px;border: none;font-size: 1.4rem;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}

@@ -109,13 +109,14 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
-				_this.loading = false
+				
 				if (res.data.code === '10000') {
 					_this.parentUserCode = res.data.data.parentUserCode
 					_this.totalSize = res.data.data.total
 					_this.totalPage = res.data.data.totalPage
 					_this.recommendList.push(...res.data.data.list)
 					_this.page += 1
+					_this.loading = false
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
 				}

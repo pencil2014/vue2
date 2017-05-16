@@ -137,6 +137,7 @@ export default {
 			}).then(action =>{
 				if(action === "confirm"){
 					window.localStorage.setItem('token', '')
+					window.localStorage.setItem('usertype', '')
 					_this.$router.push('/login')
 				}
 			});

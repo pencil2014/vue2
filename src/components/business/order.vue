@@ -113,7 +113,6 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
-				_this.loading = false
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					let array = res.data.data.list.filter(function(item) {
@@ -121,8 +120,9 @@ export default {
 					}.bind(this))
 					_this.orderList.push(...array)
 					_this.page += 1
+					_this.loading = false
 				} else {
-					MessageBox('提示', '对不起数据加载失败！')
+					Toast('数据加载失败！')
 				}
 			})
 			.catch(function(){

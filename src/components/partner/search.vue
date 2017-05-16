@@ -6,7 +6,7 @@
 			</div>
 			<div class="ex-search-input">
 				<i class="iconfont">&#xe67a;</i>
-				<input type="search" name="" id="" placeholder="搜索关键字"  v-model.trim='keyword' @keypress.prevent='search'>
+				<input type="search" name="" id="" placeholder="搜索关键字"  v-model.trim='keyword' >
 				<span @click='search'>搜索</span>
 			</div>
 		</div>
@@ -15,7 +15,7 @@
 			<div class="ex-search-history">
 				<h3>历史搜索</h3>
 				<ul>
-					<li v-for='item in historyKey'>{{item}}</li>
+					<li v-for='item in historyKey' @click='historySearch(item)'>{{item}}</li>
 				</ul>
 			</div>
 			<div class="ex-search-box" >
@@ -68,6 +68,10 @@ export default {
 	methods: {
 		back () {
 			this.$router.go(-1)
+		},
+		historySearch(item){
+			this.keyword = item
+			this.search()
 		},
 		search () {
 			Indicator.open({
@@ -152,12 +156,13 @@ export default {
 			axios.post('shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
-				_this.loading = false
+				
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.shoplist.push(...res.data.data.list)
 					_this.page += 1
+					_this.loading = false
 				} else {
 					Toast(res.data.msg)
 				}

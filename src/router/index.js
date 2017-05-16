@@ -28,6 +28,7 @@ const Shop1 = resolve => require(['../components/consume/shop1'], resolve)
 const Shop2 = resolve => require(['../components/consume/shop2'], resolve)
 const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
 const Integral2 = resolve => require(['../components/consume/integraldetail'], resolve)
+const UpgradeRule = resolve => require(['../components/consume/upgradeRule'], resolve)
 
 
 const Declare = resolve => require(['../components/business/declare'], resolve)
@@ -80,6 +81,7 @@ const Feedback = resolve => require(['../components/feedback/feedback'], resolve
 const Version = resolve => require(['../components/version/version'], resolve)
 const Realname = resolve => require(['../components/realname/realname'], resolve)
 const Realname2 = resolve => require(['../components/realname/detail'], resolve)
+const Realname3 = resolve => require(['../components/realname/realname2'], resolve)
 const User = resolve => require(['../components/user/user'], resolve)
 const Notice1 = resolve => require(['../components/notice/step1'], resolve)
 const Notice2 = resolve => require(['../components/notice/step2'], resolve)
@@ -176,6 +178,11 @@ export default new Router({
       path: '/upgrade',
       name: 'Upgrade',
       component: Upgrade
+    },
+    {
+      path: '/upgraderule',
+      name: 'UpgradeRule',
+      component: UpgradeRule
     },
     {
       path: '/recommend',
@@ -333,7 +340,7 @@ export default new Router({
       component: City
     },
     {
-      path: '/message/:id',
+      path: '/message',
       name: 'Message',
       component: Message
     },
@@ -411,6 +418,11 @@ export default new Router({
       path: '/realname/detail',
       name: 'Realname2',
       component: Realname2
+    },
+    {
+      path: '/realname/shop',
+      name: 'Realname3',
+      component: Realname3
     },
     {
       path: '/user',

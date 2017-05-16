@@ -429,7 +429,7 @@ export default {
 .ex-display .modal_BJ .modal{display: table-cell;padding: 0 12%;vertical-align: middle;}
 .ex-display .modal_BJ .modal .modal_box{background: #fff;width: 100%;border-radius: 5px;overflow: hidden;text-align: center;padding: 10px 0 0 0;}
 .ex-display .modal_BJ .modal .modal_box .title{font-size: 1.6rem;}
-.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;max-height: 220px;overflow-y: auto;}
+.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;max-height: 200px;overflow-y: auto;}
 .ex-display .modal_BJ .modal .modal_box .field ul li{text-align: left;font-size: 1.4rem;height: 40px;line-height: 40px;}
 .ex-display .modal_BJ .modal .modal_box .field span.option{display: inline-block;background: url(../../assets/images/noselect1.png) no-repeat;background-size: 100%;width: 20px;height: 20px;float: right;margin-top: 10px;}
 .ex-display .modal_BJ .modal .modal_box .field span.select{background: url(../../assets/images/select1.png) no-repeat;background-size: 100%;}

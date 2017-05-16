@@ -25,7 +25,7 @@
 								<br>
 								上传照片
 							</span>
-							<input type="file" name="" class="file-prew" id="frontPic" @change="getfile" />
+							<input type="file" name="" class="file-prew" id="frontPic" @change="getfile" accept="image/*"/>
 						</div>
 					</div>
 				</li>
@@ -39,7 +39,7 @@
 					</label>
 				</li>
 			</ul>
-			<ul class="item-content">
+			<ul class="item-content option-wrapper">
 				<li class="item" @click="todisplay4">
 					<span>店铺分组</span>
 					<label class="right">
@@ -47,8 +47,8 @@
 						<i class="iconfont">&#xe606;</i>
 					</label>
 				</li>
-				<li class="item-option" v-for="(item,index) in groupList" @click="selground(item.id)">
-					<div :class="{'select': groupId === item.id}">
+				<li class="item-option">
+					<div :class="{'select': groupId === item.id}" v-for="(item,index) in groupList" @click="selground(item.id)">
 						<span class="option"></span>
 						{{item.groupName}}
 					</div>
@@ -109,7 +109,6 @@ export default {
 			TypeList:[],
 			detailList: [],
 			isTypeList: false,
-			typeindex:'',
 			typeName:'',
 			seltypeName: '',
 			commodityTypeId: '',
@@ -413,8 +412,9 @@ export default {
 .ex-display .wrapper .item input{border: none;width: 70%;}
 .ex-display .wrapper .item label.right{float: right;padding-right: 10px;color: #aaafb6;}
 
-.ex-display .wrapper .item-content .item-option{font-size: 1.4rem;padding: 9px 0 9px 25px;line-height: 30px;}
-.ex-display .wrapper .item-content .item-option div{}
+.ex-display .wrapper .item-content.option-wrapper{padding: 0 0 25px 0;}
+.ex-display .wrapper .item-content .item-option{font-size: 1.4rem;padding: 9px 0 9px 25px;line-height: 30px;max-height: 156px;overflow-y: scroll;}
+.ex-display .wrapper .item-content .item-option div{line-height: 36px;}
 .ex-display .wrapper .item-content .item-option div .option{display: inline-block;width: 20px;height: 20px;background: url(../../assets/images/noselect.png) no-repeat;background-size: 100%;vertical-align: middle;}
 .ex-display .wrapper .item-content .item-option div.select{color: #0c87d5;	}
 .ex-display .wrapper .item-content .item-option div.select .option{background: url(../../assets/images/select.png) no-repeat;background-size: 100%;}
@@ -443,7 +443,7 @@ export default {
 .ex-display .modal_BJ .modal{display: table-cell;padding: 0 12%;vertical-align: middle;}
 .ex-display .modal_BJ .modal .modal_box{background: #fff;width: 100%;border-radius: 5px;overflow: hidden;text-align: center;padding: 10px 0 0 0;}
 .ex-display .modal_BJ .modal .modal_box .title{font-size: 1.6rem;}
-.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;max-height: 220px;overflow-y: auto;}
+.ex-display .modal_BJ .modal .modal_box .field{text-align: center;padding: 15px 25px;max-height: 200px;overflow-y: auto;}
 .ex-display .modal_BJ .modal .modal_box .field ul li{text-align: left;font-size: 1.4rem;height: 40px;line-height: 40px;}
 .ex-display .modal_BJ .modal .modal_box .field span.option{display: inline-block;background: url(../../assets/images/noselect1.png) no-repeat;background-size: 100%;width: 20px;height: 20px;float: right;margin-top: 10px;}
 .ex-display .modal_BJ .modal .modal_box .field span.select{background: url(../../assets/images/select1.png) no-repeat;background-size: 100%;}

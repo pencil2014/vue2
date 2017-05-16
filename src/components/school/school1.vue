@@ -137,8 +137,9 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
-				_this.loading = false
+				
 				if (res.data.code === '10000') {
+					_this.loading = false
 					_this.totalPage = res.data.data.totalPage
 					_this.page += 1
 					if (page === 1) {

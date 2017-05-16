@@ -82,7 +82,7 @@
 				<a href="http://www.exgj.com.cn/exsdresc/commission.docx" class="instructions">(委托书范本)</a>
 			</div>
 			<button type='button'  :class="[ 'ex-shop2-btn', {disableBtn:disableBtn}]" @click='next'>下一步</button>
-			<p class='agreement'><input type="checkbox"  v-model='agreement'>我已阅读并同意<a href="http://www.exgj.com.cn/exsdresc/file/b-xy.pdf">《E享时代商家入驻加盟协议书》</a></p>
+			<p class='agreement'><input type="checkbox"  v-model='agreement'>我已阅读并同意<a href="http://www.exgj.com.cn/exsdresc/file/e-b-xy.docx">《E享时代商家入驻加盟协议书》</a></p>
 		</div>
 	</div>
 </template>

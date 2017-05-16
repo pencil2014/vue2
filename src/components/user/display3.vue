@@ -25,7 +25,7 @@
 								<br>
 								上传照片
 							</span>
-							<input type="file" name="" class="file-prew" id="frontPic" @change="getfile" />
+							<input type="file" name="" class="file-prew" id="frontPic" @change="getfile" accept="image/*" />
 						</div>
 					</div>
 				</li>
@@ -39,7 +39,7 @@
 					</label>
 				</li>
 			</ul>
-			<ul class="item-content">
+			<ul class="item-content option-wrapper">
 				<li class="item" @click="todisplay4">
 					<span>店铺分组</span>
 					<label class="right">
@@ -47,8 +47,8 @@
 						<i class="iconfont">&#xe606;</i>
 					</label>
 				</li>
-				<li class="item-option" v-for="(item,index) in groupList" @click="selground(item.id)" v-if='item.id !==0'>
-					<div :class="{'select': groupId === item.id}">
+				<li class="item-option">
+					<div :class="{'select': groupId === item.id}" v-for="(item,index) in groupList" @click="selground(item.id)" v-if='item.id !==0'>
 						<span class="option"></span>
 						{{item.groupName}}
 					</div>
@@ -147,8 +147,6 @@ export default {
 			this.selcommodityTypeId = addgoods.selcommodityTypeId;
 			this.commodityTypeId = addgoods.commodityTypeId;
 			this.price = addgoods.price;
-			this.imgurl = addgoods.imgurl;
-			this.imgbase64 = addgoods.imgbase64;
 			this.groupId = addgoods.groupId;
 			this.typeName = addgoods.typeName;
 		}
@@ -157,34 +155,7 @@ export default {
 	},
 	methods: {
 		back () {
-			let _this = this
-			if(!!this.getdata('addgoods')){
-				MessageBox({
-					title:'提示',
-					message:'确定退出添加产品?',
-					showConfirmButton:true,
-					showCancelButton:true,
-					confirmButtonText:'确认退出并保存',
-					cancelButtonText:'取消',
-				}).then(action =>{
-					if(action === "confirm"){
-						let obj = {
-							commodityName: this.commodityName,
-							selcommodityTypeId: this.selcommodityTypeId,
-							commodityTypeId: this.commodityTypeId,
-							price: this.price,
-							imgurl: this.imgurl,
-							imgbase64: this.imgbase64,
-							groupId: this.groupId,
-							typeName: this.typeName
-						};
-						localStorage.setItem('addgoods',JSON.stringify(obj))
-						_this.$router.back();
-					}
-				});
-				return
-			}
-			_this.$router.back();
+			this.$router.back();
 		},
 		getdata (k) {
 			let v = localStorage.getItem(k);
@@ -201,8 +172,6 @@ export default {
 				selcommodityTypeId: this.selcommodityTypeId,
 				commodityTypeId: this.commodityTypeId,
 				price: this.price,
-				imgurl: this.imgurl,
-				imgbase64: this.imgbase64,
 				groupId: this.groupId,
 				typeName: this.typeName
 			};
@@ -418,10 +387,11 @@ export default {
 .ex-display .wrapper .item input{border: none;width: 70%;}
 .ex-display .wrapper .item label.right{float: right;padding-right: 10px;color: #aaafb6;}
 
-.ex-display .wrapper .item-content .item-option{font-size: 1.4rem;padding: 9px 0 9px 25px;line-height: 30px;}
-.ex-display .wrapper .item-content .item-option div{}
+.ex-display .wrapper .item-content.option-wrapper{padding: 0 0 25px 0;}
+.ex-display .wrapper .item-content .item-option{font-size: 1.4rem;padding: 9px 0 9px 25px;max-height: 156px;overflow-y: scroll;}
+.ex-display .wrapper .item-content .item-option div{line-height: 36px;}
 .ex-display .wrapper .item-content .item-option div .option{display: inline-block;width: 20px;height: 20px;background: url(../../assets/images/noselect.png) no-repeat;background-size: 100%;vertical-align: middle;}
-.ex-display .wrapper .item-content .item-option div.select{color: #0c87d5;	}
+.ex-display .wrapper .item-content .item-option div.select{color: #0c87d5;}
 .ex-display .wrapper .item-content .item-option div.select .option{background: url(../../assets/images/select.png) no-repeat;background-size: 100%;}
 
 .ex-display .wrapper .item .report-file {overflow: hidden;position: relative;border: dotted 1px #d8d8d8;text-align: center;}

@@ -125,7 +125,9 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: 1, shopsId: this.id,
+			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: 1,
+				status: '3', 
+				shopsId: this.id,
 				groupId: this.groupId}))
 			.then(function(res){
 				Indicator.close()
@@ -153,16 +155,19 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: this.page, shopsId: this.id,
+			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: this.page,
+				status: '3',
+				shopsId: this.id,
 				groupId: this.groupId}))
 			.then(function(res){
 				Indicator.close()
-				_this.loading = false
+				
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.list.push(...res.data.data.list)
 					_this.page += 1
+					_this.loading = false
 				} else {
 					Toast(res.data.msg)
 				}
@@ -177,12 +182,15 @@ export default {
 	created () {
 		let _this = this
 		this.id = this.$route.params.id
-		axios.post('shop/examineUnion',qs.stringify({id: this.id}))
+		axios.post('shop/detail',qs.stringify({id: this.id}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				if (!!res.data.data) {
 					_this.shopinfo = res.data.data
 					if (res.data.data.commodityGroupEntitylist) {
+						// if (res.data.data.commodityGroupEntitylist[0].id === 0) {
+						// 	res.data.data.commodityGroupEntitylist.splice(0, 1)
+						// }
 						_this.groupId = res.data.data.commodityGroupEntitylist[0].id
 					} else {
 						_this.shopinfo.commodityGroupEntitylist = [
@@ -251,7 +259,7 @@ export default {
 .showpicbox {position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); width: 100%; height: 100%; z-index: 3;}
 .showpicbox-cnt { width: 85%; height: 80%;  margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
 .showpicbox-cnt .mint-swipe-items-wrap { position: relative; }
-.showpicbox-cnt img { max-height: 80%; width: 100%; }
+.showpicbox-cnt img { height: 80%; width: 100%; }
 .showpicbox-cnt .info {position: absolute; top:80%; background-color: #fff; width: 100%; padding: 1.5rem 0; font-size: 1.4rem; line-height: 1; margin-top: -0.3rem; border-top: 1px solid #eee;}
 .showpicbox-cnt .info .title { display: block; width: 64%; padding: 0 2%; overflow: hidden; float: left;}
 .showpicbox-cnt .info .price { display: block; width: 30%; overflow: hidden; color:#ec5909; text-align: center; float: right;}

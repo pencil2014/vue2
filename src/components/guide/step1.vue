@@ -101,12 +101,12 @@ export default {
 				page: 1
 			}))
 			.then(function(res){
-				_this.loading = false
+				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.list.push(...res.data.data.list)
 					_this.page += 1
-					_this.nodateStatus = true
+					_this.loading = false
 				} else {
 					Toast('对不起数据加载失败！')
 				}

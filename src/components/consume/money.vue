@@ -98,12 +98,13 @@ export default {
 			axios.post('transactionRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
-				_this.loading = false
+				
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
 					_this.recordList.push(...res.data.data.list)
 					_this.page += 1
+					_this.loading = false
 				} else {
 					MessageBox('提示', '对不起数据加载失败！')
 				}

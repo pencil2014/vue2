@@ -231,6 +231,7 @@ export default {
 					_this.repeatBtn = false
 					if (res.data.code === '10000') {
 						window.localStorage.setItem('token', res.data.data.token)
+						window.localStorage.setItem('usertype', '1')
 						axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 						_this.$router.push('/index')
 					} else {
@@ -317,6 +318,14 @@ export default {
 	beforeRouteLeave (to,from,next) {
 		 window.localStorage.setItem('integralPath', '/business')
 		 next()
+	},
+	beforeRouteEnter (to,from,next) {	
+		let usertype = 	window.localStorage.getItem('usertype')
+		if (usertype !== '2') {
+			next('/index')
+		} else {
+			next()
+		}
 	},
 	filters: {
 		checknum (value) {

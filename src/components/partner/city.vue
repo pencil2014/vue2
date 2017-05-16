@@ -6,7 +6,8 @@
 			</div>
 			<div class="ex-city-input">
 				<i class="iconfont">&#xe67a;</i>
-				<input type="search" name="" id="" placeholder="输入城市名称/首字母查询"  v-model.trim='keyword' @keypress.prevent='search'>
+				<input type="search" name="" id="" placeholder="输入城市名称"  v-model.trim='keyword'>
+				<span @click='search'>搜索</span>
 			</div>
 		</div>
 		<div class="ex-city-cnt">
@@ -106,7 +107,6 @@ export default {
 				let x = historycity.filter(function(el,index) {
 					return el.regionId === item.regionId
 				})
-				console.log(x)
 				if (!x.length) {
 					historycity.unshift(item)
 				}	
@@ -118,9 +118,12 @@ export default {
 				historycity.pop()
 			}
 			window.localStorage.setItem('historycity', JSON.stringify(historycity))
+			this.$router.push('/partner')
 		}
+
 	},
 	created () {
+
 		let historycity = JSON.parse(window.localStorage.getItem('historycity')) 
 		let address = window.localStorage.getItem('address')
 		if (address) {
@@ -166,7 +169,8 @@ export default {
 .ex-city-back i {font-size: 3rem;}
 .ex-city-input { width: 82%; float: right; height: 4.5rem; position: relative;}
 .ex-city-input i{ float: left;  position: absolute; left: 3%; top: 0.1rem; color: #999;}
-.ex-city-input input { border:none; background-color: #eee; border-radius: 2rem; height: 3.5rem; width: 95%; padding-left: 12%; }
+.ex-city-input input { border:none; background-color: #eee; border-radius: 2rem; height: 3.5rem; width: 80%; padding-left: 12%; }
+.ex-city-input span { color: #047dcb; font-size: 1.4rem; padding-left: 1rem;}
 .ex-city-cnt {margin-top: 5.5rem;}
 .ex-city-history {background-color: #eee;}
 .ex-city-history .title { font-weight: normal; height: 5rem; line-height: 5rem; padding-left: 2rem; background-color: #fff; }
