@@ -8,6 +8,7 @@ Vue.use(Router)
 const Login = resolve => require(['../components/login/login'], resolve)
 const Register1 = resolve => require(['../components/register/step1'], resolve)
 const Register2 = resolve => require(['../components/register/step2'], resolve)
+const RegisterRule = resolve => require(['../components/register/agreement'], resolve)
 const Forgot = resolve => require(['../components/forgot/forgot'], resolve)
 
 const Index = resolve => require(['../components/index/index'], resolve)
@@ -26,6 +27,7 @@ const Wechat = resolve => require(['../components/consume/wechat'], resolve)
 const Bankpay = resolve => require(['../components/consume/bankpay'], resolve)
 const Shop1 = resolve => require(['../components/consume/shop1'], resolve)
 const Shop2 = resolve => require(['../components/consume/shop2'], resolve)
+const ShopRule = resolve => require(['../components/consume/shoprule'], resolve)
 const Shop3 = resolve => require(['../components/consume/shop3'], resolve)
 const Integral2 = resolve => require(['../components/consume/integraldetail'], resolve)
 const UpgradeRule = resolve => require(['../components/consume/upgradeRule'], resolve)
@@ -37,6 +39,10 @@ const Declare3 = resolve => require(['../components/business/declare3'], resolve
 const Declare4 = resolve => require(['../components/business/declare4'], resolve)
 const Declare5 = resolve => require(['../components/business/declare5'], resolve)
 const Declare6 = resolve => require(['../components/business/declare6'], resolve)
+
+const Batch = resolve => require(['../components/business/batch1'], resolve)
+const Batch2 = resolve => require(['../components/business/batch2'], resolve)
+
 
 const Order = resolve => require(['../components/business/order'], resolve)
 const Tables = resolve => require(['../components/business/tables'], resolve)
@@ -105,9 +111,9 @@ export default new Router({
   linkActiveClass: 'activeRouter',
   routes: [
     {
-    	path: '/login',
-    	name: 'Login',
-    	component: Login
+      path: '/login',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/register',
@@ -118,6 +124,11 @@ export default new Router({
       path: '/register/:code',
       name: 'Register2',
       component: Register2
+    },
+    {
+      path: '/registerrule',
+      name: 'RegisterRule',
+      component: RegisterRule
     },
     {
       path: '/forgot',
@@ -235,6 +246,11 @@ export default new Router({
       component: Shop3
     },
     {
+      path: '/ShopRule',
+      name: 'ShopRule',
+      component: ShopRule
+    },
+    {
       path: '/declare',
       name: 'Declare',
       component: Declare
@@ -263,6 +279,16 @@ export default new Router({
       path: '/declare6/:id',
       name: 'Declare6',
       component: Declare6
+    },
+    {
+      path: '/batch',
+      name: 'Batch',
+      component: Batch
+    },
+    {
+      path: '/batchinfo',
+      name: 'Batch2',
+      component: Batch2
     },
     {
       path: '/order',
@@ -505,8 +531,8 @@ export default new Router({
       component: Display6
     },
     {
-    	path:'*', 
-    	redirect:'/index'
+      path:'*', 
+      redirect:'/index'
     },
     { 
       path: '/', 

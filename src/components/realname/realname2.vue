@@ -25,7 +25,7 @@
 							<br>
 							上传照片
 						</span>
-						<input type="file" name="" class="file-prew" id="legalPic" @change="getfile('legalPic')" />
+						<input type="file" name="" class="file-prew" id="legalPic" @change="getfile('legalPic')"  accept="image/*" />
 					</div>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 							<br>
 							上传照片
 						</span>
-						<input type="file" name="" class="file-prew" id="holdPic" @change="getfile('holdPic')" />
+						<input type="file" name="" class="file-prew" id="holdPic" @change="getfile('holdPic')"  accept="image/*" />
 					</div>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 							<br>
 							上传照片
 						</span>
-						<input type="file" name="" class="file-prew" id="businessLicense" @change="getfile('businessLicense')" />
+						<input type="file" name="" class="file-prew" id="businessLicense" @change="getfile('businessLicense')" accept="image/*" />
 					</div>
 				</div>
 			</div>
@@ -173,23 +173,23 @@ export default {
 			_this.islrz = true
 			_this.imgurl[_id] = window.URL.createObjectURL(file);
 			lrz(file,{width:640})
-				.then(function (rst) {
-					Indicator.close();
-					_this.islrz = false
-		        	_this.files[_id] = rst.base64;
-		        })
-		        .catch(function (err) {
-		        	_this.islrz = false
-		         	_this.files[_id] = '';
-		         	Toast('图片压缩失败！')
-		        })
+			.then(function (rst) {
+				Indicator.close();
+				_this.islrz = false
+	        	_this.files[_id] = rst.base64;
+	        })
+	        .catch(function (err) {
+	        	_this.islrz = false
+	         	_this.files[_id] = '';
+	         	Toast('图片压缩失败！')
+	        })
 		},
 		uploadimg () {
 			let _this = this;
 			let formData = new FormData();
 			let ids = ['legalPic','holdPic','businessLicense']
 			ids.forEach(function(value){
-				formData.append("imgStr", _this.files.value)
+				formData.append("imgStr", _this.files[value])
 			})
 			axios.post('upload/pic_min',formData)
 			.then(function (res) {
@@ -214,8 +214,9 @@ export default {
 			  spinnerType: 'fading-circle'
 			});
 			axios.post('shop/realName',qs.stringify({
-				realName: _this.realName,
-				idCard: _this.idCard,
+				legalName: _this.legalName,
+				legalIdcard: _this.legalIdcard,
+				licenseNumber: _this.licenseNumber,
 				legalPic: _this.imgArray[0],
 				holdPic: _this.imgArray[1],
 				businessLicense: _this.imgArray[2],

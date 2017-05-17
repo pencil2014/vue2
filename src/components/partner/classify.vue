@@ -1,4 +1,4 @@
-<template>
+把<template>
 	<div class="ex-shop-classify">
 	<div class="ex-shop-classify-top">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
@@ -47,7 +47,10 @@ export default {
 				fixed: true
 			},
 			shoplist: [],
-			nodateStatus: false
+			nodateStatus: false,
+			page: 1,
+			totalPage: 1,
+			pageSize: 20
 		}
 	},
 	components: {

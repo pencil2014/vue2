@@ -14,15 +14,16 @@
 			<b>终身VIP会员</b>
 			<p>提交申请并缴纳998元，即可成为终身VIP会员！</p>
 		</div>
-		<div class="ex-upgrade-pay">
-			<a href="javascript:;" @click='gowechat' class='wechat'><i class="iconfont">&#xe734;</i> 微信支付</a>
-			<a href="javascript:;" @click='gobank' class='bank'><i class="iconfont">&#xe66f;</i> 银行转账</a>
-		</div>
 		<div class="ex-argument">
 			<input type="checkbox" name="argument" id="checkbox" v-model="checked">
 			<!-- <label for="checkbox">同意会员升级协议</label> http://exgj.com.cn/exsdresc/file/e-m-xy.docx-->
-			<a href="javascript:;" @click='gorule'>同意会员升级协议</a>
+			<label for="checkbox">我已阅读并同意<a href="javascript:;" @click='gorule'>《会员升级VIP协议》</a></label>
 		</div>
+		<div class="ex-upgrade-pay">
+			<a href="javascript:;" @click='gowechat'  :class="['wechat',{disableBtn:!checked}]"><i class="iconfont">&#xe734;</i> 微信支付</a>
+			<a href="javascript:;" @click='gobank' :class="['bank',{disableBtn:!checked}]"><i class="iconfont">&#xe66f;</i> 银行转账</a>
+		</div>
+		
 		<div class="ex-upgrade-info">
 			<div class="ex-upgrade-item">
 				<b> 1. VIP用户权益</b>
@@ -62,7 +63,7 @@ import { MessageBox } from 'mint-ui'
 			},
 			gowechat () {
 				if (!this.checked) {
-					MessageBox('提示', '请勾选会员升级协议!')
+					MessageBox('提示', '请勾选并同意《会员升级VIP协议》')
 					return
 				}
 				this.$router.push('/wechat')
@@ -85,7 +86,7 @@ import { MessageBox } from 'mint-ui'
 .ex-upgrade-adv{ text-align: center; }
 .ex-upgrade-adv b{ font-size: 1.4rem;color: #5d646e; line-height:2rem;}
 .ex-upgrade-adv p{font-size: 1.2rem; color: #8f959e; padding-bottom: 0.5rem;}
-.ex-upgrade-pay {padding: 2rem;}
+.ex-upgrade-pay {padding:1rem 2rem 2rem;}
 .ex-upgrade-pay a{display: block; height: 5rem; line-height: 5rem; text-align: center;font-size: 1.6rem;color: #fff;border-radius: 0.4rem;}
 .ex-upgrade-pay a i{font-size: 3rem;}
 .ex-upgrade-pay .wechat {background: #3dbc3c; margin-bottom: 2rem;}
@@ -96,7 +97,8 @@ import { MessageBox } from 'mint-ui'
 .ex-upgrade-item {padding-bottom: 2rem;}
 .ex-upgrade-item b{ line-height: 2; }
 .ex-upgrade-item p{ color:#5d646e; line-height: 1.5;  }
-.ex-argument{ padding: 0 2rem 1rem 2rem;  vertical-align: middle;}
+.ex-argument{ vertical-align: middle;  text-align: center; padding: 1.5rem;}
 .ex-argument input{ width: 1.5rem; height: 1.5rem; }
+.ex-argument label{ color: #8f959e; }
 .ex-argument a{ color: #047dcb; }
 </style>

@@ -7,7 +7,7 @@
 					<label>返回</label>
 				</a>
 			</span>
-			<span>产品</span>
+			<span>商品</span>
 			<span class="finish">
 				<a href="javascript:void(0)" @click="finish" v-show="isedit">
 					完成
@@ -19,6 +19,7 @@
 				<li :class="{'active':status === '2'}" @click="tap('2')">审核中</li>
 				<li :class="{'active':status === '3'}" @click="tap('3')">出售中</li>
 				<li :class="{'active':status === '1'}" @click="tap('1')">已下架</li>
+				<li :class="{'active':status === '4'}" @click="tap('4')">审核失败</li>
 			</ul>
 		</div>
 		<div class="table-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
@@ -35,6 +36,7 @@
 	            </td>
 	            <td class="m3"><div class="title">{{item.commodityName}}</div><label for="" class="orange">&yen;{{item.price||0.00}}</label>
 					<span class="group">分组：{{item.groupName||'未分组'}}</span>
+					<div class="fail" v-show="status === '4'">失败原因：{{item.failureReason||'无'}}</div>
 	            </td>
 	            <td class="m4" v-show="!isedit"><i class="iconfont" >&#xe606;</i>
 	            </td>
@@ -58,13 +60,16 @@
 			<span @click="delgoods">删除</span>
 			<span @click="batchOnline">上架</span>
 		</div>
+		<div class="bottom gray" v-show="status == '4' && isedit" :class="{'blue': optionList.length > 0 }">
+			<span @click="delgoods">删除</span>
+		</div>
 		<div class="modal_BJ" v-show="selGroupName">
 			<div class="modal">
 				<div class="modal_box">
 					<div class="title">店铺分组</div>
 					<div class="field">
 						<ul>
-							<li v-for="(item,index) in groupList" @click="selground(item.id)">
+							<li v-for="(item,index) in groupList" @click="selground(item.id)" v-if="item.id!==0">
 								<span>{{item.groupName}}</span>
 								<span class="option" :class="{'select': groupId === item.id}"></span>
 							</li>
@@ -127,6 +132,9 @@ export default {
 	},
 	methods: {
 		tap (status) {
+			if(status === this.status){
+				return
+			}
 			this.status = status
 			window.localStorage.setItem('productstatus',status)
 			this.isedit = false
@@ -172,7 +180,7 @@ export default {
 		confirm () {
 			let _this = this;
 			axios.post('commodityInfo/batchGroup',qs.stringify({
-				groupId: _this.groupId,
+				groupId: _this.groupId || 0,
 				ids: _this.optionList.join(',')
 			})).then(function(res){
 				_this.selGroupName = false
@@ -197,7 +205,7 @@ export default {
 			let _this = this
 			MessageBox({
 			  title: '提示',
-			  message: '确认下架商品吗？',
+			  message: '确认下架选中的'+_this.optionList.length+'个商品吗？',
 			  showCancelButton: true,
 			  confirmButtonText: '下架'
 			}).then(action => {
@@ -228,7 +236,7 @@ export default {
 			let _this = this
 			MessageBox({
 			  title: '提示',
-			  message: '确认上架选中的商品吗？',
+			  message: '确认上架选中的'+_this.optionList.length+'个商品吗？',
 			  showCancelButton: true,
 			}).then(action => {
 				if (action === 'confirm') {
@@ -258,7 +266,7 @@ export default {
 			let _this = this;
 			MessageBox({
 			  title: '提示',
-			  message: '确认删除选中的商品吗？',
+			  message: '确认删除选中的'+_this.optionList.length+'个商品吗？',
 			  showCancelButton: true,
 			  confirmButtonText: '删除'
 			}).then(action => {
@@ -379,11 +387,11 @@ export default {
 			if (this.isedit) {
 				return 
 			}
-			if (status!=='1') {
-				this.$router.push({query:{id:id,typeName:_typeName,groupName:groupName},path:'/display6'})
+			if (status === '1' || status === '4') {
+				this.$router.push({query:{id:id,typeName:_typeName,groupId:_groupId},path:'/display5'})
 				return 
 			}
-			this.$router.push({query:{id:id,typeName:_typeName,groupId:_groupId},path:'/display5'})
+			this.$router.push({query:{id:id,typeName:_typeName,groupName:groupName},path:'/display6'})
 		}
 	},
 	created () {
@@ -399,8 +407,8 @@ export default {
 *{ box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;padding: 0;margin: 0;}
 .ex-display {width: 100%;background: #f4f5f7;color: #212a32;height: 100%;}
 .ex-display .menu-wrapper {width: 100%;background: #fff;padding: 3px 0;font-size: 1.6rem;text-align: center;}
-.ex-display .menu-wrapper .menu {width: 65%;margin: auto;height: 46px;line-height: 46px;}
-.ex-display .menu-wrapper .menu li{width: 33.3%;float: left;color: #999;}
+.ex-display .menu-wrapper .menu {width: 100%;margin: auto;height: 46px;line-height: 46px;}
+.ex-display .menu-wrapper .menu li{width: 25%;float: left;color: #999;}
 .ex-display .menu-wrapper .menu li.active{border-bottom: solid 3px #0470b6;color: #0470b6;}
 .ex-display .table-wrapper {width: 100%;overflow-y: auto;overflow-x: auto;font-size: 1.4rem;margin-top: 15px;}
 .ex-display .table-wrapper .table {width: 100%;max-width: 100%;border-collapse: collapse; vertical-align: middle;}
@@ -408,7 +416,7 @@ export default {
 .ex-display .table-wrapper .table tr:last-child{border-bottom: none;}
 .ex-display .table-wrapper .table td{color: #aaafb6;}
 .ex-display .table-wrapper .table td.m3{word-break: break-all;line-height: 20px;}
-.ex-display .table-wrapper .table td.m3 {}
+.ex-display .table-wrapper .table td.m3 .fail {color: #f68500;padding-top: 10px;}
 .ex-display .table-wrapper .table td.m3 .title{padding-bottom: 10px;color: #212a32;}
 .ex-display .table-wrapper .table td.m3 .orange{color: #f16200;padding-right: 10px;}
 .ex-display .table-wrapper .table td span.option{display: inline-block;background: url(../../assets/images/noselect1.png) no-repeat;background-size: 100%;width: 22px;height: 22px;}

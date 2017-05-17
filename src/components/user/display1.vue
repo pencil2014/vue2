@@ -30,7 +30,7 @@
 					<span class="right">
 						<div class="uploadimg">
 							<img :src="info.facadePhoto" alt="">
-							<input type="file" class="file-prew" id="frontPic" @change="getfile">
+							<input type="file" class="file-prew" id="frontPic" @change="getfile" accept="image/*">
 						</div>	
 						<i class="iconfont" >&#xe606;</i>
 					</span>
@@ -46,7 +46,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </template>
 <script>
@@ -55,16 +54,12 @@ import qs from "qs"
 import lrz from 'lrz'
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-
 export default {
 	data(){
 		return{
 			info: '',
 			imgurl:'',
 			imgbase64: '',
-			cropper: {
-				imgStr:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoL…KWiuds6ErBRRRSGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAH/2Q=='
-			},
 			modal: {
 				text:'店铺管理',
 				fixed: false
@@ -80,15 +75,21 @@ export default {
 		}
 	},
 	created () {
-		let _this = this 
+		let _this = this
+		Indicator.open({
+		  text: '加载中...',
+		  spinnerType: 'fading-circle'
+		});
 		axios.post('shop/examine',qs.stringify({})).then(function(res){
+			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.info = res.data.data;
 			} else {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
-				Toast('网络请求超时！')
+			Indicator.close()
+			Toast('网络请求超时！')
 		})
 	},
 	methods: {

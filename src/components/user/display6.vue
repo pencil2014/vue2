@@ -15,7 +15,7 @@
 					<p>商品图片</p>
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
-							<img :src="item">
+							<img :src="item" @click='preimg(item)'>
 						</div>
 					</div>
 				</li>
@@ -37,14 +37,16 @@
 				</li>
 			</ul>
 		</div>
+		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
 <script>
 import axios from "axios"
 import qs from "qs"
 import lrz from 'lrz'
-import { MessageBox, Indicator, Toast , Popup ,Picker } from 'mint-ui'
+import { MessageBox, Indicator, Toast} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import imgPreview from '../common/image'
 export default {
 	data(){
 		return{
@@ -59,13 +61,16 @@ export default {
 				text:'产品详情',
 				fixed: false
 			},
+			imgpre: {
+				show: false,
+				url: ''
+			},
 			submitbtn: false
 		}
 	},
 	components: {
 		HeadTitle,
-		Popup,
-		Picker
+		imgPreview
 	},
 	computed:{
 		id () {
@@ -76,36 +81,11 @@ export default {
 		},
 		groupName () {
 			return this.$route.query.groupName
-		}
+		},
 	},
 	methods: {
 		back () {
 			this.$router.back();
-		},
-		getGroupList () {
-				let _this = this
-				axios.post('commodityGroup/list',qs.stringify({})).then(function(res){
-					if (res.data.code === '10000') {
-						_this.groupList = res.data.data.list
-					} else {
-						Toast(res.data.msg)
-					}
-				}).catch(function(){
-						Toast('网络请求超时！')
-				})
-		},
-		getList() {
-			let _this = this
-			axios.post('commodityType/list',qs.stringify({})).then(function(res){
-				if (res.data.code === '10000') {
-					_this.TypeList = res.data.data
-				} else {
-					Toast(res.data.msg)
-				}
-			}).catch(function(){
-				_this.nodateStatus = true
-					Toast('网络请求超时！')
-			})
 		},
 		getDetail () {
 			let _this = this
@@ -123,7 +103,6 @@ export default {
 					_this.typeName = res.data.data.typeName
 					_this.groupId = res.data.data.groupId
 					let imgArray = res.data.data.commodityAffixEntityList
-					let imgurl = []
 					imgArray.forEach(function(v,k){
 						_this.imgurl.push(v.filePath)
 					})
@@ -138,10 +117,16 @@ export default {
 		back () {
 			this.$router.back();
 		},
+		preimg (url) {
+			this.imgpre.url = url;
+			this.imgpre.show = true
+		},
+		hidepre () {
+			this.imgpre.show = false;
+			this.imgpre.url = ''
+		}
 	},
 	created () {
-		this.getGroupList()
-		this.getList()
 		this.getDetail()
 	},
 }
@@ -172,4 +157,6 @@ export default {
 .ex-display .wrapper .item .UpLoadIMG div.report-pic {border: solid 1px #ebebeb;position: relative;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic img{;width: 100%;height: 100%;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic .delect{position:absolute;top: -12px;right: -10px;background: #666;color: #fff;display: inline-block;width: 24px;height: 24px;text-align: center;border-radius: 50%;font-size: 24px;line-height: 20px;}
+
+.preview{position: absolute;z-index: 999;left: 0px;top: 0;}
 </style>

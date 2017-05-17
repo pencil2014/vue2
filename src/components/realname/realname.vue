@@ -29,7 +29,7 @@
 							<br>
 							上传正面
 						</span>
-						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')"  />
+						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')"  accept="image/*" />
 					</div>
 					<div class="report-file">
 						<img :src="imgurl.backPic" alt="" v-show="imgurl.backPic">
@@ -38,7 +38,7 @@
 							<br>
 							上传反面
 						</span>
-						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')" />
+						<input type="file" name="" class="file-prew" id="backPic" @change="getfile('backPic')" accept="image/*" />
 					</div>
 				</div>
 			</div>
@@ -52,7 +52,7 @@
 							<br>
 							上传照片
 						</span>
-						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')" />
+						<input type="file" name="" class="file-prew" id="fullPic" @change="getfile('fullPic')" accept="image/*" />
 					</div>
 				</div>
 			</div>
@@ -107,14 +107,6 @@ export default {
 			idCard:'',
 			phoneCode:'',
 			info:'',
-			config:{
-	            onUploadProgress (progressEvent) {
-	              	Indicator.open({
-					  text: '审核中...',
-					  spinnerType: 'fading-circle'
-					});
-	            }
-	        },
 			countdown: false,
 			second: '短信验证码',
 			submitBtn: false,

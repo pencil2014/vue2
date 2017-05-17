@@ -131,7 +131,7 @@ export default {
 				latitude: '39.915',
 				longitude: '116.404'
 			},
-			id:'',
+			id: 2,
 			showsearch: false
 		}
 	},
@@ -149,6 +149,11 @@ export default {
 						function (pos) {
 							_this.currentPosition.latitude = pos.coords.latitude
 							_this.currentPosition.longitude = pos.coords.longitude
+							let currentPosition = {
+								latitude: pos.coords.latitude,
+								longitude: pos.coords.longitude
+							}
+							window.localStorage.setItem('currentPosition',JSON.stringify(currentPosition))
 							_this.getcityid()
 						}
 					)
@@ -255,9 +260,13 @@ export default {
 	created () {
 		// this.id = JSON.parse(window.localStorage.getItem('userinfo')).userId
 		let address = JSON.parse(window.localStorage.getItem('historycity'))
+		let currentPosition = window.localStorage.getItem('currentPosition')
 		if(!!address) {
 			this.address = address[0].regionName
 			this.id = address[0].regionId
+			if (currentPosition) {
+				this.currentPosition = JSON.parse(currentPosition)
+			} 
 			this.loadMore()
 		} else {
 			this.getposition()

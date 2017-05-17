@@ -9,14 +9,14 @@
 				</li>
 				<li class="item">
 					<span>商品价格</span>
-					<input type="text" placeholder="请输入价格" maxlength="8" v-model.trim="price">
+					<input type="tel" placeholder="请输入价格" maxlength="8" v-model.trim="price" @input="currency('price')">
 				</li>
 				<li class="item picture">
 					<p>商品图片</p>
 					<!-- 请上传小于500K的图片 -->
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
-							<img :src="item">
+							<img :src="item" @click='preimg(item)'>
 							<label class="delect" @click='delpicture(item)'>x</label>
 						</div>
 						<div class="report-file" v-show='imgurl.length < 4'>
@@ -47,8 +47,8 @@
 						<i class="iconfont">&#xe606;</i>
 					</label>
 				</li>
-				<li class="item-option">
-					<div :class="{'select': groupId === item.id}" v-for="(item,index) in groupList" @click="selground(item.id)">
+				<li class="item-option groupList" v-if="groupList.length !== 1">
+					<div :class="{'select': groupId === item.id}" v-for="(item,index) in groupList" @click="selground(item.id)" v-if='item.id !==0'>
 						<span class="option"></span>
 						{{item.groupName}}
 					</div>
@@ -94,6 +94,7 @@
 				</slot>	
       		</Picker>
       	</Popup> -->
+      	<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
 <script>
@@ -102,6 +103,7 @@ import qs from "qs"
 import lrz from 'lrz'
 import { MessageBox, Indicator, Toast , Popup ,Picker } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import imgPreview from '../common/image'
 export default {
 	data(){
 		return{
@@ -121,8 +123,12 @@ export default {
 			commodityName: '',
 			price:'',
 			modal: {
-				text:'产品编辑',
+				text:'商品编辑',
 				fixed: false
+			},
+			imgpre: {
+				show: false,
+				url: ''
 			},
 			submitbtn: false,
 			islrz: false,
@@ -131,11 +137,12 @@ export default {
 	components: {
 		HeadTitle,
 		Popup,
-		Picker
+		Picker,
+		imgPreview
 	},
 	computed:{
 		disableBtn () {
-			if(!this.commodityName || !this.price || this.imgurl.length < 1 || !this.commodityTypeId ){
+			if(!this.commodityName || !this.price){
 				return true
 			}else{
 				return false
@@ -218,7 +225,7 @@ export default {
 			let _this = this
 			MessageBox({
 			  title: '提示',
-			  message: '确认删除改图片吗？',
+			  message: '确认删除该图片吗？',
 			  showCancelButton: true,
 			  confirmButtonText: '删除'
 			}).then(action => {
@@ -243,7 +250,7 @@ export default {
 				MessageBox('提示', '商品价格不合法!')
 				return
 			}
-			if (this.imgurl.length === 0) {
+			if (this.imgurl.length < 1) {
 				MessageBox('提示', '商品图片不能为空!')
 				return
 			}
@@ -252,7 +259,7 @@ export default {
 				return
 			}
 			if (this.islrz) {
-				MessageBox('提示', '图片压缩中请稍后...')
+				MessageBox('提示', '图片压缩中请稍后重试')
 				return
 			}
 			this.submitbtn = true
@@ -392,6 +399,14 @@ export default {
 			}
 			this.$router.push('/display3')
 		},
+		preimg (url) {
+			this.imgpre.url = url;
+			this.imgpre.show = true
+		},
+		hidepre () {
+			this.imgpre.show = false;
+			this.imgpre.url = ''
+		}
 	},
 	created () {
 		this.getGroupList()
@@ -412,7 +427,7 @@ export default {
 .ex-display .wrapper .item input{border: none;width: 70%;}
 .ex-display .wrapper .item label.right{float: right;padding-right: 10px;color: #aaafb6;}
 
-.ex-display .wrapper .item-content.option-wrapper{padding: 0 0 25px 0;}
+.ex-display .wrapper .item-content .item-option.groupList{max-height: 200px;overflow-y: auto;padding:15px 0 15px 25px;line-height: 36px;box-sizing: border-box;font-size: 1.4rem;}
 .ex-display .wrapper .item-content .item-option{font-size: 1.4rem;padding: 9px 0 9px 25px;line-height: 30px;max-height: 156px;overflow-y: scroll;}
 .ex-display .wrapper .item-content .item-option div{line-height: 36px;}
 .ex-display .wrapper .item-content .item-option div .option{display: inline-block;width: 20px;height: 20px;background: url(../../assets/images/noselect.png) no-repeat;background-size: 100%;vertical-align: middle;}
@@ -452,4 +467,5 @@ export default {
 .ex-display .modal_BJ .modal .modal_box .operate .gray{color: #596678;}
 .ex-display .modal_BJ .modal .modal_box .operate .link:last-child{border-right: none;}
 .ex-display .modal_BJ .modal .modal_box .operate .link:active{background: #ebebeb}
+.preview{position: absolute;z-index: 999;left: 0px;top: 0;}
 </style>

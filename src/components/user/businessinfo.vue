@@ -112,11 +112,11 @@ export default {
 			this.$router.back();
 		},
 		preimg (url) {
-			this.imgpre.url = url,
+			this.imgpre.url = url;
 			this.imgpre.show = true
 		},
 		hidepre () {
-			this.imgpre.show = false,
+			this.imgpre.show = false;
 			this.imgpre.url = ''
 		}
 	},

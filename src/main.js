@@ -7,12 +7,14 @@ import axios from "axios"
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
+
 // import filter from './filters' 
 
 Vue.config.productionTip = false
 
 // 引入mint-ui插件
 Vue.use(Mint)
+
 
 // 判断是否登录
 router.beforeEach((to, from, next) => {
@@ -41,7 +43,7 @@ new Vue({
 Vue.prototype.$bus = new Vue()  // this.$bus调用
 
 // 配置全局ajax请求域名
-axios.defaults.baseURL = 'http://192.168.1.201:8080/exsd-web/'  // 'https://exsd-test.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'http://120.25.77.33:8999/exsd-web/'
+axios.defaults.baseURL = 'https://exsd-test.exgj.com.cn/exsd-web/'  // 'https://exsd-test.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'http://120.25.77.33:8999/exsd-web/'
 
 if (!!window.localStorage.getItem('token')) {
 	axios.defaults.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('token')

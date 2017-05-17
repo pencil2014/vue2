@@ -26,7 +26,7 @@
 				<button type="button" @click="register" :class="{disableBtn:disableBtn}">注 册</button>
 			</div>
 			<div class="ex-rigster-from-agreement">
-				<input type="checkbox" name="agreement" v-model='agreement'> 我已阅读并同意 <a href="http://www.exgj.com.cn/exsdresc/file/m-xy.pdf">《E享时代注册协议》</a>
+				<input type="checkbox" name="agreement" v-model='agreement'> 我已阅读并同意 <router-link to="/RegisterRule">《“e享时代”会员注册协议》</router-link>
 			</div>
 		</div>
 	</div>

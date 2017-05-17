@@ -51,7 +51,7 @@
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
 						<i class="iconfont">&#xe606;</i>
-						<label for="" class="count" v-text="count" v-show="count!=0"></label>
+						<span for="" class="count" v-text="count" v-show="count!=0"></span>
 					</router-link>
 					<router-link to="/notice" tag="li">
 						<img src="../../assets/images/notice.png" alt="">
@@ -62,10 +62,22 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
-					<li @click="toRealName">
+					<!-- <li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
+						<label for="">{{realnamestatus}}</label>
+					</li> -->
+					<li @click="toRealName" v-if="(!isShop && !realType) || realType === '1' ">
+						<img src="../../assets/images/renzhen.png" alt="">
+						<span>实名认证</span>
+						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
+						<label for="">{{realnamestatus}}</label>
+					</li>
+					<li @click="toRealName2" v-if="(isShop && !realType) || (realType === '2' && isShop)">
+						<img src="../../assets/images/renzhen.png" alt="">
+						<span>商家法人实名认证</span>
+						<i class="iconfont">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
 					<router-link to="/qrcode" tag="li" v-if="!isShop">
@@ -107,7 +119,8 @@ export default {
 			modal: {
 				text:'设置',
 				fixed: false
-			}
+			},
+			realType:''
 		}
 	},
 	computed:{
@@ -145,12 +158,11 @@ export default {
 		 ]).then(axios.spread(function (personal,count,realname){
 		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
-		 		if(count.data.data.count<=99){
-		 			_this.count = count.data.data.count;
-		 		}else{
-		 			_this.count = '99+'
-		 		}
+		 		_this.count = count.data.data.count<=99 ? count.data.data.count : '99+';
 		 		_this.checkRealName = realname.data.data
+
+		 		_this.realType = _this.checkRealName.hasOwnProperty('type') ? _this.checkRealName.type : false
+
 		 	}else{
 		 		Toast('系统错误')
 		 	}
@@ -164,17 +176,31 @@ export default {
 		},
 		toRealName () {
 			let status = this.checkRealName.status
-			if(status === '0'){
+
+			if(status === '0' || status === '1'){
 				this.$router.push('/realname/detail')
-			}else if(status === '1'){
-				this.$router.push('/realname/detail')
-			}else if(status === '2'){
 				return
 			}
-			else{
-				this.$router.push('/realname')
+
+			if(status === '2'){
+				return
+			}
+
+			this.$router.push('/realname')
+		},
+		toRealName2 () {
+			let status = this.checkRealName.status
+
+			if(status === '0' || status === '1'){
+				this.$router.push('/realname/detail')
+				return
+			}
+
+			if(status === '2'){
+				return
 			}
 			
+			this.$router.push('/realname/shop')
 		}
 	},
 	beforeRouteLeave (to,from,next) {
@@ -209,11 +235,11 @@ export default {
 .ex-user-item:nth-child(1){margin-top: 0px;}
 .ex-user-item{margin-top: 18px;padding: 0 0 0 15px;background: #fff;}
 .ex-user-item ul{list-style-type: none;display: block;}
-.ex-user-item ul li{min-height: 31px;font-size: 1.4rem;width: 100%;padding: 8px 4px 8px 0;line-height: 31px;border-bottom: solid 1px #e5e5e5;position: relative;}
+.ex-user-item ul li{min-height: 30px;font-size: 1.4rem;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;border-bottom: solid 1px #e5e5e5;position: relative;}
 .ex-user-item ul li:last-child{border: none;}
 .ex-user-item ul li .iconfont{color: rgba(173,180,190,1);float: right;padding: 0 15px 0 0;}
 .ex-user-item ul li img{width: 30px;vertical-align: middle;}
 .ex-user-item ul li span{}
 .ex-user-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
-label.count{display: inline-block;border-radius: 50%;background: rgb(255,84,0);min-width: 24px;max-height: 24px;line-height: 24px; padding: 2px !important;text-align: center;color: #fff!important;font-size: 1rem !important;margin-top: 3px;font-size: 1.4rem !important;}
+.ex-user-item ul li span.count{display: inline-block;border: none;box-sizing: border-box;float: right;background: #f0544d;height: 24px;min-width: 24px;text-align: center;line-height: 24px;margin-top: 3px;color: #fff;border-radius: 15px;padding: 0 4px;font-size: 1.2rem;}
 </style>

@@ -104,12 +104,17 @@ export default {
 		setAddress (item) {
 			let historycity = JSON.parse(window.localStorage.getItem('historycity')) 
 			if (!!historycity) {
+				let num = ''
 				let x = historycity.filter(function(el,index) {
-					return el.regionId === item.regionId
+					if (el.regionId === item.regionId) {
+						num = index
+						return item
+					}
 				})
-				if (!x.length) {
-					historycity.unshift(item)
-				}	
+				if (x.length) {
+					historycity.splice(num, 1)
+				}
+				historycity.unshift(item)
 			}
 			if (!historycity) {
 				historycity = [item]
@@ -123,7 +128,6 @@ export default {
 
 	},
 	created () {
-
 		let historycity = JSON.parse(window.localStorage.getItem('historycity')) 
 		let address = window.localStorage.getItem('address')
 		if (address) {
@@ -148,6 +152,7 @@ export default {
 				// _this.hotcity = res.data.data.hot
 				// delete res.data.data.hot
 				_this.citylist = res.data.data
+				window.localStorage.setItem('citylist', JSON.stringify(res.data.data))
 			} else {
 				Toast(res.data.msg)
 			}
@@ -156,6 +161,7 @@ export default {
 			Indicator.close()
 			Toast('连接失败，请检查网络是否正常!')
 		})
+	
 	},
 	destroyed () {
 		Indicator.close()

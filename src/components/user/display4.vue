@@ -3,7 +3,7 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="wrapper">
 			<ul class="item-content" v-if='groupList.length > 0'>
-				<li class="item" v-for='(item,index) in groupList'>
+				<li class="item" v-for='(item,index) in groupList' v-show="item.id !== 0">
 					<span>
 						<i class="iconfont" @click='delgroup(item.id,index)'>&#xe6b3;</i>
 						{{item.groupName}}
@@ -190,7 +190,7 @@ export default {
 .ex-display .modal_BJ .modal .modal_box{background: #fff;width: 100%;border-radius: 5px;overflow: hidden;text-align: center;padding-top: 15px;}
 .ex-display .modal_BJ .modal .modal_box .title{font-size: 1.6rem;}
 .ex-display .modal_BJ .modal .modal_box .field{padding: 15px 20%;text-align: center;}
-.ex-display .modal_BJ .modal .modal_box .field input{height: 30px;text-indent: 2em;font-size: 1.4rem;border:none;}
+.ex-display .modal_BJ .modal .modal_box .field input{height: 30px;font-size: 1.4rem;border:none;text-align: center;}
 .ex-display .modal_BJ .modal .modal_box .operate{height: 46px;padding: 0;border-top: 1px solid #e5e5e5;}
 .ex-display .modal_BJ .modal .modal_box .operate .link{width: 50%;display: inline-block;float: left;line-height: 46px;border-right: solid 1px #e5e5e5;box-sizing: border-box;color: #212a32;font-size: 1.4rem;}
 .ex-display .modal_BJ .modal .modal_box .operate .gray{color: #596678;}

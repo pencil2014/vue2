@@ -226,9 +226,9 @@ export default {
 <style scoped>
 .ex-shop-info{background-color: #efefef;}
 .ex-shop-info-banner { height: 20rem; position: relative; overflow: hidden; background-color: #fff;}
-.ex-shop-info-banner img{ height: 20rem; width: 100%; }
+.ex-shop-info-banner img{width: 100%;  height: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
 .ex-shop-info-banner h3{ position: absolute; bottom: 0; left: 0 ;width: 100%;background-color: rgba(0,0,0,0.4); height: 5rem;  line-height: 5rem; padding-left: 2rem; color: #fff; font-size: 2rem; font-weight: normal;}
-.ex-shop-info-banner .back {position: absolute; top: 1rem; left: 1rem; display: inline-block; background-color: rgba(0,0,0,0.3); color: #fff; width: 5rem; height: 5rem; line-height: 5rem; text-align: center; border-radius: 0.4rem;}
+.ex-shop-info-banner .back {position: absolute; top: 1rem; left: 1rem; display: inline-block; background-color: rgba(0,0,0,0.3); color: #fff; width: 5rem; height: 5rem; line-height: 5rem; text-align: center; border-radius: 0.4rem; z-index: 2;}
 .ex-shop-info-banner .back i{font-size: 3rem;}
 .ex-shop-info-addr{background-color: #fff;}
 .ex-shop-info-addr p{ padding: 1.5rem 1rem; border-bottom: 1px solid #eee; font-size: 1.4rem; }
@@ -258,8 +258,9 @@ export default {
 
 .showpicbox {position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); width: 100%; height: 100%; z-index: 3;}
 .showpicbox-cnt { width: 85%; height: 80%;  margin: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
-.showpicbox-cnt .mint-swipe-items-wrap { position: relative; }
-.showpicbox-cnt img { height: 80%; width: 100%; }
+.showpicbox-cnt .mint-swipe-items-wrap { position: relative; height: 100%; }
+.showpicbox-cnt .mint-swipe-item{ text-align: center; height: 80%; background-color: #eee;}
+.showpicbox-cnt img {position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);}
 .showpicbox-cnt .info {position: absolute; top:80%; background-color: #fff; width: 100%; padding: 1.5rem 0; font-size: 1.4rem; line-height: 1; margin-top: -0.3rem; border-top: 1px solid #eee;}
 .showpicbox-cnt .info .title { display: block; width: 64%; padding: 0 2%; overflow: hidden; float: left;}
 .showpicbox-cnt .info .price { display: block; width: 30%; overflow: hidden; color:#ec5909; text-align: center; float: right;}
