@@ -16,7 +16,7 @@
 					<!-- 请上传小于500K的图片 -->
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
-							<img :src="item" @click='preimg(item)'>
+							<img :src="item"  v-preview="item">
 							<label class="delect" @click='delpicture(item)'>x</label>
 						</div>
 						<div class="report-file" v-show='imgurl.length < 4'>
@@ -94,7 +94,7 @@
 				</slot>	
       		</Picker>
       	</Popup> -->
-      	<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
+      	<lg-preview></lg-preview>
 	</div>
 </template>
 <script>
@@ -103,7 +103,6 @@ import qs from "qs"
 import lrz from 'lrz'
 import { MessageBox, Indicator, Toast , Popup ,Picker } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-import imgPreview from '../common/image'
 export default {
 	data(){
 		return{
@@ -126,10 +125,6 @@ export default {
 				text:'商品编辑',
 				fixed: false
 			},
-			imgpre: {
-				show: false,
-				url: ''
-			},
 			submitbtn: false,
 			islrz: false,
 		}
@@ -138,7 +133,6 @@ export default {
 		HeadTitle,
 		Popup,
 		Picker,
-		imgPreview
 	},
 	computed:{
 		disableBtn () {

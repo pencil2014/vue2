@@ -153,6 +153,8 @@ export default {
 		},
 		addcard () {
 			let _this = this
+			let usertype = window.localStorage.getItem('usertype')
+			let route = usertype === '2' ? '/realname/shop' : '/realname'
 
 			if (this.checkRealName.status === '1') {
 				MessageBox('提示', '实名认证审核中，目前不能添加银行卡！')
@@ -166,7 +168,7 @@ export default {
 				  confirmButtonText: '去认证'
 				}).then(action => {
 					if (action === 'confirm') {
-						_this.$router.push('/realname')
+						_this.$router.push('/realname/detail')
 					}
 				})
 				return
@@ -198,7 +200,7 @@ export default {
 				  confirmButtonText: '去认证'
 				}).then(action => {
 					if (action === 'confirm') {
-						_this.$router.push('/realname')
+						_this.$router.push(route)
 					}
 				})
 				return

@@ -32,7 +32,8 @@ export default {
 				text:'实名认证',
 				fixed: false
 			},
-			examine:''
+			examine: '',
+			realType: ''
 		}
 	},
 	components: {
@@ -64,6 +65,12 @@ export default {
 			this.$router.back();
 		},
 		torealname () {
+			let realType = this.examine.hasOwnProperty('type') ? this.examine.type : false
+			console.log(typeof(realType))
+			if(realType === '2'){
+				this.$router.push('/realname/shop')
+				return
+			}
 			this.$router.push('/realname')
 		}
 	}

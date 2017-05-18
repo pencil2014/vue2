@@ -36,7 +36,7 @@
 	            </td>
 	            <td class="m3"><div class="title">{{item.commodityName}}</div><label for="" class="orange">&yen;{{item.price||0.00}}</label>
 					<span class="group">分组：{{item.groupName||'未分组'}}</span>
-					<div class="fail" v-show="status === '4'">失败原因：{{item.failureReason||'无'}}</div>
+					<div class="fail" v-show="status === '4'">失败原因：{{item.failureReason||'--'}}</div>
 	            </td>
 	            <td class="m4" v-show="!isedit"><i class="iconfont" >&#xe606;</i>
 	            </td>

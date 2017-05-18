@@ -140,7 +140,7 @@
 				<!-- <b class=" m6"><i class="iconfont">&#xe603;</i></b> -->
 				<span>我的推荐</span></router-link>
 				</li>
-				<li v-show='userinfo.userLev !=="2"'>
+				<li v-if='false'>
 					<a href="javascript:;" @click='gotovip'>
 					<img src="../../assets/images/10.png" alt="">
 					<!-- <b class=" m7"><i class="iconfont">&#xe642;</i></b> -->
@@ -458,9 +458,9 @@ b.m8{background-color: #66c476;}
 b.m9{background-color: #ff8338;}
 b.m10{background-color: #66c476;}*/
 
-.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff; }
+.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff;}
 .ex-index-service i{font-size: 3rem;}
-.ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 4;}
+.ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 7;}
 .ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; padding-top: 1rem; border-radius: 0.4rem; padding-top: 2rem;}
 .ex-customer-cnt-item {padding-top:1rem; font-size: 1.6rem;}
 .ex-customer-cnt-item h3{ font-size: 1.4rem; font-weight: normal; padding-bottom: 0.5rem; }

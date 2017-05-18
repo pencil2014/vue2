@@ -77,7 +77,7 @@
 					<li @click="toRealName2" v-if="(isShop && !realType) || (realType === '2' && isShop)">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>商家法人实名认证</span>
-						<i class="iconfont">&#xe606;</i>
+						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
 					<router-link to="/qrcode" tag="li" v-if="!isShop">
@@ -136,7 +136,7 @@ export default {
 			return (/^B/i.test(this.userinfo.userCode)?'E享商家':'E享会员');
 		},
 		isLev () {
-			return (this.userinfo.userLev === '2'? true : false)
+			return (this.userinfo.userLev === '2' && !this.isShop ? true : false)
 		},
 		avatar () {
 			if(!this.userinfo.logoImg){
@@ -230,7 +230,7 @@ export default {
 .ex-header .wrapper .m3{float: right;background-color: #add6f1;border-radius: 20px 0 0 20px;width: 104px;height: 36px;text-align: right;font-size: 1.6rem;color: #4e92e6;margin-top: 18px;line-height: 36px;}
 .ex-header .wrapper .m3 label{;padding-right: 10px;}
 .ex-header .wrapper .vip{background-color: #ffa132;color: #fff;}
-.ex-header .wrapper .vip label:before{content: '';display: inline-block;width: 28px;height: 28px;background: url(../../assets/images/identity_VIP.png)no-repeat;background-size: 100%;vertical-align: top;margin-top: 4px;}
+.ex-header .wrapper .vip label:before{content: '';display: inline-block;width: 28px;height: 28px;background: url(../../assets/images/identity_VIP.png)no-repeat;background-size: 100%;vertical-align: middle;margin-bottom: 4px;}
 
 .ex-user-item:nth-child(1){margin-top: 0px;}
 .ex-user-item{margin-top: 18px;padding: 0 0 0 15px;background: #fff;}

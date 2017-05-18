@@ -29,10 +29,10 @@
 					<span class="left">门头照片</span>
 					<span class="right">
 						<div class="uploadimg">
-							<img :src="info.facadePhoto" alt="">
-							<input type="file" class="file-prew" id="frontPic" @change="getfile" accept="image/*">
+							<img :src="info.facadePhoto" alt="" v-preview="info.facadePhoto" :preview-nav-enable="'false'">
+							<!-- <input type="file" class="file-prew" id="frontPic" @change="getfile" accept="image/*"> -->
 						</div>	
-						<i class="iconfont" >&#xe606;</i>
+						<!-- <i class="iconfont" >&#xe606;</i> -->
 					</span>
 				</div>
 			</div>
@@ -46,6 +46,7 @@
 				</div>
 			</div>
 		</div>
+		<lg-preview></lg-preview>
 	</div>
 </template>
 <script>
@@ -54,7 +55,8 @@ import qs from "qs"
 import lrz from 'lrz'
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-export default {
+import imgPreview from '../common/image'
+export default {	
 	data(){
 		return{
 			info: '',
@@ -63,11 +65,16 @@ export default {
 			modal: {
 				text:'店铺管理',
 				fixed: false
-			}
+			},
+			imgpre: {
+				show: false,
+				url: ''
+			},
 		}
 	},
 	components: {
-		HeadTitle
+		HeadTitle,
+		imgPreview
 	},
 	computed:{
 		address () {
@@ -159,6 +166,14 @@ export default {
 					id: this.info.id
 				}
 			})
+		},
+		preimg (url) {
+			this.imgpre.url = url;
+			this.imgpre.show = true
+		},
+		hidepre () {
+			this.imgpre.show = false;
+			this.imgpre.url = ''
 		}
 	},
 	

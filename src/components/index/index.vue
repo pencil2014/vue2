@@ -172,7 +172,7 @@
 		</div>
 		<app-nav></app-nav>
 
-		<model :model='model' v-show='model.show && showmodel' @hideModel='hidemodel'></model>
+		<ex-notice :modal='model'  @confirm='confirm'></ex-notice>
 	</div>	
 </template>
 
@@ -181,7 +181,6 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
-import model from "../common/model.vue"
 export default {
 	data () {
 		return {
@@ -215,21 +214,20 @@ export default {
 		  customerService: false,
 		  repeatBtn: false,
 		  model: {
-		  	show: false,
 		  	title: '公告',
-		  	text: ''
-		  },
-		  showmodel: false
+		  	text: '测试',
+		  	end: new Date('2017-5-17').getTime(),
+		  	identity: '1',
+		  	hide: false
+		  }
 		}
 	},
 	components: {
-		appNav,
-		model
+		appNav
 	},
 	methods: {
-		hidemodel () {
-			this.model.show = false
-			window.localStorage.setItem('showmodel',false)
+		confirm () {
+			this.model.hide = true
 		},
 		changetoken () {
 			if (this.repeatBtn) {
@@ -487,7 +485,7 @@ b.m8{background-color: #66c476;}*/
 
 .ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff; }
 .ex-index-service i{font-size: 3rem;}
-.ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 4;}
+.ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 7;}
 .ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; padding-top: 1rem; border-radius: 0.4rem; padding-top: 2rem;}
 .ex-customer-cnt-item {padding-top:1rem; font-size: 1.6rem;}
 .ex-customer-cnt-item h3{ font-size: 1.4rem; font-weight: normal; padding-bottom: 0.5rem; }

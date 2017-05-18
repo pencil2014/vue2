@@ -15,7 +15,7 @@
 					<p>商品图片</p>
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
-							<img :src="item" @click='preimg(item)'>
+							<img :src="item" v-preview="item">
 						</div>
 					</div>
 				</li>
@@ -37,7 +37,7 @@
 				</li>
 			</ul>
 		</div>
-		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
+		<lg-preview></lg-preview>
 	</div>
 </template>
 <script>
@@ -46,7 +46,6 @@ import qs from "qs"
 import lrz from 'lrz'
 import { MessageBox, Indicator, Toast} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-import imgPreview from '../common/image'
 export default {
 	data(){
 		return{
@@ -61,16 +60,11 @@ export default {
 				text:'产品详情',
 				fixed: false
 			},
-			imgpre: {
-				show: false,
-				url: ''
-			},
 			submitbtn: false
 		}
 	},
 	components: {
 		HeadTitle,
-		imgPreview
 	},
 	computed:{
 		id () {

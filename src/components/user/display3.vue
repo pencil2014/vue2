@@ -16,7 +16,7 @@
 					<!-- 请上传比例为4:3，小于500K的图片 -->
 					<div class="UpLoadIMG">
 						<div class="report-pic" v-for='(item,index) in imgurl'>
-							<img :src="item" @click='preimg(item)'>
+							<img :src="item"  v-preview="item">
 							<label class="delect" @click='delpicture(index)'>x</label>
 						</div>
 						<div class="report-file" v-show='imgurl.length < 4'>
@@ -94,7 +94,7 @@
 				</slot>	
       		</Picker>
       	</Popup> -->
-      	<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
+      	<lg-preview></lg-preview>
 	</div>
 </template>
 <script>
@@ -124,10 +124,6 @@ export default {
 				text:'添加商品',
 				fixed: false
 			},
-			imgpre: {
-				show: false,
-				url: ''
-			},
 			submitbtn: false,
 			islrz: false
 		}
@@ -136,7 +132,6 @@ export default {
 		HeadTitle,
 		Popup,
 		Picker,
-		imgPreview
 	},
 	computed:{
 		disableBtn () {
