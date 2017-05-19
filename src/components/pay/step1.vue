@@ -48,7 +48,7 @@ export default {
 			return this.$route.query.userId
 		},
 		disableBtn () {
-			let rule1 = /^1(3|4|5|7|8)\d{9}$/;
+			let rule1 = /^1\d{10}$/;
 			let rule2 = /^\d+(\.\d{1,2})?$/
 			if(!this.money|| (this.money == 0) ||!this.phone|| !rule1.test(this.phone) || !rule2.test(this.money)){
 				return true

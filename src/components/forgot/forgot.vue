@@ -15,7 +15,7 @@
 				</div>
 				<div class="ex-forgot-from-item">
 					<label for="code">验证码</label>
-					<input type="text" name="code" id="code"  v-model.trim="code" placeholder="请输入验证码" maxlength="10">
+					<input type="tel" name="code" id="code"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
 					<a href="javascript:;" class='getcode' @click='getcode' v-show='!countdown'>获取验证码</a>
 					<a href="javascript:;"  class='getcode' v-show='countdown'>{{second}}秒</a>
 				</div>

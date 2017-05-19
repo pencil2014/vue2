@@ -92,7 +92,7 @@ export default {
 		},
 		submit () {
 			let _this = this;
-			let rule1 = /^1(3|4|5|7|8)\d{9}$/;
+			let rule1 = /^1\d{10}$/;
 			if(_this.disable){
 				return
 			}

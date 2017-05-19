@@ -35,12 +35,12 @@
 					<li>
 						<span>客服QQ号1</span>
 						<i class="iconfont">&#xe606;</i>
-						<label for=""><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">285251825</a></label>
+						<label for=""><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a></label>
 					</li>
 					<li>
 						<span>客服QQ号2</span>
 						<i class="iconfont">&#xe606;</i>
-						<label for=""><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512824&version=1&src_type=web&web_src=oicqzone.com">285251824</a></label>
+						<label for=""><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512824&version=1&src_type=web&web_src=oicqzone.com">2852512824</a></label>
 					</li>
 				</ul>
 			</div>

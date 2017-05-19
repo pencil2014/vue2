@@ -25,7 +25,7 @@
 			平台规则
 		</a> -->
 		<router-link to="/user">
-			<span class="m4"></span>
+			<span class="m4" :class="{'read':read}"></span>
 			<br>
 			我的
 		</router-link>
@@ -33,10 +33,13 @@
 </template>
 
 <script>
+import axios from "axios"
+import qs from "qs"
 import { MessageBox, Indicator, Toast} from 'mint-ui'
 export default {
 	data () {
 		return {
+			read: ''
 		}
 	},
 	computed: {
@@ -47,6 +50,19 @@ export default {
 				return false
 			}
 		}
+	},
+	created () {
+		let _this = this;
+		axios.post('message/getCount',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				_this.read = res.data.data.count > 0 ? true : false	
+			} else {
+
+			}
+		}).catch(function(){
+			Toast('网络请求超时！')
+		})
 	},
 	methods: {
 		disabled () {
@@ -72,4 +88,6 @@ export default {
 .activeRouter .m3{background:url(../../assets/images/school_select.png) no-repeat center;background-size: 100%;}
 .ex-nav .m4{background:url(../../assets/images/user.png) no-repeat center;background-size: 100%;}
 .activeRouter .m4{background:url(../../assets/images/user_select.png) no-repeat center;background-size: 100%;}
+.ex-nav .m4.read:before{content: '';background: red;display: inline-block;width: 10px;height: 10px;margin: 0 10px 5px 0;border-radius: 50%;}
+.activeRouter .m4.read:before{display: none;}
 </style>

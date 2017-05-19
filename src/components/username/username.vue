@@ -5,7 +5,7 @@
 			<div class="ex-field-wrapper">
 				<label class="ex-field-title">用户名</label>
 				<div class="ex-field-value">
-					<input type="text" placeholder="请输入您的昵称" maxlength="10" v-model.trim="username">
+					<input type="text" placeholder="请输入您的昵称" maxlength="12" v-model.trim="username">
 				</div>
 			</div>
 		</div>

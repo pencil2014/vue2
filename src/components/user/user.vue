@@ -62,13 +62,13 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
-					<!-- <li @click="toRealName">
+					<li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
-					</li> -->
-					<li @click="toRealName" v-if="(!isShop && !realType) || realType === '1' ">
+					</li>
+					<!-- <li @click="toRealName" v-if="(!isShop && !realType) || realType === '1' ">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
@@ -79,7 +79,7 @@
 						<span>商家法人实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
-					</li>
+					</li> -->
 					<router-link to="/qrcode" tag="li" v-if="!isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
@@ -214,6 +214,11 @@ export default {
 	components: {
 		appNav
 	},
+	filters: {
+		maxLen (value) {
+			return value.length > 12 ? (value + '...') : value
+		}
+	}
 }
 </script>
 <style scoped>
@@ -225,7 +230,7 @@ export default {
 .ex-header .wrapper span{display: inline-block;vertical-align: middle;}
 .ex-header .wrapper .m1{padding:0 10px 0 15px;}
 .ex-header .wrapper .m1 img{width: 62px;height: 62px;border:solid 2px #fff;border-radius: 50%;background: #fff;}
-.ex-header .wrapper .m2{line-height: 25px;color: #fff;font-size: 1.8rem;text-align: left;}
+.ex-header .wrapper .m2{line-height: 25px;color: #fff;font-size: 1.8rem;text-align: left;word-break: break-all;max-width: 35%;}
 .ex-header .wrapper .m2 .usercode{font-size: 1.4rem;color: rgba(226, 241, 251 ,.8);}
 .ex-header .wrapper .m3{float: right;background-color: #add6f1;border-radius: 20px 0 0 20px;width: 104px;height: 36px;text-align: right;font-size: 1.6rem;color: #4e92e6;margin-top: 18px;line-height: 36px;}
 .ex-header .wrapper .m3 label{;padding-right: 10px;}

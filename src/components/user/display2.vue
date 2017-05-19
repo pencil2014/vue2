@@ -31,7 +31,7 @@
 			    infinite-scroll-distance="10"
 				>
 	          <tr @click="toedict(item.status,item.id,item.typeName,item.groupName,item.groupId)" v-for="(item,index) in list">
-	          	<td class="m1" @click="select(item.id,index)" v-show="isedit"><span class="option" :class="{'select': optionIndex.indexOf(index) !== -1}"></span>
+	          	<td class="m1" @click="select(item.id,index,groupId)" v-show="isedit"><span class="option" :class="{'select': optionIndex.indexOf(index) !== -1}"></span>
 	            <td class="m2"><img :src="item.commodityAffixEntityList[0].filePath" alt="">
 	            </td>
 	            <td class="m3"><div class="title">{{item.commodityName}}</div><label for="" class="orange">&yen;{{item.price||0.00}}</label>
@@ -150,7 +150,7 @@ export default {
 			this.optionList = []
 			this.optionIndex = []
 		},
-		select (id,index) {
+		select (id,index,groupId) {
 			Array.prototype.remove = function(val) {
 				var index = this.indexOf(val);
 				if (index > -1) {
@@ -176,6 +176,7 @@ export default {
 		},
 		cancle () {
 			this.selGroupName = false
+			this.groupId = ''
 		},
 		confirm () {
 			let _this = this;

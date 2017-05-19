@@ -4,8 +4,8 @@
 		<div class="ex-notice-list">
 			<div class="ex-notice-item" ref="wrapper">	
 				<ul
-				  v-infinite-scroll="loadMore"
-				  infinite-scroll-disabled="loading"
+				   v-infinite-scroll="loadMore"
+				   infinite-scroll-disabled="loading"
 				   infinite-scroll-distance="10"
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
@@ -122,7 +122,7 @@ export default {
 		},
 		formatHtml (value) {
 			let result1 = value.replace(/<[img].*?>/gim,"[图片]")
-			return result1.replace(/<.*?>/gim,"") 
+			return result1.replace(/<.*?>|&[^;]*;/gim,"") 
 		}	
 	},
 	components: {
@@ -136,10 +136,10 @@ export default {
 .ex-notice-item{padding-top: 4.5rem;}
 .ex-notice-item li{display: block;font-size: 1.6rem;background: #fff;padding: 20px 10px 30px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
 .ex-notice-item li:last-child{border-bottom: none;}
-.ex-notice-item span.title:before{content:"●"; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}
+.ex-notice-item span.title:before{content:"● "; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}
 .ex-notice-item span.read:before{display: none;}
 .ex-notice-item span.read{color:#aaafb6;}
-.ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;text-indent: 1em;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;padding-top: 10px;}
+.ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;padding-top: 10px;}
 .ex-notice-item .time{color: #aaafb6;float: right;padding-top: 5px;font-size: 1rem;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>

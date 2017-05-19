@@ -1,17 +1,16 @@
 <template>
-  <div class="hello">
-    <h1>这是2</h1>
+  <div id="map">
+    
   </div>
 </template>
 
 <script>
 import { mapState,  mapActions } from 'vuex'
-
 export default {
-  name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      BMap: ''
     }
   },
   computed: {
@@ -26,7 +25,18 @@ export default {
     ]),
     add () {
       this.addTotalTime(10)
-    }
+    },
+    initialize() {  
+      var mp = new BMap.Map('map');  
+      mp.centerAndZoom(new BMap.Point(121.491, 31.233), 11);  
+    },
+    loadScript() {  
+      var script = document.createElement("script");  
+      script.src = "http://api.map.baidu.com/api?v=2.0&ak=d6mxIkQnNeHgNzBQjBCZ9jdV1e49t2iF&callback=initialize";
+      document.body.appendChild(script)
+      this.BMap = window.BMap
+      this.initialize() 
+    }  
   },
   beforeRouteEnter (to, from, next) {
     // 在渲染该组件的对应路由被 confirm 前调用
@@ -47,6 +57,9 @@ export default {
     // 导航离开该组件的对应路由时调用
     // 可以访问组件实例 `this`
     // 这个 leave 钩子通常用来禁止用户在还未保存修改前突然离开。可以通过 next(false) 来取消导航。
+  },
+  mounted () {
+    window.onload = this.loadScript()
   }
 }
 </script>

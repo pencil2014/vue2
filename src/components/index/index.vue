@@ -215,7 +215,7 @@ export default {
 		  repeatBtn: false,
 		  model: {
 		  	title: '公告',
-		  	text: '测试',
+		  	text: '',
 		  	end: new Date('2017-5-17').getTime(),
 		  	identity: '1',
 		  	hide: false
