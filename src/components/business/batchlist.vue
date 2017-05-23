@@ -1,37 +1,33 @@
 <template>
-	<div class="ex-record">
-		<!-- <div class="ex-record-box">
+	<div class="ex-order">
+		<!-- <div class="ex-order-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>消费记录</span>
+				<span>报单成功明细</span>
 			</div>
 		</div> -->
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
-		<div class="ex-record-cnt" >
+		<div class="ex-order-cnt" >
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table"
 					v-infinite-scroll="loadMore"
 	  			infinite-scroll-disabled="loading"
 	  			infinite-scroll-distance="10" >
 					<tr>
-						<th>编号</th>
-						<th>卖家ID</th>
 						<th>日期</th>
-						<th>商品</th>
-						<th>金额</th>
+						<th>订单号</th>
+						<th>消费总额</th>
 					</tr>
-					<tbody v-show='recordList.length > 0'>
-						<tr v-for="(item, index) in recordList">
-							<td>{{index+1}}</td>
-							<td>{{item.shopCode || '--'}}</td>
+					<tbody v-show='tableList.length > 0'>
+						<tr v-for="(item, index) in tableList" @click='godetail(item.orderNo)'>
 							<td>{{item.createTime | formatTime}}</td>
-							<td>{{item.commodityName}}</td>
-							<td>{{item.consumptionMoney}}</td>
+							<td>{{item.orderNo}}</td>
+							<td>{{item.consumptionMoney | formatMoney}}<i class='iconfont'>&#xe606;</i></td>
 						</tr>
 					</tbody>
 				</table>
 			</mt-loadmore>
-			<div class="nodata" v-show='recordList.length === 0 && nodateStatus'>
+			<div class="nodata" v-show='tableList.length === 0  && nodateStatus'>
 				<img src="../../assets/images/nodata.png" alt="">
 				<p>还没有数据哦~</p>
 			</div>
@@ -41,20 +37,20 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { MessageBox, Loadmore, InfiniteScroll, Indicator, Toast } from 'mint-ui'
+import { MessageBox, Loadmore, InfiniteScroll, Indicator , Toast} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
-			recordList: [],
+			tableList: [],
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
 			nodateStatus: false,
 			loading: false,
-			modal: {
-				text:'消费记录',
-				fixed: true
+			modal:{
+				text:'批量报单',
+				fixed: true,
 			},
 		}
 	},
@@ -62,7 +58,10 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.go(-1)
+			this.$router.push('/business')
+		},
+		godetail (id) {
+			this.$router.push({ name: 'Batch2', params: { id: id}})
 		},
 		loadTop () {
 			Indicator.open({
@@ -70,12 +69,12 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('declaration/ulist',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('declaration/selectBatshList',qs.stringify({pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
-					_this.recordList = res.data.data.list || []
+					_this.tableList = res.data.data.list || []
 					_this.page = 2
 				} else {
 					Toast(res.data.msg)
@@ -97,18 +96,18 @@ export default {
 			})
 			let _this = this
 			this.loading = true
-			axios.post('declaration/ulist',qs.stringify({pageSize: this.pageSize, page: this.page}))
+			axios.post('declaration/selectBatshList',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
-				
+
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage
-					_this.recordList.push(...res.data.data.list)
+					_this.tableList.push(...res.data.data.list)
 					_this.page += 1
 					_this.loading = false
 				} else {
-					Toast( res.data.msg)
+					MessageBox('提示', '对不起数据加载失败！')
 				}
 			})
 			.catch(function(){
@@ -125,6 +124,9 @@ export default {
 			let month = time.getMonth() + 1
 			let date = time.getDate()
 			return [month,date].join('/')
+		},
+		formatMoney (value) {
+			return (value*1).toFixed(2)
 		}
 	},
 	components: {
@@ -136,7 +138,10 @@ export default {
 }	
 </script>
 <style scoped>
-.ex-record-box {position: fixed; top: 0; width: 100%; z-index: 2; }
-/*.ex-record-cnt {padding-top: 5rem}*/
-.ex-record-cnt {padding-top: 4.5rem;}
+.ex-order-box {position: fixed; top: 0; width: 100%; z-index: 2; }
+/*.ex-order-cnt {padding-top: 5rem}*/
+.ex-order-cnt {padding-top: 4.5rem;}
+.ex-order-cnt td i { font-size: 1.4rem; color: #999; float: right; padding-right: 0.5rem; }
+.ex-order-cnt td a {display: inline-block;font-size: 1.2rem;color: #2eadff;border-radius: 0.2rem;border: 1px solid #2eadff;padding: 0.4rem;}
+.ex-order-cnt td .links{margin-right: 1rem; margin-bottom: 0.5rem;}
 </style>

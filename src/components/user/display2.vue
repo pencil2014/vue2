@@ -196,7 +196,7 @@ export default {
 				}
 			}).catch(function(){
 				_this.selGroupName = false
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		batchOffline () {
@@ -223,7 +223,7 @@ export default {
 							Toast(res.data.msg)
 						}
 					}).catch(function(){
-							Toast('网络请求超时！')
+							Toast('连接失败，请检查网络是否正常!')
 					})
 				} else {
 					return
@@ -253,7 +253,7 @@ export default {
 							Toast(res.data.msg)
 						}
 					}).catch(function(){
-							Toast('网络请求超时！')
+							Toast('连接失败，请检查网络是否正常!')
 					})
 				} else {
 					return
@@ -290,7 +290,7 @@ export default {
 						}
 					}).catch(function(){
 							Indicator.close()
-							Toast('网络请求超时！')
+							Toast('连接失败，请检查网络是否正常!')
 					})
 				} else {
 					return
@@ -330,7 +330,7 @@ export default {
 				}
 			}).catch(function(){
 				Indicator.close();
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		getData () {
@@ -357,7 +357,7 @@ export default {
 				}
 			}).catch(function(){
 				Indicator.close();
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		getGroupList () {
@@ -369,7 +369,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Toast('网络请求超时！')
+					Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		back () {

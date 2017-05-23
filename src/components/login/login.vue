@@ -143,6 +143,7 @@ export default {
 		}
 	},
 	mounted () {
+		window.localStorage.removeItem('notice')
 	},
 	destroyed () {
 		Indicator.close()

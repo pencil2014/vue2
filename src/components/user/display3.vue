@@ -301,7 +301,7 @@ export default {
 			.catch(function(res){
 				_this.submitbtn = false
 				Indicator.close()
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})	
 		},
 		addgoods () {
@@ -335,7 +335,7 @@ export default {
 			.catch(function(res){
 				_this.submitbtn = false
 				Indicator.close()
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		getGroupList () {
@@ -348,7 +348,7 @@ export default {
 						Toast(res.data.msg)
 					}
 				}).catch(function(){
-						Toast('网络请求超时！')
+						Toast('连接失败，请检查网络是否正常!')
 				})
 		},
 		getList() {
@@ -361,7 +361,7 @@ export default {
 				}
 			}).catch(function(){
 				_this.nodateStatus = true
-				Toast('网络请求超时！')
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		currency (id) {

@@ -84,22 +84,6 @@ export default {
 			return /girl/gi.test(this.personalData.logoImg)
 		}
 	},
-	watch: {
-		'$route' (to, from){
-	    	let _this = this;
-			// 获取用户详情
-			axios.post('user/personal',qs.stringify({})).then(function(res){
-				if (res.data.code === '10000') {
-					_this.isCreact = true
-					_this.personalData = res.data.data
-				} else {
-					Toast(res.data.msg)
-				}
-			}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
-			})
-	    }
-	},
 	components: {
 		HeadTitle,
 	},
@@ -111,10 +95,10 @@ export default {
 				_this.isCreact = true
 				_this.personalData = res.data.data
 			} else {
-				Toast('提示', res.data.msg)
+				Toast(res.data.msg)
 			}
 		}).catch(function(){
-			Indicator.open({ spinnerType: 'fading-circle'})
+			Toast('连接失败，请检查网络是否正常!')
 		})
 	},
 	methods: {
@@ -137,10 +121,10 @@ export default {
 					_this.$router.back();
 					//_this.$router.push('/personal');
 				} else {
-					Toast('提示', res.data.msg)
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	}

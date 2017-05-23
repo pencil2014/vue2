@@ -54,3 +54,6 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 
 input{font-size: 1.4rem;}
 .mint-indicator-wrapper {z-index: 9999;}
+
+.mint-msgbox-message { line-height: 2rem !important; }
+.mint-msgbox-btn {font-size: 1.6rem !important; }

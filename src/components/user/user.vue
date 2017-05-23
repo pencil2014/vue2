@@ -62,13 +62,13 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
-					<li @click="toRealName">
+					<!-- <li @click="toRealName">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
-					</li>
-					<!-- <li @click="toRealName" v-if="(!isShop && !realType) || realType === '1' ">
+					</li> -->
+					<li @click="toRealName" v-if="(!isShop && !realType) || realType === '1' && !isShop">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
@@ -79,7 +79,7 @@
 						<span>商家法人实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
-					</li> -->
+					</li>
 					<router-link to="/qrcode" tag="li" v-if="!isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
@@ -167,7 +167,7 @@ export default {
 		 		Toast('系统错误')
 		 	}
 		 })).catch(function(){
-			Toast('网络请求超时！')
+			Toast('连接失败，请检查网络是否正常!')
 		})
 	},	
 	methods: {

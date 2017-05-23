@@ -247,7 +247,6 @@ export default {
 			var num = Min + Math.round(Rand * Range); 
 			return num;
 		}
-	    
 	} 
 }
 </script>

@@ -104,24 +104,26 @@ export default {
 			})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.submitBtn = false;
-					MessageBox({
-						title:'提示',
-						message:'修改成功，请重新登陆',
-						showConfirmButton:true,
-						confirmButtonText:'确认',
-					}).then(action =>{
-						if(action === "confirm"){
-							window.localStorage.setItem('token', '')
-							_this.$router.push('/login')
-						}
-					});
+					Toast('修改成功，请重新登陆')
+					window.localStorage.setItem('token', '')
+					_this.$router.push('/login')
+					// MessageBox({
+					// 	title:'提示',
+					// 	message:'修改成功，请重新登陆',
+					// 	showConfirmButton:true,
+					// 	confirmButtonText:'确认',
+					// }).then(action =>{
+					// 	if(action === "confirm"){
+							
+					// 	}
+					// });
 				} else {
 					_this.submitBtn = false;
 					Toast({message: res.data.msg});
 				}
 			}).catch(function(){
 					_this.submitBtn = false;
-					Indicator.open({ spinnerType: 'fading-circle'})
+					Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	}

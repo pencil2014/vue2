@@ -21,6 +21,7 @@
     "qs": "^6.4.0",
     "v-qrcode": "^1.0.3",
     "vue": "^2.2.2",
+    "vue-baidu-map": "^0.10.5",
     "vue-picture-preview": "^0.0.1",
     "vue-qriously": "^1.0.0",
     "vue-router": "^2.2.0",

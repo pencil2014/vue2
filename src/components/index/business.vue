@@ -104,7 +104,8 @@
 				<img src="../../assets/images/9.png" alt="">
 				<!-- <b class=" m9"><i class="iconfont">&#xe602;</i></b> -->
 				<span>商家报单</span></router-link>
-				</li>
+				</li>		
+
 				<li><router-link to="/order">
 				<img src="../../assets/images/8.png" alt="">
 				<!-- <b class=" m1"><i class="iconfont">&#xe6d8;</i></b> -->
@@ -115,6 +116,17 @@
 				<!-- <b class=" m10"><i class="iconfont">&#xe601;</i></b> -->
 				<span>报单成功明细</span></router-link>
 				</li>
+				
+				<li><router-link to="/batch">
+				<img src="../../assets/images/13.png" alt="">
+				<span>批量报单</span></router-link>
+				</li>
+
+				<li><router-link to="/batchlist">
+				<img src="../../assets/images/12.png" alt="">
+				<span>批量报单查询</span></router-link>
+				</li>
+
 				<li><router-link to="/integral">
 				<img src="../../assets/images/5.png" alt="">
 				<!-- <b class=" m2"><i class="iconfont">&#xe604;</i></b> -->
@@ -148,6 +160,9 @@
 				</li>
 			</ul>
 		</div>
+
+
+
 		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
 		<div class="ex-customer" v-show='customerService' @click.stop="hidecustomer">
 			<div class="ex-customer-cnt" @click.stop=''>
@@ -168,6 +183,7 @@
 				<div class="ex-customer-close" @click.stop="hidecustomer">关闭</div>
 			</div>
 		</div>
+
 		<app-nav></app-nav>
 	</div>	
 </template>
@@ -371,6 +387,11 @@ export default {
 			this.getsysIndex()
 			this.getexamine()
 		}
+		if (!window.localStorage.getItem('notice') && new Date().getTime() < new Date('2017-5-30').getTime()) {
+			MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
+			window.localStorage.setItem('notice', 'true')
+		}
+		
 	},
 	monuted () {
 	},
@@ -461,11 +482,18 @@ b.m10{background-color: #66c476;}*/
 .ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff;}
 .ex-index-service i{font-size: 3rem;}
 .ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 7;}
-.ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; padding-top: 1rem; border-radius: 0.4rem; padding-top: 2rem;}
+.ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; border-radius: 0.4rem; padding-top: 2rem;}
 .ex-customer-cnt-item {padding-top:1rem; font-size: 1.6rem;}
 .ex-customer-cnt-item h3{ font-size: 1.4rem; font-weight: normal; padding-bottom: 0.5rem; }
 .ex-customer-cnt-item a{color: #2eadff;}
 .ex-customer-cnt-item p {padding-bottom: 0.5rem;}
 .ex-customer-close { line-height: 5rem; border-top: 1px solid #eee;  font-size: 1.6rem; background-color: #eee; margin-top: 2rem;}
 .ex-customer-close:active{background-color: #ddd;}
+
+
+.ex-batch-modal {position: fixed; left: 0; bottom: 0; top: 0; right: 0; background-color: rgba(0,0,0,0.4); z-index: 7;}
+.ex-batch-modal-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 60%; overflow: hidden; text-align: center; border-radius: 0.4rem; padding: 1rem 0;}
+.ex-batch-modal-cnt a{display: block; color: #000; font-size: 1.6rem;  line-height: 3;}
+.ex-batch-modal-cnt li:first-child{border-bottom: 1px solid #eee;}
+
 </style>

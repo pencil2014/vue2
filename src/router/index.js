@@ -42,6 +42,7 @@ const Declare6 = resolve => require(['../components/business/declare6'], resolve
 
 const Batch = resolve => require(['../components/business/batch1'], resolve)
 const Batch2 = resolve => require(['../components/business/batch2'], resolve)
+const BatchList = resolve => require(['../components/business/batchlist'], resolve)
 
 
 const Order = resolve => require(['../components/business/order'], resolve)
@@ -104,12 +105,20 @@ const Display4 = resolve => require(['../components/user/display4'], resolve)
 const Display5 = resolve => require(['../components/user/display5'], resolve)
 const Display6 = resolve => require(['../components/user/display6'], resolve)
 
+const Apply1 = resolve => require(['../components/business/apply1'], resolve)
+const Apply2 = resolve => require(['../components/business/apply2'], resolve)
+const Apply3 = resolve => require(['../components/business/apply3'], resolve)
 
 // 导出路由配置
 export default new Router({
   mode: 'hash',
   linkActiveClass: 'activeRouter',
   routes: [
+    // {
+    //   path: '/map',
+    //   name: 'Map',
+    //   component: Map
+    // },
     {
       path: '/login',
       name: 'Login',
@@ -286,9 +295,14 @@ export default new Router({
       component: Batch
     },
     {
-      path: '/batchinfo',
+      path: '/batchinfo/:id',
       name: 'Batch2',
       component: Batch2
+    },
+    {
+      path: '/batchList',
+      name: 'BatchList',
+      component: BatchList
     },
     {
       path: '/order',
@@ -529,6 +543,21 @@ export default new Router({
       path: '/display6',
       name: 'Display6',
       component: Display6
+    },
+    {
+      path: '/apply',
+      name: 'Apply1',
+      component: Apply1
+    },
+    {
+      path: '/apply2',
+      name: 'Apply2',
+      component: Apply2
+    },
+    {
+      path: '/apply3',
+      name: 'Apply3',
+      component: Apply3
     },
     {
       path:'*', 
