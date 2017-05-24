@@ -237,8 +237,36 @@ export default {
 			})
 		},
 		submit(){
-			if(this.disable){
-				return;
+			// if(this.disable){
+			// 	return;
+			// }
+			if(!this.legalName){
+				MessageBox('提示','法人姓名不能为空！')
+				return
+			}
+			if(!this.legalIdcard){
+				MessageBox('提示','证件号码不能为空！')
+				return
+			}
+			if(!this.imgurl.legalPic){
+				MessageBox('提示','身份证正面照片不能为空！')
+				return
+			}
+			if(!this.imgurl.holdPic){
+				MessageBox('提示','法人手持身份证照片不能为空！')
+				return
+			}
+			if(!this.licenseNumber){
+				MessageBox('提示','营业执照号不能为空！')
+				return
+			}
+			if(!this.imgurl.businessLicense){
+				MessageBox('提示','营业执照照片不能为空！')
+				return
+			}
+			if(this.islrz){
+				MessageBox('提示','图片上传中，请稍候重试！')
+				return
 			}
 			if(this.submitBtn){
 				return 

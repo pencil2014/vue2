@@ -251,14 +251,34 @@ export default {
 		},
 		submit(){
 			// let rule1 = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X|x)$/;
-			if(this.disable){
-				return;
+			// if(this.disable){
+			// 	return;
+			// }
+			if(!this.realName){
+				MessageBox('提示','认证名不能为空！')
+				return
+			}
+			if(!this.idCard){
+				MessageBox('提示','证件号码不能为空！')
+				return
+			}
+			if(!this.imgurl.frontPic){
+				MessageBox('提示','证件正面照片不能为空！')
+				return
+			}
+			if(!this.imgurl.backPic){
+				MessageBox('提示','证件反面照片不能为空！')
+				return
+			}
+			if(!this.imgurl.fullPic){
+				MessageBox('提示','手持身份证照片不能为空！')
+				return
 			}
 			if(this.submitBtn){
 				return 
 			}
 			if(this.islrz){
-				Toast('图片上传中，请稍候...')
+				MessageBox('提示','图片上传中，请稍候重试！')
 				return
 			}
 			this.submitBtn = true;

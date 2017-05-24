@@ -299,7 +299,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
 					window.localStorage.setItem('userinfo', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/personal', new Date().getTime())
+					// window.localStorage.setItem('user/personal', new Date().getTime())
 				} else {
 					Toast(res.data.msg)
 				}
@@ -312,8 +312,8 @@ export default {
 			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.sysData = res.data.data
-					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/sysIndex', new Date().getTime())
+					// window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
+					// window.localStorage.setItem('user/sysIndex', new Date().getTime())
 				} else {
 					Toast(res.data.msg)
 				}
@@ -365,41 +365,40 @@ export default {
 	computed: {
 	},
 	created () {
-		let phone = window.localStorage.getItem('phone')
-		let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
-		if (!!userinfo && phone === userinfo.phone) {
-			// 获取用户详情
-			let personal = this.$getcache('user/personal')
-			if (personal) {
-				this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
-			} else {
-				this.getuserinfo()
-			}
-			// 获取平台信息
-			let sysIndex = this.$getcache('user/sysIndex')
-			if (sysIndex) {
-				this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
-			} else {
-				this.getsysIndex()
-			}
-			//获取会员审核详情信息
-			this.getexamine()
-			// let examine = this.$getcache('user/examine')
-			// if (examine) {
-			// 	this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-			// } else {
-			// 	this.getexamine()
-			// }
-		} else {
-			this.getuserinfo()
-			this.getsysIndex()
-			this.getexamine()
-		}
-		// 显示公告
-		// this.showmodel = (window.localStorage.getItem('showmodel') === "false") ? false : true 
-		// if (!!this.model.text) {
-		// 	this.model.show = true
+		// let phone = window.localStorage.getItem('phone')
+		// let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		// if (!!userinfo && phone === userinfo.phone) {
+		// 	// 获取用户详情
+		// 	let personal = this.$getcache('user/personal')
+		// 	if (personal) {
+		// 		this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
+		// 	} else {
+		// 		this.getuserinfo()
+		// 	}
+		// 	// 获取平台信息
+		// 	let sysIndex = this.$getcache('user/sysIndex')
+		// 	if (sysIndex) {
+		// 		this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
+		// 	} else {
+		// 		this.getsysIndex()
+		// 	}
+		// 	//获取会员审核详情信息
+		// 	this.getexamine()
+		// 	// let examine = this.$getcache('user/examine')
+		// 	// if (examine) {
+		// 	// 	this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
+		// 	// } else {
+		// 	// 	this.getexamine()
+		// 	// }
+		// } else {
+		// 	this.getuserinfo()
+		// 	this.getsysIndex()
+		// 	this.getexamine()
 		// }
+
+		this.getuserinfo()
+		this.getsysIndex()
+		this.getexamine()
 
 	},
 	monuted () {

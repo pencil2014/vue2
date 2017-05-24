@@ -42,11 +42,11 @@
 						<span>商家申请资料</span>
 						<i class="iconfont">&#xe606;</i>
 					</router-link> -->
-					<router-link to="/display1" tag="li" v-if="isShop">
+					<li v-if="isShop" @click="todisplay1">
 						<img src="../../assets/images/business.png" alt="">
 						<span>店铺管理</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link>
+					</li>
 					<router-link to="/message" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
@@ -68,13 +68,13 @@
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li> -->
-					<li @click="toRealName" v-if="(!isShop && !realType) || realType === '1' && !isShop">
+					<li @click="toRealName" v-if="!isShop">
 						<img src="../../assets/images/renzhen.png" alt="">
-						<span>实名认证</span>
+						<span>个人实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
-					<li @click="toRealName2" v-if="(isShop && !realType) || (realType === '2' && isShop)">
+					<li @click="toRealName2" v-if="isShop">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>商家法人实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
@@ -120,7 +120,8 @@ export default {
 				text:'设置',
 				fixed: false
 			},
-			realType:''
+			realType:'',
+			enterstatus: ''
 		}
 	},
 	computed:{
@@ -160,9 +161,11 @@ export default {
 		 		_this.userinfo = personal.data.data;
 		 		_this.count = count.data.data.count<=99 ? count.data.data.count : '99+';
 		 		_this.checkRealName = realname.data.data
-
 		 		_this.realType = _this.checkRealName.hasOwnProperty('type') ? _this.checkRealName.type : false
 
+		 		if(_this.userinfo.userCode.slice(0,1) === 'B'){
+		 			_this.getenterdetail()
+		 		}
 		 	}else{
 		 		Toast('系统错误')
 		 	}
@@ -201,10 +204,35 @@ export default {
 			}
 			
 			this.$router.push('/realname/shop')
+		},
+		todisplay1 () {
+			if(this.enterstatus === '3'){
+				this.$router.push('/apply')
+				return
+			}
+			if(this.enterstatus === '0' || this.enterstatus === '2'){
+				this.$router.push('/apply3')
+				return
+			}
+			this.$router.push('/display1')
+		},	
+		getenterdetail () {
+			let _this = this;
+			axios.post('shop/enterDetail',qs.stringify({}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+				 	_this.enterstatus = res.data.data.status
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
 		}
 	},
 	beforeRouteLeave (to,from,next) {
 		let path = window.localStorage.getItem('integralPath')
+		localStorage.setItem('$backType','/user')
 		if(to.path !== path && to.path === '/index'){
 			next(path)
 		}else{

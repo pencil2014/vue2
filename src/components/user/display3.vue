@@ -47,12 +47,12 @@
 						<i class="iconfont">&#xe606;</i>
 					</label>
 				</li>
-				<!-- <li class="item-option groupList" v-if="groupList.length !== 1">
+				<li class="item-option groupList" v-if="groupList.length !== 1">
 					<div :class="{'select': groupId === item.id}" v-for="(item,index) in groupList" @click="selground(item.id)" v-if='item.id !==0'>
 						<span class="option"></span>
 						{{item.groupName}}
 					</div>
-				</li> -->
+				</li>
 			</ul>
 		</div>
 		<div class="ex-button">
@@ -135,7 +135,7 @@ export default {
 	},
 	computed:{
 		disableBtn () {
-			if(!this.commodityName || !this.price){
+			if(!this.commodityName || !this.price || this.imgurl.length <= 0 || !this.commodityTypeId){
 				return true
 			}else{
 				return false
@@ -252,10 +252,11 @@ export default {
 				})
 		},
 		submit () {
-			if (this.disableBtn) {
+			if (this.submitbtn) {
 				return
 			}
-			if (this.submitbtn) {
+			if(!this.commodityName){
+				MessageBox('提示', '商品名称不能为空!')
 				return
 			}
 			if (! /^\d+(\.?\d{1,2})?$/.test(this.price)) {

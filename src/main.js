@@ -83,15 +83,17 @@ var _hmt = _hmt || [];
 
 
 // 五分钟内从缓存中取数据
-Vue.prototype.$getcache = function getcache (api) {
-  let time1 = window.localStorage.getItem(api)
-  let time2 = new Date().getTime() - time1
-  if (time2 < 1000 * 60 * 0) {
-    return true
-  } else {
-    return false
-  }
-}
+// Vue.prototype.$getcache = function getcache (api) {
+//   let time1 = window.localStorage.getItem(api)
+//   let time2 = new Date().getTime() - time1
+//   if (time2 < 1000 * 60 * 0) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
+
+
 
 // emoji表情判断，this.$emoji调用
 Vue.prototype.$emoji =  function(substring) {  

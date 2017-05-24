@@ -136,7 +136,8 @@ export default {
 	},
 	computed:{
 		disableBtn () {
-			if(!this.commodityName || !this.price){
+			let rule1 = /^\d+(\.?\d{1,2})?$/
+			if(!this.commodityName || !this.price || !rule1.test(this.price ) || this.imgurl.length <= 0 || !this.commodityTypeId){
 				return true
 			}else{
 				return false
@@ -234,10 +235,11 @@ export default {
 			})
 		},
 		save () {
-			if (this.disableBtn) {
+			if (this.submitbtn) {
 				return
 			}
-			if (this.submitbtn) {
+			if(!this.commodityName){
+				MessageBox('提示', '商品名称不能为空!')
 				return
 			}
 			if (! /^\d+(\.?\d{1,2})?$/.test(this.price)) {

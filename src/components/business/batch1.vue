@@ -17,7 +17,6 @@
 				</div>
 			</div>
 		
-		
 		<div class="ex-batch-count">
 			<span>转出账户名</span><input type="text" name="" id="" v-model.trim='name' placeholder='请输入转出账户名'>
 		</div>
@@ -155,16 +154,29 @@ export default {
 			document.getElementsByClassName('ex-batch-submit')[0].style.position = 'fixed'
 		},
 		back () {
-			let _this = this
-			MessageBox({
-				  title: '温馨提示',
-				  message: '返回将不保存之前所做的修改，是否确认返回？',
-				  showCancelButton: true
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/business')
-					}
-				})
+			let show = false
+			this.order.forEach( function(element, index) {
+				if (!!element.userCode || !!element.phone || !!element.consumptionMoney ) {
+					show = true
+				} 
+			})
+
+			if (!!this.name || show) {
+				let _this = this
+				MessageBox({
+					  title: '温馨提示',
+					  message: '返回将不保存之前所做的修改，是否确认返回？',
+					  showCancelButton: true
+					}).then(action => {
+						if (action === 'confirm') {
+							_this.$router.push('/business')
+						}
+					})
+				} else {
+					this.$router.push('/business')
+				}
+
+			
 		},
 		closeModel () {
 			this.showmodel = false
@@ -189,8 +201,9 @@ export default {
 			this.order.push( {userCode:'',phone:'',consumptionMoney:''})
 		},
 		delOreder (index) {
-			let _this = this
-			MessageBox({
+			if (!!this.order[index].userCode || !!this.order[index].phone || !!this.order[index].consumptionMoney) {
+				let _this = this
+				MessageBox({
 				  title: '提示',
 				  message: '确认删除该笔报单吗？',
 				  showCancelButton: true
@@ -199,16 +212,33 @@ export default {
 						_this.order.splice(index, 1)
 					}
 				})
+			} else {
+				this.order.splice(index, 1)
+			}
+			
+			
 		},
 		checkId (id) {
 			return !/^[M|m|B|b]?\d{0,10}$/.test(id) && (id !== '')
 		},
 		checkMoney (money) {
+			if (money > 20000) {
+				Toast({
+				  message: '单笔报单最多不超过2万！',
+				  duration: 1000
+				})
+			}
 			return !(money > 0 && money <= 20000) && (money !== '')
 		},
 		repeat (id) {
 			let rule1 =  this.orderId.indexOf(id) !== this.orderId.lastIndexOf(id)
 			let rule2 = id !== ''
+			if (rule1 && rule2) {
+				Toast({
+				  message: '同一买家在每次批量报单中只可出现一次！',
+				  duration: 1000
+				})
+			}
 			return rule1 && rule2
 		},
 		bodySroll(){
@@ -217,6 +247,7 @@ export default {
 		getphone (userCode,index) {
 			this.showBtn()
 			if (!userCode) {
+				this.order[index].phone = ''
 				return
 			}
 			if (!/^(M|m|B|b)\d+$/.test(userCode)) {

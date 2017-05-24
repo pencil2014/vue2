@@ -33,7 +33,8 @@ export default {
 				fixed: false
 			},
 			examine: '',
-			realType: ''
+			realType: '',
+			userType: ''
 		}
 	},
 	components: {
@@ -48,30 +49,48 @@ export default {
 		}
 	},
 	created () {
-		let _this = this;
-		// 获取用户详情
-		axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
-			if (res.data.code === '10000') {
-				_this.examine = res.data.data
-			} else {
-				Toast(res.data.msg)
-			}
-		}).catch(function(){
-			Toast('连接失败，请检查网络是否正常!')
-		})
+		this.checkRealName()
+		this.getPersonal()
 	},
 	methods: {
 		back(){
 			this.$router.back();
 		},
+		checkRealName () {
+			let _this = this;
+			axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.examine = res.data.data
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		getPersonal () {
+			let _this = this
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.userType = res.data.data.userCode.slice(0,1)
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		torealname () {
-			let realType = this.examine.hasOwnProperty('type') ? this.examine.type : false
-			console.log(typeof(realType))
-			if(realType === '2'){
+			// let realType = this.examine.hasOwnProperty('type') ? this.examine.type : false;
+			// if(realType === '2'){
+			// 	this.$router.push('/realname/shop')
+			// 	return
+			// }
+			if(this.userType === 'B'){
 				this.$router.push('/realname/shop')
-				return
-			}
-			this.$router.push('/realname')
+			}else{
+				this.$router.push('/realname')
+			}	
 		}
 	}
 }

@@ -93,11 +93,7 @@
 					</tr>
 				</table>
 			</div>
-
 		</div>
-
-
-
 		<div class="ex-index-menu">
 			<ul>
 				<li><router-link to="/declare">
@@ -158,6 +154,13 @@
 					<!-- <b class=" m7"><i class="iconfont">&#xe642;</i></b> -->
 					<span>升级会员</span></a>
 				</li>
+				<li v-if="enterstatus !== '1'">
+					<a href="javascript:;" @click="goapply">
+						<img src="../../assets/images/14.png" alt="">
+						<!-- <b class=" m6"><i class="iconfont">&#xe603;</i></b> -->
+						<span>商家推广入驻</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 
@@ -198,33 +201,34 @@ export default {
 		return {
 			userinfo: {
 				userTypeId: '',
-        shopsStatus:'',
-        userCode: '',
-        userName: '',
-        phone: '',
-        sex: '',
-        brithday: '',
-        realName: '',
-        userLev: '',
-        isRealName: '',
-        integral: '',
-        integralA: '',
-        integralB: '',
-        overMoney: '',
-        freezeMoney: '',
-        logoImg: '',
-        twoPwd: ''
+		        shopsStatus:'',
+		        userCode: '',
+		        userName: '',
+		        phone: '',
+		        sex: '',
+		        brithday: '',
+		        realName: '',
+		        userLev: '',
+		        isRealName: '',
+		        integral: '',
+		        integralA: '',
+		        integralB: '',
+		        overMoney: '',
+		        freezeMoney: '',
+		        logoImg: '',
+		        twoPwd: ''
 			},
-		  sysData: {
-		  	 businessNum: '',
-		  	 yesterdayMoney: '',
-		  	 totalShareMoney: '',
-		  	 eProportion: '',
-		  	 jeProportion: ''
-		  },
-		  userVipStatus: {},
-		  customerService: false,
-		  repeatBtn: false
+			sysData: {
+			  	 businessNum: '',
+			  	 yesterdayMoney: '',
+			  	 totalShareMoney: '',
+			  	 eProportion: '',
+			  	 jeProportion: ''
+			},
+			userVipStatus: {},
+			customerService: false,
+			repeatBtn: false,
+			enterstatus: ''
 		}
 	},
 	components: {
@@ -282,6 +286,13 @@ export default {
 				this.$router.push('/upgrade')
 			}
 		},
+		goapply () {
+			if(this.enterstatus !== '3'){
+				this.$router.push('/apply3')
+				return
+			}
+			this.$router.push('/apply')
+		},
 		showcustomer () {
 			this.customerService = true
 		},
@@ -294,7 +305,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
 					window.localStorage.setItem('businessinfo', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/personal', new Date().getTime())
+					// window.localStorage.setItem('user/personal', new Date().getTime())
 				} else {
 					Toast(res.data.msg)
 				}
@@ -307,8 +318,8 @@ export default {
 			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.sysData = res.data.data
-					window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
-					window.localStorage.setItem('user/sysIndex', new Date().getTime())
+					// window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
+					// window.localStorage.setItem('user/sysIndex', new Date().getTime())
 				} else {
 					Toast(res.data.msg)
 				}
@@ -329,10 +340,24 @@ export default {
 			}).catch(function(){
 					Toast('连接失败，请检查网络是否正常!')
 			})
+		},
+		getenterdetail () {
+			let _this = this;
+			axios.post('shop/enterDetail',qs.stringify({}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+				 	_this.enterstatus = res.data.data.status
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
 		}
 	},
 	beforeRouteLeave (to,from,next) {
 		 window.localStorage.setItem('integralPath', '/business')
+		 localStorage.setItem('$backType','/business')
 		 next()
 	},
 	beforeRouteEnter (to,from,next) {	
@@ -358,35 +383,40 @@ export default {
 	watch: {
 	},
 	created () {
-		let phone = window.localStorage.getItem('phone')
-		let userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
-		if (!!userinfo && phone === userinfo.phone) {
-			// 获取用户详情
-			let personal = this.$getcache('user/personal')
-			if (personal) {
-				this.userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
-			} else {
-				this.getuserinfo()
-			}
-			// 获取平台信息
-			let sysIndex = this.$getcache('user/sysIndex')
-			if (sysIndex) {
-				this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
-			} else {
-				this.getsysIndex()
-			}
-			//获取会员审核详情信息
-			let examine = this.$getcache('user/examine')
-			if (examine) {
-				this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-			} else {
-				this.getexamine()
-			}
-		} else {
-			this.getuserinfo()
-			this.getsysIndex()
-			this.getexamine()
-		}
+		// let phone = window.localStorage.getItem('phone')
+		// let userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
+		// if (!!userinfo && phone === userinfo.phone) {
+		// 	// 获取用户详情
+		// 	let personal = this.$getcache('user/personal')
+		// 	if (personal) {
+		// 		this.userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
+		// 	} else {
+		// 		this.getuserinfo()
+		// 	}
+		// 	// 获取平台信息
+		// 	let sysIndex = this.$getcache('user/sysIndex')
+		// 	if (sysIndex) {
+		// 		this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
+		// 	} else {
+		// 		this.getsysIndex()
+		// 	}
+		// 	//获取会员审核详情信息
+		// 	let examine = this.$getcache('user/examine')
+		// 	if (examine) {
+		// 		this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
+		// 	} else {
+		// 		this.getexamine()
+		// 	}
+		// } else {
+		// 	this.getuserinfo()
+		// 	this.getsysIndex()
+		// 	this.getexamine()
+		// 	this.getenterdetail()
+		// }
+		this.getuserinfo()
+		this.getsysIndex()
+		this.getexamine()
+		this.getenterdetail()
 		if (!window.localStorage.getItem('notice') && new Date().getTime() < new Date('2017-5-30').getTime()) {
 			MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
 			window.localStorage.setItem('notice', 'true')

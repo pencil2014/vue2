@@ -57,6 +57,7 @@ Vue.directive('preview', {
         }
         LOGIC_EVENT_BUS.LOGIC_PREVIEW.list.push(previewItem)
         $UPDATEINDEX(LOGIC_EVENT_BUS.LOGIC_PREVIEW.list)
+        // console.log(LOGIC_EVENT_BUS.LOGIC_PREVIEW.list)
         el.addEventListener('click', (e) => {
             e.stopPropagation()
             LOGIC_EVENT_BUS.LOGIC_PREVIEW.isTitleEnable = el.getAttribute('preview-title-enable')== "false" ? false : true;

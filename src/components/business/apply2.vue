@@ -25,7 +25,7 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">详细地址</label>
 					<div class="ex-field-value">
-						<input type="text" v-model="adressDetail" placeholder="请输入详细街道地址" @input="standard('adressDetail')">
+						<input type="text" v-model="shopsAddress" placeholder="请输入详细街道地址" @input="standard('shopsAddress')">
 					</div>
 				</div>
 			</div>
@@ -61,8 +61,9 @@ export default {
 			districtId: '',
 			selcityList: [],
 			seldistrictList: [],
-			adressDetail: '',
-			isMounted: false
+			shopsAddress: '',
+			isMounted: false,
+			applyAdress: ''
 		}
 	},
 	components: {
@@ -75,7 +76,7 @@ export default {
 	},
 	computed:{
 		disableBtn () {
-			if(!this.adressDetail){
+			if(!this.shopsAddress){
 				return true
 			}
 			return false
@@ -100,51 +101,53 @@ export default {
 			if(province === city){
 				city = ''
 			}
-			return province + city + district + this.adressDetail
+			return province + city + (district||'') + this.shopsAddress
 		}
 	},
 	watch: {
 		provinceId () {
-			let applyAdress = this.getdata('applyAdress')
 			let arr = this.city.filter(function(item){
 				return item.parentId === this.provinceId
 			}.bind(this))
 			this.selcityList = arr
-			if(applyAdress.provinceId === this.provinceId){
-				this.cityId = applyAdress.cityId
+			if(!!this.applyAdress.cityId){
+				this.cityId = this.applyAdress.cityId
+				this.applyAdress.cityId = ''
 			}else{
 				this.cityId = arr[0].id
 			}
 		},
 		cityId () {
-			let applyAdress = this.getdata('applyAdress')
 			let arr = this.district.filter(function(item){
 				return item.parentId === this.cityId
 			}.bind(this))
 			if(arr.length > 0) {
 				this.seldistrictList = arr
-				if(applyAdress.cityId === this.cityId){
-					this.districtId = applyAdress.districtId
+				if(!!this.applyAdress.districtId){
+					this.districtId = this.applyAdress.districtId
+					this.applyAdress.districtId = ''
 				}else{
 					this.districtId = arr[0].id
 				}
 			}else{
 				this.seldistrictList = []
 				this.districtId === ''
+				this.applyAdress.districtId = ''
 			}
 		},
 	},
 	created () {
 		let _this = this
-		let applyAdress = _this.getdata('applyAdress')
+		this.applyAdress = _this.getdata('applyAdress')
 		axios.post('getBaseRegionAll',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.province.push(...res.data.data.province)
 				_this.city.push(...res.data.data.city)
 				_this.district.push(...res.data.data.district)
-				if(!!applyAdress){
-					_this.provinceId = applyAdress.provinceId
+				if(!!_this.applyAdress){
+					_this.provinceId = _this.applyAdress.provinceId
+					_this.shopsAddress = _this.applyAdress.shopsAddress
 				}else{
 					_this.provinceId = _this.province[0].id
 				}
@@ -164,7 +167,7 @@ export default {
 			this.$router.back();
 		},
 		submit () {
-			if(!this.adressDetail){
+			if(!this.shopsAddress){
 				MessageBox('提示','请输入详细地址')
 				return 
 			}
@@ -173,9 +176,10 @@ export default {
 			obj.provinceId = this.provinceId
 			obj.cityId = this.cityId
 			obj.districtId = this.districtId
-			obj.adressDetail = this.adressDetail
+			obj.shopsAddress = this.shopsAddress
 			localStorage.setItem('applyAdress',JSON.stringify(obj))
-			console.log(this.getdata('applyAdress'))
+			//console.log(this.getdata('applyAdress'))
+			this.$router.push('/apply')
 		},
 		standard(value) {
 		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]|\s/g,'')

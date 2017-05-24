@@ -131,6 +131,15 @@ export default {
 			this.newGroupName = ''
 		},
 		addGroup () {
+			//防止重名
+			let arr = this.groupList.filter(function(item){
+				return item.groupName === this.newGroupName
+			}.bind(this))
+			if(arr.length > 0){
+				this.isaddgroup = false
+				Toast('分组名已存在！')
+				return 
+			}
 			this.isaddgroup = false
 			if (this.editstatus) {
 				this.editGroupFun(this.id,this.newGroupName)
