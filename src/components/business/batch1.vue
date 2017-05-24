@@ -155,7 +155,16 @@ export default {
 			document.getElementsByClassName('ex-batch-submit')[0].style.position = 'fixed'
 		},
 		back () {
-			this.$router.push('/business')
+			let _this = this
+			MessageBox({
+				  title: '温馨提示',
+				  message: '返回将不保存之前所做的修改，是否确认返回？',
+				  showCancelButton: true
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.$router.push('/business')
+					}
+				})
 		},
 		closeModel () {
 			this.showmodel = false
@@ -180,7 +189,16 @@ export default {
 			this.order.push( {userCode:'',phone:'',consumptionMoney:''})
 		},
 		delOreder (index) {
-			this.order.splice(index, 1)
+			let _this = this
+			MessageBox({
+				  title: '提示',
+				  message: '确认删除该笔报单吗？',
+				  showCancelButton: true
+				}).then(action => {
+					if (action === 'confirm') {
+						_this.order.splice(index, 1)
+					}
+				})
 		},
 		checkId (id) {
 			return !/^[M|m|B|b]?\d{0,10}$/.test(id) && (id !== '')
