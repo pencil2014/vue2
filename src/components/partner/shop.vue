@@ -209,7 +209,7 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
+					_this.totalPage = res.data.data.totalPage || 1
 					_this.localshop = res.data.data.list || []
 					_this.page = 2
 				} else {
@@ -239,8 +239,10 @@ export default {
 				
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
-					_this.localshop.push(...res.data.data.list)
+					_this.totalPage = res.data.data.totalPage || 1
+					if (!!res.data.data.list) {
+						_this.localshop.push(...res.data.data.list)
+					}
 					_this.page += 1
 					_this.loading = false
 				} else {

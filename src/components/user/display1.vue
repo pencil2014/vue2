@@ -29,10 +29,10 @@
 					<span class="left">门头照片</span>
 					<span class="right">
 						<div class="uploadimg">
-							<img :src="info.facadePhoto" alt="" v-preview="info.facadePhoto" :preview-nav-enable="'false'">
-							<!-- <input type="file" class="file-prew" id="frontPic" @change="getfile" accept="image/*"> -->
+							<img :src="info.facadePhoto" alt="">
+							<input type="file" class="file-prew" id="frontPic" @change="getfile" accept="image/*">
 						</div>	
-						<!-- <i class="iconfont" >&#xe606;</i> -->
+						<i class="iconfont" >&#xe606;</i>
 					</span>
 				</div>
 			</div>

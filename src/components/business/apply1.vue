@@ -6,36 +6,41 @@
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">商家名称</label>
-					<div class="ex-field-value">
-						<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model="shopsEnterName">
-					</div>
+					<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model="shopsEnterName">
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系人</label>
-					<div class="ex-field-value">
-						<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model="shopsLinkman">
-					</div>
+					<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model="shopsLinkman">
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系电话</label>
-					<div class="ex-field-value">
-						<input type="tel" placeholder="请输入联系人手机号" @input="standardPhone('shopsLinkphone')" v-model="shopsLinkphone" maxlength="11">
-					</div>
+					<input type="tel" placeholder="请输入联系人手机号" @input="standardPhone('shopsLinkphone')" v-model="shopsLinkphone" maxlength="11">
 				</div>
 				<div class="ex-field-wrapper" @click="openRangeSlots">
 					<label class="ex-field-title">经营范围</label>
-					<span class="gray">{{classifyName}}</span>
 					<i class="iconfont arrow">&#xe606;</i>
+					<span class="float_right">{{classifyName}}</span>
 				</div>
 			</div>
 		</div>
 		<div class="ex-field">
-			<div class="ex-field-wrapper" @click="toapply2">
-				<label class="ex-field-title">商家地址</label>
-				<span class="gray">{{applyAdress.keyword}}</span>
-				<i class="iconfont arrow">&#xe606;</i>
+			<div class="ex-field-wrapper table" @click="toapply2">
+				<span>商家地址</span>
+				<span>{{area}} <br>
+				{{applyAdress.shopsAddress | ellipsis}}</span>
+				<span><i class="iconfont arrow">&#xe606;</i></span>
 			</div>
 		</div>
+		<!-- <div class="ex-field">
+			<div class="ex-field-wrapper">
+				<p>店铺门头照片</p>
+				<div class="uploadIMG">
+					<img src="../../assets/images/again.png" alt="" class="again">
+					<img :src="facadePhoto" alt="">
+					<input type="file" class="file-prew" id="facadePhoto" @change="getfile">
+				</div>
+			</div>
+		</div> -->
 		<div class="ex-button">
 			<button @click="submit" :class="{disable:disableBtn}">提交</button>
 		</div>
@@ -60,6 +65,7 @@ import axios from "axios"
 import qs from "qs"
 import { Toast , MessageBox , Indicator , Picker , Popup} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
+import lrz from 'lrz'
 export default {
 	data(){
 		return{
@@ -77,11 +83,12 @@ export default {
 			isOpenRangeSlots: false,
 			classificationId: '',
 			classifyName: '',
-			applyAdress: {},
+			applyAdress: '',
 			shopsId: '',
 			shopsEnterName: '',
 			shopsLinkman: '',
 			shopsLinkphone: '',
+			facadePhoto: '',
 			isSubmit: false
 		}
 	},
@@ -93,6 +100,12 @@ export default {
 			let rule1 = !this.shopsEnterName || !this.shopsLinkman || !this.shopsLinkphone || !this.checkPhone(this.shopsLinkphone) || !this.applyAdress.keyword
 			return (rule1 ? true : false)
 		},
+		area () {
+			if(!this.applyAdress){
+				return
+			}
+			return this.cut(this.applyAdress.keyword,this.applyAdress.shopsAddress)
+		}
 	},
 	watch: {
 		isOpenRangeSlots (value) {
@@ -100,12 +113,28 @@ export default {
 		} 
 	},
 	created () {
+		let applyAdress = this.getdata('applyAdress')
+		this.applyAdress = applyAdress ? applyAdress : ''
 		this.getClassList();
 		this.getShopId();
 	},
 	methods: {
 		back () {
 			this.$router.back();
+		},
+		getfile () {
+			let _this = this
+			let img = document.getElementById('facadePhoto').files[0]
+			if (img) {
+				lrz(img,{width:640})
+				.then(function (rst) {
+					_this.facadePhoto = window.URL.createObjectURL(img)
+			        _this.imgbase64 = rst.base64
+			    })
+	       		.catch(function (err) {
+	      			 _this.imgbase64 = ''
+	       		})  
+			}
 		},
 		openRangeSlots () {
 			this.isOpenRangeSlots = true
@@ -158,6 +187,7 @@ export default {
 				shopsLinkman: this.shopsLinkman,
 				shopsLinkphone: this.shopsLinkphone
 			}
+			//console.log(this.shopsEnterName)
 			localStorage.setItem('applyData',JSON.stringify(obj))
 			this.$router.push('/apply2')
 		},
@@ -179,8 +209,8 @@ export default {
 			})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					localStorage.setItem('applyData','')
-					localStorage.setItem('applyAdress','')
+					localStorage.removeItem('applyData' )
+					localStorage.removeItem('applyAdress')
 					MessageBox('提示','提交成功！').then(action => {
 						_this.$router.push('/apply3');
 					})
@@ -196,6 +226,7 @@ export default {
 		},
 		getShopId () {
 			let _this = this;
+			let applyData = this.getdata('applyData')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -205,6 +236,8 @@ export default {
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.shopsId = res.data.data.id
+					_this.shopsEnterName = applyData.shopsEnterName ? applyData.shopsEnterName : res.data.data.shopsName
+					_this.facadePhoto = res.data.data.facadePhoto
 				} else {
 					Toast(res.data.msg)
 				}
@@ -215,8 +248,7 @@ export default {
 		},
 		getClassList () {
 			let _this = this;
-			let applyData = _this.getdata('applyData')
-			let applyAdress = _this.getdata('applyAdress')
+			let applyData = this.getdata('applyData')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -228,14 +260,12 @@ export default {
 					if (_this.classifyList.length > 0) {
 						_this.classifyList.forEach(function(item){
 							_this.slots[0].values.push(item.name)
-						})
+						})						
 						if(!!applyData){
-							_this.shopsEnterName = applyData.shopsEnterName
 							_this.shopsLinkman = applyData.shopsLinkman
 							_this.shopsLinkphone = applyData.shopsLinkphone
-							_this.slots[0].defaultIndex = applyData.defaultIndex 
+							_this.slots[0].defaultIndex = applyData.defaultIndex
 						}
-						_this.applyAdress = applyAdress ? applyAdress : {}
 					}
 				} else {
 					Toast(res.data.msg)
@@ -263,6 +293,21 @@ export default {
             }
             return v;
 		},
+		cut (str,repeatStr) {
+			let index = str.indexOf(repeatStr)
+			return str.slice(0,index)
+		}
+	},
+	filters: {
+		ellipsis (value) {
+			if(!value){
+				return
+			}
+			if(value.length >= 15){
+				return value.slice(0,14) + '...'
+			}
+			return value
+		} 
 	}
 }
 </script>
@@ -278,16 +323,26 @@ export default {
 .ex-form{}
 .ex-form p{line-height: 20px;word-wrap: break-word;padding: 10px 0 10px 10px;color: rgb(93,100,110);}
 .ex-field{background: #fff;padding: 0 0 0 15px;margin-bottom: 15px;}
-.ex-field-wrapper{height: 30px;width: 100%;line-height: 30px;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;}
-.ex-field-wrapper .ex-field-title{display: block;float: left;width: 20%;height: 30px;}
-.ex-field-wrapper .ex-field-value{}
-.ex-field-wrapper .ex-field-value input{display: block;width: 75%;height: 30px;border: none;font-size: 1.4rem;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
+.ex-field-wrapper{width: 100%;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;min-height: 30px;line-height: 30px;}
+.ex-field-wrapper .ex-field-title{display: inline-block;width: 20%;font-size: 1.4rem;}
+.ex-field-wrapper input{width: 70%;border: none;font-size: 1.4rem;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;height: 30px;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px;}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}
 .ex-field .ex-field-wrapper:last-child{border-bottom: none;}
 .ex-field .ex-field-wrapper i.arrow {float: right;padding-right: 15px;color: rgba(173,180,190,1);}
-.gray{color: #586485;}
+.float_right{float: right;color: #586485;}
+
+.ex-field .ex-field-wrapper.table{display: table;width: 100%;}
+.ex-field .ex-field-wrapper.table span{display: table-cell;vertical-align: top;}
+.ex-field .ex-field-wrapper.table span:nth-child(1){width: 20%;}
+.ex-field .ex-field-wrapper.table span:nth-child(2){text-align: right;color: #586485;line-height: 25px;}
+.ex-field .ex-field-wrapper.table span:nth-child(3){vertical-align: middle;width: 31px;}
+
+.ex-field .ex-field-wrapper .uploadIMG {display: block;width: 64px;height: 64px;position: relative;}
+.ex-field .ex-field-wrapper .uploadIMG img{width: 100%;height: 100%;}
+.ex-field .ex-field-wrapper .uploadIMG .again{position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;}
+.ex-field .ex-field-wrapper .uploadIMG input{position: absolute;width: 100%;height: 100%;top: 0px;left: 0px;z-index: 3;opacity: 0;filter:Alpha(opacity=0)}
 
 .ex-button{margin-top: 16px;padding: 0 15px;text-align: center;}
 .ex-button button{display: block;height: 48px;width: 100%;line-height: 48px;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;}

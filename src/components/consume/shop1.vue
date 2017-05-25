@@ -38,12 +38,12 @@
 					<option v-for='item in districtArray' :value='item.id' v-if='item.name'>{{item.name}}</option>
 				</select>
 			</div>
-			<div class="ex-shop1-cnt-item">
+			<!-- <div class="ex-shop1-cnt-item">
 				<span>*所属行业</span>
 				<select v-model="classifyId" style="width:8rem" >
 					<option v-for='item in classifyList' :value='item.id' >{{item.name}}</option>
 				</select>
-			</div>
+			</div> -->
 			<div class="ex-shop1-cnt-item">
 				<span>*详细地址</span><input type="text" name="" id="" placeholder="详细地址" maxlength="60" v-model.trim='addressDetail'>
 			</div>
@@ -84,7 +84,7 @@ export default {
 				fixed: false,
 			},
 			classifyList:[],
-			classifyId: ''
+			classifyId: 1
 		}
 	},
 	computed: {
@@ -163,20 +163,20 @@ export default {
 			Toast('连接失败，请检查网络是否正常!')
 		})
 
-		axios.post('shopClassification/list',qs.stringify({})).then(function(res){
-				if (res.data.code === '10000') {
-					_this.classifyList = res.data.data|| []
-					if (_this.classifyList.length > 0) {
-						_this.classifyId = _this.classifyList[0].id
-					}
+		// axios.post('shopClassification/list',qs.stringify({})).then(function(res){
+		// 		if (res.data.code === '10000') {
+		// 			_this.classifyList = res.data.data|| []
+		// 			if (_this.classifyList.length > 0) {
+		// 				_this.classifyId = _this.classifyList[0].id
+		// 			}
 
-				} else {
-					Toast(res.data.msg)
-				}
-			}).catch(function(){
-				_this.nodateStatus = true
-					Toast('连接失败，请检查网络是否正常!')
-			})
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 		_this.nodateStatus = true
+		// 			Toast('连接失败，请检查网络是否正常!')
+		// 	})
 	},
 	methods: {
 		back () {

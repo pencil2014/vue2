@@ -25,13 +25,14 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">详细地址</label>
 					<div class="ex-field-value">
-						<input type="text" v-model="shopsAddress" placeholder="请输入详细街道地址" @input="standard('shopsAddress')">
+						<input type="text" v-model="shopsAddress" placeholder="请输入详细街道地址" @input="standard('shopsAddress')" maxlength="60">
 					</div>
 				</div>
 			</div>
 		</div>
-		<baidu-map class="bm-view" ak="d6mxIkQnNeHgNzBQjBCZ9jdV1e49t2iF" :center="center" :zoom="15" :dragging="true" :pinch-to-zoom="false" :double-click-zoom="false">
-		    <bm-local-search v-show="false" :keyword="keyword" :auto-viewport="true"></bm-local-search>
+		<baidu-map class="bm-view" ak="d6mxIkQnNeHgNzBQjBCZ9jdV1e49t2iF" :center="center" :zoom="15" :dragging="false" :pinch-to-zoom="false" :double-click-zoom="false" @ready="handler">
+		    <!-- <bm-local-search v-show="false" :keyword="keyword" :auto-viewport="true"></bm-local-search> -->
+		    <bm-marker :position="center" :dragging="false" :icon="icon"></bm-marker>
   		</baidu-map>
 		<div class="ex-button">
 			<button @click="submit" :class="{disable:disableBtn}">保存</button>
@@ -45,6 +46,7 @@ import { Toast, MessageBox , Indicator} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 import Btn from '../common/button.vue'
 import {BaiduMap,BmMarker,BmLabel,BmLocalSearch} from 'vue-baidu-map'
+import icon from '../../assets/images/maplogo.png'
 
 export default {
 	data(){
@@ -63,7 +65,12 @@ export default {
 			seldistrictList: [],
 			shopsAddress: '',
 			isMounted: false,
-			applyAdress: ''
+			applyAdress: '',
+			icon: {
+				url: icon,
+				size: {width: 25, height: 25}
+			},
+			isReady: false,
 		}
 	},
 	components: {
@@ -101,16 +108,22 @@ export default {
 			if(province === city){
 				city = ''
 			}
-			return province + city + (district||'') + this.shopsAddress
+			return (province||'') + (city||'') + (district||'') + this.shopsAddress
 		}
 	},
 	watch: {
+		keyword (value) {
+			if(!this.isReady){
+				return
+			}
+			this.getPoint()
+		},
 		provinceId () {
 			let arr = this.city.filter(function(item){
 				return item.parentId === this.provinceId
 			}.bind(this))
 			this.selcityList = arr
-			if(!!this.applyAdress.cityId){
+			if(!!this.applyAdress && !!this.applyAdress.cityId){
 				this.cityId = this.applyAdress.cityId
 				this.applyAdress.cityId = ''
 			}else{
@@ -123,7 +136,7 @@ export default {
 			}.bind(this))
 			if(arr.length > 0) {
 				this.seldistrictList = arr
-				if(!!this.applyAdress.districtId){
+				if(!!this.applyAdress && !!this.applyAdress.districtId){
 					this.districtId = this.applyAdress.districtId
 					this.applyAdress.districtId = ''
 				}else{
@@ -132,7 +145,9 @@ export default {
 			}else{
 				this.seldistrictList = []
 				this.districtId === ''
-				this.applyAdress.districtId = ''
+				if(!!this.applyAdress &&　!!this.applyAdress.districtId){
+					this.applyAdress.districtId = ''
+				}
 			}
 		},
 	},
@@ -163,6 +178,18 @@ export default {
 		this.isMounted = true
 	},
 	methods: {
+		handler () {
+			this.isReady = true
+		},
+		getPoint () {
+	  		let _this = this
+	  		let myGeo = new BMap.Geocoder()
+	  		myGeo.getPoint(this.keyword, function(point){
+				if (point) {
+					_this.center = point
+				}
+			})
+	  	},
 		back () {
 			this.$router.back();
 		},
@@ -178,7 +205,7 @@ export default {
 			obj.districtId = this.districtId
 			obj.shopsAddress = this.shopsAddress
 			localStorage.setItem('applyAdress',JSON.stringify(obj))
-			//console.log(this.getdata('applyAdress'))
+			// console.log(this.getdata('applyAdress'))
 			this.$router.push('/apply')
 		},
 		standard(value) {
@@ -224,4 +251,6 @@ export default {
 .ex-button button{display: block;height: 48px;width: 100%;line-height: 48px;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;}
 .ex-button button:active{background: #0470b6;}
 .ex-button button.disable{background: #999 !important;}
+
+.labelStyle{position: relative;}
 </style>

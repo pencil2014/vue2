@@ -41,7 +41,10 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			messageType: 1,
+			// messageType: 1,
+			messageType: (function(){
+				return (localStorage.getItem('messageType') ? localStorage.getItem('messageType') : 1)
+			})(),
 			modal: {
 				text:'我的消息',
 				fixed: false
@@ -83,10 +86,12 @@ export default {
     },
 	methods: {
 		back () {
+			localStorage.setItem('messageType','')
 			this.$router.back()
 		},
 		tap (id) {
 			// this.$router.push({ name: 'Message', params: { id: id}})
+			localStorage.setItem('messageType',id)
 			this.messageType = id;
 			this.getData();
 		},

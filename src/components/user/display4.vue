@@ -185,7 +185,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-display {width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;font-size: 1.6rem;}
+.ex-display {width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;font-size: 1.6rem;padding-bottom: 56px;}
 .ex-display .wrapper {background: #fff;}
 .ex-display .wrapper .item-content{margin: 15px 0 0 10px;}
 .ex-display .wrapper .item-content .item{height: 30px;line-height: 30px;padding: 8px 0;border-bottom: solid 1px #ebebeb;}

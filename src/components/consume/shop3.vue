@@ -23,10 +23,10 @@
 				<span>商家名称</span>
 				<b>{{examineData.shopsName}}</b>
 			</div>
-			<div class="ex-shop3-item">
+			<!-- <div class="ex-shop3-item">
 				<span>所属行业</span>
 				<b>{{examineData.classificationName}}</b>
-			</div>
+			</div> -->
 			<div class="ex-shop3-item">
 				<span>联系地址</span>
 				<b>{{examineData.shopsAddress2}}</b>
