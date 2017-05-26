@@ -31,7 +31,11 @@
 			<div class="ex-field">
 				<span>商家地址</span>
 				<span class="float_right">{{address}}</span>
-			</div>	
+			</div>
+			<div class="ex-field">
+				<span>店铺门头照片</span>
+				<span class="float_right"><img :src="applydata.facadePhoto" alt="" v-preview="applydata.facadePhoto" :preview-nav-enable="false"></span>
+			</div>		
 		</div>
 		<div class="ex-button" v-if="applydata.status === '2'">
 			<button @click="toApply">重新申请</button>
@@ -137,8 +141,9 @@ export default {
 .ex-form .ex-field{display: table;margin-left: 15px;border-bottom: solid 1px #ebebeb;padding: 10px 0;width: 100%;}
 .ex-form .ex-field:last-child{border:none;}
 .ex-form .ex-field span{display: table-cell;vertical-align: top;}
-.ex-form .ex-field span:nth-child(1){width: 20%;}
-.ex-form .ex-field span:nth-child(2){color: rgb(170,175,182);text-align: right;width: 80%;word-break: break-all;padding-right: 30px;}
+.ex-form .ex-field span:nth-child(1){width: 25%;}
+.ex-form .ex-field span:nth-child(2){color: rgb(170,175,182);text-align: right;width: 75%;word-break: break-all;padding-right: 30px;}
+.ex-form .ex-field span:nth-child(2) img{width: 80px;}
 
 .ex-button{margin-top: 16px;padding: 0 15px;text-align: center;}
 .ex-button button{display: block;height: 48px;width: 100%;line-height: 48px;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;}

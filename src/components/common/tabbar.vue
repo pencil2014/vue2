@@ -56,9 +56,9 @@ export default {
 		axios.post('message/getCount',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
-				_this.read = res.data.data.count > 0 ? true : false	
+				_this.read = res.data.data.count > 0 ? true : false
 			} else {
-
+				_this.read = false
 			}
 		}).catch(function(){
 			Toast('连接失败，请检查网络是否正常!')
@@ -66,7 +66,6 @@ export default {
 	},
 	methods: {
 		disabled () {
-			// Toast('功能暂未开放，敬请期待！')
 			Toast({
 			  message: '功能暂未开放，敬请期待！',
 			  duration: 1000

@@ -114,11 +114,6 @@ export default new Router({
   mode: 'hash',
   linkActiveClass: 'activeRouter',
   routes: [
-    // {
-    //   path: '/map',
-    //   name: 'Map',
-    //   component: Map
-    // },
     {
       path: '/login',
       name: 'Login',

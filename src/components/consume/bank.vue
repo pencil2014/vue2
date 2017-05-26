@@ -323,7 +323,7 @@ export default {
 				Indicator.close()
 				_this.repeatBtn = false
 				if (res.data.code === '10000') {
-					MessageBox('提示', '您成功转存'+_this.exchange+'元!')
+					MessageBox('提示', '转存成功！')
 					_this.userdata.overMoney -= _this.exchange
 					_this.exchange = ''
 				} else {
@@ -375,7 +375,7 @@ export default {
 .ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
 
-.ex-header{width: 100%;display: table;height: 4.5rem;background-color: rgb(255,255,255);color: rgb( 33,42,50);box-shadow:1px 1px 0px #ebebeb;position: relative;z-index: 9999;}
+.ex-header{width: 100%;display: table;height: 4.5rem;background-color: rgb(255,255,255);color: rgb( 33,42,50);box-shadow:1px 1px 0px #ebebeb;position: relative;z-index: 6;}
 .ex-header span{display: table-cell;width: 33.3%;vertical-align: middle;font-size: 1.6rem;}
 .ex-header span:nth-child(1){text-align: left;padding-left: 0.5rem;}
 .ex-header span:nth-child(1) a{height: 100%;display: inline-block;line-height: 4.5rem;color: rgb(4,125,203);}

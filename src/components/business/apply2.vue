@@ -64,8 +64,7 @@ export default {
 			selcityList: [],
 			seldistrictList: [],
 			shopsAddress: '',
-			isMounted: false,
-			applyAdress: '',
+			applyAddress: '',
 			icon: {
 				url: icon,
 				size: {width: 25, height: 25}
@@ -88,27 +87,38 @@ export default {
 			}
 			return false
 		},
-		keyword () {
-			let province,city,district;
+		provinceName () {
+			let provinceName
 			this.province.forEach(function(item){
 				if(item.id === this.provinceId) {
-					province = item.name
+					provinceName = item.name
 				}
 			}.bind(this))
+			return provinceName
+		},
+		cityName () {
+			let cityName
 			this.selcityList.forEach(function(item){
 				if(item.id === this.cityId) {
-					city = item.name
+					cityName = item.name
 				}
 			}.bind(this))
+			return cityName
+		},
+		countyName () {
+			let countyName
 			this.seldistrictList.forEach(function(item){
 				if(item.id === this.districtId) {
-					district = item.name
+					countyName = item.name
 				}
 			}.bind(this))
-			if(province === city){
-				city = ''
+			return countyName
+		},
+		keyword () {
+			if(this.provinceName === this.cityName){
+				return this.provinceName + this.countyName + this.shopsAddress
 			}
-			return (province||'') + (city||'') + (district||'') + this.shopsAddress
+			return this.provinceName + this.cityName + this.countyName + this.shopsAddress
 		}
 	},
 	watch: {
@@ -116,6 +126,7 @@ export default {
 			if(!this.isReady){
 				return
 			}
+			console.log(value)
 			this.getPoint()
 		},
 		provinceId () {
@@ -123,9 +134,9 @@ export default {
 				return item.parentId === this.provinceId
 			}.bind(this))
 			this.selcityList = arr
-			if(!!this.applyAdress && !!this.applyAdress.cityId){
-				this.cityId = this.applyAdress.cityId
-				this.applyAdress.cityId = ''
+			if(!!this.applyAddress && !!this.applyAddress.cityId){
+				this.cityId = this.applyAddress.cityId
+				this.applyAddress.cityId = ''
 			}else{
 				this.cityId = arr[0].id
 			}
@@ -136,46 +147,23 @@ export default {
 			}.bind(this))
 			if(arr.length > 0) {
 				this.seldistrictList = arr
-				if(!!this.applyAdress && !!this.applyAdress.districtId){
-					this.districtId = this.applyAdress.districtId
-					this.applyAdress.districtId = ''
+				if(!!this.applyAddress && !!this.applyAddress.districtId){
+					this.districtId = this.applyAddress.districtId
+					this.applyAddress.districtId = ''
 				}else{
 					this.districtId = arr[0].id
 				}
 			}else{
 				this.seldistrictList = []
 				this.districtId === ''
-				if(!!this.applyAdress &&　!!this.applyAdress.districtId){
-					this.applyAdress.districtId = ''
+				if(!!this.applyAddress &&　!!this.applyAddress.districtId){
+					this.applyAddress.districtId = ''
 				}
 			}
 		},
 	},
 	created () {
-		let _this = this
-		this.applyAdress = _this.getdata('applyAdress')
-		axios.post('getBaseRegionAll',qs.stringify({}))
-		.then(function(res){
-			if (res.data.code === '10000') {
-				_this.province.push(...res.data.data.province)
-				_this.city.push(...res.data.data.city)
-				_this.district.push(...res.data.data.district)
-				if(!!_this.applyAdress){
-					_this.provinceId = _this.applyAdress.provinceId
-					_this.shopsAddress = _this.applyAdress.shopsAddress
-				}else{
-					_this.provinceId = _this.province[0].id
-				}
-			} else {
-				Toast('请求数据失败！')
-			}
-		})
-		.catch(function(){
-			Toast('连接失败，请检查网络是否正常!')
-		})
-	},
-	mounted () {
-		this.isMounted = true
+		this.getEnterShop()
 	},
 	methods: {
 		handler () {
@@ -199,14 +187,82 @@ export default {
 				return 
 			}
 			let obj = {};
-			obj.keyword = this.keyword
 			obj.provinceId = this.provinceId
 			obj.cityId = this.cityId
 			obj.districtId = this.districtId
+			obj.provinceName = this.provinceName
+			obj.cityName = this.cityName
+			obj.countyName = this.countyName
 			obj.shopsAddress = this.shopsAddress
-			localStorage.setItem('applyAdress',JSON.stringify(obj))
-			// console.log(this.getdata('applyAdress'))
+			localStorage.setItem('applyAddress',JSON.stringify(obj))
 			this.$router.push('/apply')
+		},
+		getArea (record) {
+			let _this = this
+			let applyAddress = _this.getdata('applyAddress')
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			});
+			axios.post('getBaseRegionAll',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.province.push(...res.data.data.province)
+					_this.city.push(...res.data.data.city)
+					_this.district.push(...res.data.data.district)
+					//有缓存取缓存
+					if(!!applyAddress){
+						_this.applyAddress = applyAddress
+						_this.provinceId = _this.applyAddress.provinceId
+						_this.shopsAddress = _this.applyAddress.shopsAddress
+						return 
+					}
+					//审核失败取接口数据
+					if(record.status === '2'){
+						_this.applyAddress = {
+							provinceId: record.province,
+							cityId: record.city,
+							districtId: record.county,
+							provinceName: record.provinceName,
+							cityName: record.cityName,
+							countyName: record.countyName,
+							shopsAddress: record.shopsAddress,
+						}
+						_this.provinceId = record.province
+						_this.shopsAddress = record.shopsAddress
+						return
+					}
+					//默认值
+					_this.provinceId = _this.province[0].id
+				} else {
+					Toast('请求数据失败！')
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		getEnterShop () {
+			let _this = this;
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			});
+			axios.post('shop/enterDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					let record = res.data.data
+					_this.getArea(record)
+				} else {
+					Toast('获取申请信息失败！')
+				}
+			}).catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		},
 		standard(value) {
 		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]|\s/g,'')

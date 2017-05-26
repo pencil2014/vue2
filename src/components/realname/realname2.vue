@@ -10,7 +10,7 @@
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">证件号码</label>
-					<input type="text" placeholder="与认证名相符的身份证号"  v-model="legalIdcard" maxlength="25" @input="inputIdCard('legalIdcard')">
+					<input type="text" placeholder="与认证名相符的身份证号"  v-model="legalIdcard" maxlength="20" @input="inputIdCard('legalIdcard')">
 				</div>
 			</div>
 		</div>

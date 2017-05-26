@@ -26,12 +26,12 @@
 		<div class="ex-field">
 			<div class="ex-field-wrapper table" @click="toapply2">
 				<span>商家地址</span>
-				<span>{{area}} <br>
-				{{applyAdress.shopsAddress | ellipsis}}</span>
+				<span>{{applyAddress.provinceName}}{{applyAddress.cityName}}{{applyAddress.countyName}}<br>
+				{{applyAddress.shopsAddress | ellipsis}}</span>
 				<span><i class="iconfont arrow">&#xe606;</i></span>
 			</div>
 		</div>
-		<!-- <div class="ex-field">
+		<div class="ex-field">
 			<div class="ex-field-wrapper">
 				<p>店铺门头照片</p>
 				<div class="uploadIMG">
@@ -40,7 +40,7 @@
 					<input type="file" class="file-prew" id="facadePhoto" @change="getfile">
 				</div>
 			</div>
-		</div> -->
+		</div>
 		<div class="ex-button">
 			<button @click="submit" :class="{disable:disableBtn}">提交</button>
 		</div>
@@ -83,12 +83,12 @@ export default {
 			isOpenRangeSlots: false,
 			classificationId: '',
 			classifyName: '',
-			applyAdress: '',
-			shopsId: '',
+			applyAddress: '',
 			shopsEnterName: '',
 			shopsLinkman: '',
 			shopsLinkphone: '',
 			facadePhoto: '',
+			imgbase64: '',
 			isSubmit: false
 		}
 	},
@@ -97,15 +97,9 @@ export default {
 	},
 	computed:{
 		disableBtn () {
-			let rule1 = !this.shopsEnterName || !this.shopsLinkman || !this.shopsLinkphone || !this.checkPhone(this.shopsLinkphone) || !this.applyAdress.keyword
+			let rule1 = !this.shopsEnterName || !this.shopsLinkman || !this.shopsLinkphone || !this.checkPhone(this.shopsLinkphone) || !this.applyAddress
 			return (rule1 ? true : false)
 		},
-		area () {
-			if(!this.applyAdress){
-				return
-			}
-			return this.cut(this.applyAdress.keyword,this.applyAdress.shopsAddress)
-		}
 	},
 	watch: {
 		isOpenRangeSlots (value) {
@@ -113,14 +107,35 @@ export default {
 		} 
 	},
 	created () {
-		let applyAdress = this.getdata('applyAdress')
-		this.applyAdress = applyAdress ? applyAdress : ''
 		this.getClassList();
-		this.getShopId();
+		this.getEnterShop();
 	},
 	methods: {
 		back () {
 			this.$router.back();
+		},
+		toapply2 () {
+			let obj = {
+				defaultIndex: this.slots[0].values.indexOf(this.classifyName),
+				shopsEnterName: this.shopsEnterName,
+				shopsLinkman: this.shopsLinkman,
+				shopsLinkphone: this.shopsLinkphone
+			}
+			localStorage.setItem('applyData',JSON.stringify(obj))
+			this.$router.push('/apply2')
+		},
+		openRangeSlots () {
+			this.isOpenRangeSlots = true
+		},
+		onRangeChange (picker) {
+			if(this.classifyList.length <= 0){
+				return
+			}
+			this.classifyName = picker.values[0]
+			let selectValue = this.classifyList.filter(function(item){
+				return this.classifyName === item.name
+			}.bind(this))
+			this.classificationId = selectValue[0].id
 		},
 		getfile () {
 			let _this = this
@@ -135,19 +150,6 @@ export default {
 	      			 _this.imgbase64 = ''
 	       		})  
 			}
-		},
-		openRangeSlots () {
-			this.isOpenRangeSlots = true
-		},
-		onRangeChange (picker) {
-			if(this.classifyList.length <= 0){
-				return
-			}
-			this.classifyName = picker.values[0]
-			let selectValue = this.classifyList.filter(function(item){
-				return this.classifyName === item.name
-			}.bind(this))
-			this.classificationId = selectValue[0].id
 		},
 		submit () {
 			if(this.isSubmit){
@@ -173,23 +175,41 @@ export default {
 				MessageBox('提示','请选择经营范围！')
 				return
 			}
-			if(!this.applyAdress.keyword){
-				MessageBox('提示','商家地址不能为空！')
+			if(!this.applyAddress){
+				MessageBox('提示','请填写商家地址！')
 				return
 			}
 			this.isSubmit = true
-			this.shopEnter();
-		},
-		toapply2 () {
-			let obj = {
-				defaultIndex: this.slots[0].values.indexOf(this.classifyName),
-				shopsEnterName: this.shopsEnterName,
-				shopsLinkman: this.shopsLinkman,
-				shopsLinkphone: this.shopsLinkphone
+			if(!this.imgbase64){
+				this.shopEnter();
+			}else{
+				this.upload();
 			}
-			//console.log(this.shopsEnterName)
-			localStorage.setItem('applyData',JSON.stringify(obj))
-			this.$router.push('/apply2')
+		},
+		upload () {
+			let _this = this;
+			let formData = new FormData()
+			formData.append('imgStr',_this.imgbase64)
+			Indicator.open({
+			  text: '图片上传中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('upload/pic_min',formData)
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.facadePhoto = res.data.urls[0]
+					_this.shopEnter()
+				} else {
+					_this.isSubmit = false
+					Indicator.close()
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(res){
+				_this.isSubmit = false
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		},
 		shopEnter () {
 			let _this = this;
@@ -202,15 +222,16 @@ export default {
 				shopsLinkman: _this.shopsLinkman,
 				shopsLinkphone: _this.shopsLinkphone,
 				classificationId: _this.classificationId,
-				province: _this.applyAdress.provinceId,
-				city: _this.applyAdress.cityId,
-				county: _this.applyAdress.districtId,
-				shopsAddress: _this.applyAdress.shopsAddress
+				province: _this.applyAddress.provinceId,
+				city: _this.applyAddress.cityId,
+				county: _this.applyAddress.districtId,
+				shopsAddress: _this.applyAddress.shopsAddress,
+				facadePhoto: _this.facadePhoto
 			})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					localStorage.removeItem('applyData' )
-					localStorage.removeItem('applyAdress')
+					localStorage.removeItem('shopsAddress')
 					MessageBox('提示','提交成功！').then(action => {
 						_this.$router.push('/apply3');
 					})
@@ -224,9 +245,59 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		getShopId () {
+		getEnterShop () {
 			let _this = this;
 			let applyData = this.getdata('applyData')
+			let applyAddress = this.getdata('applyAddress')
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			});	
+			axios.post('shop/enterDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					//审核失败
+					if(res.data.data.status === '2'){
+						if(!!applyData){
+							_this.shopsEnterName = applyData.shopsEnterName
+							_this.shopsLinkman = applyData.shopsLinkman
+							_this.shopsLinkphone = applyData.shopsLinkphone
+							_this.defaultIndex = applyData.defaultIndex
+						}else{
+							_this.shopsEnterName = res.data.data.shopsEnterName
+							_this.shopsLinkman = res.data.data.shopsLinkman
+							_this.shopsLinkphone = res.data.data.shopsLinkphone
+							_this.defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
+						}
+						if(!!applyAddress){
+							_this.applyAddress = applyAddress
+						}else{
+							_this.applyAddress = {
+								provinceName: res.data.data.provinceName,
+								cityName: res.data.data.cityName,
+								countyName: res.data.data.countyName,
+								provinceId: res.data.data.province,
+								cityId: res.data.data.city,
+								districtId: res.data.data.county,
+								shopsAddress: res.data.data.shopsAddress
+							}
+						}
+						_this.facadePhoto = res.data.facadePhoto
+						return 
+					}
+					_this.getShop()
+				} else {
+					Toast('获取申请信息失败！')
+				}
+			}).catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		getShop () {
+			let _this = this;
+			let applyAddress = this.getdata('applyAddress')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -235,9 +306,11 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.shopsId = res.data.data.id
-					_this.shopsEnterName = applyData.shopsEnterName ? applyData.shopsEnterName : res.data.data.shopsName
+					_this.shopsEnterName = res.data.data.shopsName
 					_this.facadePhoto = res.data.data.facadePhoto
+					if(!!applyAddress){
+						_this.applyAddress = applyAddress
+					}
 				} else {
 					Toast(res.data.msg)
 				}
@@ -277,7 +350,7 @@ export default {
 		},
 		standard(value) {
 		 	this[value] = this[value].replace(/[^a-zA-Z0-9\u4E00-\u9FA5]|\s/g,'')
-		},
+		},	
 		standardPhone(value) {
 			this[value] = this[value].replace(/[^0-9]|\s/g,'')
 		},
