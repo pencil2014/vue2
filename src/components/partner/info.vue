@@ -34,7 +34,7 @@
 									<img :src="item.commodityAffixEntityList[0].filePath" alt="">
 								</div>
 								<div class="info">
-									<h3 class='name'>{{item.shopsName}}</h3>
+									<h3 class='name'>{{item.commodityName}}</h3>
 									<p class='price'>- ￥{{item.price}} -</p>
 								</div>
 							</li>

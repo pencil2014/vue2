@@ -403,12 +403,12 @@ export default {
 .ex-display .wrapper .item-content .item-option div.select{color: #0c87d5;}
 .ex-display .wrapper .item-content .item-option div.select .option{background: url(../../assets/images/select.png) no-repeat;background-size: 100%;}
 
-.ex-display .wrapper .item .report-file {overflow: hidden;position: relative;border: dotted 1px #d8d8d8;text-align: center;}
+.ex-display .wrapper .item .report-file {overflow: hidden;position: relative;border: dotted 1px #d8d8d8;text-align: center; vertical-align: top;}
 .ex-display .wrapper .item .report-file span{cursor: pointer;display: block;width: 100%;line-height: 20px;padding-top: 12px;}
 .ex-display .wrapper .item .report-file .file-prew{opacity: 0;filter: alpha(opacity=0);cursor: pointer;position: absolute;left: 0;top: 0;z-index: 10;width: 100%;height: 100%;}
 .UpLoadIMG{margin: 15px 0 0 0;}
-.ex-display .wrapper .item .UpLoadIMG div{/*display: inline-flex;*/display: inline-block;width: 64px;height: 64px;margin: 0 9px;}
-.ex-display .wrapper .item .UpLoadIMG div.report-pic {border: solid 1px #ebebeb;position: relative;}
+.ex-display .wrapper .item .UpLoadIMG div{/*display: inline-flex;*/display: inline-block;width: 64px;height: 64px;margin: 0 9px; }
+.ex-display .wrapper .item .UpLoadIMG div.report-pic {border: solid 1px #ebebeb;position: relative; vertical-align: top;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic img{;width: 100%;height: 100%;}
 .ex-display .wrapper .item .UpLoadIMG div.report-pic .delect{position:absolute;top: -12px;right: -10px;background: #666;color: #fff;display: inline-block;width: 24px;height: 24px;text-align: center;border-radius: 50%;font-size: 24px;line-height: 20px;}
 

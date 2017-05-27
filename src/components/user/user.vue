@@ -251,7 +251,7 @@ export default {
 </script>
 <style scoped>
 [v-cloak]{display: none;}
-.ex-user{width: 100%;background: #f4f5f7;color: #212a32;padding-bottom: 106px;}
+.ex-user{width: 100%;background: #f4f5f7;color: #212a32;padding-bottom: 106px;overflow-x: hidden;}
 
 .ex-header{	width: 100%;height: 200px;background: url(../../assets/images/pc_bg.jpg) no-repeat;background-size: cover;position: relative;}
 .ex-header .wrapper{width: 100%;height: 72px;position: absolute; top: 64px;}

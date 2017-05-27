@@ -34,7 +34,7 @@
 			</div>
 			<div class="ex-field">
 				<span>店铺门头照片</span>
-				<span class="float_right"><img :src="applydata.facadePhoto " alt="" v-preview="applydata.facadePhoto" :preview-nav-enable="false"></span>
+				<span class="float_right"><img :src="applydata.facadePhoto" alt="" v-preview="applydata.facadePhoto" :preview-nav-enable="false"></span>
 			</div>		
 		</div>
 		<div class="ex-button" v-if="applydata.status === '2'">
@@ -63,14 +63,14 @@ export default {
 	},
 	computed: {
 		address () {
-			if (!!this.applydata) {
-				return
+			if(!this.applydata){
+				return ''
 			}
 			return this.applydata.provinceName + this.applydata.cityName + this.applydata.countyName + this.applydata.shopsAddress
 		}
 	},
 	created () {
-		this.getShopId()
+		this.getDetail()
 	},
 	methods: {
 		back () {
@@ -84,28 +84,13 @@ export default {
 		toApply () {
 			this.$router.push('/apply')
 		},
-		getShopId () {
+		getDetail () {
 			let _this = this;
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			});
-			axios.post('shop/examine',qs.stringify({}))
-			.then(function(res){
-				if (res.data.code === '10000') {
-					_this.shopsId = res.data.data.id
-					_this.getDetail(_this.shopsId)
-				} else {
-					Indicator.close()
-					Toast('获取申请信息失败！')
-				}
-			}).catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		},
-		getDetail (id) {
-			let _this = this;
+			
 			axios.post('shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
@@ -119,9 +104,6 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		submit () {
-
-		}
 	},
 	beforeRouteLeave (to,from,next) {
 		let path = window.localStorage.getItem('integralPath')
