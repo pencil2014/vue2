@@ -34,12 +34,13 @@
 			</div>
 			<div class="ex-field">
 				<span>店铺门头照片</span>
-				<span class="float_right"><img :src="applydata.facadePhoto" alt="" v-preview="applydata.facadePhoto" :preview-nav-enable="false"></span>
+				<span class="float_right"><img :src="applydata.facadePhoto " alt="" v-preview="applydata.facadePhoto" :preview-nav-enable="false"></span>
 			</div>		
 		</div>
 		<div class="ex-button" v-if="applydata.status === '2'">
 			<button @click="toApply">重新申请</button>
 		</div>
+		<lg-preview></lg-preview>
 	</div>
 </template>
 <script>
@@ -62,6 +63,9 @@ export default {
 	},
 	computed: {
 		address () {
+			if (!!this.applydata) {
+				return
+			}
 			return this.applydata.provinceName + this.applydata.cityName + this.applydata.countyName + this.applydata.shopsAddress
 		}
 	},
@@ -149,4 +153,6 @@ export default {
 .ex-button button{display: block;height: 48px;width: 100%;line-height: 48px;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;}
 .ex-button button:active{background: #0470b6;}
 .ex-button button.disable{background: #999 !important;}
+
+.preview{position: absolute;z-index: 999;left: 0px;top: 0;}
 </style>

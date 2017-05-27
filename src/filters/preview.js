@@ -57,7 +57,6 @@ Vue.directive('preview', {
         }
         LOGIC_EVENT_BUS.LOGIC_PREVIEW.list.push(previewItem)
         $UPDATEINDEX(LOGIC_EVENT_BUS.LOGIC_PREVIEW.list)
-        // console.log(LOGIC_EVENT_BUS.LOGIC_PREVIEW.list)
         el.addEventListener('click', (e) => {
             e.stopPropagation()
             LOGIC_EVENT_BUS.LOGIC_PREVIEW.isTitleEnable = el.getAttribute('preview-title-enable')== "false" ? false : true;
@@ -69,9 +68,9 @@ Vue.directive('preview', {
         })
     },
     update: function (el, oldValue) {
-        let previewItem = LOGIC_EVENT_BUS.LOGIC_PREVIEW.list.find(item => {
+        let previewItem = LOGIC_EVENT_BUS.LOGIC_PREVIEW.list.filter(item => {
             return item.el === el
-        })
+        })[0]
         if (!previewItem) return  
         previewItem.src = oldValue.value
         previewItem.title = el.alt

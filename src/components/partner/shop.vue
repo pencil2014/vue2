@@ -57,7 +57,7 @@
 			</router-link></li>
 			<li><router-link to="/category">
 				<img src="../../assets/images/shop8.png" alt="">
-				<span>其他</span>
+				<span>全部</span>
 			</router-link></li>
 		</div>
 		<div class="ex-shop-localshop">

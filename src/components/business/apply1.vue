@@ -6,11 +6,11 @@
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">商家名称</label>
-					<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model="shopsEnterName">
+					<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model="shopsEnterName" maxlength="15">
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系人</label>
-					<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model="shopsLinkman">
+					<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model="shopsLinkman" maxlength="15">
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系电话</label>
@@ -97,7 +97,7 @@ export default {
 	},
 	computed:{
 		disableBtn () {
-			let rule1 = !this.shopsEnterName || !this.shopsLinkman || !this.shopsLinkphone || !this.checkPhone(this.shopsLinkphone) || !this.applyAddress
+			let rule1 = !this.shopsEnterName || !this.shopsLinkman || !this.shopsLinkphone || !this.checkPhone(this.shopsLinkphone) || !this.applyAddress || !this.facadePhoto
 			return (rule1 ? true : false)
 		},
 	},
@@ -177,6 +177,10 @@ export default {
 			}
 			if(!this.applyAddress){
 				MessageBox('提示','请填写商家地址！')
+				return
+			}
+			if(!this.facadePhoto){
+				MessageBox('提示','请上传店铺门头照片！')
 				return
 			}
 			this.isSubmit = true
@@ -283,7 +287,7 @@ export default {
 								shopsAddress: res.data.data.shopsAddress
 							}
 						}
-						_this.facadePhoto = res.data.facadePhoto
+						_this.facadePhoto = res.data.data.facadePhoto
 						return 
 					}
 					_this.getShop()

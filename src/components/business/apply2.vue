@@ -5,7 +5,7 @@
 			<div class="prompt">
 				<p><strong>请按格式填写地址，以免影响门店搜索。</strong></p>
 				<p>例1：道路+门牌号，“人民东路18号”</p>
-				<p>例2：道路+门牌号+所在建筑+楼层，“南海大道207号欢</p>
+				<p>例2：道路+门牌号+所在建筑+楼层，“南海大道207号</p>
 			</div>		
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
@@ -126,7 +126,6 @@ export default {
 			if(!this.isReady){
 				return
 			}
-			console.log(value)
 			this.getPoint()
 		},
 		provinceId () {

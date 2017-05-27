@@ -172,7 +172,7 @@
 		</div>
 		<app-nav></app-nav>
 
-		<ex-notice :modal='model'  @confirm='confirm'></ex-notice>
+		<!-- <ex-notice :modal='model'  @confirm='confirm' v-show='!model.hide'></ex-notice> -->
 	</div>	
 </template>
 
@@ -215,10 +215,10 @@ export default {
 		  repeatBtn: false,
 		  model: {
 		  	title: '公告',
-		  	text: '',
-		  	end: new Date('2017-5-17').getTime(),
+		  	text: '测试！',
+		  	end: new Date('2017-5-30').getTime(),
 		  	identity: '1',
-		  	hide: false
+		  	hide: true // false为默认显示， true为隐藏
 		  }
 		}
 	},
@@ -354,7 +354,7 @@ export default {
 			let num = '0.00'
 			num = value >= 0 ? value : '0.00' 
 			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
-			return num 
+			return num
 		},
 		formatcode (value) {
 			return value.replace('B','M')

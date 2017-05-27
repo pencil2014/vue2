@@ -1,5 +1,5 @@
 <template>
-	<div class="ex-modal" v-show="!modal.hide">
+	<div class="ex-modal">
 		<div class="ex-content">
 			<div class="ex-box">
 				<div class="title">{{modal.title || '提示'}}</div>
@@ -45,7 +45,7 @@ export default{
 .ex-modal{background: rgba(0,0,0,0.5);position: fixed;width: 100%;height: 100%;top: 0;left: 0;display: table;}
 .ex-modal .ex-content{display: table-cell;vertical-align: middle;padding: 0 12%;}
 .ex-modal .ex-content .ex-box{background: #fff;width: 100%;border-radius: 5px;}
-.ex-modal .ex-content .ex-box .title{text-align: center;font-size: 1.6rem;font-weight: 600;padding: 10px 0;}
+.ex-modal .ex-content .ex-box .title{text-align: center;font-size: 1.6rem;font-weight: 500;padding: 10px 0;}
 .ex-modal .ex-content .ex-box .text{max-height: 200px;font-size: 1.4rem;padding: 0 15px 30px 15px;overflow-y: scroll;line-height: 25px;}
 .ex-modal .ex-content .ex-box .option{display: table;width: 100%;text-align: center;height: 48px;line-height: 48px;border-top: solid 1px #d6d6d6;font-size: 1.4rem;}
 .ex-modal .ex-content .ex-box .option span{display: table-cell;border-right: solid 1px #d6d6d6;}
