@@ -122,7 +122,10 @@ export default {
 			let year = time.getFullYear()
 			let month = time.getMonth() + 1
 			let date = time.getDate()
-			return [year,month,date].join('/')
+			let hours = time.getHours() < 10 ? '0'+time.getHours() : time.getHours()
+			let minutes = time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes()
+			let seconds = time.getSeconds() < 10 ? '0'+time.getSeconds(): time.getSeconds()
+			return [year,month,date].join('/') + ' ' + [hours,minutes,seconds].join(':')
 		},
 		formatMoney (value) {
 			return (value*1).toFixed(2)

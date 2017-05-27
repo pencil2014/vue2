@@ -389,7 +389,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;}
+.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
 .ex-apply .picker-range{position: fixed;bottom: 0;width: 100%;}
 .ex-apply .ex-range-slots{height: 100%;width: 100%;border-bottom: solid 1px #d6d6d6;line-height: 40px;padding: 0 15px;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;font-size: 1.6rem;color: #047dcb;}
 .ex-apply .ex-range-slots .left{float: left;}

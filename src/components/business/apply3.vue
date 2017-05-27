@@ -116,7 +116,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;}
+.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
 
 .ex-apply .ex-top{background: #fff;width: 100%;text-align: center;color: #8f959e;font-size: 1.6rem;padding: 30px 0;line-height: 30px;}
 .ex-apply .ex-top .strong{font-size: 2rem;color: #212a32;}
