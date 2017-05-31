@@ -178,7 +178,8 @@ export default {
 			})
 	  	},
 		back () {
-			this.$router.back();
+			this.$emit('hideMap')
+			// this.$router.back();
 		},
 		submit () {
 			if(!this.shopsAddress){
@@ -193,8 +194,9 @@ export default {
 			obj.cityName = this.cityName
 			obj.countyName = this.countyName
 			obj.shopsAddress = this.shopsAddress
-			localStorage.setItem('applyAddress',JSON.stringify(obj))
-			this.$router.push('/apply')
+			// localStorage.setItem('applyAddress',JSON.stringify(obj))
+			// this.$router.push('/apply')
+			this.$emit('changMap',obj)
 		},
 		getArea (record) {
 			let _this = this
