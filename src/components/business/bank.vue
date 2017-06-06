@@ -32,7 +32,7 @@
 				<span class="m1">银行卡：</span>
 				<span class="m2">
 					<label for="" class="b1">{{bankdata.banks}}</label>
-					<label for="" class="b2" v-if="bankdata.accountName">{{ bankdata.accountName }}</label>
+					<!-- <label for="" class="b2" v-if="bankdata.accountName">{{ bankdata.accountName }}</label> -->
 					<label for="" class="b3">{{bankdata.cardNo | card}}</label>
 				</span>
 				<span class="m3">

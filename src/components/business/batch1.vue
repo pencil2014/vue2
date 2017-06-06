@@ -60,14 +60,15 @@
 				<div class="ex-batch-model-body">
 					<h3>商家批量报单须知</h3>
 					<ul>
-						<li>1、每页不少于3笔才能批量报单</li>
-						<li>2、同一买家在每页批量报单中只可出现一次</li>
-						<li>3、每页批量报单最多20笔，当日限5页</li>
-						<li>4、每笔消费金额不超过2万</li>
-						<li>5、每页让利款总额不超过5万</li>
-						<li>6、转款户名填写必须是向平台转账的卡号人名或户名，否则无效</li>
-						<li>7、提交后转款，请及时查询自己账户是否转款成功，请耐心等待审核，不需要上传任何凭证，公司以到款为准，T+1即过</li>
-						<li>8、转款附言注明:“B*****批量”（如无法注明，请联系客服），转款金额一定与每次让利款总额完全相符（包括小数点后面的），否则无法审核</li>
+						<li>1、每页不少于3笔才能使用批量报单；</li>
+						<li>2、每页中同一买家只可出现一次；</li>
+						<li>3、每页限20笔，当日限5页；</li>
+						<li>4、每笔消费金额不能超过2万；</li>
+						<li>5、每页让利款总额不能超过5万；</li>
+						<li>6、转款户名处必须填写为向平台转账的卡号人名或户名，否则无效；</li>
+						<li>7、转款金额必须与每次让利款总额完全相符（包括小数点后面的），否则无法审核；</li>
+						<li>8、提交后转款，请及时在自己的账户中查询转款是否成功，请耐心等待审核，不需要上传任何凭证，审核是以到款为准，T+1即过；</li>
+						<li>9、转款附言处请注明:“B*****批量”字样（ B表示商家身份，*****表示商家ID号。如无法注明，请联系客服）。</li>
 					</ul>
 				</div>
 				<div class="ex-batch-model-btn" @click='closeModel'>确认</div>
@@ -329,6 +330,27 @@ export default {
 				Indicator.close()
 				Toast('连接失败，请检查网络是否正常!')
 			})
+		},
+		checkBatshCount () {
+			let _this = this
+			axios.post('declaration/checkBatshCount',qs.stringify({}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					if (res.data.data.status === '0') {
+						MessageBox({
+						  title: '提示',
+						  message: '批量报单每天最多5次，您目前无法进行批量报单！'
+						}).then(action => {
+							_this.$router.push('/business')
+						})
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		}
 	},
 	filters: {
@@ -341,6 +363,9 @@ export default {
 		}
 	},
 	created () {
+		// 检查批量报单是否超过5笔
+		// this.checkBatshCount()
+
 		let _this = this
 		axios.post('declaration/getRangliProportion',qs.stringify({}))
 		.then(function(res){
@@ -352,7 +377,8 @@ export default {
 		})
 		.catch(function(){
 			Toast('连接失败，请检查网络是否正常!')
-		})
+		})	
+
 	}
 }	
 </script>
@@ -398,8 +424,8 @@ input.error {border-color: #f00; color: #f00;}
 
 .ex-batch-model {position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); z-index: 7; overflow: auto;}
 .ex-batch-model-cnt {background-color: #fff; width: 80%; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 1rem 1rem 0 1rem; border-radius: 0.5rem;}
-.ex-batch-model-body { max-height: 35rem; overflow: scroll; }
-.ex-batch-model-body h3 { text-align: center;font-size: 1.8rem;  padding: 1.5rem 0;}
+.ex-batch-model-body ul{ max-height: 24rem; overflow: scroll; }
+.ex-batch-model-body h3 { text-align: center;font-size: 1.6rem;  padding: 1.5rem 0;}
 .ex-batch-model-body li{ line-height: 1.8; font-size: 1.2rem;}
 .ex-batch-model-btn { border-top: 1px solid #eee; margin-top: 1rem; height: 5rem; line-height: 5rem; text-align: center; font-size: 1.8rem; color:#047dcb;  }
 </style>

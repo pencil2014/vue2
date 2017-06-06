@@ -152,6 +152,12 @@
 					<span v-if='userinfo.shopsStatus ==="1" || userinfo.shopsStatus ==="3"'>商家审核</span>
 					</a>
 				</li>
+				<li><a href="javascript:;" @click='download'>
+					<img src="../../assets/images/15.png" alt="">
+					<span>下载APP</span>
+				</a></li>
+
+
 			</ul>
 		</div>
 		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
@@ -185,8 +191,23 @@
 		 			<p> 为了保障系统稳定、精确运行，平台自6月2日起每日凌晨0:00-2:00对系统进行维护，维护期间不可操作，特此通告！</p>
 		 		</div>
 		 </div> -->
-
-
+		
+		<!-- 下载app -->
+		<div class="ex-noticeBJ" v-show="isDownload">
+        <div class="ex-notice">
+            <div class="content">
+                <div class="contentBOX">
+                    <p class="title">下载操作</p>
+                    <div class="info-text">
+                        <a href="javascript:void(0);">http://download.exgj.com.cn/exsd_V1.4.1_release.apk</a> <span style="color: red" >(请长按复制该链接到浏览器下载)</span>
+                    </div>
+                </div>
+                <div class="operate" @click="closeDownload">
+                    关闭
+                </div>
+            </div>
+        </div>
+    </div>
 
 	</div>	
 </template>
@@ -236,13 +257,26 @@ export default {
 		  	end: new Date('2017-7-8').getTime(),
 		  	identity: 'notice',
 		  	hide: false // false为默认显示， true为隐藏
-		  }
+		  },
+		  isDownload: false
 		}
 	},
 	components: {
 		appNav
 	},
 	methods: {
+		download () {
+			let ua = navigator.userAgent.toLowerCase()
+			let isweixin = ua.indexOf('micromessenger') !== -1 ? true : false
+			if (isweixin) {
+				this.isDownload = true
+			} else {
+				window.location.href='http://download.exgj.com.cn/exsd_V1.4.1_release.apk'
+			}
+		},
+		closeDownload () {
+			this.isDownload = false
+		},
 		systemUpdate (route) {
 			let hours = new Date().getHours()
 			if (hours < 2) {
@@ -525,4 +559,18 @@ b.m8{background-color: #66c476;}*/
 .ex-weihu-cnt {width: 80%; height: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: #fff;padding: 1rem; }
 .ex-weihu-cnt .title { font-size: 1.6rem;  text-align: center; padding-bottom: 1rem;}
 .ex-weihu-cnt p{  font-size: 1.4rem; line-height: 1.5; padding-bottom: 1rem;}
+
+
+
+.ex-noticeBJ{width: 100%;height: 100%;background: rgba(0,0,0,0.42);position: fixed;z-index: 99999;top: 0;left: 0;display: table;}
+.ex-notice{display: table-cell;vertical-align: middle;padding: 0 5%;}
+.ex-notice .title{font-size: 1.6rem;text-align: center;padding: 15px 0; margin: 0;}
+.ex-notice .content{background: #fff;border-radius: 5px;}
+.ex-notice .content .text{line-height: 25px;text-indent: 2em;max-height: 250px;overflow: auto;}
+.ex-notice .content .info-text{max-height: 220px;overflow: auto;padding-bottom: 15px; line-height: 1.5}
+.ex-notice .content .info-text a{ color: #047dcb; }
+.ex-notice .contentBOX{font-size: 1.4rem;padding:0 15px;word-break:break-all;}
+.ex-notice .operate{text-align: center;border-top: 1px solid #e5e5e5;height: 46px;padding: 0;line-height: 46px;font-size: 1.6rem;}
+.ex-notice .operate:active{background: #ebebeb}
+
 </style>

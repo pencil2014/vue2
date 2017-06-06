@@ -31,7 +31,7 @@
 				<label for="">银 行 卡：</label>
 				<div class='bankinfo'>
 					<p class="name">{{bankdata.banks}}</p>
-					<p class="accountName" v-if="bankdata.accountName">{{ bankdata.accountName }}</p>
+					<!-- <p class="accountName" v-if="bankdata.accountName">{{ bankdata.accountName }}</p> -->
 					<p class="number">{{bankdata.cardNo | card}}</p>
 				</div>
 				<span class='arrow'>

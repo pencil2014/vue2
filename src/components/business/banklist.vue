@@ -9,7 +9,7 @@
 			<div class="ex-banklist-item" v-for='(item,index) in banks'>
 				<div class="bankinfo" @click='gotoedit(item.id,item.status)'>
 					<p>{{item.banks}}</p>
-					<p>{{item.accountName}}</p>
+					<!-- <p>{{item.accountName}}</p> -->
 					<p>{{item.cardNo | card}}</p>
 					<p class="right" >{{item.status | status}}</p>
 					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
