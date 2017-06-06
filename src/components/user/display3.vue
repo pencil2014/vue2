@@ -5,11 +5,11 @@
 			<ul class="item-content">
 				<li class="item">
 					<span>商品名称</span>
-					<input type="text" placeholder="最多8个字符" maxlength="8" v-model.trim="commodityName">
+					<input type="text" placeholder="最多10个字符" maxlength="10" v-model.trim="commodityName">
 				</li>
 				<li class="item">
 					<span>商品价格</span>
-					<input type="tel" placeholder="请输入价格" maxlength="8" v-model.trim="price" @input="currency('price')">
+					<input type="tel" placeholder="请输入价格" maxlength="10" v-model.trim="price" @input="currency('price')">
 				</li>
 				<li class="item picture">
 					<p>商品图片</p>
@@ -25,7 +25,7 @@
 								<br>
 								上传照片
 							</span>
-							<input type="file" name="" class="file-prew" id="frontPic" @change="getfile" accept="image/*" />
+							<input type="file" name="" class="file-prew" id="frontPic" @change="getfile" accept="image/*"/>
 						</div>
 					</div>
 				</li>
@@ -117,6 +117,7 @@ export default {
 			selcommodityTypeId:'',
 			imgurl:[],
 			imgbase64:[],
+			imgArray: [],
 			groupId: '',
 			commodityName:'',
 			price:'',
@@ -144,6 +145,7 @@ export default {
 	},
 	created () {
 		let addgoods = this.getdata('addgoods')
+		console.log(addgoods)
 		if(!!addgoods){
 			this.commodityName = addgoods.commodityName;
 			this.selcommodityTypeId = addgoods.selcommodityTypeId;
@@ -151,6 +153,8 @@ export default {
 			this.price = addgoods.price;
 			this.groupId = addgoods.groupId;
 			this.typeName = addgoods.typeName;
+			this.imgurl = addgoods.imgurl;
+			this.imgbase64 = addgoods.imgbase64;
 		}
 		this.getGroupList()
 		this.getList()
@@ -175,7 +179,9 @@ export default {
 				commodityTypeId: this.commodityTypeId,
 				price: this.price,
 				groupId: this.groupId,
-				typeName: this.typeName
+				typeName: this.typeName,
+				imgbase64: this.imgbase64,
+				imgurl: this.imgbase64
 			};
 			localStorage.setItem('addgoods',JSON.stringify(obj))
 			this.$router.push('/display4')

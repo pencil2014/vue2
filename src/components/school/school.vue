@@ -183,7 +183,6 @@ export default {
 	methods: {
 		go(id) {
 			let top = document.getElementById(id).offsetTop -60
-			console.log(top)
 			document.getElementById('app').scrollTop = top
 		},
 		gotop () {

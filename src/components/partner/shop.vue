@@ -174,6 +174,7 @@ export default {
 						_this.id = res.data.data.regionId
 						_this.address =res.data.data.regionName
 						window.localStorage.setItem('address', res.data.data.regionName)
+						window.localStorage.setItem('regionId', res.data.data.regionId)
 					}
 					_this.loadMore()
 					
@@ -266,6 +267,7 @@ export default {
 		if(!!address) {
 			this.address = address[0].regionName
 			this.id = address[0].regionId
+			window.localStorage.setItem('regionId',address[0].regionId)
 			if (currentPosition) {
 				this.currentPosition = JSON.parse(currentPosition)
 			} 

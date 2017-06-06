@@ -35,7 +35,7 @@
 								</div>
 								<div class="info">
 									<h3 class='name'>{{item.commodityName}}</h3>
-									<p class='price'>- ￥{{item.price}} -</p>
+									<p class='price'>￥{{item.price}}</p>
 								</div>
 							</li>
 						</ul>

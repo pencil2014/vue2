@@ -14,7 +14,7 @@
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
 				 	<no-data :hasdata="hasdata"></no-data>
-					<li v-for="(item, index) in list" @click="todetail(item.id)" :class="{read:item.isRead == '1'}">
+					<li v-for="(item, index) in list" @click="todetail(item.id)" :class="{read:item.isRead == '1'}" >
 						<span class="title" v-text="item.messageTitle"></span>
 						<span class="time">{{item.pushTime | localTime}}</span>
 					</li>

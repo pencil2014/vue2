@@ -1,6 +1,5 @@
 <template>
 	<div class="ex-apply">
-	<div v-show='!showMap'>
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-form">
 			<p>*商家通过“联盟商家入驻”申请，可获得参加商家推广板块资格</p>		
@@ -27,7 +26,7 @@
 		<div class="ex-field">
 			<div class="ex-field-wrapper table" @click="toapply2">
 				<span>商家地址</span>
-				<span>{{applyAddress.provinceName}}{{applyAddress.cityName}}{{applyAddress.countyName}} {{applyAddress2}}<br>
+				<span>{{applyAddress.provinceName}}{{applyAddress.cityName}}{{applyAddress.countyName}}<br>
 				{{applyAddress.shopsAddress | ellipsis}}</span>
 				<span><i class="iconfont arrow">&#xe606;</i></span>
 			</div>
@@ -60,16 +59,13 @@
 			</mt-picker>
 		</mt-popup>
 	</div>
-	<b-map @changMap='changeMap' v-show='showMap' @hideMap='hideMap'></b-map>
-	</div>
 </template>
 <script>
 import axios from "axios"
 import qs from "qs"
-import lrz from 'lrz'
 import { Toast , MessageBox , Indicator , Picker , Popup} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-import BMap from './apply2.vue'
+import lrz from 'lrz'
 export default {
 	data(){
 		return{
@@ -88,19 +84,16 @@ export default {
 			classificationId: '',
 			classifyName: '',
 			applyAddress: '',
-			applyAddress2: '',
 			shopsEnterName: '',
 			shopsLinkman: '',
 			shopsLinkphone: '',
 			facadePhoto: '',
 			imgbase64: '',
-			isSubmit: false,
-			showMap: false
+			isSubmit: false
 		}
 	},
 	components: {
 		HeadTitle,
-		BMap
 	},
 	computed:{
 		disableBtn () {
@@ -118,27 +111,18 @@ export default {
 		this.getEnterShop();
 	},
 	methods: {
-		changeMap (obj) {
-			this.showMap = false
-			this.applyAddress2 = ''
-			this.applyAddress = obj
-		},
-		hideMap () {
-			this.showMap = false
-		},
 		back () {
 			this.$router.back();
 		},
 		toapply2 () {
-			this.showMap = true
-			// let obj = {
-			// 	defaultIndex: this.slots[0].values.indexOf(this.classifyName),
-			// 	shopsEnterName: this.shopsEnterName,
-			// 	shopsLinkman: this.shopsLinkman,
-			// 	shopsLinkphone: this.shopsLinkphone
-			// }
-			// localStorage.setItem('applyData',JSON.stringify(obj))
-			// this.$router.push('/apply2')
+			let obj = {
+				defaultIndex: this.slots[0].values.indexOf(this.classifyName),
+				shopsEnterName: this.shopsEnterName,
+				shopsLinkman: this.shopsLinkman,
+				shopsLinkphone: this.shopsLinkphone
+			}
+			localStorage.setItem('applyData',JSON.stringify(obj))
+			this.$router.push('/apply2')
 		},
 		openRangeSlots () {
 			this.isOpenRangeSlots = true
@@ -267,8 +251,8 @@ export default {
 		},
 		getEnterShop () {
 			let _this = this;
-			// let applyData = this.getdata('applyData')
-			// let applyAddress = this.getdata('applyAddress')
+			let applyData = this.getdata('applyData')
+			let applyAddress = this.getdata('applyAddress')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -279,36 +263,20 @@ export default {
 				if (res.data.code === '10000') {
 					//审核失败
 					if(res.data.data.status === '2'){
-						// if(!!applyData){
-						// 	_this.shopsEnterName = applyData.shopsEnterName
-						// 	_this.shopsLinkman = applyData.shopsLinkman
-						// 	_this.shopsLinkphone = applyData.shopsLinkphone
-						// 	_this.defaultIndex = applyData.defaultIndex
-						// }else{
-						// 	_this.shopsEnterName = res.data.data.shopsEnterName
-						// 	_this.shopsLinkman = res.data.data.shopsLinkman
-						// 	_this.shopsLinkphone = res.data.data.shopsLinkphone
-						// 	_this.defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
-						// }
-						// if(!!applyAddress){
-						// 	_this.applyAddress = applyAddress
-						// }else{
-						// 	_this.applyAddress = {
-						// 		provinceName: res.data.data.provinceName,
-						// 		cityName: res.data.data.cityName,
-						// 		countyName: res.data.data.countyName,
-						// 		provinceId: res.data.data.province,
-						// 		cityId: res.data.data.city,
-						// 		districtId: res.data.data.county,
-						// 		shopsAddress: res.data.data.shopsAddress
-						// 	}
-						// }
+						if(!!applyData){
+							_this.shopsEnterName = applyData.shopsEnterName
+							_this.shopsLinkman = applyData.shopsLinkman
+							_this.shopsLinkphone = applyData.shopsLinkphone
+							_this.defaultIndex = applyData.defaultIndex
+						}else{
 							_this.shopsEnterName = res.data.data.shopsEnterName
 							_this.shopsLinkman = res.data.data.shopsLinkman
 							_this.shopsLinkphone = res.data.data.shopsLinkphone
 							_this.defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
-							_this.classificationId = res.data.data.classificationId
-							_this.classifyName = res.data.data.classificationName
+						}
+						if(!!applyAddress){
+							_this.applyAddress = applyAddress
+						}else{
 							_this.applyAddress = {
 								provinceName: res.data.data.provinceName,
 								cityName: res.data.data.cityName,
@@ -318,10 +286,10 @@ export default {
 								districtId: res.data.data.county,
 								shopsAddress: res.data.data.shopsAddress
 							}
-							_this.facadePhoto = res.data.data.facadePhoto
-							return 
+						}
+						_this.facadePhoto = res.data.data.facadePhoto
+						return 
 					}
-
 					_this.getShop()
 				} else {
 					Toast('获取申请信息失败！')
@@ -333,7 +301,7 @@ export default {
 		},
 		getShop () {
 			let _this = this;
-			// let applyAddress = this.getdata('applyAddress')
+			let applyAddress = this.getdata('applyAddress')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -344,23 +312,9 @@ export default {
 				if (res.data.code === '10000') {
 					_this.shopsEnterName = res.data.data.shopsName
 					_this.facadePhoto = res.data.data.facadePhoto
-					_this.shopsLinkman = res.data.data.shopsLinkman
-					_this.shopsLinkphone = res.data.data.shopsLinkphone
-					_this.classificationId = res.data.data.classificationId
-					_this.classifyName = res.data.data.classificationName
-					_this.applyAddress = {
-						provinceName: '',
-						cityName: '',
-						countyName: '',
-						provinceId: res.data.data.province,
-						cityId: res.data.data.city,
-						districtId: res.data.data.county,
-						shopsAddress: res.data.data.shopsAddress2
+					if(!!applyAddress){
+						_this.applyAddress = applyAddress
 					}
-					_this.applyAddress2 = res.data.data.shopsAddress
-					// if(!!applyAddress){
-					// 	_this.applyAddress = applyAddress
-					// }
 				} else {
 					Toast(res.data.msg)
 				}

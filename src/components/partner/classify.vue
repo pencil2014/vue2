@@ -46,6 +46,7 @@ export default {
 				text:'',
 				fixed: true
 			},
+			regionId: '',
 			shoplist: [],
 			nodateStatus: false,
 			page: 1,
@@ -99,7 +100,7 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({classificationId:this.id, pageSize: this.pageSize, page: this.page}))
+			axios.post('shopClassification/queryShopsById',qs.stringify({city: this.regionId, classificationId:this.id, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				
@@ -121,6 +122,7 @@ export default {
 		}
 	},
 	created () {
+		this.regionId = window.localStorage.getItem('regionId') || ''
 		this.id = this.$route.params.id
 		let _this = this
 		axios.post('shopClassification/list',qs.stringify({}))

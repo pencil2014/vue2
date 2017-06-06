@@ -109,10 +109,12 @@
 				<img src="../../assets/images/8.png" alt="">
 				<span>消费记录</span></router-link>
 				</li>
-				<li><router-link to="/integral">
+				<li>
+				<a href="javascript:;" @click='systemUpdate("/integral")'>
 				<img src="../../assets/images/5.png" alt="">
 				<!-- <b class="m2"><i class="iconfont">&#xe604;</i></b> -->
-				<span>享积分操作</span></router-link>
+				<span>享积分操作</span>
+				</a>
 				</li>
 				<li><router-link to="/detail">
 				<img src="../../assets/images/4.png" alt="">
@@ -124,10 +126,12 @@
 				<!-- <b class="m4"><i class="iconfont">&#xe94b;</i> </b>-->
 				<span>资金明细</span></router-link>
 				</li>
-				<li><router-link to="/bank">
+				<li>
+				<a href="javascript:;" @click='systemUpdate("/bank")'>
 				<img src="../../assets/images/2.png" alt="">
 				<!-- <b class="m5"><i class="iconfont">&#xe6be;</i></b> -->
-				<span>转存银行</span></router-link>
+				<span>转存银行</span>
+				</a>
 				</li>
 				<li><router-link to="/recommend">
 				<img src="../../assets/images/7.png" alt="">
@@ -172,7 +176,18 @@
 		</div>
 		<app-nav></app-nav>
 
-		<!-- <ex-notice :modal='model'  @confirm='confirm' v-show='!model.hide'></ex-notice> -->
+		<ex-notice :modal='model'  @confirm='confirm' v-show='!model.hide'></ex-notice>
+
+		<!-- 系统维护提示 -->
+		 <!-- <div class="ex-weihu" v-if=''>
+		 		<div class="ex-weihu-cnt">
+		 			<div class="title">温馨提示</div>
+		 			<p> 为了保障系统稳定、精确运行，平台自6月2日起每日凌晨0:00-2:00对系统进行维护，维护期间不可操作，特此通告！</p>
+		 		</div>
+		 </div> -->
+
+
+
 	</div>	
 </template>
 
@@ -214,11 +229,13 @@ export default {
 		  customerService: false,
 		  repeatBtn: false,
 		  model: {
-		  	title: '公告',
-		  	text: '测试！',
-		  	end: new Date('2017-5-30').getTime(),
-		  	identity: '1',
-		  	hide: true // false为默认显示， true为隐藏
+		  	title: '温馨提示',
+		  	text: 
+		  	'<p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护，特此通告！</p><p>感谢您对e享时代的支持！如有疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年六月二日</p></div>',
+		  	confirm: '知道了',
+		  	end: new Date('2017-7-8').getTime(),
+		  	identity: 'notice',
+		  	hide: false // false为默认显示， true为隐藏
 		  }
 		}
 	},
@@ -226,6 +243,15 @@ export default {
 		appNav
 	},
 	methods: {
+		systemUpdate (route) {
+			let hours = new Date().getHours()
+			if (hours < 2) {
+				MessageBox('提示', '每日凌晨0:00-2:00系统维护，请在2:00之后进行此项操作，详情请见公告，感谢您的理解和支持！')
+				return
+			} else {
+				this.$router.push(route)
+			}
+		},
 		confirm () {
 			this.model.hide = true
 		},
@@ -269,6 +295,11 @@ export default {
 			this.$router.push('/integraldetail')
 		},
 		gotovip () {
+			let hours = new Date().getHours()
+			if (hours < 2) {
+				MessageBox('提示', '每日凌晨0:00-2:00系统维护，请在2:00之后进行此项操作，详情请见公告，感谢您的理解和支持！')
+				return
+			}
 			let _this = this
 			if (this.userVipStatus.auditStatus === '0') {
 				MessageBox.alert('VIP会员审核失败！').then(action => {
@@ -362,8 +393,6 @@ export default {
 	},
 	watch: {
 	},
-	computed: {
-	},
 	created () {
 		// let phone = window.localStorage.getItem('phone')
 		// let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
@@ -400,8 +429,6 @@ export default {
 		this.getsysIndex()
 		this.getexamine()
 
-	},
-	monuted () {
 	},
 	destroyed () {
 		Indicator.close()
@@ -492,4 +519,10 @@ b.m8{background-color: #66c476;}*/
 .ex-customer-cnt-item p {padding-bottom: 0.5rem;}
 .ex-customer-close { line-height: 5rem; border-top: 1px solid #eee;  font-size: 1.6rem; background-color: #eee; margin-top: 2rem;}
 .ex-customer-close:active{background-color: #ddd;}
+
+
+.ex-weihu{ position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); z-index: 7;}
+.ex-weihu-cnt {width: 80%; height: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: #fff;padding: 1rem; }
+.ex-weihu-cnt .title { font-size: 1.6rem;  text-align: center; padding-bottom: 1rem;}
+.ex-weihu-cnt p{  font-size: 1.4rem; line-height: 1.5; padding-bottom: 1rem;}
 </style>

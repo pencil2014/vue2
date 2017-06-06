@@ -6,7 +6,7 @@
 				<div class="item">
 					<span class="left">商家名称</span>
 					<span class="right">
-						{{info.shopsName}}
+						{{info.shopsEnterName}}
 					</span>
 				</div>
 			</div>
@@ -78,7 +78,7 @@ export default {
 	},
 	computed:{
 		address () {
-			return this.info.shopsAddress2 + this.info.shopsAddress
+			return this.info.provinceName + this.info.cityName + (this.info.countyName||'') + this.info.shopsAddress
 		}
 	},
 	created () {
@@ -87,7 +87,7 @@ export default {
 		  text: '加载中...',
 		  spinnerType: 'fading-circle'
 		});
-		axios.post('shop/examine',qs.stringify({})).then(function(res){
+		axios.post('shop/enterDetail',qs.stringify({})).then(function(res){
 			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.info = res.data.data;
@@ -114,7 +114,7 @@ export default {
 			        _this.upload()
 			    })
 	       		.catch(function (err) {
-	      			 _this.imgbase64.push('') 
+	      			 _this.imgbase64 = ''
 	       		})  
 			}
 		},
@@ -144,7 +144,7 @@ export default {
 		changephoto () {
 			let _this = this;
 			axios.post('shop/updateShopInfo',qs.stringify({
-				id: _this.info.id,
+				id: _this.info.shopsId,
 				facadePhoto: _this.imgurl
 			})).then(function(res){
 				Indicator.close()
@@ -163,7 +163,7 @@ export default {
 			this.$router.push({
 				name: 'Display2',
 				params:{
-					id: this.info.id
+					id: this.info.shopsId
 				}
 			})
 		},

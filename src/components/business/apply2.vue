@@ -160,6 +160,16 @@ export default {
 				}
 			}
 		},
+		isReady () {
+			if(this.isReady === false){
+				Indicator.open({
+				  text: '地图加载中...',
+				  spinnerType: 'fading-circle'
+				});
+			}else{
+				Indicator.close()
+			}
+		} 
 	},
 	created () {
 		this.getEnterShop()
@@ -178,8 +188,7 @@ export default {
 			})
 	  	},
 		back () {
-			this.$emit('hideMap')
-			// this.$router.back();
+			this.$router.back();
 		},
 		submit () {
 			if(!this.shopsAddress){
@@ -194,9 +203,8 @@ export default {
 			obj.cityName = this.cityName
 			obj.countyName = this.countyName
 			obj.shopsAddress = this.shopsAddress
-			// localStorage.setItem('applyAddress',JSON.stringify(obj))
-			// this.$router.push('/apply')
-			this.$emit('changMap',obj)
+			localStorage.setItem('applyAddress',JSON.stringify(obj))
+			this.$router.push('/apply')
 		},
 		getArea (record) {
 			let _this = this

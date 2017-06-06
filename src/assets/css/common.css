@@ -1,8 +1,8 @@
 /* CSS Reset */
-html,body{font-family: "Microsoft Yahei";  background-color: #fff; height: 100%; font-size: 62.5%;}
+html,body{font-family: "Microsoft Yahei","PingFang SC","San Francisco";  background-color: #fff; height: 100%; font-size: 62.5%;}
 body, dl, dd, h1, h2, h3, h4, h5, h6, p, form{margin:0;}
 ol,ul{margin:0; padding:0;list-style-type:none;}
-input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei";vertical-align: middle;}
+input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei","PingFang SC","San Francisco";vertical-align: middle;}
 button{border: none;}
 table {border-collapse:collapse;border-spacing:0;}
 a{ text-decoration:none; outline:none;}

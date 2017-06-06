@@ -60,12 +60,12 @@
 				<div class="ex-batch-model-body">
 					<h3>商家批量报单须知</h3>
 					<ul>
-						<li>1、每次不少于3笔才能批量报单</li>
-						<li>2、同一买家在每次批量报单中只可出现一次</li>
-						<li>3、每次批量报单最多20笔</li>
+						<li>1、每页不少于3笔才能批量报单</li>
+						<li>2、同一买家在每页批量报单中只可出现一次</li>
+						<li>3、每页批量报单最多20笔，当日限5页</li>
 						<li>4、每笔消费金额不超过2万</li>
-						<li>5、每次让利款总额不超过5万</li>
-						<li>6、转款户名一定是实际向公司转账的卡号人名或户名，否则无效</li>
+						<li>5、每页让利款总额不超过5万</li>
+						<li>6、转款户名填写必须是向平台转账的卡号人名或户名，否则无效</li>
 						<li>7、提交后转款，请及时查询自己账户是否转款成功，请耐心等待审核，不需要上传任何凭证，公司以到款为准，T+1即过</li>
 						<li>8、转款附言注明:“B*****批量”（如无法注明，请联系客服），转款金额一定与每次让利款总额完全相符（包括小数点后面的），否则无法审核</li>
 					</ul>
@@ -199,6 +199,7 @@ export default {
 				return
 			}
 			this.order.push( {userCode:'',phone:'',consumptionMoney:''})
+			document.getElementsByTagName('body')[0].scrollTop = document.getElementsByTagName('body')[0].scrollHeight
 		},
 		delOreder (index) {
 			if (!!this.order[index].userCode || !!this.order[index].phone || !!this.order[index].consumptionMoney) {
@@ -240,9 +241,6 @@ export default {
 				})
 			}
 			return rule1 && rule2
-		},
-		bodySroll(){
-
 		},
 		getphone (userCode,index) {
 			this.showBtn()
@@ -359,6 +357,8 @@ export default {
 }	
 </script>
 
+
+
 <style scoped>
 .ex-batch-cnt {background-color: #f4f5f7; overflow: hidden;}
 
@@ -380,8 +380,8 @@ export default {
 .ex-batch-table .table td{padding:0.8rem 0; text-align: center;}
 .ex-batch-table .table td i {font-size: 2rem; color: #ccc;}
 
-.ex-batch-table-cnt { overflow: scroll; max-height: 36rem; padding-bottom: 7rem; }
-.ex-batch-table-cnt input { width: 98%; border: none; height: 3rem; text-align: center; color: #047dcb; border:1px solid #fff;}
+.ex-batch-table-cnt { /*overflow: scroll; max-height: 36rem;*/ padding-bottom: 7rem; }
+.ex-batch-table-cnt input { width: 98%; border: none; height: 3rem; text-align: center; color: #047dcb; border:1px solid #fff; margin-left: -1px;}
 
 .ex-batch-addtable { height: 5rem; line-height: 5rem; text-align: center; color: #666; border-bottom: 1px solid #eee; font-size: 1.6rem; background-color: #fafafa; }
 .ex-batch-addtable i { color: #999; margin-right: 0.5rem; }

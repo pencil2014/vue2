@@ -96,10 +96,11 @@
 		</div>
 		<div class="ex-index-menu">
 			<ul>
-				<li><router-link to="/declare">
+				<li>
+				<a href="javascript:;" @click='systemUpdate("/declare")'>
 				<img src="../../assets/images/9.png" alt="">
 				<!-- <b class=" m9"><i class="iconfont">&#xe602;</i></b> -->
-				<span>商家报单</span></router-link>
+				<span>商家报单</span></a>
 				</li>		
 
 				<li><router-link to="/order">
@@ -113,9 +114,10 @@
 				<span>报单成功明细</span></router-link>
 				</li>
 				
-				<li><router-link to="/batch">
+				<li>
+				<a href="javascript:;" @click='systemUpdate("/batch")'>
 				<img src="../../assets/images/13.png" alt="">
-				<span>批量报单</span></router-link>
+				<span>批量报单</span></a>
 				</li>
 
 				<li><router-link to="/batchlist">
@@ -123,10 +125,11 @@
 				<span>批量报单查询</span></router-link>
 				</li>
 
-				<li><router-link to="/integral">
+				<li>
+				<a href="javascript:;" @click='systemUpdate("/integral")'>
 				<img src="../../assets/images/5.png" alt="">
 				<!-- <b class=" m2"><i class="iconfont">&#xe604;</i></b> -->
-				<span>享积分操作</span></router-link>
+				<span>享积分操作</span></a>
 				</li>
 				<li><router-link to="/detail2">
 				<img src="../../assets/images/4.png" alt="">
@@ -138,22 +141,23 @@
 				<!-- <b class=" m4"><i class="iconfont">&#xe94b;</i></b> -->
 				<span>资金明细</span></router-link>
 				</li>
-				<li><router-link to="/bank">
+				<li>
+				<a href="javascript:;" @click='systemUpdate("/bank")'>
 				<img src="../../assets/images/2.png" alt="">
 				<!-- <b class=" m5"><i class="iconfont">&#xe6be;</i></b> -->
-				<span>转存银行</span></router-link>
+				<span>转存银行</span></a>
 				</li>
 				<li><router-link to="/recommend">
 				<img src="../../assets/images/7.png" alt="">
 				<!-- <b class=" m6"><i class="iconfont">&#xe603;</i></b> -->
 				<span>我的推荐</span></router-link>
 				</li>
-				<li v-if='false'>
+				<!-- <li v-if='false'>
 					<a href="javascript:;" @click='gotovip'>
 					<img src="../../assets/images/10.png" alt="">
-					<!-- <b class=" m7"><i class="iconfont">&#xe642;</i></b> -->
+					<b class=" m7"><i class="iconfont">&#xe642;</i></b>
 					<span>升级会员</span></a>
-				</li>
+				</li> -->
 				<li v-if="enterstatus !== '1'">
 					<a href="javascript:;" @click="goapply">
 						<img src="../../assets/images/14.png" alt="">
@@ -188,6 +192,16 @@
 		</div>
 
 		<app-nav></app-nav>
+		<ex-notice :modal='model'  @confirm='confirm' v-show='!model.hide'></ex-notice>
+		
+		<!-- 系统维护提示 -->
+		 <!-- <div class="ex-weihu" v-if=''>
+		 		<div class="ex-weihu-cnt">
+		 			<div class="title">温馨提示</div>
+		 			<p> 为了保障系统稳定、精确运行，平台自6月2日起每日凌晨0:00-2:00对系统进行维护，维护期间不可操作，特此通告！</p>
+		 		</div>
+		 </div> -->
+
 	</div>	
 </template>
 
@@ -228,13 +242,33 @@ export default {
 			userVipStatus: {},
 			customerService: false,
 			repeatBtn: false,
-			enterstatus: ''
+			enterstatus: '',
+			model: {
+		  	title: '温馨提示',
+		  	text: '<p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护，特此通告！</p><p>感谢您对e享时代的支持！如有疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年六月二日</p></div>',
+		  	confirm: '知道了',
+		  	end: new Date('2017-7-8').getTime(),
+		  	identity: 'notice',
+		  	hide: false // false为默认显示， true为隐藏
+		  }
 		}
 	},
 	components: {
 		appNav
 	},
 	methods: {
+		systemUpdate (route) {
+			let hours = new Date().getHours()
+			if (hours < 2) {
+				MessageBox('提示', '每日凌晨0:00-2:00系统维护，请在2:00之后进行此项操作，详情请见公告，感谢您的理解和支持！')
+				return
+			} else {
+				this.$router.push(route)
+			}
+		},
+		confirm () {
+			this.model.hide = true
+		},
 		changetoken () {
 			if (this.repeatBtn) {
 				return
@@ -274,18 +308,23 @@ export default {
 		gotodetail () {
 			this.$router.push('/integraldetail')
 		},
-		gotovip () {
-			let _this = this
-			if (this.userVipStatus.auditStatus === '0') {
-				MessageBox.alert('VIP会员审核失败！').then(action => {
-					_this.$router.push('/upgrade')
-				})	
-			} else if(this.userVipStatus.auditStatus == '1') {
-				MessageBox('提示', 'VIP会员升级中,请稍后...')
-			} else {
-				this.$router.push('/upgrade')
-			}
-		},
+		// gotovip () {
+		// 	let hours = new Date().getHours()
+		// 	if (hours < 2) {
+		// 		MessageBox('提示', '每日0:00~2:00点，数据系统维护中，不可操作!')
+		// 		return
+		// 	}
+		// 	let _this = this
+		// 	if (this.userVipStatus.auditStatus === '0') {
+		// 		MessageBox.alert('VIP会员审核失败！').then(action => {
+		// 			_this.$router.push('/upgrade')
+		// 		})	
+		// 	} else if(this.userVipStatus.auditStatus == '1') {
+		// 		MessageBox('提示', 'VIP会员升级中,请稍后...')
+		// 	} else {
+		// 		this.$router.push('/upgrade')
+		// 	}
+		// },
 		goapply () {
 			if(this.enterstatus !== '3'){
 				this.$router.push('/apply3')
@@ -423,7 +462,9 @@ export default {
 		}
 		
 	},
-	monuted () {
+	mounted () {
+		let hours = new Date().getHours()
+		this.showSystemModal =  hours < 2 ? true : false
 	},
 	destroyed () {
 		Indicator.close()
@@ -525,5 +566,10 @@ b.m10{background-color: #66c476;}*/
 .ex-batch-modal-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 60%; overflow: hidden; text-align: center; border-radius: 0.4rem; padding: 1rem 0;}
 .ex-batch-modal-cnt a{display: block; color: #000; font-size: 1.6rem;  line-height: 3;}
 .ex-batch-modal-cnt li:first-child{border-bottom: 1px solid #eee;}
+
+.ex-weihu{ position: fixed; left: 0; top: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.2); z-index: 7;}
+.ex-weihu-cnt {width: 80%; height: auto; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: #fff;padding: 1rem; }
+.ex-weihu-cnt .title { font-size: 1.6rem;  text-align: center; padding-bottom: 1rem;}
+.ex-weihu-cnt p{  font-size: 1.4rem; line-height: 1.5; padding-bottom: 1rem;}
 
 </style>

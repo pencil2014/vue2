@@ -57,7 +57,7 @@ export default {
 			commodityName:'',
 			price:'',
 			modal: {
-				text:'产品详情',
+				text:'商品详情',
 				fixed: false
 			},
 			submitbtn: false
