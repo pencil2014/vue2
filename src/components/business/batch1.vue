@@ -117,16 +117,20 @@ export default {
 	},
 	computed: {
 		totalmoney () {
+			let _this = this
 			let total = 0
 			this.order.forEach( function(element, index) {
 				if (element.userCode !=='' && element.phone !== '' &&  element.consumptionMoney > 0) {
-					total += element.consumptionMoney - 0
+					let single = element.consumptionMoney * _this.rate + ''
+					single = single.indexOf('.') > -1 ? (single.substring(0,single.indexOf(".") + 3)*1).toFixed(2) : single
+					total += (single - 0)
 				} else {
 					total += 0
 				}
 				
 			})
-			return (total*this.rate).toFixed(2)
+			total = (total + '').indexOf('.') > -1 ? total : total + '.00'
+			return  total
 		},
 		valid () {
 			let array =  this.order.filter(function(element,index) {
@@ -364,7 +368,7 @@ export default {
 	},
 	created () {
 		// 检查批量报单是否超过5笔
-		// this.checkBatshCount()
+		this.checkBatshCount()
 
 		let _this = this
 		axios.post('declaration/getRangliProportion',qs.stringify({}))

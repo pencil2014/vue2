@@ -138,7 +138,7 @@ export default {
 .ex-notice-item li:last-child{border-bottom: none;}
 .ex-notice-item span.title:before{content:"● "; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}
 .ex-notice-item span.read:before{display: none;}
-.ex-notice-item span.read{color:#aaafb6;}
+.ex-notice-item span.read{}
 .ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;padding-top: 10px;}
 .ex-notice-item .time{color: #aaafb6;float: right;padding-top: 5px;font-size: 1rem;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}

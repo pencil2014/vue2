@@ -33,7 +33,7 @@
 				<span class="float_right">{{address}}</span>
 			</div>
 			<div class="ex-field">
-				<span>店铺门头照片</span>
+				<span>推广照片</span>
 				<span class="float_right"><img :src="applydata.facadePhoto" alt="" v-preview="applydata.facadePhoto" :preview-nav-enable="false"></span>
 			</div>		
 		</div>

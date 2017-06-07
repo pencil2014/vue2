@@ -213,7 +213,7 @@
                 <div class="contentBOX">
                     <p class="title">下载操作</p>
                     <div class="info-text">
-                        <a href="javascript:void(0);">http://download.exgj.com.cn/exsd_V1.4.1_release.apk</a> <span style="color: red" >(请长按复制该链接到浏览器下载)</span>
+                        <a href="javascript:void(0);">http://download.exgj.com.cn/exsd_V1.5_release.apk</a> <span style="color: red" >(请长按复制该链接到浏览器下载)</span>
                     </div>
                 </div>
                 <div class="operate" @click="closeDownload">
@@ -231,6 +231,7 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
+import exNotice from '../common/notice.vue'
 export default {
 	data () {
 		return {
@@ -276,7 +277,8 @@ export default {
 		}
 	},
 	components: {
-		appNav
+		appNav,
+		exNotice
 	},
 	methods: {
 		download () {
@@ -285,7 +287,7 @@ export default {
 			if (isweixin) {
 				this.isDownload = true
 			} else {
-				window.location.href='http://download.exgj.com.cn/exsd_V1.4.1_release.apk'
+				window.location.href='http://download.exgj.com.cn/exsd_V1.5_release.apk'
 			}
 		},
 		closeDownload () {

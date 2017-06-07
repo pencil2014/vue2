@@ -26,7 +26,7 @@
 			</div>
 			<div class="item-wrapper">
 				<div class="item">
-					<span class="left">门头照片</span>
+					<span class="left">推广照片</span>
 					<span class="right">
 						<div class="uploadimg">
 							<img :src="info.facadePhoto" alt="">

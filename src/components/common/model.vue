@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div class="ex-model">
 		<div class="ex-model-backdrop"></div>
 		<div class="ex-model-cnt">
@@ -36,4 +36,4 @@ export default {
 .ex-model-body {line-height: 1.5;font-size: 1.4rem; padding: 0 2rem; padding-top: 0.5rem; max-height: 20rem; overflow: scroll;}
 .ex-model-foot { border-top: 1px solid #eee; height: 5rem; line-height: 5rem; text-align: center; font-size: 1.8rem; color: #047dcb; margin-top: 1rem;}
 .ex-model-foot:active{background-color: #eee;}
-</style>
+</style> -->

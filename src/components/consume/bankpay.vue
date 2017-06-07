@@ -129,7 +129,7 @@ export default {
 					_this.resurl = res.data.urls
 					_this.check()
 				} else {
-					MessageBox('提示', '提交失败，请稍后重试！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -148,7 +148,7 @@ export default {
 						_this.$router.push(path)
 					})
 				} else {
-					MessageBox('提示', '提交失败，请稍后重试！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

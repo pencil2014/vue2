@@ -1,5 +1,60 @@
 <template>
-	<div class="ex-shop3">
+	<div class="ex-apply">
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
+		<div class="ex-form">
+			<div class="ex-field">
+				<span>商家名称</span>
+				<span class="float_right">{{examineData.shopsName}}</span>
+			</div>
+			<div class="ex-field">
+				<span>所属行业</span>
+				<span class="float_right">{{examineData.classificationName}}</span>
+			</div>
+			<div class="ex-field">
+				<span>联系地址</span>
+				<span class="float_right">{{examineData.shopsAddress2}}</span>
+			</div>
+			<div class="ex-field">
+				<span>详细地址</span>
+				<span class="float_right">{{examineData.shopsAddress}}</span>
+			</div>
+			<div class="ex-field">
+				<span>姓名</span>
+				<span class="float_right">{{examineData.shopsLinkman}}</span>
+			</div>
+			<div class="ex-field">
+				<span>联系电话</span>
+				<span class="float_right">{{examineData.shopsLinkphone}}</span>
+			</div>
+			<div class="ex-field">
+				<span>营业执照号</span>
+				<span class="float_right">{{examineData.licenseNumber}}</span>
+			</div>
+			<div class="ex-field">
+				<span>营业执照照片</span>
+				<span class="float_right"><img :src="examineData.businessLicense" alt="" v-preview="examineData.businessLicense" :preview-nav-enable="false"></span>
+			</div>
+			<div class="ex-field">
+				<span>法人身份证正反面</span>
+				<span class="float_right"><img :src="examineData.legalPic" alt="" v-preview="examineData.legalPic" :preview-nav-enable="false">
+				<img :src="examineData.legalPic1" alt="" v-preview="examineData.legalPic1" :preview-nav-enable="false"></span>
+			</div>	
+			<div class="ex-field">
+				<span>负责人手持身份证照片</span>
+				<span class="float_right"><img :src="examineData.holdPic" alt="" v-preview="examineData.holdPic" :preview-nav-enable="false"></span>
+			</div>	
+			<div class="ex-field">
+				<span>店面门头照片</span>
+				<span class="float_right"><img :src="examineData.facadePhoto" alt="" v-preview="examineData.facadePhoto" :preview-nav-enable="false"></span>
+			</div>	
+			<div class="ex-field">
+				<span>委托书照片</span>
+				<span class="float_right"><img :src="examineData.proxyPic" alt="" v-preview="examineData.proxyPic" :preview-nav-enable="false"></span>
+			</div>		
+		</div>
+		<lg-preview></lg-preview>
+	</div>
+	<!-- <div class="ex-shop3">
 	  <HeadTitle :title="modal" @callback="back"></HeadTitle>
 
 		<div class="ex-shop3-cnt">
@@ -66,7 +121,7 @@
 		</div>
 		</div>
 		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
-	</div>
+	</div> -->
 </template>
 
 <script>
@@ -128,18 +183,20 @@ export default {
 </script>
 
 <style scoped>
-.ex-shop3{background-color: #f4f5f7;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
-.ex-shop3-result {background: #fff; text-align: center; padding: 2rem 0;}
-.ex-shop3-result i{ font-size: 5rem; }
-.ex-shop3-result i.suc{color: #ffa100;}
-.ex-shop3-result i.err{color: #f0544d; }
-.ex-shop3-result h3 {font-size: 2rem; font-weight: normal;}
-.ex-shop3-result p{color:#aaafb6; padding-top: 0.5rem; }
-.ex-shop3-cnt {background-color: #fff; margin: 1.5rem 0; padding: 0 0.5rem;}
-.ex-shop3-item {border-bottom: 1px solid #e5e5e5; padding: 1rem 0; overflow: hidden;}
-.ex-shop3-item b{font-weight: normal; color:#aaafb6; }
-.ex-shop3-item b,.ex-shop3-item .img {float: right;}
-.ex-shop3-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
-.ex-shop3-btn { display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%;position: fixed;bottom: 1rem;left: 4%;}
-.ex-shop3-btn:active{background-color:#0470b6; }
+.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
+
+.ex-apply .ex-top{background: #fff;width: 100%;text-align: center;color: #8f959e;font-size: 1.6rem;padding: 30px 0;line-height: 30px;}
+.ex-apply .ex-top .strong{font-size: 2rem;color: #212a32;}
+.ex-apply .ex-top i{font-size: 4.5rem;}
+.ex-apply .ex-top i.suc{color: #ffa100;}
+.ex-apply .ex-top i.err{color: #f0544d;}
+.ex-form{background: #fff;font-size: 1.4rem;width: 100%;margin-top: 15px;}
+.ex-form .ex-field{display: table;margin-left: 15px;border-bottom: solid 1px #ebebeb;padding: 10px 0;width: 100%;}
+.ex-form .ex-field:last-child{border:none;}
+.ex-form .ex-field span{display: table-cell;vertical-align: top;}
+.ex-form .ex-field span:nth-child(1){width: 25%;}
+.ex-form .ex-field span:nth-child(2){color: rgb(170,175,182);text-align: right;width: 75%;word-break: break-all;padding-right: 30px;}
+.ex-form .ex-field span:nth-child(2) img{width: 80px;vertical-align: top;}
+
+.preview{position: absolute;z-index: 999;left: 0px;top: 0;}
 </style> 

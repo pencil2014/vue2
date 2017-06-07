@@ -111,7 +111,7 @@ export default {
 				if (res.data.code === '10000') {
 					window.localStorage.setItem('token', '')
 					_this.$router.push('/login')
-					Toast('修改成功')
+					Toast('修改成功，请重新登陆！')
 				} else {
 					_this.submitBtn = false;
 					Toast(res.data.msg)

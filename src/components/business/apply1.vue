@@ -33,7 +33,7 @@
 		</div>
 		<div class="ex-field">
 			<div class="ex-field-wrapper">
-				<p>店铺门头照片</p>
+				<p>推广照片</p>
 				<div class="uploadIMG">
 					<img src="../../assets/images/again.png" alt="" class="again">
 					<img :src="facadePhoto" alt="">
@@ -408,12 +408,12 @@ export default {
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}
 .ex-field .ex-field-wrapper:last-child{border-bottom: none;}
 .ex-field .ex-field-wrapper i.arrow {float: right;padding-right: 15px;color: rgba(173,180,190,1);}
-.float_right{float: right;color: #586485;}
+.float_right{float: right;color: #aaafb6;}
 
 .ex-field .ex-field-wrapper.table{display: table;width: 100%;}
 .ex-field .ex-field-wrapper.table span{display: table-cell;vertical-align: top;}
 .ex-field .ex-field-wrapper.table span:nth-child(1){width: 20%;}
-.ex-field .ex-field-wrapper.table span:nth-child(2){text-align: right;color: #586485;line-height: 25px;}
+.ex-field .ex-field-wrapper.table span:nth-child(2){text-align: right;color: #aaafb6;line-height: 25px;}
 .ex-field .ex-field-wrapper.table span:nth-child(3){vertical-align: middle;width: 31px;}
 
 .ex-field .ex-field-wrapper .uploadIMG {display: block;width: 64px;height: 64px;position: relative;}
