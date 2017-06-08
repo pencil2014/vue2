@@ -42,6 +42,7 @@
 					<a href="javascript:;" @click="gouser">
 						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-if="userinfo.logoImg">
 					</a>
+					<div class="vip" v-if='userinfo.userLev ==="2"'><img src="../../assets/images/vip_mark.png" alt=""></div>
 					<!-- <p class="name">{{userinfo.userName}}</p> -->
 					<p class="code">ID:{{userinfo.userCode | formatcode}}</p>
 				</div>
@@ -160,7 +161,7 @@
 
 			</ul>
 		</div>
-		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
+		<div class="ex-index-service" @click='showcustomer'><img src="../../assets/images/16.png" alt=""></div><!-- <i class="iconfont">&#xe612;</i> -->
 		<div class="ex-customer" v-show='customerService' @click.stop="hidecustomer">
 			<div class="ex-customer-cnt" @click.stop=''>
 				<div class="ex-customer-cnt-item">
@@ -199,7 +200,8 @@
                 <div class="contentBOX">
                     <p class="title">下载操作</p>
                     <div class="info-text">
-                        <a href="javascript:void(0);">http://download.exgj.com.cn/exsd_V1.5_release.apk</a> <span style="color: red" >(请长按复制该链接到浏览器下载)</span>
+                        <p v-if='isAndroid'>下载地址：<a :href="androidUrl">{{androidUrl}}</a></p>
+                        <span style="color: red" >(请长按复制该链接到浏览器下载APP）</span>
                     </div>
                 </div>
                 <div class="operate" @click="closeDownload">
@@ -259,7 +261,10 @@ export default {
 		  	identity: 'notice',
 		  	hide: false // false为默认显示， true为隐藏
 		  },
-		  isDownload: false
+		  isDownload: false,
+		  androidUrl: '',
+		  isAndroid: false,
+		  isiOS: false
 		}
 	},
 	components: {
@@ -269,11 +274,20 @@ export default {
 	methods: {
 		download () {
 			let ua = navigator.userAgent.toLowerCase()
+			this.isAndroid = ua.indexOf('android') > -1 || ua.indexOf('adr') > -1
+			this.isiOS = !!ua.match(/\(i[^;]+;( u;)? cpu.+mac os x/)
 			let isweixin = ua.indexOf('micromessenger') !== -1 ? true : false
-			if (isweixin) {
+			let url = window.location.href
+			if (this.isiOS) {
+				url = 'https://itunes.apple.com/us/app/e%E4%BA%AB%E6%97%B6%E4%BB%A3/id1218733985?l=zh&ls=1&mt=8'
+			}
+			if (this.isAndroid) {
+				url = this.androidUrl
+			}
+			if (isweixin && this.isAndroid) {
 				this.isDownload = true
 			} else {
-				window.location.href='http://download.exgj.com.cn/exsd_V1.5_release.apk'
+				window.location.href= url
 			}
 		},
 		closeDownload () {
@@ -359,6 +373,18 @@ export default {
 		},
 		hidecustomer () {
 			this.customerService = false
+		},
+		getandroidUrl () {
+			let _this = this
+			axios.post('appversion/queryUrl',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.androidUrl = res.data.data
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
 		},
 		getuserinfo () {
 			let _this = this
@@ -464,6 +490,7 @@ export default {
 		this.getuserinfo()
 		this.getsysIndex()
 		this.getexamine()
+		this.getandroidUrl()
 
 	},
 	destroyed () {
@@ -481,8 +508,9 @@ export default {
 .ex-index-logo {width: 25%; text-align: center; }
 .ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
 background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #fff; margin-bottom: 0.5rem;}
-.ex-index-logo img {width: 5rem; height: 5rem;}
+.ex-index-logo a img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
+.ex-index-logo .vip img{ height: 2rem; }
 .ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
 .ex-index-money p{ color: #9bcbea; font-weight: 300;}
 .ex-index-money .money {font-size: 3rem; padding: 0.5rem 0;}
@@ -545,8 +573,9 @@ b.m6{background-color: #f0544d;}
 b.m7{background-color: #5eb5ea;}
 b.m8{background-color: #66c476;}*/
 
-.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff; }
+.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;/*background-color:rgba(0,0,0,0.3);*/ border-radius: 50%; text-align: center; color: #fff; }
 .ex-index-service i{font-size: 3rem;}
+.ex-index-service img { width: 4rem; }
 .ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 7;}
 .ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; padding-top: 1rem; border-radius: 0.4rem; padding-top: 2rem;}
 .ex-customer-cnt-item {padding-top:1rem; font-size: 1.6rem;}

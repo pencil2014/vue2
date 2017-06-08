@@ -18,7 +18,7 @@
 			</div>
 		
 		<div class="ex-batch-count">
-			<span>转出账户名</span><input type="text" name="" id="" v-model.trim='name' placeholder='请输入转出账户名'>
+			<span>转出账户名</span><input type="text" maxlength="18" name="" id="" v-model.trim='name' placeholder='请输入转出账户名'>
 		</div>
 		<div class="ex-batch-table">
 			<div class="ex-batch-table-fixed">
@@ -127,9 +127,9 @@ export default {
 				} else {
 					total += 0
 				}
-				
 			})
-			total = (total + '').indexOf('.') > -1 ? total : total + '.00'
+			total = total + ''
+			total = total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
 			return  total
 		},
 		valid () {

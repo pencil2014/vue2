@@ -113,7 +113,7 @@ export default {
 				this.file = img
 				lrz(img,{width:640})
 				.then(function (rst) {
-	        _this.fileList.push (rst.base64)
+	        _this.fileList = [rst.base64]
 	       })
 	       .catch(function (err) {
 	        _this.fileList = []

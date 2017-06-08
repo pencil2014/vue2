@@ -169,7 +169,7 @@ export default {
 			this.imgpre.url = ''
 		},
 		back () {
-			this.$router.push('/business')
+			this.$router.go(-1)
 		},
 		repeat () {
 			let status = this.checkdata.transferVoucher
@@ -180,7 +180,13 @@ export default {
 			}
 		}
 	},
-	
+	beforeRouteLeave (to,from,next) {
+		if (to.path.indexOf('/declare2')>-1) {
+			next('/business')
+		} else {
+			next()
+		}
+	},
 	filters: {
 		formatTime (value) {
 			let time = new Date(value * 1000)

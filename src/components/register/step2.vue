@@ -88,6 +88,7 @@ export default {
 				MessageBox('提示', '手机号码不正确!')
 				return
 			}
+			this.second = 120
 			this.code = ''
 			Indicator.open({
 			  text: '正在获取...',
@@ -191,10 +192,12 @@ export default {
 							window.localStorage.setItem('phone', _this.phone)
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 							window.localStorage.setItem('token', res.data.data.token)
+							window.localStorage.setItem('usertype', '1')
 							_this.$router.push('/index')
 						} else {
 							Indicator.close()
 							_this.second = 0
+							_this.repeatBtn = false
 							Toast(res.data.msg)
 						}
 					})

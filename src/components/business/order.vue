@@ -79,7 +79,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('declaration/list',qs.stringify({batch:'1',pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -109,7 +109,7 @@ export default {
 			})
 			let _this = this
 			this.loading = true
-			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
+			axios.post('declaration/list',qs.stringify({batch:'1',pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true

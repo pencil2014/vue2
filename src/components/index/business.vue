@@ -46,6 +46,7 @@
 						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-if="userinfo.logoImg">
 					</a>
 					<!-- <p class="name">{{userinfo.userName}}</p> -->
+					<div class="vip" v-if='userinfo.userLev ==="2"'><img src="../../assets/images/vip_mark.png" alt=""></div>
 					<p class="code">ID:{{userinfo.userCode | formatcode}}</p>
 				</div>
 				<div class="ex-index-money">
@@ -100,13 +101,13 @@
 				<a href="javascript:;" @click='systemUpdate("/declare")'>
 				<img src="../../assets/images/9.png" alt="">
 				<!-- <b class=" m9"><i class="iconfont">&#xe602;</i></b> -->
-				<span>商家报单</span></a>
+				<span>单笔报单</span></a>
 				</li>		
 
 				<li><router-link to="/order">
 				<img src="../../assets/images/8.png" alt="">
 				<!-- <b class=" m1"><i class="iconfont">&#xe6d8;</i></b> -->
-				<span>报单进度</span></router-link>
+				<span>单笔报单查询</span></router-link>
 				</li>
 				<li><router-link to="/tables">
 				<img src="../../assets/images/6.png" alt="">
@@ -174,7 +175,7 @@
 
 
 
-		<div class="ex-index-service" @click='showcustomer'><i class="iconfont">&#xe612;</i></div>
+		<div class="ex-index-service" @click='showcustomer'><img src="../../assets/images/16.png" alt=""></div>
 		<div class="ex-customer" v-show='customerService' @click.stop="hidecustomer">
 			<div class="ex-customer-cnt" @click.stop=''>
 				<div class="ex-customer-cnt-item">
@@ -206,14 +207,15 @@
 		 		</div>
 		 </div> -->
 
-		 <!-- 下载app -->
+		<!-- 下载app -->
 		<div class="ex-noticeBJ" v-show="isDownload">
         <div class="ex-notice">
             <div class="content">
                 <div class="contentBOX">
                     <p class="title">下载操作</p>
                     <div class="info-text">
-                        <a href="javascript:void(0);">http://download.exgj.com.cn/exsd_V1.5_release.apk</a> <span style="color: red" >(请长按复制该链接到浏览器下载)</span>
+                        <p v-if='isAndroid'>下载地址：<a :href="androidUrl">{{androidUrl}}</a></p>
+                        <span style="color: red" >(请长按复制该链接到浏览器下载APP）</span>
                     </div>
                 </div>
                 <div class="operate" @click="closeDownload">
@@ -222,6 +224,8 @@
             </div>
         </div>
     </div>
+
+
 
 	</div>	
 </template>
@@ -273,7 +277,10 @@ export default {
 		  	identity: 'notice',
 		  	hide: false // false为默认显示， true为隐藏
 		  },
-		  isDownload: false
+		  isDownload: false,
+		  androidUrl: '',
+		  isAndroid: false,
+		  isiOS: false
 		}
 	},
 	components: {
@@ -283,11 +290,20 @@ export default {
 	methods: {
 		download () {
 			let ua = navigator.userAgent.toLowerCase()
+			this.isAndroid = ua.indexOf('android') > -1 || ua.indexOf('adr') > -1
+			this.isiOS = !!ua.match(/\(i[^;]+;( u;)? cpu.+mac os x/)
 			let isweixin = ua.indexOf('micromessenger') !== -1 ? true : false
-			if (isweixin) {
+			let url = window.location.href
+			if (this.isiOS) {
+				url = 'https://itunes.apple.com/us/app/e%E4%BA%AB%E6%97%B6%E4%BB%A3/id1218733985?l=zh&ls=1&mt=8'
+			}
+			if (this.isAndroid) {
+				url = this.androidUrl
+			}
+			if (isweixin && this.isAndroid) {
 				this.isDownload = true
 			} else {
-				window.location.href='http://download.exgj.com.cn/exsd_V1.5_release.apk'
+				window.location.href= url
 			}
 		},
 		closeDownload () {
@@ -373,6 +389,18 @@ export default {
 		},
 		hidecustomer () {
 			this.customerService = false
+		},
+		getandroidUrl () {
+			let _this = this
+			axios.post('appversion/queryUrl',qs.stringify({})).then(function(res){
+				if (res.data.code === '10000') {
+					_this.androidUrl = res.data.data
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
 		},
 		getuserinfo () {
 			let _this = this
@@ -492,10 +520,12 @@ export default {
 		this.getsysIndex()
 		this.getexamine()
 		this.getenterdetail()
-		if (!window.localStorage.getItem('notice') && new Date().getTime() < new Date('2017-5-30').getTime()) {
-			MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
-			window.localStorage.setItem('notice', 'true')
-		}
+		this.getandroidUrl()
+
+		// if (!window.localStorage.getItem('notice') && new Date().getTime() < new Date('2017-5-30').getTime()) {
+		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
+		// 	window.localStorage.setItem('notice', 'true')
+		// }
 		
 	},
 	mounted () {
@@ -517,8 +547,9 @@ export default {
 .ex-index-logo {width: 25%; text-align: center; }
 .ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
 background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #fff; margin-bottom: 0.5rem;}
-.ex-index-logo img {width: 5rem; height: 5rem;}
+.ex-index-logo a img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
+.ex-index-logo .vip img{ height: 2rem; }
 .ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
 .ex-index-money p{ color: #9bcbea; font-weight: 300;}
 .ex-index-money .money {font-size: 3rem; padding: 0.5rem 0;}
@@ -586,8 +617,9 @@ b.m8{background-color: #66c476;}
 b.m9{background-color: #ff8338;}
 b.m10{background-color: #66c476;}*/
 
-.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;background-color:rgba(0,0,0,0.3); border-radius: 50%; text-align: center; color: #fff;}
+.ex-index-service{position: fixed; right: 1rem; bottom: 6rem; width: 4rem; height: 4rem; line-height: 4rem;/*background-color:rgba(0,0,0,0.3);*/ border-radius: 50%; text-align: center; color: #fff;}
 .ex-index-service i{font-size: 3rem;}
+.ex-index-service img { width: 4rem; }
 .ex-customer {position: fixed; left: 0;top: 0;right: 0; bottom: 0; background-color: rgba(0,0,0,0.4); z-index: 7;}
 .ex-customer-cnt{position: fixed;top: 50%;left: 50%;-webkit-transform: translate3d(-50%, -50%, 0);transform: translate3d(-50%, -50%, 0);background-color: #fff;width: 85%; overflow: hidden; text-align: center; border-radius: 0.4rem; padding-top: 2rem;}
 .ex-customer-cnt-item {padding-top:1rem; font-size: 1.6rem;}

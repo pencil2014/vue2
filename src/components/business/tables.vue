@@ -8,6 +8,10 @@
 		</div> -->
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-order-cnt" >
+			<div class="ex-order-nav">
+				<span :class="{active:showTab===1}" @click='changeTab(1)'>单笔</span><span :class="{active:showTab===2}" @click='changeTab(2)'>批量</span>
+			</div>
+
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table"
 					v-infinite-scroll="loadMore"
@@ -54,6 +58,7 @@ export default {
 				text:'报单成功明细',
 				fixed: true,
 			},
+			showTab: 1
 		}
 	},
 	created () {
@@ -65,13 +70,18 @@ export default {
 		godetail (id) {
 			this.$router.push({ name: 'Tableinfo', params: { id: id}})
 		},
+		changeTab(tab) {
+			this.showTab = tab
+			this.loadTop()
+		},
 		loadTop () {
 			Indicator.open({
 			  text: '正在刷新...',
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: 1,status: 6}))
+			let batch = this.showTab === 1 ? '1' : '0'
+			axios.post('declaration/list',qs.stringify({batch: batch, pageSize: this.pageSize, page: 1,status: 6}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -97,8 +107,9 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
+			let batch = this.showTab === 1 ? '1' : '0'
 			this.loading = true
-			axios.post('declaration/list',qs.stringify({pageSize: this.pageSize, page: this.page,status: 6}))
+			axios.post('declaration/list',qs.stringify({batch: batch, pageSize: this.pageSize, page: this.page,status: 6}))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
@@ -143,4 +154,9 @@ export default {
 .ex-order-cnt td i { font-size: 1.4rem; color: #999; float: right; padding-right: 0.5rem; }
 .ex-order-cnt td a {display: inline-block;font-size: 1.2rem;color: #2eadff;border-radius: 0.2rem;border: 1px solid #2eadff;padding: 0.4rem;}
 .ex-order-cnt td .links{margin-right: 1rem; margin-bottom: 0.5rem;}
+
+.ex-order-nav { height: 5rem; line-height: 5rem; }
+.ex-order-nav span {display: inline-block; width: 50%; text-align: center; border-bottom: 1px solid #eee; font-size: 1.6rem; }
+.ex-order-nav span.active{ color: #047dcb; border-color: #047dcb;}
+
 </style>
