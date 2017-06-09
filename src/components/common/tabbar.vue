@@ -25,7 +25,7 @@
 			平台规则
 		</a> -->
 		<router-link to="/user">
-			<span class="m4" :class="{'read':read}"></span>
+			<span class="m4"></span>
 			<br>
 			我的
 		</router-link>
@@ -52,17 +52,17 @@ export default {
 		}
 	},
 	created () {
-		let _this = this;
-		axios.post('message/getCount',qs.stringify({}))
-		.then(function(res){
-			if (res.data.code === '10000') {
-				_this.read = res.data.data.count > 0 ? true : false
-			} else {
-				_this.read = false
-			}
-		}).catch(function(){
-			Toast('连接失败，请检查网络是否正常!')
-		})
+		// let _this = this;
+		// axios.post('message/getCount',qs.stringify({}))
+		// .then(function(res){
+		// 	if (res.data.code === '10000') {
+		// 		_this.read = res.data.data.count > 0 ? true : false
+		// 	} else {
+		// 		_this.read = false
+		// 	}
+		// }).catch(function(){
+		// 	Toast('连接失败，请检查网络是否正常!')
+		// })
 	},
 	methods: {
 		disabled () {

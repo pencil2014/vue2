@@ -47,12 +47,12 @@
 						<span>店铺管理</span>
 						<i class="iconfont">&#xe606;</i>
 					</li>
-					<router-link to="/message" tag="li">
+					<!-- <router-link to="/message" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
 						<i class="iconfont">&#xe606;</i>
 						<span for="" class="count" v-text="count" v-show="count!=0"></span>
-					</router-link>
+					</router-link> -->
 					<router-link to="/notice" tag="li">
 						<img src="../../assets/images/notice.png" alt="">
 						<span>公告</span>
