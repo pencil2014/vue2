@@ -212,7 +212,7 @@ export default {
 				return
 			}
 			if(!this.agreement){
-				MessageBox('提示', '请勾选同意《E享时代商家入驻加盟协议书》')
+				MessageBox('提示', '请勾选同意《e享时代商家入驻加盟协议书》')
 				return
 			}
 			this.repeatBtn = true

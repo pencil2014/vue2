@@ -49,7 +49,7 @@ export default {
 			nodateStatus: false,
 			loading: false,
 			modal:{
-				text:'批量报单',
+				text:'批量报单查询',
 				fixed: true,
 			},
 		}

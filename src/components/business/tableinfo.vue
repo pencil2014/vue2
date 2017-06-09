@@ -69,7 +69,7 @@
 				<span>让利款</span>
 				<b>￥{{checkdata.rangliMoney}}</b>
 			</div>
-			<div class="ex-declare-item" v-if="checkdata.consumptionCertificate && checkdata.consumptionCertificate !=='批量'">
+			<div class="ex-declare-item" v-if="checkdata.consumptionCertificate && checkdata.consumptionCertificate.indexOf('批量') === -1">
 				<span>消费凭证</span>
 				<div class="img">
 					<img :src="checkdata.consumptionCertificate" @click='preimg(checkdata.consumptionCertificate)'>
@@ -81,7 +81,7 @@
 					<img :src="checkdata.physicalPic">
 				</div>
 			</div> -->
-			<div class="ex-declare-item"  v-if="checkdata.transferVoucher && checkdata.transferVoucher !=='批量'">
+			<div class="ex-declare-item"  v-if="checkdata.transferVoucher && checkdata.transferVoucher.indexOf('批量') === -1">
 				<span>让利款转款凭据</span>
 				<div class="img">
 					<img :src="checkdata.transferVoucher"  @click='preimg(checkdata.transferVoucher)'>

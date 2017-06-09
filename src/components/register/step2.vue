@@ -2,7 +2,7 @@
 	<div class="ex-rigster-box">
 		<div class="ex-rigster-header">
 			您的好友<span v-if="name !== ''">{{RecommendPhone}}<!-- {{name || userCode}} --></span><span v-else>{{userId}}</span><br>
-			邀请您加入E享时代！
+			邀请您加入e享时代！
 		</div>
 		<div class="ex-rigster-info">
 			请在下方输入您的手机号码，并设置一个密码，即可快速注册成为e享会员，立即体验“创新消费，科学分享”！
@@ -160,7 +160,7 @@ export default {
 				return
 			}
 			if (!this.agreement) {
-				MessageBox('提示', '请勾选同意《E享时代注册协议》！')
+				MessageBox('提示', '请勾选同意《e享时代注册协议》！')
 				return
 			}
 			Indicator.open({

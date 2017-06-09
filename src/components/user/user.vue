@@ -134,10 +134,10 @@ export default {
 			return arr[_index]
 		},
 		identity () {
-			return (/^B/i.test(this.userinfo.userCode)?'E享商家':'E享会员');
+			return (/^B/i.test(this.userinfo.userCode)?'e享商家':'e享会员');
 		},
 		isLev () {
-			return (this.userinfo.userLev === '2' && !this.isShop ? true : false)
+			return (this.userinfo.userLev === '2' ? true : false)
 		},
 		avatar () {
 			if(!this.userinfo.logoImg){

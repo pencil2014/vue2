@@ -6,7 +6,7 @@
 				<dt>
 					<img src="../../assets/images/exLogo.png" alt="">
 				</dt>
-				<dd><span class="big">E享时代</span></dd>
+				<dd><span class="big">e享时代</span></dd>
 				<dd class="small">创新消费，科学分享</dd>
 			</dl>
 		</div>

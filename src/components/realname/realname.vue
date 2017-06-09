@@ -20,7 +20,7 @@
 		</div>
 		<div class="UploadIMGfrom">
 			<div class="UpLoadIMG">
-				<label for="">证件正、反面照片（反面照片若没有可不传）</label>
+				<label for="">证件正、反面照片</label>
 				<div>
 					<div class="report-file">
 						<img :src="imgurl.frontPic" alt="" v-show="imgurl.frontPic">

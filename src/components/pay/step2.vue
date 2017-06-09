@@ -14,7 +14,7 @@
 		<div class="user">
 			<div class="avatar">
 				<img src="../../assets/images/head.png" alt="">
-				<span class="identity" :class="{'vip': userData.userLev === '2'}">E享会员</span>
+				<span class="identity" :class="{'vip': userData.userLev === '2'}">e享会员</span>
 			</div>
 			<div class="message">
 				<span class="name" v-if="userData.userName">
@@ -23,7 +23,7 @@
 				<span class="name" v-if="!userData.userName">
 					ID:{{userData.userCode}}
 				</span><br>
-				<span>E积分{{userData.integralA |checknum}},支付后将获得E积分<label for="" class="orange">{{userData.money | checknum}}</label></span>
+				<span>e积分{{userData.integralA |checknum}},支付后将获得e积分<label for="" class="orange">{{userData.money | checknum}}</label></span>
 			</div>
 		</div>
 		<div class="pay-option">

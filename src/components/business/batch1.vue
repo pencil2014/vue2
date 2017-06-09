@@ -129,8 +129,7 @@ export default {
 				}
 			})
 			total = total + ''
-			total = total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
-			return  total
+			return  total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
 		},
 		valid () {
 			let array =  this.order.filter(function(element,index) {

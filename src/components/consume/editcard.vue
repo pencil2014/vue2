@@ -1,24 +1,25 @@
 <template>
 	<div class="ex-addcard">
-		<div class="ex-topbar">
+		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>编辑银行卡</span>
-		</div>
+		</div> -->
+		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-addcard-cnt">
 			<p class='tips'>*只能添加本人或所属公司的银行卡(注：如为中国银行开户行可不输入)</p>
 			<div class="ex-addcard-num">
-				<label for="name">开户名:</label><span>{{realName}}</span>
+				<label for="name">开户名</label><span>{{realName}}</span>
 				<!-- <input type="text" name="" id="name" placeholder="请输入开户名" v-model.trim='name'> -->
 			</div>
 			<div class="ex-addcard-num">
-				<label for="number">银行卡号:</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
+				<label for="number">银行卡号</label><input type="text" name="" id="number" placeholder="请输入银行卡号" v-model.trim='card' v-on:input="formatcard" maxlength="30">
 			</div>
 			<div class="ex-addcard-name">
-				<label for="name">开户行:</label>中国<input type="text" name="" id="name" placeholder="请输入" v-model.trim='banks'>银行
+				<label for="name">开户行</label>中国<input type="text" name="" id="name" placeholder="请输入" v-model.trim='banks'>银行
 			</div>
 			<p class='tips'>*为确保您正常收款，请写支行全称，如 “**省**市**支行”，直辖市无需再写省份</p>
 			<div class="ex-addcard-subname">
-					<p class="provice"><label for="number">支行名称:</label><input type="text" name=""  placeholder="请输入" v-model.trim='province'>省<span>（直辖市无需填写省份）</span></p>
+					<p class="provice"><label for="number">支行名称</label><input type="text" name=""  placeholder="请输入" v-model.trim='province'>省<span>（直辖市无需填写省份）</span></p>
 					<p class="address">
 						<input type="text" name=""  placeholder="请输入" v-model.trim='city'>市
 						<input type="text" name=""  placeholder="请输入" v-model.trim='branch'>支行
@@ -26,7 +27,7 @@
 			</div>
 			<p class='tips'>*请填写您在银行预留的手机号码，以验证银行卡是否属于您本人</p>
 			<div class="ex-addcard-num">
-				<label for="number">手机号码:</label><input type="tel" name="" id="" placeholder="请输入手机号码" v-model='phone'>
+				<label for="number">手机号码</label><input type="tel" name="" id="" placeholder="请输入手机号码" v-model='phone'>
 			</div>
 			<!-- <div class="ex-addcard-num verycode" v-show='phone !== userphone'>
 				<label for="number">验证码:</label><input type="text" name="" id="" placeholder="请输入验证码" v-model='phonecode'>
@@ -42,6 +43,7 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
+import HeadTitle from '../common/title.vue'
 export default {
 	data () {
 		return {
@@ -57,7 +59,11 @@ export default {
 			phonecode: '',
 			repeatBtn: false,
 			countdown: false,
-			second: 120
+			second: 120,
+			modal:{
+				text:'编辑银行卡',
+				fixed: false,
+			},
 		}
 	},
 	computed: {
@@ -214,13 +220,16 @@ export default {
 	},
 	destroyed () {
 		Indicator.close()
-	}
+	},
+	components: {
+		HeadTitle,
+	},
 }	
 </script>
 
 <style scoped>
 .ex-addcard { font-size: 1.4rem; padding-bottom: 5rem;}
-.ex-addcard-cnt {background-color: #f4f5f7;position: absolute; top: 5rem; left: 0; width: 100%;}
+.ex-addcard-cnt {background-color: #f4f5f7;position: absolute; top: 4.5rem; left: 0; width: 100%;}
 .ex-addcard-cnt .tips{ color: #5d646e; padding: 1.5rem 1rem; line-height: 1.5; font-size: 1.2rem;}
 .ex-addcard-cnt div {background-color: #fff;  vertical-align: middle;}
 .ex-addcard-cnt div label {display: inline-block; width: 25%; height: 3rem; line-height: 3rem;}
@@ -236,7 +245,8 @@ export default {
 .ex-addcard-subname .address{padding-left: 20%;}
 .ex-addcard-subname .address input { width: 35%;}
 .ex-addcard-subname .provice span {color:#ffa132; font-size: 1.2rem;}
-.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
+.ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #58c86b; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;background-color: #047dcb;}
+.ex-bank-btn:active {background-color: #0470b6;}
 .verycode {position: relative;}
 .verycode a{position: absolute; right: 0.5rem; top: 1.5rem; color: #ffa132; }
 </style>

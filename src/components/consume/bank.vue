@@ -27,13 +27,24 @@
 				<label for="exchange">转存金额</label>
 				<input type="text" name="" id="exchange" v-model='exchange' placeholder="请输入金额">
 			</div>
-			<div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
+			<!-- <div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
 				<label for="">银 行 卡：</label>
 				<div class='bankinfo'>
 					<p class="name">{{bankdata.banks}}</p>
-					<!-- <p class="accountName" v-if="bankdata.accountName">{{ bankdata.accountName }}</p> -->
+					<p class="accountName" v-if="bankdata.accountName">{{ bankdata.accountName }}</p>
 					<p class="number">{{bankdata.cardNo | card}}</p>
 				</div>
+				<span class='arrow'>
+					<label>{{cardstatus}}</label>
+					<i class='iconfont'>&#xe606;</i>
+				</span>
+			</div> -->
+			<div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
+				<span>银 行 卡：</span>
+				<span class='bankinfo'>
+					<p class="name">{{bankdata.banks}}</p>
+					<p class="number">{{bankdata.cardNo | card}}</p>
+				</span>
 				<span class='arrow'>
 					<label>{{cardstatus}}</label>
 					<i class='iconfont'>&#xe606;</i>
@@ -365,11 +376,17 @@ export default {
 .ex-bank-exchange{background-color: #fff; padding: 0.5rem 1rem; }
 .ex-bank-exchange label { vertical-align: middle; line-height: 3rem; }
 .ex-bank-exchange input{border:none; height: 3rem; padding-left: 1rem; width: 70%;}
-.ex-bank-card{background-color: #fff; margin: 1rem 0; padding: 0.5rem 1rem; min-height: 3rem; position: relative;}
+/*.ex-bank-card{background-color: #fff; margin: 1rem 0; padding: 0.5rem 1rem; min-height: 3rem; position: relative;}
 .ex-bank-card label{float: left; line-height: 3.5rem;}
 .ex-bank-card .bankinfo{ margin-left: 5rem; color: #586485; padding-left: 1rem; line-height: 1.5;}
-.ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 2.2rem;}
-.ex-bank-card .arrow label{color: red; line-height: 1.4rem;}
+.ex-bank-card .arrow{ color: #999;  position: absolute; right: 1rem; top: 2rem;}
+.ex-bank-card .arrow label{color: red; line-height: 1.4rem;}*/
+.ex-bank-card{display: table;width: 100%;background: #fff;margin-top: 1rem;padding: 1.5rem 1rem;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;line-height: 25px;}
+.ex-bank-card span{display: table-cell;vertical-align: middle;}
+.ex-bank-card span:nth-child(1){width: 20%;}
+.ex-bank-card span:nth-child(2){color: #586485;width: 45%;}
+.ex-bank-card span:nth-child(3){text-align: right; color: #999;}
+.ex-bank-card span:nth-child(3) label{color: #f0544d;}
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 .ex-bank-btn:active {background-color: #0470b6;}
 .ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
@@ -383,5 +400,5 @@ export default {
 .ex-header span:nth-child(1) a label {height: 100%;display: inline-block;}
 .ex-header span:nth-child(2){text-align: center;font-size: 1.8rem;}
 .ex-header span:nth-child(3){text-align: right;}
-.ex-header span:nth-child(3) a{height: 100%;display: inline-block;line-height: 4.5rem;color: #333;text-align: center;margin-right: 10px;}
+.ex-header span:nth-child(3) a{height: 100%;display: inline-block;line-height: 4.5rem;color: #5d646e;text-align: center;margin-right: 10px;}
 </style>

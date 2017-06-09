@@ -7,7 +7,7 @@
 			</div> -->
 			<HeadTitle :title="modal" @callback="back"></HeadTitle>
 			<div class="ex-detail-integral">
-				<span>E积分总额</span>
+				<span>e积分总额</span>
 				<p>{{integral || 0}}</p>
 			</div>
 	 </div>
@@ -20,7 +20,7 @@
 						<th width="15%">卖家ID</th>
 						<th width="15%">买家ID</th>
 						<th width="20%">商品名称</th>
-						<th width="20%">E积分</th>
+						<th width="20%">e积分</th>
 						<th width="15%">来源</th>
 					</tr>
 					<tbody 
@@ -64,7 +64,7 @@ export default {
 			nodateStatus: false,
 			loading: false,
 			modal: {
-				text:'E积分明细',
+				text:'e积分明细',
 				fixed: true
 			},
 		}
@@ -156,4 +156,5 @@ export default {
 .ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203)}
 /*.ex-detail-cnt { padding-top: 12rem; }*/
+.ex-detail-cnt{position: fixed; top: 11rem; bottom: 0; overflow: auto;}
 </style>

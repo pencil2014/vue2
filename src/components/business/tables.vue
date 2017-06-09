@@ -62,12 +62,15 @@ export default {
 		}
 	},
 	created () {
+		this.showTab = window.localStorage.getItem('showTab')*1 || 1
 	},
 	methods: {
 		back () {
+			window.localStorage.removeItem('showTab')
 			this.$router.push('/business')
 		},
 		godetail (id) {
+			window.localStorage.setItem('showTab', this.showTab)
 			this.$router.push({ name: 'Tableinfo', params: { id: id}})
 		},
 		changeTab(tab) {

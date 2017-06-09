@@ -160,7 +160,6 @@ export default {
 			} else {
 				this.getcityid()
 			}
-			
 		},
 		getcityid () {
 			let _this = this

@@ -4,7 +4,7 @@
 			商学院
 		</div>
 		<div class="ex-school-nav" >
-			<span :class="{active: tabnum === 1}" @click='changetab(1)'><b>讲师风采</b></span><span :class="{active: tabnum === 2}"  @click='changetab(2)'><b>E享文化</b></span><span :class="{active: tabnum === 3}"  @click='changetab(3)'><b>行业资讯</b></span>
+			<span :class="{active: tabnum === 1}" @click='changetab(1)'><b>讲师风采</b></span><span :class="{active: tabnum === 2}"  @click='changetab(2)'><b>e享文化</b></span><span :class="{active: tabnum === 3}"  @click='changetab(3)'><b>行业资讯</b></span>
 		</div>
 		<div class="ex-school-cnt">
 			<div v-show='tabnum === 1'>
@@ -146,7 +146,7 @@ export default {
 							if (value === '讲师风采') {
 								_this.teacherList = res.data.data.list || []
 								_this.page = 2
-							} else if (value === 'E享文化') {
+							} else if (value === 'e享文化') {
 								_this.cultureList = res.data.data.list || []
 								_this.page = 2
 							} else {
@@ -156,7 +156,7 @@ export default {
 						} else {
 							if (value === '讲师风采') {
 								_this.teacherList.push(...res.data.data.list)
-							} else if (value === 'E享文化') {
+							} else if (value === 'e享文化') {
 								_this.cultureList.push(...res.data.data.list)
 							} else {
 								_this.newsList.push(...res.data.data.list)
@@ -178,7 +178,7 @@ export default {
 			if (this.tabnum === 1) {
 				this.getdata ('讲师风采', 1)
 			} else if (this.tabnum === 2) {
-				this.getdata ('E享文化', 1)
+				this.getdata ('e享文化', 1)
 			} else {
 				this.getdata ('行业资讯', 1)
 			}
@@ -192,14 +192,14 @@ export default {
 			if (this.tabnum === 1) {
 				this.getdata ('讲师风采')
 			} else if (this.tabnum === 2) {
-				this.getdata ('E享文化')
+				this.getdata ('e享文化')
 			} else {
 				this.getdata ('行业资讯')
 			}
 		}
 	},
 	created () {
-		this.getdata ('E享文化')
+		this.getdata ('e享文化')
 		this.getdata ('行业资讯')
 	},
 	filters: {

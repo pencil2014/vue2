@@ -62,7 +62,7 @@ export default {
 			nodateStatus: false,
 			loading: false,
 			modal:{
-				text:'报单进度',
+				text:'单笔报单查询',
 				fixed: true,
 			},
 		}

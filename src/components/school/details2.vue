@@ -2,7 +2,7 @@
 	<div class="ex-details">
 		<div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-			<span>E享文化</span>
+			<span>e享文化</span>
 		</div>
 		<div class="ex-details-cnt">
 			<div class='ex-details-head'>

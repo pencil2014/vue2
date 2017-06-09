@@ -25,7 +25,7 @@
 			</form>
 		</div>
 		<!-- <div class="ex-login-copyright" v-show='showcopyright'>
-			{{year}} E享时代 版权所有，并保留所有权利
+			{{year}} e享时代 版权所有，并保留所有权利
 		</div> -->
 		<div class="ex-login-register" v-show='showcopyright'>
 			<router-link to="/register" >注册账号</router-link>|<router-link to="/forgot" >忘记密码？</router-link>

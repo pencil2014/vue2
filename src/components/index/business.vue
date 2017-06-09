@@ -15,7 +15,7 @@
 							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
 						</a>
 						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
-							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> E享会员
+							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> e享会员
 						</p>
 					</div>
 					<p class="name">{{userinfo.userName}}</p>
@@ -25,12 +25,12 @@
 					<ul>
 						<li><b>账户余额:</b><span>{{userinfo.overMoney | checknum}}</span></li>
 						<li><b>提现金额:</b><span>{{userinfo.freezeMoney | checknum}}</span></li>
-						<li><b>E积分:</b><span>{{userinfo.integralA}}</span></li>
-						<li><b>激励E积分:</b><span>{{userinfo.integralB}}</span></li>
+						<li><b>e积分:</b><span>{{userinfo.integralA}}</span></li>
+						<li><b>激励e积分:</b><span>{{userinfo.integralB}}</span></li>
 						<li><b>享积分:</b><span>{{userinfo.integral}}</span></li>
 						<li><b>平台商家数:</b><span>{{sysData.businessNum}}</span></li>
 						<li><b>昨日交易总额:</b><span>{{sysData.totalShareMoney}}</span></li>
-						<li><b>E享比例:</b><span>{{sysData.eProportion}}</span></li>
+						<li><b>e享比例:</b><span>{{sysData.eProportion}}</span></li>
 						<li><b>激励比例:</b><span>{{sysData.jeProportion}}</span></li>
 						<li><b>昨日分享平均值:</b><span>{{sysData.yesterdayMoney}}</span></li>
 					</ul>
@@ -45,8 +45,8 @@
 					<a href="javascript:;" @click="gouser">
 						<img :src="'/static/'+userinfo.logoImg+'.png'"  v-if="userinfo.logoImg">
 					</a>
-					<!-- <p class="name">{{userinfo.userName}}</p> -->
 					<div class="vip" v-if='userinfo.userLev ==="2"'><img src="../../assets/images/vip_mark.png" alt=""></div>
+					<!-- <p class="name">{{userinfo.userName}}</p> -->
 					<p class="code">ID:{{userinfo.userCode | formatcode}}</p>
 				</div>
 				<div class="ex-index-money">
@@ -61,11 +61,11 @@
 
 			<div class="ex-index-integral">
 				<div class="integral border" >
-					<p>E积分：{{userinfo.integralA | checknum}}</p>
+					<p>e积分：{{userinfo.integralA | checknum}}</p>
 					<p @click='gotodetail'>享积分：{{userinfo.integral | checknum}}<i class="iconfont arrow">&#xe606;</i></p>
 				</div>
 				<div class="integral">
-					<p>激励E积分：{{userinfo.integralB | checknum}}</p>
+					<p>激励e积分：{{userinfo.integralB | checknum}}</p>
 					<p>激励比例：{{sysData.jeProportion}}</p>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 							<span>{{sysData.businessNum}}（家）</span>
 						</td>
 						<td>
-							<b>E享比例</b>
+							<b>e享比例</b>
 							<span>{{sysData.eProportion}}</span>
 						</td>
 					</tr>
@@ -135,7 +135,7 @@
 				<li><router-link to="/detail2">
 				<img src="../../assets/images/4.png" alt="">
 				<!-- <b class=" m3"><i class="iconfont">&#xe680;</i></b> -->
-				<span>E积分明细</span>
+				<span>e积分明细</span>
 				</router-link></li>
 				<li><router-link to="/money">
 				<img src="../../assets/images/3.png" alt="">
@@ -167,7 +167,7 @@
 					</a>
 				</li>
 				<li><a href="javascript:;" @click='download'>
-					<img src="../../assets/images/15.png" alt="">
+					<img src="../../assets/images/17.png" alt="">
 					<span>下载APP</span>
 				</a></li>
 			</ul>
@@ -302,6 +302,7 @@ export default {
 			}
 			if (isweixin && this.isAndroid) {
 				this.isDownload = true
+				// window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.exgj.exsd'
 			} else {
 				window.location.href= url
 			}
@@ -544,12 +545,13 @@ export default {
 .ex-index-header {background-color: #047dcb; color: #fff; padding-top: 1rem; margin-bottom: 1rem;}
 .ex-index-user {overflow: auto; padding-bottom: 2rem;}
 .ex-index-logo,.ex-index-money,.ex-index-switch { float: left; }
-.ex-index-logo {width: 25%; text-align: center; }
+.ex-index-logo {width: 25%; text-align: center; position: relative;}
 .ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
 background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #fff; margin-bottom: 0.5rem;}
 .ex-index-logo a img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
-.ex-index-logo .vip img{ height: 2rem; }
+.ex-index-logo .vip {position: absolute; top: 4rem; right: 1.2rem;}
+.ex-index-logo .vip img{ height: 1.5rem; }
 .ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
 .ex-index-money p{ color: #9bcbea; font-weight: 300;}
 .ex-index-money .money {font-size: 3rem; padding: 0.5rem 0;}

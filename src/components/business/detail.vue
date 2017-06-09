@@ -3,16 +3,16 @@
 	 <div class="ex-detail-box">
 		 	<!-- <div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>E积分明细</span>
+				<span>e积分明细</span>
 			</div> -->
 			<HeadTitle :title="modal" @callback="back"></HeadTitle>
 			<div class="ex-detail-integral">
 				<div class="ex-detail-integral-item">
-					<span>E积分总额</span>
+					<span>e积分总额</span>
 					<p>{{integralA || 0}}</p>
 				</div>
 				<div class="ex-detail-integral-item">
-					<span>激励E积分总额</span>
+					<span>激励e积分总额</span>
 					<p>{{integralB || 0}}</p>
 				</div>
 			</div>
@@ -27,8 +27,8 @@
 						<th>卖家ID</th>
 						<th>买家ID</th>
 						<th>商品名称</th>
-						<th>E积分</th>
-						<th>激励E积分</th>
+						<th>e积分</th>
+						<th>激励e积分</th>
 						<th>来源</th>
 					</tr>
 					<tbody 
@@ -74,7 +74,7 @@ export default {
 			nodateStatus: false,
 			loading: false,
 			modal: {
-				text:'E积分明细',
+				text:'e积分明细',
 				fixed: true
 			},
 		}
@@ -168,7 +168,7 @@ export default {
 .ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203)}
 .ex-detail-integral-item { width: 50%; text-align: center; float: left; color: rgb(4,125,203)}
-.ex-detail-cnt{overflow: auto;}
+.ex-detail-cnt{position: fixed; top: 11rem; bottom: 0; overflow: auto;}
 .ex-detail-cnt-table {width: 120%;}
 .ex-detail-cnt .nodata { margin-left: -20%; }
 </style>

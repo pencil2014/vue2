@@ -15,7 +15,7 @@
 		  <div class="ex-batch-result-item" v-else>
 		  	<i class="iconfont err">&#xe63f;</i>
 		  	<h3>抱歉，审核不通过！</h3>
-		  	<p>批量报单没有通过平台审核！</p>
+		  	<p>{{orderinfo.auditReason}}</p>
 		  </div>
 
 
@@ -151,7 +151,6 @@ export default {
 .ex-batch-result-item i.right{color: #4caf50;}
 .ex-batch-result-item h3 {font-size: 2rem; font-weight: normal;}
 .ex-batch-result-item p{color:#aaafb6; padding-top: 0.5rem; }	
-
 
 .ex-batch-check{background-color: #fff; padding: 1rem; margin: 1.5rem 0;}
 .ex-batch-item {border-bottom: 1px solid #e5e5e5; padding: 1rem 0; overflow: hidden;}
