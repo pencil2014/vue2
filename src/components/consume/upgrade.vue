@@ -95,10 +95,12 @@ import { MessageBox } from 'mint-ui'
 .ex-upgrade-pay .bank:active{background-color: #047dcb;}
 .ex-upgrade-info {background-color: #f4f5f7; padding: 2rem;}
 .ex-upgrade-item {padding-bottom: 2rem;}
-.ex-upgrade-item b{ line-height: 2; }
+.ex-upgrade-item b{ line-height: 2; color: #212a32;}
 .ex-upgrade-item p{ color:#5d646e; line-height: 1.5;  }
 .ex-argument{ vertical-align: middle;  text-align: center; padding: 1.5rem;}
 .ex-argument input{ width: 1.5rem; height: 1.5rem; }
 .ex-argument label{ color: #8f959e; }
 .ex-argument a{ color: #047dcb; }
+
+.ex-upgrade-pay .gray{background: #999;}
 </style>

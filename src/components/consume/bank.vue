@@ -55,11 +55,14 @@
 			</div>
 		</div>	
 		<button type='button' :class="[ 'ex-bank-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
-		<div class="ex-bank-tips">
-			<b>回购说明：</b>
-			<p>1、提现金额每笔不少于100不超过5万</p>
-			<p>2、每笔提现收取5元手续费</p>
+		<div class="ex-bank-tips-wrapper">
+			<div class="ex-bank-tips">
+				<b>回购说明：</b>
+				<p>1、提现金额每笔不少于100不超过5万</p>
+				<p>2、每笔提现收取5元手续费</p>
+			</div>
 		</div>
+		
 	</div>	
 </template>
 
@@ -84,7 +87,8 @@ export default {
 				text:'转存银行',
 				fixed: false
 			},
-			checkRealName: ''
+			checkRealName: '',
+			requestToken: ''
 		}
 	},
 	computed: {
@@ -160,6 +164,22 @@ export default {
 
 	},
 	methods: {
+		// createRequestToken () {
+		// 	let _this = this
+		// 	axios.post('user/createRequestToken',qs.stringify({
+		// 		userId: 0,
+		// 		moduleId: 0
+		// 	})).then(function(res){
+		// 		if(res.data.code === '10000'){
+		// 			_this.requestToken = res.data.data
+		// 		}else{
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
 		back () {
 			this.$router.go(-1)
 		},
@@ -384,12 +404,13 @@ export default {
 .ex-bank-card{display: table;width: 100%;background: #fff;margin-top: 1rem;padding: 1.5rem 1rem;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;line-height: 25px;}
 .ex-bank-card span{display: table-cell;vertical-align: middle;}
 .ex-bank-card span:nth-child(1){width: 20%;}
-.ex-bank-card span:nth-child(2){color: #586485;width: 45%;}
+.ex-bank-card span:nth-child(2){color: #aaafb6;width: 45%;}
 .ex-bank-card span:nth-child(3){text-align: right; color: #999;}
 .ex-bank-card span:nth-child(3) label{color: #f0544d;}
 .ex-bank-btn { margin: 2rem 4%; display: block; width: 92%; background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem; text-align: center; font-size: 1.8rem;}
 .ex-bank-btn:active {background-color: #0470b6;}
 .ex-bank-tips {background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
+.ex-bank-tips-wrapper{background: #fff;padding: 0.1rem 0;}
 .ex-bank-add { text-align: center; height: 5rem; line-height: 5rem; font-size: 1.6rem; margin-top: 2rem; background-color: #fff;}
 
 .ex-header{width: 100%;display: table;height: 4.5rem;background-color: rgb(255,255,255);color: rgb( 33,42,50);box-shadow:1px 1px 0px #ebebeb;position: relative;z-index: 6;}

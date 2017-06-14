@@ -59,7 +59,7 @@ export default {
 			id: '',
 			type: '',
 			modal:{
-				text:'商家报单',
+				text:'单笔报单',
 				fixed: false,
 			},
 		}

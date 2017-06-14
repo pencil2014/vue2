@@ -75,7 +75,7 @@ export default {
 [v-cloak]{display: none;}
 .ex-warpper{width: 100%;color: #212a32;overflow-x: hidden;min-height: 100%;}
 .ex-content{width: 95%;font-size: 1.4rem;margin: 15px auto 56px auto;color: #525e69;}
-.ex-head{border-bottom: solid 1px #ebebeb;line-height: 25px;}
+.ex-head{/*border-bottom: solid 1px #ebebeb;*/line-height: 25px;}
 .ex-head .title {font-size: 2rem;color: #212a32;}
 .ex-head .time {font-size: 1rem;color: #aaafb6;}
 .ex-content .text{margin-top: 10px;}

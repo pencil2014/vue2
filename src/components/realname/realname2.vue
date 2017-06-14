@@ -114,7 +114,8 @@ export default {
 			licenseNumber: '',
 			shopsName: '',
 			submitBtn: false,
-			islrz:false
+			islrz:false,
+			requestToken: ''
 		}
 	},
 	components: {
@@ -132,6 +133,7 @@ export default {
 	},
 	created () {
 		let _this = this;
+		//_this.createRequestToken()
 		Indicator.open({
 		  text: '加载中...',
 		  spinnerType: 'fading-circle'
@@ -150,6 +152,22 @@ export default {
 		})
 	},
 	methods: {
+		createRequestToken () {
+			let _this = this
+			axios.post('user/createRequestToken',qs.stringify({
+				userId: 0,
+				moduleId: 0
+			})).then(function(res){
+				if(res.data.code === '10000'){
+					_this.requestToken = res.data.data
+				}else{
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		back(){
 			this.$router.back();
 		},
@@ -220,6 +238,7 @@ export default {
 				legalPic: _this.imgArray[0],
 				holdPic: _this.imgArray[1],
 				businessLicense: _this.imgArray[2],
+				//requestToken: _this.requestToken
 			})).then(res =>{
 				Indicator.close();
 				if (res.data.code === '10000') {
@@ -283,7 +302,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-realname{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
+.ex-realname{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;position: absolute;}
 .ex-form{margin-top: 15px;}
 .ex-form p{min-height: 30px;line-height: 20px;word-wrap: break-word;padding: 0 0 10px 10px;color: rgb(93,100,110);}
 .ex-field{background: #fff;padding: 0 0 0 15px;}

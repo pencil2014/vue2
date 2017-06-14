@@ -1,7 +1,7 @@
 <template>
 	<div class="ex-rigster-box">
 		<div class="ex-rigster-header">
-			您的好友<span v-if="name !== ''">{{RecommendPhone}}<!-- {{name || userCode}} --></span><span v-else>{{userId}}</span><br>
+			您的好友<span v-if="name !== ''">{{RecommendPhone}}<!-- {{name || userCode}} --></span><!-- <span v-else>{{userId}}</span> --><br>
 			邀请您加入e享时代！
 		</div>
 		<div class="ex-rigster-info">
@@ -9,18 +9,21 @@
 		</div>
 		<div class="ex-rigster-form">
 			<div class="ex-rigster-from-item">
-				<i class="iconfont">&#xe6f2;</i>
+				<!-- <i class="iconfont">&#xe6f2;</i> -->
+				<img src="../../assets/images/Mobile.png" alt="" class="icon">
 				<input type="tel" name="phone"  v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
 			</div>
 			<div class="ex-rigster-from-item">
-				<i class="iconfont">&#xe61e;</i>
+				<!-- <i class="iconfont">&#xe61e;</i> -->
+				<img src="../../assets/images/password.png" alt="" class="icon">
 				<input type="password" name="password"  v-model.trim="password" placeholder="请输入6-20位密码" maxlength="20">
 			</div>
 			<div class="ex-rigster-from-item verycode">
-				<i class="iconfont">&#xe654;</i>
+				<!-- <i class="iconfont">&#xe654;</i> -->
+				<img src="../../assets/images/Codes.png" alt="" class="icon">
 				<input type="tel" name="password"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
-				<a href="javascript:;" @click='getcode' v-show='!countdown'>获取短信验证码</a>
-				<a href="javascript:;"  v-show='countdown'>{{second}}秒</a>
+				<a href="javascript:;" @click='getcode' v-show='!countdown' >获取短信验证码</a>
+				<a href="javascript:;"  v-show='countdown' class="countdown">{{second}}秒</a>
 			</div>
 			<div class="ex-rigster-from-submit">
 				<button type="button" @click="register" :class="{disableBtn:disableBtn}">注 册</button>
@@ -50,7 +53,8 @@ export default {
 			repeatBtn: false,
 			countdown: false,
 			second: 120,
-			RecommendPhone: ''
+			RecommendPhone: '',
+			// requestToken: ''
 		}
 	},
 	computed: {
@@ -61,6 +65,9 @@ export default {
 	created () {
 		this.userId = this.$route.params.code
 		let _this = this
+
+		// _this.createRequestToken()
+
 		axios.post('user/personalbase',qs.stringify({userCode: this.userId}))
 			.then(function(res){
 				Indicator.close()
@@ -83,6 +90,22 @@ export default {
 			})
 	},
 	methods: {
+		// createRequestToken () {
+		// 	let _this = this
+		// 	axios.post('user/createRequestToken',qs.stringify({
+		// 		userId: 0,
+		// 		moduleId: 0
+		// 	})).then(function(res){
+		// 		if(res.data.code === '10000'){
+		// 			_this.requestToken = res.data.data
+		// 		}else{
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
 		getcode () {
 			if (!(/^1\d{10}$/.test(this.phone))) {
 				MessageBox('提示', '手机号码不正确!')
@@ -97,13 +120,11 @@ export default {
 			let _this = this
 			// 验证用户名是否存在
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
-				Indicator.close()
 				if (res.data.msg ==='true') {
+					Indicator.close()
 					MessageBox('提示', "手机号码已经注册!")
 					return
 				} else {
-					_this.countdown = true
-					_this.countdownFn()
 					// 请求验证码接口
 					axios.post('verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
@@ -113,6 +134,8 @@ export default {
 					.then(function(res){
 						Indicator.close()
 						if (res.data.code === '10000') {
+							_this.countdown = true
+							_this.countdownFn()
 							Toast('验证码已经发送，请注意查收！')
 						} else {
 							Toast(res.data.msg)
@@ -178,21 +201,21 @@ export default {
 					MessageBox('提示', '手机号码已经注册!')
 					return
 				} else {
-
 					// 请求注册接口
 					axios.post('user/register',qs.stringify({
 						user_id: _this.id, 
 						login_name: _this.phone,
 						password: _this.password,
-						phone_code: _this.code
+						phone_code: _this.code,
+						// requestToken: _this.requestToken
 					}))
 					.then(function(res){
 						Indicator.close()
 						if (res.data.code === '10000') {
 							window.localStorage.setItem('phone', _this.phone)
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
-							window.localStorage.setItem('token', res.data.data.token)
 							window.localStorage.setItem('usertype', '1')
+							window.localStorage.setItem('token', res.data.data.token)
 							_this.$router.push('/index')
 						} else {
 							Indicator.close()
@@ -224,15 +247,17 @@ export default {
 
 <style scoped>
 .ex-rigster-box{}
-.ex-rigster-header{text-align: center; padding-top: 1.5rem; color:#2eadff; font-size: 1.6rem; }
+.ex-rigster-header{text-align: center; padding-top: 12%; color:#2eadff; font-size: 2rem; }
 .ex-rigster-header span{color: #ffa132;}
-.ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;}
+.ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;font-size: 1.6rem;}
 .ex-rigster-form{margin: 1.5rem;}
-.ex-rigster-from-item {padding:0.5rem; border-bottom:1px solid #e5e5e5; position: relative;}
+.ex-rigster-from-item {padding: 0.5rem; border-bottom:1px solid #e5e5e5; position: relative;height: 4rem;line-height: 4rem;}
 .ex-rigster-from-item i{font-size: 2.2rem; color: #bbb; vertical-align: middle;}
-.ex-rigster-from-item input{ height: 3rem; vertical-align: middle; border: none; width:85%; padding-left: 0.5rem;}
+.ex-rigster-from-item .icon{display: inline-block;width: 2.8rem;vertical-align: middle;}
+.ex-rigster-from-item input{ vertical-align: middle; border: none; width:80%; padding-left: 0.5rem;}
 .verycode input{ width: 60%; }
-.verycode a{position: absolute; right: 0; top: 1.5rem; color: #ffa132; }
+.verycode a{position: absolute; right: 0; color: #ffa132;border: solid 1px;border-radius: 3px;height: 2.6rem;line-height: 2.6rem;top: 1.2rem;padding: 0 1rem; }
+.verycode a.countdown{color: rgb(212,220,222);}
 .ex-rigster-from-submit{margin: 1.5rem 0;}
 .ex-rigster-from-submit button{ height: 4.5rem; width: 100%; border: none; background-color: #58c86b; color: #fff; border-radius: 0.4rem; font-size: 1.6rem;}
 .ex-rigster-from-agreement{ color: #5d646e; margin: 0.2rem 0; }

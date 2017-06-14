@@ -300,7 +300,7 @@ export default {
 .ex-shop-head-banner { height: 100%;background-color: #fff; text-align: center;}
 .ex-shop-head-banner img{ height: 100%; width: 100%;}
 .ex-shop-top { position: absolute; top: 1rem; width: 100%; overflow: hidden;}
-.ex-shop-address {background-color: #13151d; color: #fff; float: left; height: 3rem; line-height: 3rem; border-radius: 2rem; width: 28%; margin: 0 2%; position: relative; overflow: hidden; text-align: center;}
+.ex-shop-address {background-color: rgba(0,0,0,0.6); color: #fff; float: left; height: 3rem; line-height: 3rem; border-radius: 2rem; width: 28%; margin: 0 2%; position: relative; overflow: hidden; text-align: center;}
 .ex-shop-address i {position: absolute;}
 .ex-shop-address .icon1 { left: 0.5rem; font-size: 2rem}
 .ex-shop-address .icon2 { right: 0.5rem; top: 0.3rem; font-size: 2.5rem;}

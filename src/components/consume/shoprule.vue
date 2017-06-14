@@ -1,9 +1,17 @@
 <template>
 	<div class="ex-school">
-		<div class="ex-topbar" @click='gotop'>
+		<!-- <div class="ex-topbar" @click='gotop'>
 			<a href="javascript:;" @click.stop="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家入驻加盟协议</span>
+		</div> -->
+		<div class="ex-header fixed" @click='gotop'>
+			<a href="javascript:void(0);" @click.stop="back">
+				<i class="iconfont">&#xe605;</i>
+				<label>返回</label>
+			</a>
+			<span>商家入驻加盟协议</span>
 		</div>
+
 		<div class="ex-word-cnt">
 		
 	
@@ -199,4 +207,11 @@ export default {
 .ex-school-index b{font-size: 1.6rem;display: inline-block; margin: 1rem 0;}
 .ex-word-cnt .sub {display: block; text-align: center; padding-top: 1rem; font-size: 1.2rem;}
 .ex-word-cnt .bold{font-weight: 600;}
+
+.ex-header{height: 4.5rem; background-color: rgb(255,255,255);color: rgb( 33,42,50); text-align: center;position: relative;display: block; line-height: 4.5rem;box-shadow:1px 1px 0px #ebebeb;z-index: 6;}
+.ex-header a{ position: absolute;left: 0.5rem;top:0;color: rgb(4,125,203);}
+.ex-header i{font-size: 2rem;}
+.ex-header label{font-size: 1.6rem;display: block;float: right;}
+.ex-header span{display: block;font-size: 1.6rem; }
+.fixed{position: fixed;width: 100%;left: 0;top: 0;}
 </style>

@@ -23,15 +23,16 @@
 			<div class="exchange" >
 				<input type="tel" v-model="exchange" placeholder="转换数额">
 			</div>
-			<p class='share'>可用享积分：<span class="red">{{integral | checknum}}</span></p>
+			<p class='share'>可用享积分：<span class="orange">{{integral | checknum}}</span></p>
 		</div>	
 		<button type='button'  :class="[ 'ex-integral-btn', {disableBtn:disableBtn}]" @click='submit'>提 交</button>
-		<div class="ex-integral-tips">
-			<b>操作说明：</b>
-			<p>1、只以100的倍数进行兑换</p>
-			<p>2、享积分操作每笔扣除5%享积分作为税金</p>
-		</div>
-		
+		<div class="ex-integral-tips-wrapper">
+			<div class="ex-integral-tips">
+				<b>操作说明：</b>
+				<p>1、只以100的倍数进行兑换</p>
+				<p>2、享积分操作每笔扣除5%享积分作为税金</p>
+			</div>
+		</div>	
 	</div>	
 </template>
 
@@ -45,7 +46,8 @@ export default {
 			integral: 0,
 			exchange: '',
 			repeatBtn: false,
-			path: '/index'
+			path: '/index',
+			requestToken: ''
 		}
 	},
 	computed: {
@@ -81,6 +83,22 @@ export default {
 		}
 	},
 	methods: {
+		// createRequestToken () {
+		// 	let _this = this
+		// 	axios.post('user/createRequestToken',qs.stringify({
+		// 		userId: 0,
+		// 		moduleId: 0
+		// 	})).then(function(res){
+		// 		if(res.data.code === '10000'){
+		// 			_this.requestToken = res.data.data
+		// 		}else{
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
 		back () {
 			this.$router.push(this.path)
 		},
@@ -154,9 +172,10 @@ export default {
 .ex-integral-cnt .title { font-size: 1.4rem; color: #5d646e; padding: 1rem 0; }
 .ex-integral-cnt .exchange { border-bottom: 1px solid #e5e5e5; padding: 1rem 0; margin-bottom: 1rem;}
 .ex-integral-cnt .exchange input { height: 3rem; padding-left: 1rem; border:none;  border-left:2px solid #2eadff; width: 90%; font-size: 2rem; }
-.ex-integral-cnt .share{font-size: 1.6rem; color: rgb(33,42,50);}
-.ex-integral-cnt .share .red{color: #f0544d;}
+.ex-integral-cnt .share{font-size: 1.6rem;color: #f0544d;}
+.ex-integral-cnt .share .orange{color: #f0544d;}
 .ex-integral-btn {margin: 0 4%; display: block; width: 92%;  background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}
 .ex-integral-btn:active {background-color: #0470b6;}
 .ex-integral-tips { background-color: rgb(255,249,227); color:rgb(93,100,110); margin: 1.5rem 4%; padding: 1rem; line-height: 1.5;  }
+.ex-integral-tips-wrapper{background: #fff;padding: 0.1rem 0;margin-top: 15px;}
 </style>

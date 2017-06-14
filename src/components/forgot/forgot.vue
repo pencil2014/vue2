@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="ex-container">
 	<div class="ex-forgot" v-show="showforgot">
 		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="tologin"><i class="iconfont">&#xe605;</i></a>
@@ -19,8 +19,10 @@
 					<a href="javascript:;" class='getcode' @click='getcode' v-show='!countdown'>获取验证码</a>
 					<a href="javascript:;"  class='getcode' v-show='countdown'>{{second}}秒</a>
 				</div>
-				<button type="button" class="ex-forgot-next" :class="{disableBtn:disableBtn}" @click='gotonext'>下一步</button>
 			</form>
+			<div class="button">
+				<button type="button" class="ex-forgot-next" :class="{disableBtn:disableBtn}" @click='gotonext'>下一步</button>
+			</div>
 		</div>
 	</div>
 	<div class="ex-reset" v-show='!showforgot'>
@@ -31,15 +33,17 @@
 		<HeadTitle :title="modal" @callback="toforgot"></HeadTitle>
 		<form action="" class="ex-login-from">
 				<div class="ex-forgot-from-item">
-					<label for="pwd">新 密 码</label>
+					<label for="pwd">新密码</label>
 					<input type="password" name="pwd" id="pwd" v-model.trim="password" placeholder="请输入新密码" maxlength="20">
 				</div>
 				<div class="ex-forgot-from-item">
 					<label for="confirm">确认密码</label>
 					<input type="password" name="confirm" id="confirm" v-model.trim="confirm" placeholder="请再次输入新密码" maxlength="20">
 				</div>
-				<button type="button" class="ex-forgot-next submit" :class="{disableBtn:checkpwd}" @click='reset'>提交</button>
 		</form>
+		<div class="button">
+			<button type="button" class="ex-forgot-next submit" :class="{disableBtn:checkpwd}" @click='reset'>提交</button>
+		</div>
 	</div>
 </div>	
 </template>
@@ -96,16 +100,19 @@ export default {
 				MessageBox('提示', '手机号码不正确!')
 				return
 			}
+			Indicator.open({
+			  text: '正在获取...',
+			  spinnerType: 'fading-circle'
+			})
 			this.code = ''
 			let _this = this
 			// 验证用户名是否存在
 			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				if (res.data.msg === 'false') {
+					Indicator.close()
 					MessageBox('提示', "手机号码未注册!")
 					return
 				} else {
-					_this.countdown = true
-					_this.countdownFn()
 					// 请求验证码接口
 					axios.post('verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
@@ -113,13 +120,17 @@ export default {
 						smsType: 1
 					}))
 					.then(function(res){
+						Indicator.close()
 						if (res.data.code === '10000') {
+							_this.countdown = true
+							_this.countdownFn()
 							Toast('验证码已经发送，请注意查收！')
 						} else {
 							Toast(res.data.msg)
 						}
 					})
 					.catch(function(){
+						Indicator.close()
 						Toast('连接失败，请检查网络是否正常!')
 					})
 				}
@@ -217,16 +228,21 @@ export default {
 }
 </script>
 <style scoped>
-.ex-forgot{background-color: #f4f5f7; height: 100%;}
-.ex-forgot-tips{ text-align: center; padding: 1rem 0; color: #5d646e; }
-.ex-login-from{background-color: #fff; padding: 0 1rem; padding-top: 0.2rem}
-.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative; margin: 0.5rem 0;}
-.ex-forgot-from-item label{vertical-align: middle;}
-.ex-forgot-from-item input{ height: 4rem; border: none; padding-left: 0.5rem; width: 80%; }
-.ex-forgot-from-item .getcode{ position:absolute; right: 0; top: 1rem;color: #2eadff; }
+.ex-container{height: 100%;}
+.ex-forgot{background-color: #f4f5f7;min-height: 100%;}
+.ex-forgot-tips{ text-align: center; padding: 1rem 0 0 0; color: #5d646e; }
+.ex-login-from{padding: 0 0 0 1rem;background-color: #fff;margin-top: 1rem;}
+.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative;height: 4rem;padding: 0.2rem 0;}
+.ex-login-from .ex-forgot-from-item:last-child{border-bottom: none;}
+.ex-forgot-from-item label{vertical-align: middle;width: 20%;display: inline-block;}
+.ex-forgot-from-item input{ height: 100%; border: none; padding-left: 0.5rem; width: 65%; }
+.ex-forgot-from-item .getcode{ position:absolute; right: 10px;color: #2eadff;color: rgb(4,112,182);border: solid 1px rgb(4,112,182);padding: 0.4rem 1rem;top: 0.8rem;border-radius: 3px;}
 .ex-forgot-next{ height: 4.5rem; font-size: 1.6rem; margin: 1rem 0; width: 100%; border-radius: 0.4rem; background-color: #047dcb; color: #fff;}
 .ex-forgot-next:active{background-color: #0470b6;}
 .submit{background-color: #047dcb;}
 .submit:active{background-color: #0470b6;}
-/*.ex-reset {padding-top: 1rem;}*/
+
+.button{width: 100%;padding: 0 1rem;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
+
+.ex-reset {background-color: #f4f5f7;min-height: 100%;}
 </style>

@@ -47,7 +47,7 @@ new Vue({
 Vue.prototype.$bus = new Vue()  // this.$bus调用
 
 // 配置全局ajax请求域名
-axios.defaults.baseURL = 'https://exsd-test-new.exgj.com.cn/exsd-web/'  // 'https://exsd-test-new.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'http://120.25.77.33:8999/exsd-web/' 'http://www.exgj.com.cn/exsd-web/'
+axios.defaults.baseURL = 'http://192.168.1.201:8080/exsd-web/'  // 'https://exsd-test-new.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'http://120.25.77.33:8999/exsd-web/' 'http://www.exgj.com.cn/exsd-web/'
 
 if (!!window.localStorage.getItem('token')) {
 	axios.defaults.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('token')
@@ -56,7 +56,7 @@ if (!!window.localStorage.getItem('token')) {
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     // 拦截器token无效
-    if (response.data.msg==='token无效') {
+    if (response.data.msg==='token无效' || response.data.msg==='用户不存在') {
       window.localStorage.removeItem('token')
       axios.defaults.headers.common['authorization'] = ''
       router.push('/login')

@@ -75,7 +75,7 @@ export default {
 			transferMoney: '',
 			rangliMoney: '',
 			modal:{
-				text:'商家报单',
+				text:'单笔报单',
 				fixed: false,
 			},
 		}
@@ -217,6 +217,13 @@ export default {
 			})
 		}
 	},
+	// beforeRouteLeave (to,from,next) {
+	// 	if (to.path.indexOf('/declare')>-1) {
+	// 		next('/business')
+	// 	} else {
+	// 		next()
+	// 	}
+	// },
 	destroyed () {
 		Indicator.close()
 	},

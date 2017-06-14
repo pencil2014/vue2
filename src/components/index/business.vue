@@ -39,7 +39,7 @@
 
 		</div> -->
 	
-					<div class="ex-index-header">
+		<div class="ex-index-header">
 			<div class="ex-index-user">
 				<div class="ex-index-logo">
 					<a href="javascript:;" @click="gouser">
@@ -224,9 +224,6 @@
             </div>
         </div>
     </div>
-
-
-
 	</div>	
 </template>
 
@@ -301,8 +298,8 @@ export default {
 				url = this.androidUrl
 			}
 			if (isweixin && this.isAndroid) {
-				this.isDownload = true
-				// window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.exgj.exsd'
+				// this.isDownload = true
+				window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.exgj.exsd'
 			} else {
 				window.location.href= url
 			}
@@ -547,7 +544,7 @@ export default {
 .ex-index-logo,.ex-index-money,.ex-index-switch { float: left; }
 .ex-index-logo {width: 25%; text-align: center; position: relative;}
 .ex-index-logo a{background: #fff url('../../assets/images/head.png')  center; -webkit-background-size: cover;
-background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; border:2px solid #fff; margin-bottom: 0.5rem;}
+background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; /*border:2px solid #fff;*/ margin-bottom: 0.5rem;}
 .ex-index-logo a img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
 .ex-index-logo .vip {position: absolute; top: 4rem; right: 1.2rem;}
@@ -568,9 +565,9 @@ background-size: cover; display: block; width: 5rem; height: 5rem; border-radius
 .ex-index-integral .integral .arrow { position: absolute;right: 0.5rem; font-size: 1.6rem }
 
 .ex-index-table { width: 100%; background-color: #fff; color: #000; }
-.ex-index-table td {border-left: 1px solid #eee; margin-left: -0.05rem; margin-top: -0.05rem; font-size: 1.4rem;}
+.ex-index-table td {border-left: 1px solid #eee; margin-left: -0.05rem; margin-top: -0.05rem; font-size: 1.4rem;width: 50%;}
 .ex-index-table td b{display: block; line-height: 2; font-weight: normal;}
-.ex-index-table td span { color: #999; }
+.ex-index-table td span { color: #848a9b; }
 /*改版css*/
 
 
@@ -628,7 +625,7 @@ b.m10{background-color: #66c476;}*/
 .ex-customer-cnt-item h3{ font-size: 1.4rem; font-weight: normal; padding-bottom: 0.5rem; }
 .ex-customer-cnt-item a{color: #2eadff;}
 .ex-customer-cnt-item p {padding-bottom: 0.5rem;}
-.ex-customer-close { line-height: 5rem; border-top: 1px solid #eee;  font-size: 1.6rem; background-color: #eee; margin-top: 2rem;}
+.ex-customer-close { line-height: 5rem; border-top: 1px solid #eee;  font-size: 1.6rem; margin-top: 2rem;}
 .ex-customer-close:active{background-color: #ddd;}
 
 

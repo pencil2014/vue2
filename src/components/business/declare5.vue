@@ -41,7 +41,7 @@
 		  <div class="ex-declare-result" v-if="check === 3">
 		  	<i class="iconfont del">&#xe63f;</i>
 		  	<h3>已撤销！</h3>
-		  	<p>{{auditOpinion}}</p>
+		  	<p>已撤销</p>
 		  </div>
 		</div>
 		<div class="ex-declare-check">
@@ -89,6 +89,7 @@
 			</div>
 		</div>
 		<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>
+		<!-- <button type='button' v-if="checkdata.status ==='2'" class="ex-declare-revoke" @click='revoke'>删除撤销记录</button> -->
 		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
@@ -110,7 +111,7 @@ export default {
 				url: ''
 			},
 			modal:{
-				text:'商家报单',
+				text:'单笔报单',
 				fixed: false,
 			},
 		}
@@ -141,7 +142,7 @@ export default {
 					_this.auditOpinion = res.data.data.orderAudit.auditOpinion ? res.data.data.orderAudit.auditOpinion : ''
 					_this.checkdata = res.data.data
 				} else {
-					Toast('连接失败，请检查网络是否正常!')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -168,7 +169,33 @@ export default {
 			} else {
 				this.$router.push({ name: 'Declare2', params: { id: this.id}})
 			}
-		}
+		},
+		revoke () {
+			let _this = this;
+			MessageBox({
+			  title: '提示',
+			  message: '确定删除撤销记录?',
+			  showCancelButton: true
+			}).then(action => {
+				if (action === "confirm") {
+					_this.removeRevoke()
+				}
+			})
+		},
+	removeRevoke () {
+		let _this = this
+		axios.post('declaration/get',qs.stringify({id: this.id}))
+			.then(function(res){
+				if (res.data.code === '10000') {
+					_this.$router.go(-1)
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Toast('连接失败，请检查网络是否正常!')
+			})
+	}
 	},
 	filters: {
 		formatTime (value) {
@@ -192,7 +219,7 @@ export default {
 .active {color: #58c86b;}
 .active b{height: 2.5rem; width: 2.5rem; line-height: 2.5rem; background-color: #58c86b; color: #fff;}
 
-.ex-declare-check{background-color: #fff; padding: 1rem;}
+.ex-declare-check{background-color: #fff;padding: 0 0 0 1rem;}
 .ex-declare-result {background: #fff; text-align: center; padding: 2rem 0;}
 .ex-declare-result i{ font-size: 5rem; }
 .ex-declare-result i.suc{color: #ffa100;}
@@ -201,11 +228,15 @@ export default {
 .ex-declare-result h3 {font-size: 2rem; font-weight: normal;}
 .ex-declare-result p{color:#aaafb6; padding-top: 0.5rem; }
 .ex-declare-cnt {background-color: #fff; margin: 1.5rem 0; padding: 0 0.5rem;}
-.ex-declare-item {border-bottom: 1px solid #e5e5e5; padding: 1rem 0; overflow: hidden;}
+.ex-declare-item {border-bottom: 1px solid #e5e5e5; padding: 1rem 1rem 1rem 0; overflow: hidden;}
 .ex-declare-item b{font-weight: normal; color:#aaafb6; }
 .ex-declare-item b,.ex-declare-item .img {float: right;}
 .ex-declare-item .img img{ width: 6rem; height: auto;  margin-left: 1rem;}
 
+.ex-declare-check .ex-declare-item:last-child{border-bottom: none;}
+
 .ex-declare-btn {display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; position: fixed;bottom: 1rem; left: 4%;}
 .ex-declare-btn:active{background-color:#0470b6; }
+
+.ex-declare-revoke { display: block; margin: 2rem auto; width: 90%; height: 5rem; background-color: #f0544d; color: #fff; border-radius: 0.6rem; font-size: 1.6rem;}
 </style>

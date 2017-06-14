@@ -110,7 +110,7 @@ export default {
 				url: ''
 			},
 			modal:{
-				text:'商家报单',
+				text:'单笔报单',
 				fixed: false,
 			},
 		}

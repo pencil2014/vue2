@@ -5,13 +5,15 @@
 		</div>
 		<div class="ex-login-cnt">
 			<form class="ex-login-from">
+				<label for="" class="title">输入手机号</label>
 				<div class="ex-login-from-item">
-					<i class="iconfont">&#xe6f2;</i>
+					<!-- <i class="iconfont">&#xe6f2;</i> -->
 					<input type="tel" name="phone" @focus='hidecopy' @blur='showcopy' v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
 					<i class="iconfont clear" v-show='phone !==""' @click='clear(1)'>&#xe6b3;</i>
 				</div>
+				<label for="" class="title">输入密码</label>
 				<div class="ex-login-from-item">
-					<i class="iconfont">&#xe61e;</i>
+					<!-- <i class="iconfont">&#xe61e;</i> -->
 					<input type="password" name="password" @focus='hidecopy' @blur='showcopy'  v-model.trim="password" placeholder="请输入密码" maxlength="20">
 					<i class="iconfont clear" v-show='password !==""' @click='clear(2)'>&#xe6b3;</i>
 				</div>
@@ -122,13 +124,13 @@ export default {
 							Toast(res.data.msg)
 						}
 					})
-					.catch(function(){
+					.catch(function(err){
 						Indicator.close()
 						_this.repeatBtn = false
 						Toast('连接失败，请检查网络是否正常!')
 					})
 				}
-			}).catch(function(){
+			}).catch(function(err){
 				Indicator.close()
 				_this.repeatBtn = false 
 				Toast('连接失败，请检查网络是否正常!')
@@ -151,12 +153,12 @@ export default {
 }	
 </script>
 <style scoped>
-.ex-login{ min-height:100%; background: url('../../assets/images/logo.jpg') no-repeat fixed center; background-size: cover; }
+.ex-login{ min-height:100%; background: url('../../assets/images/logo.jpg') no-repeat fixed center; background-size: cover;  position: absolute;}
 .ex-login-logo{ text-align: center; }
-.ex-login-cnt{margin:0 2rem; background-color: rgba(255,255,255,0.6); border-radius: 0.6rem; padding: 2rem 1rem ;}
-.ex-login-from-item { background-color: rgba(255, 255, 255, 1); padding: 0.5rem; margin-bottom: 1rem; border-radius: 0.4rem; position: relative; }
+.ex-login-cnt{margin:0 2rem; background-color: rgba(255,255,255,0.6); border-radius: 0.6rem; padding:0.5rem  1.5rem 1.5rem;}
+.ex-login-from-item { background-color: rgba(255, 255, 255, 1); padding: 0.5rem; border-radius: 0.4rem; position: relative; }
 .ex-login-from-item i{ font-size: 2.2rem; vertical-align: middle; color: #657f84; padding-left: 0.5rem;}
-.ex-login-from-item .clear { position: absolute; right: 1rem; top: 1rem; color: #eee;}
+.ex-login-from-item .clear { position: absolute; right: 1rem; top: 1rem; color: rgb(212,220,222);}
 
 .ex-login-from-item input{ height:3rem;border: none; width: 84%;  vertical-align: middle; background-color: transparent;color: #657f84;  font-size: 1.6rem;}
 .ex-login-from-item input::-webkit-input-placeholder{color: #eee;}
@@ -172,4 +174,5 @@ export default {
 .ex-login-register {position: absolute; bottom: 3rem; width: 100%; text-align: center; color: #fff;}
 .ex-login-register a {font-size: 1.4rem; padding: 0 1rem;  color: #fff; }
 
+.ex-login-from .title{color: rgb(101,127,132);line-height: 36px;font-size: 1.4rem;}
 </style>

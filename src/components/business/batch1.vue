@@ -122,14 +122,24 @@ export default {
 			this.order.forEach( function(element, index) {
 				if (element.userCode !=='' && element.phone !== '' &&  element.consumptionMoney > 0) {
 					let single = element.consumptionMoney * _this.rate + ''
-					single = single.indexOf('.') > -1 ? (single.substring(0,single.indexOf(".") + 3)*1).toFixed(2) : single
+					if (single.indexOf('.') > -1 && single.split('.')[1].length > 4) {
+						single = (single * 1).toFixed(2)
+					} else {
+						single = single.indexOf('.') > -1 ? (single.substring(0,single.indexOf(".") + 3)*1).toFixed(2) : single
+					}
+					
 					total += (single - 0)
 				} else {
 					total += 0
 				}
 			})
 			total = total + ''
-			return  total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
+			if (total.indexOf('.') > -1 && total.split('.')[1].length > 4) {
+				return (total * 1).toFixed(2)
+			} else {
+				return  total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
+			}
+			
 		},
 		valid () {
 			let array =  this.order.filter(function(element,index) {
