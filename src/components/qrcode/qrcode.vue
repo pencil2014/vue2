@@ -92,7 +92,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-qrcode{width: 100%;background: #f4f5f7;color: #5d646e;overflow-x: hidden;height: 100%;min-height: 100%;}
+.ex-qrcode{width: 100%;color: #5d646e;overflow-x: hidden;height: 100%;min-height: 100%;}
 .ex-qrcode-wrapper{margin-top: 50px;width: 100%;text-align: center;}
 .ex-qrcode-wrapper p{margin-top: 20px;}
 .ex-qrcode-wrapper .code #qrcode{width: 230px;margin: auto;}

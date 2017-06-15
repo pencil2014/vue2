@@ -230,9 +230,9 @@ export default {
 <style scoped>
 .ex-container{height: 100%;}
 .ex-forgot{background-color: #f4f5f7;min-height: 100%;}
-.ex-forgot-tips{ text-align: center; padding: 1rem 0 0 0; color: #5d646e; }
+.ex-forgot-tips{ text-align: left; padding: 1rem 0 0 1rem; color: #5d646e; }
 .ex-login-from{padding: 0 0 0 1rem;background-color: #fff;margin-top: 1rem;}
-.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative;height: 4rem;padding: 0.2rem 0;}
+.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative;height: 3rem;padding: 0.5rem 0;}
 .ex-login-from .ex-forgot-from-item:last-child{border-bottom: none;}
 .ex-forgot-from-item label{vertical-align: middle;width: 20%;display: inline-block;}
 .ex-forgot-from-item input{ height: 100%; border: none; padding-left: 0.5rem; width: 65%; }

@@ -402,7 +402,12 @@ export default {
 		},
 		getuserinfo () {
 			let _this = this
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			axios.post('user/personal',qs.stringify({})).then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
 					window.localStorage.setItem('businessinfo', JSON.stringify(res.data.data))
@@ -411,12 +416,18 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Toast('连接失败，请检查网络是否正常!')
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		getsysIndex () {
 			let _this = this
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
+				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.sysData = res.data.data
 					// window.localStorage.setItem('sysData', JSON.stringify(res.data.data))
@@ -425,7 +436,8 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-					Toast('连接失败，请检查网络是否正常!')
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		getexamine () {

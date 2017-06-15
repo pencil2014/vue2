@@ -29,7 +29,7 @@
 				<button type="button" @click="register" :class="{disableBtn:disableBtn}">注 册</button>
 			</div>
 			<div class="ex-rigster-from-agreement">
-				<input type="checkbox" name="agreement" v-model='agreement'> 我已阅读并同意 <router-link to="/RegisterRule">《“e享时代”会员注册协议》</router-link>
+				<input type="checkbox" name="agreement" v-model='agreement'> 我已阅读并同意 <router-link to="/registerrule">《“e享时代”会员注册协议》</router-link>
 			</div>
 		</div>
 	</div>
@@ -246,10 +246,10 @@ export default {
 </script>
 
 <style scoped>
-.ex-rigster-box{}
-.ex-rigster-header{text-align: center; padding-top: 12%; color:#2eadff; font-size: 2rem; }
+.ex-rigster-box{ position: absolute; }
+.ex-rigster-header{text-align: center; padding-top: 10%; color:#2eadff; font-size: 2rem; }
 .ex-rigster-header span{color: #ffa132;}
-.ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;font-size: 1.6rem;}
+.ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;font-size: 1.4rem;}
 .ex-rigster-form{margin: 1.5rem;}
 .ex-rigster-from-item {padding: 0.5rem; border-bottom:1px solid #e5e5e5; position: relative;height: 4rem;line-height: 4rem;}
 .ex-rigster-from-item i{font-size: 2.2rem; color: #bbb; vertical-align: middle;}

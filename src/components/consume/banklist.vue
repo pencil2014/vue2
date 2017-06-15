@@ -10,7 +10,7 @@
 				<div class="bankinfo" @click='gotoedit(item.id,item.status)'>
 					<p>{{item.banks}}</p>
 					<!-- <p>{{item.accountName}}</p> -->
-					<p>{{item.cardNo | card}}</p>
+					<p class="cardNo">{{item.cardNo | card}}</p>
 					<p class="right" >{{item.status | status}}</p>
 					<span class="goto" v-if='item.status !== "1"'><i class="iconfont">&#xe606;</i></span>
 				</div>
@@ -235,6 +235,7 @@ export default {
 .ex-banklist {overflow-x: hidden;min-height: 100%;padding-bottom: 56px;background-color: #f4f5f7;color: #586485; font-size: 1.4rem;}
 .ex-banklist-item	{background-color: #fff; margin: 1.5rem 0; padding: 1rem;}
 .ex-banklist-item	.bankinfo { border-bottom: 1px solid #e5e5e5; padding: 0.5rem 0;line-height: 1.5; position: relative; overflow: hidden; }
+.ex-banklist-item	.bankinfo .cardNo{color: #aaafb6;}
 .ex-banklist-item	.bankinfo  .right {position: absolute;right: 4rem;line-height: 2rem;top: 50%;margin-top: -1rem;color: red;}
 .ex-banklist-item	.bankinfo .goto{ position: absolute; right: 1rem; top: 1rem; font-size: 2rem; }
 .bankaction { padding-top: 1rem; overflow: auto;}

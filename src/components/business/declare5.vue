@@ -89,7 +89,7 @@
 			</div>
 		</div>
 		<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>
-		<!-- <button type='button' v-if="checkdata.status ==='2'" class="ex-declare-revoke" @click='revoke'>删除撤销记录</button> -->
+		<button type='button' v-if="checkdata.status ==='2'" class="ex-declare-revoke" @click='revoke'>删除撤销记录</button>
 		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
@@ -184,10 +184,15 @@ export default {
 		},
 	removeRevoke () {
 		let _this = this
-		axios.post('declaration/get',qs.stringify({id: this.id}))
+		axios.post('declaration/deleteRevoked',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
-					_this.$router.go(-1)
+					MessageBox({
+					  title: '提示',
+					  message: '删除成功！'
+					}).then(action => {
+						_this.$router.go(-1)
+					})
 				} else {
 					Toast(res.data.msg)
 				}

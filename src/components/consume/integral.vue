@@ -46,8 +46,8 @@ export default {
 			integral: 0,
 			exchange: '',
 			repeatBtn: false,
-			path: '/index',
-			requestToken: ''
+			path: '/index'
+			// requestToken: ''
 		}
 	},
 	computed: {
@@ -81,6 +81,9 @@ export default {
 		if (path) {
 			this.path = path
 		}
+
+		// 获取requestToken
+		//this.createRequestToken()
 	},
 	methods: {
 		// createRequestToken () {
@@ -95,7 +98,6 @@ export default {
 		// 			Toast(res.data.msg)
 		// 		}
 		// 	}).catch(function(){
-		// 		Indicator.close()
 		// 		Toast('连接失败，请检查网络是否正常!')
 		// 	})
 		// },
@@ -171,7 +173,7 @@ export default {
 .ex-integral-cnt {background-color: #fff; margin: 2rem 0; padding:2rem 1rem;}
 .ex-integral-cnt .title { font-size: 1.4rem; color: #5d646e; padding: 1rem 0; }
 .ex-integral-cnt .exchange { border-bottom: 1px solid #e5e5e5; padding: 1rem 0; margin-bottom: 1rem;}
-.ex-integral-cnt .exchange input { height: 3rem; padding-left: 1rem; border:none;  border-left:2px solid #2eadff; width: 90%; font-size: 2rem; }
+.ex-integral-cnt .exchange input { height: 3rem; border:none;  /*border-left:2px solid #2eadff;*/ width: 90%; font-size: 2rem; }
 .ex-integral-cnt .share{font-size: 1.6rem;color: #f0544d;}
 .ex-integral-cnt .share .orange{color: #f0544d;}
 .ex-integral-btn {margin: 0 4%; display: block; width: 92%;  background-color: #047dcb; color: #fff; height: 5rem;line-height:5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.8rem;}

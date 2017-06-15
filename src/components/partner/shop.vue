@@ -93,7 +93,7 @@
 								<h3 class='name'>{{item.shopsName}}</h3>
 								<a href="javascript:;" class='classify' @click='gotoclassify(item.classificationId)'>- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
-								<p class='distance'>{{item.distance | formatdis}}</p>
+								<p class='distance' v-show='item.distance/1000 <= 15'>{{item.distance | formatdis}}</p>
 							</div>
 						</li>
 					</ul>
@@ -113,13 +113,13 @@
 
 import axios from "axios"
 import qs from "qs"
-import {Loadmore, InfiniteScroll, Indicator, Toast, Swipe, SwipeItem  } from 'mint-ui'
+import {MessageBox, Loadmore, InfiniteScroll, Indicator, Toast, Swipe, SwipeItem  } from 'mint-ui'
 import appNav from "../common/tabbar.vue"
 export default {
 	data(){
 		return {
 			imgurl: [,,],
-			address : '北京',
+			address : '定位中', // 
 			localshop: [],
 			loading: false,
 			page: 1,
@@ -128,8 +128,8 @@ export default {
 			nodateStatus: false,
 			keyword: '',
 			currentPosition: {
-				latitude: '39.915',
-				longitude: '116.404'
+				latitude: '', // 39.915
+				longitude: '' // 116.404
 			},
 			id: 2,
 			showsearch: false
@@ -163,9 +163,23 @@ export default {
 		},
 		getcityid () {
 			let _this = this
+			if (!this.currentPosition.latitude) {
+				this.address = '北京'
+				this.currentPosition.latitude = '39.915'
+				this.currentPosition.longitude = '116.404'
+				// MessageBox({
+				//   title: '提示',
+				//   message: '定位失败，是否去手动定位？',
+				//   showCancelButton: true
+				// }).then(action => {
+				// 	if (action === "confirm") {
+				// 		_this.$router.push('/city')
+				// 	}
+				// })
+			}
 			axios.post('getAddressByLngAndLat',qs.stringify({
-				lat: this.currentPosition.latitude,
-				lng: this.currentPosition.longitude
+				lat: this.currentPosition.latitude ,
+				lng: this.currentPosition.longitude 
 			}))
 			.then(function(res){
 				if (res.data.code === '10000') {

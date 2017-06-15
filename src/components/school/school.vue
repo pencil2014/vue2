@@ -6,7 +6,7 @@
 		<div class="ex-word-cnt">
 		<b class="sub">以打造“消费生态圈”为使命</b>
 		<p class="logo"><img src="../../assets/images/exLogo.png" alt=""></p>
-		<h3>e享时代创新消费商业服务平台基本规则</h3>
+		<h3>"e享时代"创新消费商业服务平台基本规则</h3>
 		<div class="ex-school-index">
 			<b>目   录</b>
 			<p @click='go("one")'>一、前言</p>
@@ -199,7 +199,7 @@ export default {
 .ex-school{padding-bottom: 3rem;}
 .ex-school-title { height: 5rem; line-height: 5rem; text-align: center; font-size: 2rem; border-bottom: 1px solid #eee; width: 100%; position: fixed; top: 0; left: 0;  background-color: #047dcb; color: #fff;}
 .ex-word-cnt {margin: 0 4%; padding:5rem 0;}
-.ex-word-cnt .logo{ text-align: center; padding-top: 2rem; }
+.ex-word-cnt .logo{ text-align: center; padding-top: 2rem;  text-indent: 0;}
 .ex-word-cnt .logo img{ width: 40%; }
 .ex-word-cnt h3{text-align: center; font-size: 2rem; padding: 2rem 0;}
 .ex-word-cnt b.subtitle{font-size: 1.6rem;display: inline-block; margin: 1rem 0;}

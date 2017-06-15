@@ -18,7 +18,8 @@
 					<i class="iconfont clear" v-show='password !==""' @click='clear(2)'>&#xe6b3;</i>
 				</div>
 				<div class="ex-login-from-submit">
-					<button type="button" @click="login" :class="{disableBtn:disableBtn}">登 录</button>
+					<!-- <button type="button" @click="login" :class="{disableBtn:disableBtn}">登 录</button> -->
+					<button type="button" @click="login">登 录</button>
 				</div>
 				<!-- <div class="ex-login-cnt-link">
 					<router-link to="/register" >注册账号</router-link>
@@ -153,14 +154,14 @@ export default {
 }	
 </script>
 <style scoped>
-.ex-login{ min-height:100%; background: url('../../assets/images/logo.jpg') no-repeat fixed center; background-size: cover;  position: absolute;}
+.ex-login{ min-height:100%; background: url('../../assets/images/logo.jpg') no-repeat fixed center; background-size: cover;  position: absolute;width: 100%;}
 .ex-login-logo{ text-align: center; }
-.ex-login-cnt{margin:0 2rem; background-color: rgba(255,255,255,0.6); border-radius: 0.6rem; padding:0.5rem  1.5rem 1.5rem;}
+.ex-login-cnt{margin:0 2rem; background-color: rgb(226,241,251); border-radius: 0.6rem; padding:0.5rem  1.5rem 4rem;}
 .ex-login-from-item { background-color: rgba(255, 255, 255, 1); padding: 0.5rem; border-radius: 0.4rem; position: relative; }
 .ex-login-from-item i{ font-size: 2.2rem; vertical-align: middle; color: #657f84; padding-left: 0.5rem;}
 .ex-login-from-item .clear { position: absolute; right: 1rem; top: 1rem; color: rgb(212,220,222);}
 
-.ex-login-from-item input{ height:3rem;border: none; width: 84%;  vertical-align: middle; background-color: transparent;color: #657f84;  font-size: 1.6rem;}
+.ex-login-from-item input{ height:3rem;border: none; width: 84%;  vertical-align: middle; background-color: transparent;color: #657f84;  font-size: 1.6rem;text-indent: 1rem;}
 .ex-login-from-item input::-webkit-input-placeholder{color: #eee;}
 .ex-login-from-submit{margin-top: 1.5rem; }
 .ex-login-from-submit button {border: none; height: 5rem; width: 100%; border-radius: 0.4rem; background: #6bc8ec; box-shadow: 0px 1px 1px rgba(0,0,0,0.2); color: #fff; font-size: 1.8rem;}

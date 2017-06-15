@@ -87,8 +87,8 @@ export default {
 				text:'转存银行',
 				fixed: false
 			},
-			checkRealName: '',
-			requestToken: ''
+			checkRealName: ''
+			// requestToken: ''
 		}
 	},
 	computed: {
@@ -162,6 +162,9 @@ export default {
 					Toast('连接失败，请检查网络是否正常!')
 			})
 
+		// 获取requestToken
+		//this.createRequestToken()
+
 	},
 	methods: {
 		// createRequestToken () {
@@ -176,7 +179,6 @@ export default {
 		// 			Toast(res.data.msg)
 		// 		}
 		// 	}).catch(function(){
-		// 		Indicator.close()
 		// 		Toast('连接失败，请检查网络是否正常!')
 		// 	})
 		// },
@@ -404,6 +406,7 @@ export default {
 .ex-bank-card{display: table;width: 100%;background: #fff;margin-top: 1rem;padding: 1.5rem 1rem;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;line-height: 25px;}
 .ex-bank-card span{display: table-cell;vertical-align: middle;}
 .ex-bank-card span:nth-child(1){width: 20%;}
+.ex-bank-card span:nth-child(2) .name{color: rgb(88,100,133);}
 .ex-bank-card span:nth-child(2){color: #aaafb6;width: 45%;}
 .ex-bank-card span:nth-child(3){text-align: right; color: #999;}
 .ex-bank-card span:nth-child(3) label{color: #f0544d;}
