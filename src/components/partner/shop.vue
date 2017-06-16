@@ -164,7 +164,7 @@ export default {
 		getcityid () {
 			let _this = this
 			if (!this.currentPosition.latitude) {
-				this.address = '北京'
+				this.address = '定位失败'
 				this.currentPosition.latitude = '39.915'
 				this.currentPosition.longitude = '116.404'
 				// MessageBox({

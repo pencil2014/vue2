@@ -38,7 +38,7 @@
 				</div>
 				<div class="ex-declare-cnt-item">
 					<span>*转款金额</span>
-					<input type="text" placeholder="请输入实际转款金额（含批量款）" v-model.trim='transferMoney' maxlength="15">
+					<input type="text" placeholder="请输入实际转款金额（含批量款）" v-model.trim='transferMoney' maxlength="11">
 				</div>
 			</div>
 			<div class="img">
@@ -131,7 +131,7 @@ export default {
 			  confirmButtonText: '退出'
 			}).then(action => {
 				if (action === "confirm") {
-					_this.$router.back();
+					_this.$router.push('/order')
 				}
 			})
 		},
