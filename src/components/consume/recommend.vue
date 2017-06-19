@@ -147,9 +147,12 @@ export default {
 </script>
 
 <style scoped>
+.ex-recommend {background-color: #f4f5f7;min-height: 100%;}
 .ex-record-box {position: fixed; top: 0; width: 100%; z-index: 2; }
 .ex-record-cnt {padding-top: 5rem}
-.ex-recommend-tips {background-color: #eff0f7; font-size: 1.4rem; padding:1rem 0.8rem; color: #212a32; height: 3rem; line-height: 3rem;}
+.ex-recommend-tips {background-color: #f4f5f7;font-size: 1.4rem; padding:1rem 0.8rem; color: #212a32; height: 3rem; line-height: 3rem;}
 .ex-recommend-tips .id{padding-right: 3rem;}
 .ex-recommend-tips span b{ font-weight: normal; color: #ffa132; }
+.table{background: #fff;}
+.table tr:last-child{border-bottom:none;}
 </style>

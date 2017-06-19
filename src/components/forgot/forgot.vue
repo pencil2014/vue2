@@ -11,7 +11,12 @@
 			<form action="" class="ex-login-from">
 				<div class="ex-forgot-from-item">
 					<label for="phone">手机号</label>
-					<input type="text" name="phone" id="phone"  v-model.trim="phone" placeholder="请输入注册手机号" maxlength="11">
+					<input type="tel" name="phone" id="phone"  v-model.trim="phone" placeholder="请输入注册手机号" maxlength="11">
+				</div>
+				<div class="ex-forgot-from-item">
+					<label>图形验证码</label>
+					<input type="text" v-model.trim="imgcode" placeholder="请输入图形验证码" maxlength="20">
+					<img :src="imgurl" alt="" class="imgurl" @click="change">
 				</div>
 				<div class="ex-forgot-from-item">
 					<label for="code">验证码</label>
@@ -57,6 +62,7 @@ export default {
 		return {
 			phone: '',
 			code: '',
+			imgcode: '',
 			second: 120,
 			countdown: false,
 			repeatBtn: false,
@@ -67,11 +73,12 @@ export default {
 				text:'忘记密码',
 				fixed: false,
 			},
+			num: new Date().getTime()
 		}
 	},
 	computed: {
 		disableBtn () {
-			return (this.phone && this.code) ? false : true 
+			return (this.phone && this.code && this.imgcode) ? false : true 
 		},
 		checkpwd () {
 			let check = (this.password === this.confirm) ? false : true
@@ -80,7 +87,10 @@ export default {
 			} else {
 				return false
 			}
-		}
+		},
+		imgurl () {
+			return axios.defaults.baseURL + 'user/validateCode?rnd=' + this.num
+		},
 	},
 	created () {
 		let phone = window.localStorage.getItem('phone')
@@ -89,6 +99,10 @@ export default {
 		}
 	},
 	methods: {
+		change () {
+			this.num = new Date().getTime()
+			this.imgurl = axios.defaults.baseURL + 'user/validateCode?rnd='　+　this.num;
+		},
 		tologin () {
 			this.$router.push('/login')
 		},
@@ -98,6 +112,10 @@ export default {
 		getcode () {
 			if (!(/^1\d{10}$/.test(this.phone))) {
 				MessageBox('提示', '手机号码不正确!')
+				return
+			}
+			if(!this.imgcode){
+				MessageBox('提示', '图形验证码不能为空!')
 				return
 			}
 			Indicator.open({
@@ -117,7 +135,8 @@ export default {
 					axios.post('verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
 						codeType: 8,
-						smsType: 1
+						smsType: 1,
+						vcode: _this.imgcode
 					}))
 					.then(function(res){
 						Indicator.close()
@@ -126,6 +145,8 @@ export default {
 							_this.countdownFn()
 							Toast('验证码已经发送，请注意查收！')
 						} else {
+							_this.change()
+							_this.imgcode = ''
 							Toast(res.data.msg)
 						}
 					})
@@ -156,6 +177,10 @@ export default {
 			}
 			if (!(/^1\d{10}$/.test(this.phone))) {
 				MessageBox('提示', '手机号码不正确!')
+				return
+			}
+			if(!this.imgcode){
+				MessageBox('提示', '图形验证码不能为空!')
 				return
 			}
 			if (!(/^\d{4,10}$/.test(this.code))) {
@@ -237,6 +262,8 @@ export default {
 .ex-forgot-from-item label{vertical-align: middle;width: 20%;display: inline-block;}
 .ex-forgot-from-item input{ height: 100%; border: none; padding-left: 0.5rem; width: 65%; }
 .ex-forgot-from-item .getcode{ position:absolute; right: 10px;color: #2eadff;color: rgb(4,112,182);border: solid 1px rgb(4,112,182);padding: 0.4rem 1rem;top: 0.8rem;border-radius: 3px;}
+.ex-forgot-from-item .imgurl{ position: absolute;right: 1rem;top: 50%;margin-top: -11px; }
+
 .ex-forgot-next{ height: 4.5rem; font-size: 1.6rem; margin: 1rem 0; width: 100%; border-radius: 0.4rem; background-color: #047dcb; color: #fff;}
 .ex-forgot-next:active{background-color: #0470b6;}
 .submit{background-color: #047dcb;}

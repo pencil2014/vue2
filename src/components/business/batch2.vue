@@ -52,7 +52,7 @@
 				<tr v-for='(item,index) in orderinfo.orderList'>
 					<td>{{index+1}}</td>
 					<td>{{item.userCode}}</td>
-					<td>{{item.phone}}</td>
+					<td>{{item.phone | formatPhone}}</td>
 					<td>{{item.consumptionMoney | formatMoney}}</td>
 				</tr>
 			</table>
@@ -129,6 +129,13 @@ export default {
 		},
 		formatMoney (value) {
 			return (value*1).toFixed(2)
+		},
+		formatPhone (value) {
+			if (!value) {
+				return ''
+			} else {
+				return value.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')
+			}
 		}
 	},
 	beforeRouteLeave (to,from,next) {

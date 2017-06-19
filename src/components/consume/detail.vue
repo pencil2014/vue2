@@ -156,5 +156,7 @@ export default {
 .ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203)}
 /*.ex-detail-cnt { padding-top: 12rem; }*/
-.ex-detail-cnt{position: fixed; top: 11rem; bottom: 0; overflow: auto;}
+.ex-detail-cnt{position: fixed; top: 11rem; bottom: 0; overflow: auto;background-color: #f4f5f7;}
+.ex-detail-cnt .table{background: #fff;}
+.table tr:last-child {border-bottom: none;}
 </style>

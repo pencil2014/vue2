@@ -18,10 +18,16 @@
 				<img src="../../assets/images/password.png" alt="" class="icon">
 				<input type="password" name="password"  v-model.trim="password" placeholder="请输入6-20位密码" maxlength="20">
 			</div>
+			<div class="ex-rigster-from-item imgCodes-item">
+				<!-- <i class="iconfont">&#xe654;</i> -->
+				<img src="../../assets/images/imgCodes.png" alt="" class="icon">
+				<input type="text" v-model.trim="imgcode" placeholder="请输入图形验证码" maxlength="10">
+				<img :src="imgurl" alt="" class="imgurl" @click='change'>
+			</div>
 			<div class="ex-rigster-from-item verycode">
 				<!-- <i class="iconfont">&#xe654;</i> -->
 				<img src="../../assets/images/Codes.png" alt="" class="icon">
-				<input type="tel" name="password"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
+				<input type="tel" name="verycode"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
 				<a href="javascript:;" @click='getcode' v-show='!countdown' >获取短信验证码</a>
 				<a href="javascript:;"  v-show='countdown' class="countdown">{{second}}秒</a>
 			</div>
@@ -54,40 +60,42 @@ export default {
 			countdown: false,
 			second: 120,
 			RecommendPhone: '',
+			imgcode: '',
+			num: new Date().getTime()
 			// requestToken: ''
 		}
 	},
 	computed: {
+		imgurl () {
+			return axios.defaults.baseURL + 'user/validateCode?rnd=' + this.num
+		},
 		disableBtn () {
-			return (this.phone && this.password && this.code  && this.agreement) ? false : true 
+			return (this.phone && this.password && this.code  && this.agreement && this.imgcode) ? false : true 
 		}
 	},
 	created () {
 		this.userId = this.$route.params.code
 		let _this = this
-
 		// _this.createRequestToken()
-
 		axios.post('user/personalbase',qs.stringify({userCode: this.userId}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-					_this.id = res.data.data.id
-					_this.userCode = res.data.data.userCode
-					_this.name = res.data.data.userName
-					_this.RecommendPhone = res.data.data.phone
-				} else {
-					MessageBox('提示', res.data.msg).then(action =>{
-				if(action === "confirm"){
-					_this.$router.push('/register')
-				}
-			});
-					
-				}
-			})
-			.catch(function(){
-				Toast('连接失败，请检查网络是否正常!')
-			})
+		.then(function(res){
+			Indicator.close()
+			if (res.data.code === '10000') {
+				_this.id = res.data.data.id
+				_this.userCode = res.data.data.userCode
+				_this.name = res.data.data.userName
+				_this.RecommendPhone = res.data.data.phone
+			} else {
+				MessageBox('提示', res.data.msg).then(action =>{
+					if(action === "confirm"){
+						_this.$router.push('/register')
+					}
+				});
+			}
+		})
+		.catch(function(){
+			Toast('连接失败，请检查网络是否正常!')
+		})
 	},
 	methods: {
 		// createRequestToken () {
@@ -106,10 +114,18 @@ export default {
 		// 		Toast('连接失败，请检查网络是否正常!')
 		// 	})
 		// },
+		change () {
+			this.num = new Date().getTime()
+			this.imgurl = axios.defaults.baseURL + 'user/validateCode?rnd='　+　this.num;
+		},
 		getcode () {
 			if (!(/^1\d{10}$/.test(this.phone))) {
 				MessageBox('提示', '手机号码不正确!')
 				return
+			}
+			if (!this.imgcode) {
+				MessageBox('提示', '图形验证码不能为空!')
+				return 
 			}
 			this.second = 120
 			this.code = ''
@@ -129,7 +145,8 @@ export default {
 					axios.post('verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
 						codeType: 1,
-						smsType: 1
+						smsType: 1,
+						vcode: _this.imgcode
 					}))
 					.then(function(res){
 						Indicator.close()
@@ -138,6 +155,8 @@ export default {
 							_this.countdownFn()
 							Toast('验证码已经发送，请注意查收！')
 						} else {
+							_this.change()
+							_this.imgcode = ''
 							Toast(res.data.msg)
 						}
 					})
@@ -177,6 +196,10 @@ export default {
 			if (!(/.{6,20}/.test(this.password))) {
 				MessageBox('提示', '密码长度为6~20位！')
 				return
+			}
+			if (!this.imgcode) {
+				MessageBox('提示', '图形验证码不能为空!')
+				return 
 			}
 			if (!this.code) {
 				MessageBox('提示', '验证码不能为空！')
@@ -246,7 +269,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-rigster-box{ position: absolute; }
+.ex-rigster-box{ position: absolute; width: 100%;}
 .ex-rigster-header{text-align: center; padding-top: 10%; color:#2eadff; font-size: 2rem; }
 .ex-rigster-header span{color: #ffa132;}
 .ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;font-size: 1.4rem;}
@@ -255,6 +278,10 @@ export default {
 .ex-rigster-from-item i{font-size: 2.2rem; color: #bbb; vertical-align: middle;}
 .ex-rigster-from-item .icon{display: inline-block;width: 2.8rem;vertical-align: middle;}
 .ex-rigster-from-item input{ vertical-align: middle; border: none; width:80%; padding-left: 0.5rem;}
+.ex-rigster-from-item.imgCodes-item{}
+.ex-rigster-from-item.imgCodes-item .icon{width: 2.2rem;padding: 0 0.3rem;}
+.ex-rigster-from-item.imgCodes-item .imgurl{position: absolute;right: 0;top: 50%;margin-top: -11px;}
+
 .verycode input{ width: 60%; }
 .verycode a{position: absolute; right: 0; color: #ffa132;border: solid 1px;border-radius: 3px;height: 2.6rem;line-height: 2.6rem;top: 1.2rem;padding: 0 1rem; }
 .verycode a.countdown{color: rgb(212,220,222);}

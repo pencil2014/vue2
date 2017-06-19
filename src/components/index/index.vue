@@ -285,8 +285,8 @@ export default {
 				url = this.androidUrl
 			}
 			if (isweixin && this.isAndroid) {
-				// this.isDownload = true
-				window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.exgj.exsd'
+				this.isDownload = true
+				// window.location.href = 'http://a.app.qq.com/o/simple.jsp?pkgname=com.exgj.exsd'
 			} else {
 				window.location.href = url
 			}

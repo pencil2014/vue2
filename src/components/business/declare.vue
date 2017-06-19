@@ -277,9 +277,9 @@ export default {
 
 .ex-declare-cnt {background-color: #fff; margin: 1rem 0; padding: 0 1rem; }
 .ex-declare-cnt-box {position: static;}
-.ex-declare-cnt-item {border-bottom:1px solid #e5e5e5; position: relative; font-size: 1.4rem; padding: 0.5rem 0; height: 3rem; }
-.ex-declare-cnt-item span {display: inline-block; width: 30%; line-height: 3rem; vertical-align: middle;}
-.ex-declare-cnt-item input { width: 65%; border: none; vertical-align: middle;}
+.ex-declare-cnt-item {border-bottom:1px solid #e5e5e5; position: relative; font-size: 1.4rem; padding: 0.5rem 0; min-height: 3rem; }
+.ex-declare-cnt-item span {display: inline-block; width: 30%;  vertical-align: middle;}
+.ex-declare-cnt-item input { width: 60%; border: none; vertical-align: middle; height: 3rem;}
 .ex-declare-cnt-item .exit { position: absolute; right: 0; top: 0.75rem; display: block; height: 2.5rem; padding: 0 1rem; text-align: right; line-height: 2.5rem;border: 1px solid;color: rgb(4,112,182);border-radius: 3px;}
 
 .ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}

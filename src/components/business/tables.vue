@@ -151,12 +151,14 @@ export default {
 }	
 </script>
 <style scoped>
+.ex-order {background-color: #f4f5f7;min-height: 100%;}
 .ex-order-box {position: fixed; top: 0; width: 100%; z-index: 2; }
 /*.ex-order-cnt {padding-top: 5rem}*/
-.ex-order-cnt {padding-top: 4.5rem;}
+.ex-order-cnt {padding-top: 4.5rem;background: #fff;}
 .ex-order-cnt td i { font-size: 1.4rem; color: #999; float: right; padding-right: 0.5rem; }
 .ex-order-cnt td a {display: inline-block;font-size: 1.2rem;color: #2eadff;border-radius: 0.2rem;border: 1px solid #2eadff;padding: 0.4rem;}
 .ex-order-cnt td .links{margin-right: 1rem; margin-bottom: 0.5rem;}
+.table tr:last-child{border-bottom: none;}
 
 .ex-order-nav { height: 5rem; line-height: 5rem; }
 .ex-order-nav span {display: inline-block; width: 50%; text-align: center; border-bottom: 1px solid #eee; font-size: 1.6rem; }

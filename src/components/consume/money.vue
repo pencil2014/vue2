@@ -138,7 +138,9 @@ export default {
 }	
 </script>
 <style scoped>
+.ex-record {background-color: #f4f5f7;min-height: 100%;}
 .ex-record-box {position: fixed; top: 0; width: 100%; z-index: 2; }
 /*.ex-record-cnt {padding-top: 5rem}*/
-.ex-record-cnt {padding-top: 4.5rem;}
+.ex-record-cnt {padding-top: 4.5rem;background: #fff;}
+.table tr:last-child {border-bottom: none;}
 </style>
