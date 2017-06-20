@@ -97,7 +97,6 @@ const QRcode2 = resolve => require(['../components/user/qrcode2'], resolve)
 const Businessinfo = resolve => require(['../components/user/businessinfo'], resolve)
 const Pay = resolve => require(['../components/pay/step1'], resolve)
 const Pay2 = resolve => require(['../components/pay/step2'], resolve)
-const Pay3 = resolve => require(['../components/pay/step3'], resolve)
 const Display1 = resolve => require(['../components/user/display1'], resolve)
 const Display2 = resolve => require(['../components/user/display2'], resolve)
 const Display3 = resolve => require(['../components/user/display3'], resolve)
@@ -503,11 +502,6 @@ export default new Router({
       path: '/pay/step2',
       name: 'Pay2',
       component: Pay2
-    },
-    {
-      path: '/pay/step3',
-      name: 'Pay3',
-      component: Pay3
     },
     {
       path: '/display1',

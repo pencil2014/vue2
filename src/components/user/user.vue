@@ -80,16 +80,16 @@
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
-					<router-link to="/qrcode" tag="li">
+					<router-link to="/qrcode" tag="li" v-if="!isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<!-- <router-link to="/qrcode2" tag="li" v-if="isShop">
+					<router-link to="/qrcode2" tag="li" v-if="isShop">
 						<img src="../../assets/images/pay.png" alt="">
 						<span>商家收款二维码</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link> -->
+					</router-link>
 				</ul>
 			</div>
 			<div class="ex-user-item">

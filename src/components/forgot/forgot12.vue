@@ -13,14 +13,11 @@
 					<label for="phone">手机号</label>
 					<input type="tel" name="phone" id="phone"  v-model.trim="phone" placeholder="请输入注册手机号" maxlength="11">
 				</div>
-				<!-- <div class="ex-forgot-from-item">
+				<div class="ex-forgot-from-item">
 					<label>图形验证码</label>
 					<input type="text" v-model.trim="imgcode" placeholder="请输入图形验证码" maxlength="20">
 					<img :src="imgurl" alt="" class="imgurl" @click="change">
-				</div> -->
-
-				<div id="captcha"></div> <!-- 验证码容器元素 -->
-
+				</div>
 				<div class="ex-forgot-from-item">
 					<label for="code">验证码</label>
 					<input type="tel" name="code" id="code"  v-model.trim="code" placeholder="请输入验证码" maxlength="20">
@@ -60,7 +57,6 @@ import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
-import {initNECaptcha} from '../../assets/lib/load'
 export default {
 	data () {
 		return {
@@ -76,7 +72,8 @@ export default {
 			modal:{
 				text:'忘记密码',
 				fixed: false,
-			}
+			},
+			num: new Date().getTime()
 		}
 	},
 	computed: {
@@ -91,41 +88,20 @@ export default {
 				return false
 			}
 		},
+		imgurl () {
+			return axios.defaults.baseURL + 'user/validateCode?rnd=' + this.num
+		},
 	},
 	created () {
 		let phone = window.localStorage.getItem('phone')
 		if (!!phone) {
 			this.phone = phone
 		}
-
-		// 生成验证码
-		this.change()
 	},
 	methods: {
 		change () {
-			this.imgcode = ''
-			Indicator.open({
-			  text: '正在加载拼图...',
-			  spinnerType: 'fading-circle'
-			})
-			// 生成验证码
-			let _this = this
-			initNECaptcha({
-	      captchaId: '25bf95669a354b2ba8f2af1b2d42e2cd',
-	      element: '#captcha',
-	      mode: 'embed',
-	      width: 'auto',
-	      onVerify: function (err, data) {
-	      	_this.imgcode =  data ? data.validate : ''
-	      },
-	      onReady: function (instance) {
-	      	Indicator.close()
-	      },
-	    }, function onload (instance) {
-	      // 初始化成功后，用户输入对应用户名和密码，以及完成验证后，直接点击登录按钮即可
-	    }, function onerror (err) {
-	      // 验证码初始化失败处理逻辑，例如：提示用户点击按钮重新初始化
-	    })
+			this.num = new Date().getTime()
+			this.imgurl = axios.defaults.baseURL + 'user/validateCode?rnd='　+　this.num;
 		},
 		tologin () {
 			this.$router.push('/login')
@@ -139,7 +115,7 @@ export default {
 				return
 			}
 			if(!this.imgcode){
-				MessageBox('提示', '请先完成拼图!')
+				MessageBox('提示', '图形验证码不能为空!')
 				return
 			}
 			Indicator.open({
@@ -204,7 +180,7 @@ export default {
 				return
 			}
 			if(!this.imgcode){
-				MessageBox('提示', '请先完成拼图!')
+				MessageBox('提示', '图形验证码不能为空!')
 				return
 			}
 			if (!(/^\d{4,10}$/.test(this.code))) {
@@ -225,7 +201,6 @@ export default {
 				Indicator.close()
 				_this.repeatBtn = false 
 				if (res.data.code !== '10000') {
-					_this.change()
 					Toast(res.data.msg)
 					return
 				} else {
@@ -282,11 +257,11 @@ export default {
 .ex-forgot{background-color: #f4f5f7;min-height: 100%;}
 .ex-forgot-tips{ text-align: left; padding: 1rem 0 0 1rem; color: #5d646e; }
 .ex-login-from{padding: 0 0 0 1rem;background-color: #fff;margin-top: 1rem;}
-.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative;height: 4rem;padding: 0.5rem 0;}
+.ex-forgot-from-item{ color: #212a32; border-bottom: 1px solid #e5e5e5; font-size: 1.4rem;  vertical-align: middle; position: relative;height: 3rem;padding: 0.5rem 0;}
 .ex-login-from .ex-forgot-from-item:last-child{border-bottom: none;}
 .ex-forgot-from-item label{vertical-align: middle;width: 20%;display: inline-block;}
 .ex-forgot-from-item input{ height: 100%; border: none; padding-left: 0.5rem; width: 65%; }
-.ex-forgot-from-item .getcode{ position:absolute; right: 10px;color: #2eadff;color: rgb(4,112,182);border: solid 1px rgb(4,112,182);padding: 0.4rem 1rem;top: 1.3rem;border-radius: 3px;}
+.ex-forgot-from-item .getcode{ position:absolute; right: 10px;color: #2eadff;color: rgb(4,112,182);border: solid 1px rgb(4,112,182);padding: 0.4rem 1rem;top: 0.8rem;border-radius: 3px;}
 .ex-forgot-from-item .imgurl{ position: absolute;right: 1rem;top: 50%;margin-top: -11px; }
 
 .ex-forgot-next{ height: 4.5rem; font-size: 1.6rem; margin: 1rem 0; width: 100%; border-radius: 0.4rem; background-color: #047dcb; color: #fff;}
@@ -297,6 +272,4 @@ export default {
 .button{width: 100%;padding: 0 1rem;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
 
 .ex-reset {background-color: #f4f5f7;min-height: 100%;}
-
-#captcha {margin: 1rem 1rem 1rem 0;}
 </style>

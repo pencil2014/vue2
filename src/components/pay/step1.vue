@@ -81,8 +81,21 @@ export default {
 		},
 		submit () {
 			let _this = this;
-			if(_this.disableBtn || _this.submitbtn){
+			let rule1 = /^1\d{10}$/;
+			if(_this.submitbtn){
 				return
+			}
+			if(!this.money){
+				MessageBox('提示','金额非法！')
+				return
+			}
+			if(!this.phone){
+				MessageBox('提示','手机号不能为空！')
+				return
+			}
+			if(!rule1.test(this.phone)){
+				MessageBox('提示','手机号不正确！')
+				return 
 			}
 			// if(_this.money > 50000){
 			// 	Toast('每笔不能大于50000')
@@ -159,7 +172,7 @@ export default {
 					userData.userLev =  res.data.data.data.userLev
 					userData.userName =  res.data.data.data.userName
 					userData.isNewUser = res.data.data.isNewUser
-					
+					userData.logoImg = res.data.data.data.logoImg
 					window.localStorage.setItem('userData',JSON.stringify(userData))
 					_this.$router.push('/pay/step2')
 				} else {

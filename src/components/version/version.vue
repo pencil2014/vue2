@@ -72,7 +72,7 @@ export default {
 			if(!this.is_weixin){
 				MessageBox({
 					title:'提示',
-					message:'请前往微信搜索‘e享时代’，并开始关注我们吧~',
+					message:'请前往微信搜索“e享时代”，并开始关注我们吧~',
 				});
 			}	
 		},

@@ -13,21 +13,17 @@
 				<img src="../../assets/images/Mobile.png" alt="" class="icon">
 				<input type="tel" name="phone"  v-model.trim="phone" placeholder="请输入手机号码" maxlength="11">
 			</div>
-
 			<div class="ex-rigster-from-item">
 				<!-- <i class="iconfont">&#xe61e;</i> -->
 				<img src="../../assets/images/password.png" alt="" class="icon">
 				<input type="password" name="password"  v-model.trim="password" placeholder="请输入6-20位密码" maxlength="20">
 			</div>
-
-			<!-- <div class="ex-rigster-from-item imgCodes-item">
+			<div class="ex-rigster-from-item imgCodes-item">
+				<!-- <i class="iconfont">&#xe654;</i> -->
 				<img src="../../assets/images/imgCodes.png" alt="" class="icon">
 				<input type="text" v-model.trim="imgcode" placeholder="请输入图形验证码" maxlength="10">
 				<img :src="imgurl" alt="" class="imgurl" @click='change'>
-			</div> -->
-
-			 <div id="captcha"></div> <!-- 验证码容器元素 -->
-
+			</div>
 			<div class="ex-rigster-from-item verycode">
 				<!-- <i class="iconfont">&#xe654;</i> -->
 				<img src="../../assets/images/Codes.png" alt="" class="icon">
@@ -49,7 +45,6 @@ import md5 from "blueimp-md5"
 import axios from "axios"
 import qs from "qs"
 import { MessageBox, Indicator, Toast } from 'mint-ui'
-import {initNECaptcha} from '../../assets/lib/load'
 export default {
 	data () {
 		return {
@@ -65,12 +60,15 @@ export default {
 			countdown: false,
 			second: 120,
 			RecommendPhone: '',
-			imgcode: ''
+			imgcode: '',
+			num: new Date().getTime()
 			// requestToken: ''
 		}
 	},
 	computed: {
-		
+		imgurl () {
+			return axios.defaults.baseURL + 'user/validateCode?rnd=' + this.num
+		},
 		disableBtn () {
 			return (this.phone && this.password && this.code  && this.agreement && this.imgcode) ? false : true 
 		}
@@ -81,6 +79,7 @@ export default {
 		// _this.createRequestToken()
 		axios.post('user/personalbase',qs.stringify({userCode: this.userId}))
 		.then(function(res){
+			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.id = res.data.data.id
 				_this.userCode = res.data.data.userCode
@@ -97,9 +96,6 @@ export default {
 		.catch(function(){
 			Toast('连接失败，请检查网络是否正常!')
 		})
-
-		// 生成验证码
-		this.change()
 	},
 	methods: {
 		// createRequestToken () {
@@ -119,29 +115,8 @@ export default {
 		// 	})
 		// },
 		change () {
-			this.imgcode = ''
-			// 生成验证码
-			Indicator.open({
-			  text: '正在加载拼图...',
-			  spinnerType: 'fading-circle'
-			})
-			let _this = this
-			initNECaptcha({
-	      captchaId: '25bf95669a354b2ba8f2af1b2d42e2cd',
-	      element: '#captcha',
-	      mode: 'embed',
-	      width: 'auto',
-	      onVerify: function (err, data) {
-	      	_this.imgcode =  data ? data.validate : ''
-	      },
-	      onReady: function (instance) {
-	      	Indicator.close()
-	      }
-	    }, function onload (instance) {
-	      // 初始化成功后，用户输入对应用户名和密码，以及完成验证后，直接点击登录按钮即可
-	    }, function onerror (err) {
-	      // 验证码初始化失败处理逻辑，例如：提示用户点击按钮重新初始化
-	    })
+			this.num = new Date().getTime()
+			this.imgurl = axios.defaults.baseURL + 'user/validateCode?rnd='　+　this.num;
 		},
 		getcode () {
 			if (!(/^1\d{10}$/.test(this.phone))) {
@@ -149,7 +124,7 @@ export default {
 				return
 			}
 			if (!this.imgcode) {
-				MessageBox('提示', '请先完成拼图!')
+				MessageBox('提示', '图形验证码不能为空!')
 				return 
 			}
 			this.second = 120
@@ -223,7 +198,7 @@ export default {
 				return
 			}
 			if (!this.imgcode) {
-				MessageBox('提示', '请先完成拼图!')
+				MessageBox('提示', '图形验证码不能为空!')
 				return 
 			}
 			if (!this.code) {
@@ -231,7 +206,7 @@ export default {
 				return
 			}
 			if (!this.agreement) {
-				MessageBox('提示', '请勾选同意《“e享时代”会员注册协议》！')
+				MessageBox('提示', '请勾选同意《e享时代注册协议》！')
 				return
 			}
 			Indicator.open({
@@ -269,7 +244,6 @@ export default {
 							Indicator.close()
 							_this.second = 0
 							_this.repeatBtn = false
-							_this.change()
 							Toast(res.data.msg)
 						}
 					})
@@ -288,8 +262,6 @@ export default {
 
 		}
 	},
-	mounted () {
-	},
 	destroyed () {
 		Indicator.close()
 	}
@@ -298,7 +270,7 @@ export default {
 
 <style scoped>
 .ex-rigster-box{ position: absolute; width: 100%;}
-.ex-rigster-header{text-align: center; padding-top: 5%; color:#2eadff; font-size: 2rem; }
+.ex-rigster-header{text-align: center; padding-top: 10%; color:#2eadff; font-size: 2rem; }
 .ex-rigster-header span{color: #ffa132;}
 .ex-rigster-info{ margin:1.5rem; padding: 1rem; background-color: #f4f5f7; color: #555;  line-height: 1.5;font-size: 1.4rem;}
 .ex-rigster-form{margin: 1.5rem;}
@@ -318,6 +290,4 @@ export default {
 .ex-rigster-from-agreement{ color: #5d646e; margin: 0.2rem 0; }
 .ex-rigster-from-agreement input{ width: 1.4rem; height: 1.4rem; border-radius: 0.5rem; vertical-align: middle; }
 .ex-rigster-from-agreement a{color:#1b6798;vertical-align: middle;  }
-#captcha {margin: 1rem 0;}
-
 </style>

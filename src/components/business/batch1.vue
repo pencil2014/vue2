@@ -66,7 +66,7 @@
 						<li>4、每笔消费金额不能超过2万；</li>
 						<li>5、每页让利款总额不能超过5万；</li>
 						<li>6、转款户名处必须填写为向平台转账的卡号人名或户名，否则无效；</li>
-						<li>7、转款金额必须与每次让利款总额完全相符（包括小数点后面的），否则无法审核；</li>
+						<li>7、转款金额必须与每次让利款总额完全相符（包括小数点后面的数字），否则无法审核；</li>
 						<li>8、提交后转款，请及时在自己的账户中查询转款是否成功，请耐心等待审核，不需要上传任何凭证，审核是以到款为准，T+1即过；</li>
 						<li>9、转款附言处请注明:“B*****批量”字样（ B表示商家身份，*****表示商家ID号。如无法注明，请联系客服）。</li>
 					</ul>
@@ -121,24 +121,28 @@ export default {
 			let total = 0
 			this.order.forEach( function(element, index) {
 				if (element.userCode !=='' && element.phone !== '' &&  element.consumptionMoney > 0) {
-					let single = element.consumptionMoney * _this.rate + ''
-					if (single.indexOf('.') > -1 && single.split('.')[1].length > 4) {
-						single = (single * 1).toFixed(2)
-					} else {
-						single = single.indexOf('.') > -1 ? (single.substring(0,single.indexOf(".") + 3)*1).toFixed(2) : single
-					}
+
+					let m = 0, s1 = element.consumptionMoney.toString(), s2 = _this.rate.toString()
+					try {m += s1.split('.')[1].length} catch(e) {}
+					try {m += s2.split('.')[1].length} catch(e) {}
+					let single =  Number(s1.replace('.',''))*Number(s2.replace('.',''))/Math.pow(10,m) + ''
+					single = single.indexOf('.') > -1 ? (single.substring(0,single.indexOf(".") + 3)*1).toFixed(2) : single
+
+
+					let r1,r2,n
+					try {r1= total.toString().split('.')[1].length} catch(e) {r1=0}
+					try {r2= single.toString().split('.')[1].length} catch(e) {r2=0}
+					n = Math.pow(10,Math.max(r1,r2))
+
+					total = (total*n+single*n)/n 
 					
-					total += (single - 0)
 				} else {
 					total += 0
 				}
 			})
 			total = total + ''
-			if (total.indexOf('.') > -1 && total.split('.')[1].length > 4) {
-				return (total * 1).toFixed(2)
-			} else {
-				return  total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
-			}
+			return  total.indexOf('.') > -1 ? (total.substring(0,total.indexOf(".") + 3)*1).toFixed(2) : total + '.00'
+
 			
 		},
 		valid () {

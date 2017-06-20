@@ -73,7 +73,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({pageSize: this.pageSize, page: 1,classificationId: this.id}))
+			axios.post('shopClassification/queryShopsById',qs.stringify({pageSize: this.pageSize, page: 1,classificationId: this.id, city: this.regionId}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

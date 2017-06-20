@@ -13,7 +13,17 @@
 		<div class="points" v-if="userData.isNewUser === 1">*登录密码会发送至您的手机号{{phone}}，请注意查收</div>
 		<div class="user">
 			<div class="avatar">
-				<img src="../../assets/images/head.png" alt="">
+				<img src="../../assets/images/head.png" alt="" v-show="!logoImg">
+				<img src="../../assets/images/girl01.png" alt="" v-show="logoImg === 'girl01'">
+				<img src="../../assets/images/girl02.png" alt="" v-show="logoImg === 'girl02'">
+				<img src="../../assets/images/girl03.png" alt="" v-show="logoImg === 'girl03'">
+				<img src="../../assets/images/girl04.png" alt="" v-show="logoImg === 'girl04'">
+				<img src="../../assets/images/girl05.png" alt="" v-show="logoImg === 'girl05'">
+				<img src="../../assets/images/boy01.png" alt="" v-show="logoImg === 'boy01'">
+				<img src="../../assets/images/boy02.png" alt="" v-show="logoImg === 'boy02'">
+				<img src="../../assets/images/boy03.png" alt="" v-show="logoImg === 'boy03'">
+				<img src="../../assets/images/boy04.png" alt="" v-show="logoImg === 'boy04'">
+				<img src="../../assets/images/boy05.png" alt="" v-show="logoImg === 'boy05'">
 				<span class="identity" :class="{'vip': userData.userLev === '2'}">e享会员</span>
 			</div>
 			<div class="message">
@@ -111,6 +121,7 @@ export default {
 				link:''
 			},
 			qrCls: 'qrcode',
+			logoImg: '',
 			submitbtn:false
 		}
 	},
@@ -139,6 +150,7 @@ export default {
 			this.$router.back()
 		}
 		this.userData = JSON.parse(window.localStorage.getItem('userData'))
+		this.logoImg = this.userData.logoImg
 	},
 	methods: {
 		select (type) {
