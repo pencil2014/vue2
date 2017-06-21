@@ -158,7 +158,7 @@ export default {
 .ex-settings-list .ex-settings-item ul{list-style-type: none;display: block;}
 .ex-settings-list .ex-settings-item ul li{min-height: 30px;font-size: 1.4rem;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;border-bottom: solid 1px #e5e5e5;}
 .ex-settings-list .ex-settings-item ul li:last-child{border: none;}
-.ex-settings-list .logout{text-align: center;padding-right: 0px;font-size: 1.6rem;color: #f0544d !important;}
+.ex-settings-list .logout{text-align: center;padding: 0px;font-size: 1.6rem;color: #f0544d !important;}
 .ex-settings-list .ex-settings-item ul li .iconfont{color: rgba(173,180,190,1);float: right;padding: 0 15px 0 0;}
 .ex-settings-list .ex-settings-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
 </style>

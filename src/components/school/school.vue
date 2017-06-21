@@ -6,7 +6,7 @@
 		<div class="ex-word-cnt">
 		<b class="sub">以打造“消费生态圈”为使命</b>
 		<p class="logo"><img src="../../assets/images/exLogo.png" alt=""></p>
-		<h3>"e享时代"创新消费商业服务平台基本规则</h3>
+		<h3>“e享时代”创新消费商业服务平台基本规则</h3>
 		<div class="ex-school-index">
 			<b>目   录</b>
 			<p @click='go("one")'>一、前言</p>

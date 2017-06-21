@@ -51,7 +51,8 @@ export default {
 			nodateStatus: false,
 			page: 1,
 			totalPage: 1,
-			pageSize: 20
+			pageSize: 20,
+			loading: false
 		}
 	},
 	components: {
@@ -157,7 +158,7 @@ export default {
 
 <style scoped>
 .ex-shop-classify-top { position: relative;  height: 4.5rem;}
-.ex-shop-classify-top .search { position: absolute; right: 1.5rem; top: 1.2rem;  z-index: 99999;}
+.ex-shop-classify-top .search { position: fixed; right: 1.5rem; top: 1.2rem;  z-index: 9;}
 .ex-shop-classify-top .search i{font-size: 2rem;}
 
 .ex-shop-classify-item {overflow: hidden; padding:0 1rem 1rem 1.5rem; border-bottom: 1px solid #eee; margin-top: 1rem;}

@@ -1,5 +1,5 @@
 <template>
-	<div class="ex-shop">
+	<div class="ex-shop" ref="wrapper">
 		<div class="ex-topsearch" @click='gotosearch' v-show='showsearch'>
 			<i class="iconfont">&#xe67a;</i>
 			<input type="search" name="" id="" placeholder="搜索关键字"  v-model='keyword'>
@@ -77,7 +77,7 @@
 								<p class='distance'>100KM</p>
 							</div>	
 				</li> -->
-				<mt-loadmore  ref="loadmore"> <!-- :top-method="loadTop" -->
+				<mt-loadmore  ref="loadmore" > <!-- :top-method="loadTop" -->
 					<ul 
 						v-show='localshop.length > 0'
 						v-infinite-scroll="loadMore"
@@ -103,9 +103,9 @@
 					<p>附近还没有商家哦~</p>
 				</div>
 			</div>
-			
 		</div>
 		<app-nav></app-nav>
+
 	</div>
 </template>
 
@@ -160,6 +160,7 @@ export default {
 			} else {
 				this.getcityid()
 			}
+			
 		},
 		getcityid () {
 			let _this = this
@@ -250,7 +251,6 @@ export default {
 				lng: this.currentPosition.longitude, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
-				
 				_this.nodateStatus = true
 				if (res.data.code === '10000') {
 					_this.totalPage = res.data.data.totalPage || 1
@@ -269,8 +269,8 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		handleScroll () {
-			this.showsearch = window.scrollY > 50
+		getTop () {
+			this.showsearch = this.$refs.wrapper.scrollTop > 50
 		}
 	},
 	created () {
@@ -291,9 +291,7 @@ export default {
 		
 	},
 	mounted () {
-		document.getElementsByTagName("html")[0].style.height = 'auto'
-		window.addEventListener('scroll', this.handleScroll)
-
+		this.$refs.wrapper.addEventListener('scroll', this.getTop)
 	},
 	filters: {
 		formatdis (value) {
@@ -302,14 +300,13 @@ export default {
 		}
 	},
 	destroyed () {
-		document.getElementsByTagName("html")[0].style.height = '100%'
 		Indicator.close()
 	}
 }	
 </script>
 
 <style scoped>
-.ex-shop{background-color: #efefef;padding-bottom: 5rem;}
+.ex-shop{background-color: #efefef;padding-bottom: 5rem;height: 100%;overflow: auto;}
 .ex-shop-head{ height:16rem; position: relative; }
 .ex-shop-head-banner { height: 100%;background-color: #fff; text-align: center;}
 .ex-shop-head-banner img{ height: 100%; width: 100%;}
@@ -336,7 +333,7 @@ export default {
 .ex-shop-localshop-title span{display: inline-block; width: 40%;  left: 30%; height: 1px; background-color: #ddd; position: absolute; top: 2.5rem;}
 
 
-.ex-shop-localshop-cnt {}
+.ex-shop-localshop-cnt { position:relative; }
 .ex-shop-localshop-item {overflow: hidden; padding:0 1rem 1rem 1.5rem; border-bottom: 1px solid #eee; margin-top: 1rem;}
 .ex-shop-localshop-item .img { width: 8rem; height: 8rem; float: left; background-color: #f2f2f2; border-radius: 1rem; overflow: hidden; line-height: 8rem;vertical-align: middle;}
 .ex-shop-localshop-item .img img{ width: 8rem; vertical-align: middle;}
