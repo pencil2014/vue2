@@ -160,7 +160,6 @@ export default {
 			} else {
 				this.getcityid()
 			}
-			
 		},
 		getcityid () {
 			let _this = this
@@ -168,15 +167,6 @@ export default {
 				this.address = '定位失败'
 				this.currentPosition.latitude = '39.915'
 				this.currentPosition.longitude = '116.404'
-				// MessageBox({
-				//   title: '提示',
-				//   message: '定位失败，是否去手动定位？',
-				//   showCancelButton: true
-				// }).then(action => {
-				// 	if (action === "confirm") {
-				// 		_this.$router.push('/city')
-				// 	}
-				// })
 			}
 			axios.post('getAddressByLngAndLat',qs.stringify({
 				lat: this.currentPosition.latitude ,

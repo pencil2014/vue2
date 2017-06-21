@@ -150,7 +150,7 @@ export default {
 			Indicator.close()			
 			if (res.data.code === '10000') {
 				// _this.hotcity = res.data.data.hot
-				// delete res.data.data.hot
+				delete res.data.data.hot
 				_this.citylist = res.data.data
 				window.localStorage.setItem('citylist', JSON.stringify(res.data.data))
 			} else {

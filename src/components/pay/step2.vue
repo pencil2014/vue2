@@ -195,7 +195,7 @@ export default {
 						return 
 					}
 
-					if(_this.userData.money > 20){
+					if(_this.userData.money > 2000){
 						MessageBox({
 							title:'提示',
 							message:'您的订单交易金额大于2000，报单需要人工审核',

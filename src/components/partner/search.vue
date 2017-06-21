@@ -24,6 +24,7 @@
 						v-infinite-scroll="loadMore"
 		  			infinite-scroll-disabled="loading"
 		  			infinite-scroll-distance="10"
+		  			infinite-scroll-immediate-check="false"
 		  			>
 						<li v-for="(item, index) in shoplist" class="ex-search-item" @click='gotoinfo(item.id)'>
 							<div class="img" v-if='item.facadePhoto'>
@@ -62,7 +63,7 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			nodateStatus: false
+			nodateStatus: true
 		}
 	},
 	methods: {
