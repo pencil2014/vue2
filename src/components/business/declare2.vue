@@ -103,7 +103,18 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.go(-1)
+			let _this = this
+			MessageBox({
+				  title: '提示',
+				  message: '确认要退出本次操作吗?',
+				  showCancelButton: true,
+				  confirmButtonText: '退出'
+				}).then(action => {
+					if (action === "confirm") {
+						_this.$router.go(-1)
+					}
+				})
+			
 		},
 		getfile () {
 			let _this = this
@@ -187,18 +198,7 @@ export default {
 	},
 	beforeRouteLeave (to,from,next) {
 		if (to.path === '/declare') {
-			MessageBox({
-				  title: '提示',
-				  message: '确认要退出本次操作吗?',
-				  showCancelButton: true,
-				  confirmButtonText: '退出'
-				}).then(action => {
-					if (action === "confirm") {
-						next('/business')
-					} else {
-						next(false)
-					}
-				})
+			next('/business')
 		} else {
 			next()
 		}

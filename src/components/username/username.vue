@@ -1,4 +1,4 @@
-`<template>
+<template>
 	<div class="ex-username">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-field">
@@ -71,7 +71,8 @@ export default {
 		},
 		save () {
 			let _this = this;
-			if(_this.username === ""){
+			if(!_this.username){
+				Toast('用户名不能为空！')
 				return;
 			}
 			if(_this.submitBtn === true){

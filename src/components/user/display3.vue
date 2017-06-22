@@ -145,7 +145,6 @@ export default {
 	},
 	created () {
 		let addgoods = this.getdata('addgoods')
-		console.log(addgoods)
 		if(!!addgoods){
 			this.commodityName = addgoods.commodityName;
 			this.selcommodityTypeId = addgoods.selcommodityTypeId;
@@ -153,8 +152,8 @@ export default {
 			this.price = addgoods.price;
 			this.groupId = addgoods.groupId;
 			this.typeName = addgoods.typeName;
-			this.imgurl = addgoods.imgurl;
-			this.imgbase64 = addgoods.imgbase64;
+			this.imgurl = addgoods.imgurl || [];
+			this.imgbase64 = addgoods.imgbase64 || [];
 		}
 		this.getGroupList()
 		this.getList()
@@ -327,7 +326,7 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					localStorage.setItem('addgoods','')
+					localStorage.removeItem('addgoods')
 					MessageBox({
 					  title: '提示',
 					  message: '添加成功！',

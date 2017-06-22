@@ -93,7 +93,7 @@
 								<h3 class='name'>{{item.shopsName}}</h3>
 								<a href="javascript:;" class='classify' @click='gotoclassify(item.classificationId)'>- {{item.classificationName}} -</a>
 								<p class='phone'>{{item.shopsLinkphone}}</p>
-								<p class='distance' v-show='item.distance/1000 <= 15'>{{item.distance | formatdis}}</p>
+								<p class='distance' v-show='item.distance/1000 <= 15 && item.distance !=="0"'>{{item.distance | formatdis}}</p>
 							</div>
 						</li>
 					</ul>
@@ -285,7 +285,7 @@ export default {
 	},
 	filters: {
 		formatdis (value) {
-			let val = value ? parseInt((value - 0)/1000,10) + 'KM' : ''
+			let val = value ? (value/1000).toFixed(2) + 'KM' : ''
 			return val
 		}
 	},

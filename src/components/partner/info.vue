@@ -67,7 +67,7 @@
 				  	<img :src="item.filePath" alt=""  @click.stop=''>
 				  </mt-swipe-item>
 				</mt-swipe>
-				<p class="info"><span class="title">{{showpicitem.data.shopsName}}</span><span class="price">￥{{showpicitem.data.price}}</span></p>
+				<p class="info"><span class="title">{{showpicitem.data.commodityName}}</span><span class="price">￥{{showpicitem.data.price}}</span></p>
 			</div>
 			
 		</div>

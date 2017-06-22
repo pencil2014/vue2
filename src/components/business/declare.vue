@@ -221,6 +221,10 @@ export default {
 				MessageBox('提示', '消费金额不合法！')
 				return
 			}
+			if (this.consumptionMoney >= 100000000) {
+				MessageBox('提示', '消费金额不超过1亿！')
+				return
+			}
 			Indicator.open({
 			  text: '正在提交...',
 			  spinnerType: 'fading-circle'

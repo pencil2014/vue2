@@ -169,7 +169,7 @@ export default {
 			this.imgpre.url = ''
 		},
 		back () {
-			this.$router.go(-1)
+			this.$router.push('/order')
 		},
 		repeat () {
 			let status = this.checkdata.transferVoucher
@@ -178,13 +178,6 @@ export default {
 			} else {
 				this.$router.push({ name: 'Declare2', params: { id: this.id}})
 			}
-		}
-	},
-	beforeRouteLeave (to,from,next) {
-		if (to.path.indexOf('/declare2')>-1) {
-			next('/business')
-		} else {
-			next()
 		}
 	},
 	filters: {

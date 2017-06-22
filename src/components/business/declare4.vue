@@ -99,6 +99,8 @@ export default {
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.rangliMoney = res.data.data.rangliMoney
+					_this.transferUserName = res.data.data.transferUserName || ''
+					_this.transferMoney = res.data.data.transferMoney || ''
 					let status = res.data.data.status
 					switch (status) {
 						case '0':  //首次提交
@@ -154,8 +156,16 @@ export default {
 			if (this.repeatBtn) {
 				return
 			}
+			if (!this.transferUserName) {
+				MessageBox('提示', '转款户名不能为空！')
+				return
+			}
 			if (!(Number(this.transferMoney)  >= Number(this.rangliMoney))) {
 				MessageBox('提示', '转款金额不足！')
+				return
+			}
+			if (this.transferMoney >= 100000000) {
+				MessageBox('提示', '转款金额不超过1亿！')
 				return
 			}
 			if ( !this.file) {

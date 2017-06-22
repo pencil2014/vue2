@@ -532,9 +532,9 @@ export default {
 		this.getenterdetail()
 		this.getandroidUrl()
 
-		// if (!window.localStorage.getItem('notice') && new Date().getTime() < new Date('2017-5-30').getTime()) {
+		// if (!window.localStorage.getItem('batchNotice')) {
 		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
-		// 	window.localStorage.setItem('notice', 'true')
+		// 	window.localStorage.setItem('batchNotice', 'true')
 		// }
 		
 	},

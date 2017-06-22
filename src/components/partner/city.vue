@@ -130,6 +130,7 @@ export default {
 	created () {
 		let historycity = JSON.parse(window.localStorage.getItem('historycity')) 
 		let address = window.localStorage.getItem('address')
+		let citylist =  window.localStorage.getItem('citylist')
 		if (address) {
 			this.city = address
 		} else if (!address && historycity) {
@@ -140,27 +141,32 @@ export default {
 		if (!!historycity) {
 			this.historycity = historycity
 		}
-		let _this = this
-		Indicator.open({
-			  text: '数据加载中...',
-			  spinnerType: 'fading-circle'
+		if (citylist) {
+			this.citylist = JSON.parse(citylist)
+		} else {
+			let _this = this
+			Indicator.open({
+				  text: '数据加载中...',
+				  spinnerType: 'fading-circle'
+				})
+			axios.post('cityList',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()			
+				if (res.data.code === '10000') {
+					// _this.hotcity = res.data.data.hot
+					delete res.data.data.hot
+					_this.citylist = res.data.data
+					window.localStorage.setItem('citylist', JSON.stringify(res.data.data))
+				} else {
+					Toast(res.data.msg)
+				}
 			})
-		axios.post('cityList',qs.stringify({}))
-		.then(function(res){
-			Indicator.close()			
-			if (res.data.code === '10000') {
-				// _this.hotcity = res.data.data.hot
-				delete res.data.data.hot
-				_this.citylist = res.data.data
-				window.localStorage.setItem('citylist', JSON.stringify(res.data.data))
-			} else {
-				Toast(res.data.msg)
-			}
-		})
-		.catch(function(){
-			Indicator.close()
-			Toast('连接失败，请检查网络是否正常!')
-		})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		}
+		
 	
 	},
 	destroyed () {

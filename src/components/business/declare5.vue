@@ -66,7 +66,7 @@
 				<b>￥{{checkdata.consumptionMoney}}</b>
 			</div>
 			<div class="ex-declare-item" v-if='checkdata.rangliMoney'>
-				<span>让利款</span>
+				<span>应汇让利款</span>
 				<b>￥{{checkdata.rangliMoney}}</b>
 			</div>
 			<div class="ex-declare-item" v-if="checkdata.consumptionCertificate">

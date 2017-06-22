@@ -14,7 +14,7 @@
 		<div class="ex-register-item">
 			<span></span>
 			<b>方法二</b>
-			<p>扫描朋友提供的二维码</p>
+			<p>扫描好友提供的二维码</p>
 		</div>
 		
 		<div class="ex-register-login" v-show='showlogin'>
@@ -94,7 +94,7 @@ export default {
 .ex-register-item p{padding: 1.5rem 0; color: #888;}
 .ex-register-item-sub{margin-top: 0.5rem; position: relative;width: 100%; background-color: #f2f2f2; border: 1px solid #ebebeb;border-radius: 3px; text-align: left;}
 .ex-register-item-sub .input{ height: 50px;  width: 80%;  font-size: 1.6rem; color:#2EADFF; text-align: center; border: none;background-color: rgba(0,0,0,0);}
-.ex-register-item-sub .button{ width: 75px;font-size: 1.6rem; height: 4rem; border:1px solid #29A1EF; background-color: #2EADFF; color: #fff;border-radius: 3px;position: absolute;right: 0.5rem;height: 80%;top: 10%;}
+.ex-register-item-sub .button{ padding: 0 1rem; font-size: 1.6rem; height: 4rem; border:1px solid #29A1EF; background-color: #2EADFF; color: #fff;border-radius: 3px;position: absolute;right: 0.5rem;height: 80%;top: 10%;}
 .ex-register-item-sub .button:active{background-color: #29A1EF;}
 .ex-register-login{ height: 5rem; width: 100%; background-color: #f4f4f4; color: #666; line-height: 5rem; position: fixed; bottom: 0; left: 0;  font-size: 14px;}
 .ex-register-login a{ color:#2eadff;  }

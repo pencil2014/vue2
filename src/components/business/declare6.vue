@@ -100,7 +100,7 @@ export default {
 				  title: '提示',
 				  message: '确定撤销本次商家报单吗?',
 				  showCancelButton: true,
-				  confirmButtonText: '撤销'
+				  confirmButtonText: '确认'
 				}).then(action => {
 					if (action === "confirm") {
 						axios.post('declaration/revoke',qs.stringify({id: _this.id}))
