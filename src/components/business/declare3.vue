@@ -35,7 +35,7 @@
 
 		  <div class="ex-declare-result" v-if="check === 2">
 		  	<i class="iconfont err">&#xe63f;</i>
-		  	<h3>抱歉，审核不通过！</h3>
+		  	<h3>抱歉，审核未通过！</h3>
 		  	<p>{{auditOpinion}}</p>
 		  </div>
 		  <div class="ex-declare-result" v-if="check === 3">

@@ -108,7 +108,6 @@ export default {
 	},
 	created () {
 		this.getClassList();
-		this.getEnterShop();
 	},
 	methods: {
 		back () {
@@ -119,7 +118,8 @@ export default {
 				defaultIndex: this.slots[0].values.indexOf(this.classifyName),
 				shopsEnterName: this.shopsEnterName,
 				shopsLinkman: this.shopsLinkman,
-				shopsLinkphone: this.shopsLinkphone
+				shopsLinkphone: this.shopsLinkphone,
+				facadePhoto: this.facadePhoto
 			}
 			localStorage.setItem('applyData',JSON.stringify(obj))
 			this.$router.push('/apply2')
@@ -139,15 +139,25 @@ export default {
 		},
 		getfile () {
 			let _this = this
+			Indicator.open({
+			  text: '图片压缩中...',
+			  spinnerType: 'fading-circle'
+			})
+			this.islrz = true
 			let img = document.getElementById('facadePhoto').files[0]
 			if (img) {
 				lrz(img,{width:640})
 				.then(function (rst) {
-					_this.facadePhoto = window.URL.createObjectURL(img)
+					Indicator.close()
+					_this.facadePhoto = rst.base64
 			        _this.imgbase64 = rst.base64
+			        _this.islrz = false
 			    })
 	       		.catch(function (err) {
-	      			 _this.imgbase64 = ''
+	       			Indicator.close()
+	       			_this.islrz = false
+	      			_this.imgbase64 = ''
+	      			Toast('图片压缩失败')
 	       		})  
 			}
 		},
@@ -184,7 +194,7 @@ export default {
 				return
 			}
 			this.isSubmit = true
-			if(!this.imgbase64){
+			if(!/base64/g.test(this.imgbase64)){
 				this.shopEnter();
 			}else{
 				this.upload();
@@ -253,6 +263,15 @@ export default {
 			let _this = this;
 			let applyData = this.getdata('applyData')
 			let applyAddress = this.getdata('applyAddress')
+			if(!!applyData){
+				this.facadePhoto = applyData.facadePhoto 
+				this.imgbase64 = applyData.facadePhoto
+				this.shopsEnterName = applyData.shopsEnterName
+				this.shopsLinkman = applyData.shopsLinkman
+				this.shopsLinkphone = applyData.shopsLinkphone
+				this.slots[0].defaultIndex = applyData.defaultIndex
+			}
+			this.applyAddress = applyAddress ? applyAddress : ''
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -261,36 +280,26 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					//审核失败
-					if(res.data.data.status === '2'){
-						if(!!applyData){
-							_this.shopsEnterName = applyData.shopsEnterName
-							_this.shopsLinkman = applyData.shopsLinkman
-							_this.shopsLinkphone = applyData.shopsLinkphone
-							_this.defaultIndex = applyData.defaultIndex
-						}else{
-							_this.shopsEnterName = res.data.data.shopsEnterName
-							_this.shopsLinkman = res.data.data.shopsLinkman
-							_this.shopsLinkphone = res.data.data.shopsLinkphone
-							_this.defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
+					if(res.data.data.status === '2' && !_this.applyAddress){
+						_this.applyAddress = {
+							provinceName: res.data.data.provinceName,
+							cityName: res.data.data.cityName,
+							countyName: res.data.data.countyName,
+							provinceId: res.data.data.province,
+							cityId: res.data.data.city,
+							districtId: res.data.data.county,
+							shopsAddress: res.data.data.shopsAddress
 						}
-						if(!!applyAddress){
-							_this.applyAddress = applyAddress
-						}else{
-							_this.applyAddress = {
-								provinceName: res.data.data.provinceName,
-								cityName: res.data.data.cityName,
-								countyName: res.data.data.countyName,
-								provinceId: res.data.data.province,
-								cityId: res.data.data.city,
-								districtId: res.data.data.county,
-								shopsAddress: res.data.data.shopsAddress
-							}
-						}
-						_this.facadePhoto = res.data.data.facadePhoto
-						return 
 					}
-					_this.getShop()
+					if(res.data.data.status === '2' && !applyData){
+						_this.shopsEnterName = res.data.data.shopsEnterName
+						_this.shopsLinkman = res.data.data.shopsLinkman
+						_this.shopsLinkphone = res.data.data.shopsLinkphone
+						_this.slots[0].defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
+						_this.facadePhoto = res.data.data.facadePhoto
+					}else if(res.data.data.status !== '2' && !applyData){
+						_this.getShop()
+					}
 				} else {
 					Toast('获取申请信息失败！')
 				}
@@ -301,7 +310,6 @@ export default {
 		},
 		getShop () {
 			let _this = this;
-			let applyAddress = this.getdata('applyAddress')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -312,9 +320,6 @@ export default {
 				if (res.data.code === '10000') {
 					_this.shopsEnterName = res.data.data.shopsName
 					_this.facadePhoto = res.data.data.facadePhoto
-					if(!!applyAddress){
-						_this.applyAddress = applyAddress
-					}
 				} else {
 					Toast(res.data.msg)
 				}
@@ -325,7 +330,6 @@ export default {
 		},
 		getClassList () {
 			let _this = this;
-			let applyData = this.getdata('applyData')
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -337,13 +341,9 @@ export default {
 					if (_this.classifyList.length > 0) {
 						_this.classifyList.forEach(function(item){
 							_this.slots[0].values.push(item.name)
-						})						
-						if(!!applyData){
-							_this.shopsLinkman = applyData.shopsLinkman
-							_this.shopsLinkphone = applyData.shopsLinkphone
-							_this.slots[0].defaultIndex = applyData.defaultIndex
-						}
+						})
 					}
+					_this.getEnterShop();
 				} else {
 					Toast(res.data.msg)
 				}

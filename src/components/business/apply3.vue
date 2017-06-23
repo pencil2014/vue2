@@ -8,7 +8,7 @@
 		</div>
 		<div class="ex-top" v-if="applydata.status === '2'">
 			<i class="iconfont err">&#xe63f;</i>
-			<p class="strong">抱歉，审核未通过...</p>
+			<p class="strong">抱歉，审核未通过！</p>
 			原因是：{{applydata.auditOpinon}}
 		</div>
 		<div class="ex-form">
@@ -82,6 +82,8 @@ export default {
 			this.$router.push('/index')
 		},
 		toApply () {
+			localStorage.removeItem('applyData' )
+			localStorage.removeItem('shopsAddress')
 			this.$router.push('/apply')
 		},
 		getDetail () {

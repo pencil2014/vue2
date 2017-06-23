@@ -58,7 +58,7 @@ export default {
 			orderList: [],
 			page: 1,
 			totalPage: 1,
-			pageSize: 15,
+			pageSize: 20,
 			nodateStatus: false,
 			loading: false,
 			modal:{
