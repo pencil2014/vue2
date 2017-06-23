@@ -119,7 +119,8 @@ export default {
 				shopsEnterName: this.shopsEnterName,
 				shopsLinkman: this.shopsLinkman,
 				shopsLinkphone: this.shopsLinkphone,
-				facadePhoto: this.facadePhoto
+				facadePhoto: this.facadePhoto,
+				imgbase64: this.imgbase64
 			}
 			localStorage.setItem('applyData',JSON.stringify(obj))
 			this.$router.push('/apply2')
@@ -194,7 +195,7 @@ export default {
 				return
 			}
 			this.isSubmit = true
-			if(!/base64/g.test(this.imgbase64)){
+			if(!this.imgbase64){
 				this.shopEnter();
 			}else{
 				this.upload();
@@ -265,7 +266,7 @@ export default {
 			let applyAddress = this.getdata('applyAddress')
 			if(!!applyData){
 				this.facadePhoto = applyData.facadePhoto 
-				this.imgbase64 = applyData.facadePhoto
+				this.imgbase64 = applyData.imgbase64
 				this.shopsEnterName = applyData.shopsEnterName
 				this.shopsLinkman = applyData.shopsLinkman
 				this.shopsLinkphone = applyData.shopsLinkphone

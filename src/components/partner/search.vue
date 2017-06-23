@@ -116,6 +116,7 @@ export default {
 			this.historyKey = JSON.parse(window.localStorage.getItem('historyKey')) 
 		},
 		gotoinfo(id) {
+			window.localStorage.setItem('toInfo', this.keyword)
 			this.$router.push({name:'Shopinfo',params:{id: id}})
 		},
 		gotoclassify(id) {
@@ -179,6 +180,12 @@ export default {
 		let historyKey = JSON.parse(window.localStorage.getItem('historyKey')) 
 		if (!!historyKey) {
 			this.historyKey = historyKey
+		}
+		let toInfo = window.localStorage.getItem('toInfo')
+		if (!!toInfo) {
+			this.keyword = toInfo
+			this.search()
+			window.localStorage.removeItem('toInfo')
 		}
 	},
 	filters: {
