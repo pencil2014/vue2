@@ -24,7 +24,7 @@
 		</div>
 		<div class="ex-shop2-cnt">
 			<div class="ex-shop2-cnt-item">
-				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="30" >
+				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20" >
 				<!-- <p class=tips>营业执照号不够15位的请用字母e补齐</p> -->
 			</div>
 			<div class="img">

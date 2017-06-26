@@ -17,12 +17,16 @@
 						<th>日期</th>
 						<th>订单号</th>
 						<th>消费总额</th>
+						<th>状态</th>
+						<th></th>
 					</tr>
 					<tbody v-show='tableList.length > 0'>
 						<tr v-for="(item, index) in tableList" @click='godetail(item.orderNo)'>
 							<td>{{item.createTime | formatTime}}</td>
 							<td>{{item.orderNo}}</td>
-							<td>{{item.consumptionMoney | formatMoney}}<i class='iconfont'>&#xe606;</i></td>
+							<td>{{item.consumptionMoney | formatMoney}}</td>
+							<td>{{item.orderAudit.auditOpinion}}</td>
+							<td><i class='iconfont'>&#xe606;</i></td>
 						</tr>
 					</tbody>
 				</table>

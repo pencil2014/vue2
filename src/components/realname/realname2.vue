@@ -55,7 +55,7 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">营业执照号</label>
 					<div class="ex-field-value">
-						<input type="text" placeholder="请输入营业执照号"  v-model="licenseNumber" maxlength="30" @input="inputIdCard('licenseNumber')">
+						<input type="text" placeholder="请输入营业执照号"  v-model="licenseNumber" maxlength="20" @input="inputIdCard('licenseNumber')">
 					</div>
 				</div>
 			</div>
@@ -115,7 +115,6 @@ export default {
 			shopsName: '',
 			submitBtn: false,
 			islrz:false,
-			requestToken: ''
 		}
 	},
 	components: {
@@ -133,7 +132,6 @@ export default {
 	},
 	created () {
 		let _this = this;
-		//_this.createRequestToken()
 		Indicator.open({
 		  text: '加载中...',
 		  spinnerType: 'fading-circle'
@@ -152,22 +150,6 @@ export default {
 		})
 	},
 	methods: {
-		createRequestToken () {
-			let _this = this
-			axios.post('user/createRequestToken',qs.stringify({
-				userId: 0,
-				moduleId: 0
-			})).then(function(res){
-				if(res.data.code === '10000'){
-					_this.requestToken = res.data.data
-				}else{
-					Toast(res.data.msg)
-				}
-			}).catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		},
 		back(){
 			this.$router.back();
 		},
@@ -238,7 +220,6 @@ export default {
 				legalPic: _this.imgArray[0],
 				holdPic: _this.imgArray[1],
 				businessLicense: _this.imgArray[2],
-				//requestToken: _this.requestToken
 			})).then(res =>{
 				Indicator.close();
 				if (res.data.code === '10000') {

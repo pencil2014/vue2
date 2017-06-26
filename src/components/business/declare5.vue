@@ -1,5 +1,5 @@
 <template>
-	<div class="ex-declare">
+	<div :class="['ex-declare', showActiveClass]">
 		<!-- <div class="ex-topbar">
 			<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
 			<span>商家报单</span>
@@ -88,8 +88,11 @@
 				</div>
 			</div>
 		</div>
-		<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>
-		<button type='button' v-if="checkdata.status ==='2'" class="ex-declare-revoke" @click='revoke'>删除撤销记录</button>
+		<div class="actionBtn">
+			<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>
+			<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-revoke" @click='revoke(3)'>删除报单</button>
+			<button type='button' v-if="checkdata.status ==='2'" class="ex-declare-revoke" @click='revoke(2)'>删除撤销记录</button>
+		</div>
 		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>
 </template>
@@ -127,6 +130,16 @@ export default {
 			if (this.checkdata.status === '2') {
 				return 3
 			}
+		},
+		showActiveClass () {
+			if (this.checkdata.status === '2') {
+				return 'activeClass'
+			} else if (this.checkdata.status === '3') {
+				return 'activeClass2'
+			}  else {
+				return ''
+			}
+
 		}
 	},
 	components: {
@@ -170,11 +183,17 @@ export default {
 				this.$router.push({ name: 'Declare2', params: { id: this.id}})
 			}
 		},
-		revoke () {
-			let _this = this;
+		revoke (status) {
+			let _this = this
+			let msg = ''
+			if (status === 2) {
+				msg = '确定删除撤销记录?'
+			} else {
+				msg = '确定删除该笔报单?'
+			}
 			MessageBox({
 			  title: '提示',
-			  message: '确定删除撤销记录?',
+			  message: msg,
 			  showCancelButton: true
 			}).then(action => {
 				if (action === "confirm") {
@@ -182,25 +201,25 @@ export default {
 				}
 			})
 		},
-	removeRevoke () {
-		let _this = this
-		axios.post('declaration/deleteRevoked',qs.stringify({id: this.id}))
-			.then(function(res){
-				if (res.data.code === '10000') {
-					MessageBox({
-					  title: '提示',
-					  message: '删除成功！'
-					}).then(action => {
-						_this.$router.go(-1)
-					})
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Toast('连接失败，请检查网络是否正常!')
-			})
-	}
+		removeRevoke () {
+			let _this = this
+			axios.post('declaration/deleteRevoked',qs.stringify({id: this.id}))
+				.then(function(res){
+					if (res.data.code === '10000') {
+						MessageBox({
+						  title: '提示',
+						  message: '删除成功！'
+						}).then(action => {
+							_this.$router.push('/order')
+						})
+					} else {
+						Toast(res.data.msg)
+					}
+				})
+				.catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+				})
+		}
 	},
 	filters: {
 		formatTime (value) {
@@ -215,7 +234,9 @@ export default {
 </script>
 
 <style scoped>
-.ex-declare{background-color: #f4f5f7; min-height: 100%;  position: absolute; width: 100%; padding-bottom: 7rem;}
+.ex-declare{background-color: #f4f5f7; min-height: 100%;  position: absolute; width: 100%; padding-bottom: 2rem;}
+.activeClass {padding-bottom: 7rem;}
+.activeClass2 {padding-bottom: 13rem;}
 .ex-declare-progress {padding: 2rem 0; text-align: center; overflow: hidden; position: relative;}
 .ex-declare-progress .percent { height: 0.4rem; background-color: #e3e3e3;position: absolute; top: 3.2rem; left: 3rem; right: 3rem;}
 .ex-declare-progress-item { width: 25%; float: left; height: 5rem;  text-align: center; z-index: 2; position: relative;}
@@ -240,8 +261,11 @@ export default {
 
 .ex-declare-check .ex-declare-item:last-child{border-bottom: none;}
 
-.ex-declare-btn {display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; position: fixed;bottom: 1rem; left: 4%;}
-.ex-declare-btn:active{background-color:#0470b6; }
+.actionBtn {position: fixed; width: 100%; bottom: 1rem;}
+.actionBtn button {display: block; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 90%; margin: 1rem auto 0 auto; color: #fff;}
 
-.ex-declare-revoke { display: block; margin: 2rem auto; width: 90%; height: 5rem; background-color: #f0544d; color: #fff; border-radius: 0.6rem; font-size: 1.6rem;}
+.ex-declare-btn {background-color: #047dcb;}
+.ex-declare-btn:active{background-color:#0470b6; }
+.ex-declare-revoke{background-color:#f0544d;}
+.ex-declare-revoke:active{background-color:#f9433b;}
 </style>
