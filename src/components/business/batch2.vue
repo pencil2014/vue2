@@ -1,5 +1,5 @@
 <template>
-	<div class="ex-batch-box">
+	<div :class="['ex-batch-box', {activeClass:showActiveClass}]">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-batch-result">
 			<div class="ex-batch-result-item" v-if="status === '5'">
@@ -57,8 +57,9 @@
 				</tr>
 			</table>
 		</div>
-		
-
+		<div class="actionBtn">
+			<button type='button'  v-if="status ==='3'" class="ex-declare-revoke" @click='revoke'>删除报单</button> 
+		</div>
 	</div>
 </template>
 
@@ -88,6 +89,11 @@ export default {
 	components: {
 		HeadTitle,
 	},
+	computed: {
+		showActiveClass () {
+			return this.status === '3'
+		}
+	},
 	methods: {
 		back () {
 			this.$router.go(-1)
@@ -110,6 +116,37 @@ export default {
 				Indicator.close()
 				Toast('连接失败，请检查网络是否正常!')
 			})
+		},
+		revoke () {
+			let _this = this;
+			MessageBox({
+			  title: '提示',
+			  message: '确定删除该笔批量报单?',
+			  showCancelButton: true
+			}).then(action => {
+				if (action === "confirm") {
+					_this.removeRevoke()
+				}
+			})
+		},
+		removeRevoke () {
+			let _this = this
+			axios.post('declaration/deleteOrders',qs.stringify({orderNo: this.id}))
+				.then(function(res){
+					if (res.data.code === '10000') {
+						MessageBox({
+						  title: '提示',
+						  message: '删除成功！'
+						}).then(action => {
+							_this.$router.push('/batchlist')
+						})
+					} else {
+						Toast(res.data.msg)
+					}
+				})
+				.catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+				})
 		}
 	},
 	created () {
@@ -150,6 +187,7 @@ export default {
 
 <style scoped>
 .ex-batch-box {background-color: #f4f5f7;}
+.activeClass{ padding-bottom: 7rem;}
 .ex-batch-result-item {background: #fff; text-align: center; padding: 2rem 0;}
 .ex-batch-result-item i{ font-size: 5rem; }
 .ex-batch-result-item i.suc{color: #ffa100;}
@@ -164,4 +202,9 @@ export default {
 .ex-batch-item b{font-weight: normal; color:#aaafb6; float: right;}
 
 .ex-batch-table {background-color: #fff;}
+
+.actionBtn {position: fixed; width: 100%; bottom: 1rem;}
+.actionBtn button {display: block; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 90%; margin: 1rem auto 0 auto; color: #fff;}
+.ex-declare-revoke{background-color:#f0544d;}
+.ex-declare-revoke:active{background-color:#f9433b;}
 </style>

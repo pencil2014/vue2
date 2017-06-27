@@ -29,7 +29,7 @@
 		<div class="ex-declare-cnt">
 			<div class="img">
 				<span>*上传消费凭证</span>
-				<label class="tips">合同、收据、发票、提货单、银行流水单、任选其中一项。</label>
+				<label class="tips">合同，收据，发票，提货单，银行流水单，任选其中一项。</label>
 				<div class="upload">
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传照片</b>

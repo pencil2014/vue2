@@ -38,7 +38,7 @@
 						<td width="15%">{{index+1}}</td>
 						<td  width="20%"><input type="tel" name="" id="" v-model.trim='item.userCode' placeholder="买家ID" :class="{error: checkId(item.userCode) || repeat(item.userCode)}" @blur='getphone(item.userCode,index)' @focus='hideBtn'></td>
 						<td  width="30%"><input type="tel" name="" id="" :value='item.phone | formatPhone' placeholder="获取电话号码" readonly @click='getphone2(item)'></td>
-						<td  width="25%"><input type="tel" name="" id="" v-model.trim='item.consumptionMoney' placeholder="消费金额" maxlength="8" :class="{error: checkMoney(item.consumptionMoney)}" @blur='showBtn' @focus='hideBtn' @change='formatMoney(index)'></td>
+						<td  width="25%"><input type="text" name="" id="" v-model.trim='item.consumptionMoney' placeholder="消费金额" maxlength="8" :class="{error: checkMoney(item.consumptionMoney)}" @blur='showBtn' @focus='hideBtn' @change='formatMoney(index)'></td>
 						<td  width="10%" v-if='order.length > 3' @click='delOreder(index)'><i class="iconfont">&#xe6b3;</i></td>
 					</tr>
 				</table>

@@ -63,11 +63,11 @@
 			</div>
 			<div class="ex-declare-item">
 				<span>消费金额</span>
-				<b>￥{{checkdata.consumptionMoney}}</b>
+				<b>￥{{checkdata.consumptionMoney|checknum}}</b>
 			</div>
 			<div class="ex-declare-item" v-if='checkdata.rangliMoney'>
 				<span>让利款</span>
-				<b>￥{{checkdata.rangliMoney}}</b>
+				<b>￥{{checkdata.rangliMoney|checknum}}</b>
 			</div>
 			<div class="ex-declare-item" v-if="checkdata.consumptionCertificate">
 				<span>消费凭证</span>
@@ -225,7 +225,14 @@ export default {
 			let month = time.getMonth() + 1
 			let date = time.getDate()
 			return [year,month,date].join('/')
-		}
+		},
+		checknum (value) {
+			value = value? value+'' : '0'
+			let num = '0.00'
+			num = value >= 0 ? value : '0.00' 
+			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+			return num 
+		},
 	},
 	destroyed () {
 		Indicator.close()
@@ -234,7 +241,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-declare{background-color: #f4f5f7; min-height: 100%; /* position: absolute;*/ width: 100%;overflow-x: hidden;height: 100%;padding-bottom: 2rem;}
+.ex-declare{background-color: #f4f5f7; /* min-height: 100%; position: absolute;*/ width: 100%;overflow-x: hidden;height: 100%;padding-bottom: 2rem;}
 .activeClass{padding-bottom: 13rem;}
 .ex-declare-progress {padding: 2rem 0; text-align: center; overflow: hidden; position: relative;}
 .ex-declare-progress .percent { height: 0.4rem; background-color: #e3e3e3;position: absolute; top: 3.2rem; left: 3rem; right: 3rem;}

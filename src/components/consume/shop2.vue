@@ -24,7 +24,7 @@
 		</div>
 		<div class="ex-shop2-cnt">
 			<div class="ex-shop2-cnt-item">
-				<span>*营业执照号</span><input type="tel" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20" >
+				<span>*营业执照号</span><input type="text" name="" id="licenseNumber" placeholder="请输入营业执照号" v-model.trim = "licenseNumber" maxlength="20" >
 				<!-- <p class=tips>营业执照号不够15位的请用字母e补齐</p> -->
 			</div>
 			<div class="img">
@@ -82,7 +82,7 @@
 				<a href="http://www.exgj.com.cn/exsdresc/commission.docx" class="instructions">(委托书范本)</a>
 			</div>
 			<button type='button'  :class="[ 'ex-shop2-btn', {disableBtn:disableBtn}]" @click='next'>下一步</button>
-			<p class='agreement'><input type="checkbox"  v-model='agreement'>我已阅读并同意<router-link to="/ShopRule">《商家入驻加盟协议书》</router-link></p>
+			<p class='agreement'><input type="checkbox"  v-model='agreement'>我已阅读并同意<a href="javascript:;" @click='gotoRule'>《商家入驻加盟协议书》</a></p>
 		</div>
 	</div>
 </template>
@@ -134,6 +134,16 @@ export default {
 		}
 	},
 	created () {
+		let data = window.localStorage.getItem('shop2')
+		if (!!data) {
+			let item = JSON.parse(data)
+			this.licenseNumber = item.licenseNumber
+			this.imgurl = item.imgurl
+			this.imgbase64 = item.imgbase64
+			this.imgArray = item.imgArray
+			this.agreement = item.agreement
+			window.localStorage.removeItem('shop2')
+		}
 	},
 	watch: {
 		imgArray () {
@@ -263,6 +273,17 @@ export default {
 	       _this.imgbase64[id] = ''
 	       })  
 			}
+		},
+		gotoRule () {
+			let data = {
+				licenseNumber: this.licenseNumber,
+				imgurl: this.imgurl,
+				imgbase64: this.imgbase64,
+				imgArray: this.imgArray,
+				agreement: this.agreement
+			}
+			window.localStorage.setItem('shop2', JSON.stringify(data))
+			this.$router.push('/ShopRule')
 		}
 	},
 	components: {

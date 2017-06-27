@@ -25,7 +25,7 @@
 							<td>{{item.createTime | formatTime}}</td>
 							<td>{{item.orderNo}}</td>
 							<td>{{item.consumptionMoney | formatMoney}}</td>
-							<td>{{item.orderAudit.auditOpinion}}</td>
+							<td>{{item.status | formatStatus}}</td>
 							<td><i class='iconfont'>&#xe606;</i></td>
 						</tr>
 					</tbody>
@@ -131,6 +131,17 @@ export default {
 		},
 		formatMoney (value) {
 			return (value*1).toFixed(2)
+		},
+		formatStatus (value) {
+			if (value === '5') {
+				return '审核中'
+			} else if (value === '6') {
+				return '审核通过'
+			} else if (value === '7' || value === '3'){
+				return '审核未通过'
+			} else {
+				return '--'
+			}
 		}
 	},
 	components: {

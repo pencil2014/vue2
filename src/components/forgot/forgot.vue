@@ -93,10 +93,10 @@ export default {
 		},
 	},
 	created () {
-		let phone = window.localStorage.getItem('phone')
-		if (!!phone) {
-			this.phone = phone
-		}
+		// let phone = window.localStorage.getItem('phone')
+		// if (!!phone) {
+		// 	this.phone = phone
+		// }
 
 		// 生成验证码
 		this.change()

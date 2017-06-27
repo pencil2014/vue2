@@ -74,7 +74,7 @@
 			</div>
 			<div class="ex-declare-cnt-item">
 				<span>*消费金额</span>
-				<input type="tel" placeholder="请输入消费金额" v-model.trim='consumptionMoney' maxlength="11">
+				<input type="text" placeholder="请输入消费金额" v-model.trim='consumptionMoney' maxlength="11" @change='formatMoney'>
 			</div>
 			</div>
 		</div>
@@ -252,6 +252,14 @@ export default {
 				_this.repeatBtn = false
 				Toast('连接失败，请检查网络是否正常!')
 			})
+		},
+		formatMoney () {
+			if (!isNaN(this.consumptionMoney)) {
+				this.consumptionMoney =  (this.consumptionMoney-0).toFixed(2)
+			} else {
+				this.consumptionMoney = ''
+			}
+			
 		}
 	},
 	destroyed () {
