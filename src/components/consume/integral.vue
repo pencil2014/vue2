@@ -46,8 +46,8 @@ export default {
 			integral: 0,
 			exchange: '',
 			repeatBtn: false,
-			path: '/index'
-			// requestToken: ''
+			path: '/index',
+			requestToken: ''
 		}
 	},
 	computed: {
@@ -83,30 +83,29 @@ export default {
 		}
 
 		// 获取requestToken
-		//this.createRequestToken()
+		this.createRequestToken()
 	},
 	methods: {
-		// createRequestToken () {
-		// 	let _this = this
-		// 	axios.post('user/createRequestToken',qs.stringify({
-		// 		userId: 0,
-		// 		moduleId: 0
-		// 	})).then(function(res){
-		// 		if(res.data.code === '10000'){
-		// 			_this.requestToken = res.data.data
-		// 		}else{
-		// 			Toast(res.data.msg)
-		// 		}
-		// 	}).catch(function(){
-		// 		Toast('连接失败，请检查网络是否正常!')
-		// 	})
-		// },
+		createRequestToken () {
+			let _this = this
+			axios.post('user/createRequestToken',qs.stringify({
+				moduleId: 2
+			})).then(function(res){
+				if(res.data.code === '10000'){
+					_this.requestToken = res.data.data
+				}else{
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		back () {
 			this.$router.push(this.path)
 		},
 		submit () {
 			if (!/^[1-9]\d+$/.test(this.exchange)) {
-				MessageBox('提示', '兑换的享积分不合法！')
+				MessageBox('提示', '兑换的享积分必须为100的倍数！')
 				return
 			}
 			if (this.exchange <= 0 || this.exchange % 100 !== 0) {
@@ -115,6 +114,10 @@ export default {
 			}
 			if (this.integral < this.exchange) {
 				MessageBox('提示', '可兑换的享积分不足！')
+				return
+			}
+			if (!this.requestToken) {
+				MessageBox('提示', '数据验证中,请稍后重试！')
 				return
 			}
 			if (this.repeatBtn) {
@@ -126,7 +129,7 @@ export default {
 			})
 			let _this = this
 			_this.repeatBtn = true
-			axios.post('integral/toBalance',qs.stringify({integral: this.exchange}))
+			axios.post('integral/toBalance',qs.stringify({integral: this.exchange,requestToken:this.requestToken}))
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
@@ -137,6 +140,8 @@ export default {
 				} else {
 					Toast(res.data.msg)
 				}
+				_this.requestToken = ''
+				_this.createRequestToken()
 			})
 			.catch(function(){
 				Indicator.close()

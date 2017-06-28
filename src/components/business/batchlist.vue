@@ -138,7 +138,7 @@ export default {
 			} else if (value === '6') {
 				return '审核通过'
 			} else if (value === '7' || value === '3'){
-				return '审核未通过'
+				return '未通过审核'
 			} else {
 				return '--'
 			}

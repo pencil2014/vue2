@@ -189,7 +189,7 @@ export default {
 			if (status === 2) {
 				msg = '确定删除撤销记录?'
 			} else {
-				msg = '确定删除该笔报单?'
+				msg = '确定删除报单记录?'
 			}
 			MessageBox({
 			  title: '提示',

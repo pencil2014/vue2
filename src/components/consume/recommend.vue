@@ -21,15 +21,15 @@
 						<th>序号</th>
 						<th>会员ID</th>
 						<th>手机</th>
-						<th>姓名</th>
+						<!-- <th>姓名</th> -->
 						<th>日期</th>
 					</tr>
 					<tbody v-show='recommendList.length > 0'>
 						<tr v-for="(item, index) in recommendList">
 							<td>{{ index + 1 }}</td>
 							<td>{{item.userCode}}</td>
-							<td>{{item.phone}}</td>
-							<td>{{item.realName}}</td>
+							<td>{{item.phone || '--'}}</td>
+							<!-- <td>{{item.realName}}</td> -->
 							<td>{{item.createTime | formatTime}}</td>
 						</tr>
 					</tbody>

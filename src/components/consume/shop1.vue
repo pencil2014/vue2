@@ -72,6 +72,9 @@ export default {
 			provinceId: '',
 			districtId: '',
 			cityId: '',
+			provinceId_err: '',
+			districtId_err: '',
+			cityId_err: '',
 			cityArray: [],
 			districtArray: [],
 			shopName: '',
@@ -111,6 +114,9 @@ export default {
 	},
 	watch: {
 		provinceId () {
+			if (!this.city) {
+				return
+			}
 			let array = this.city.filter(function(item) {
 				return item.parentId === this.provinceId
 			}.bind(this))
@@ -118,6 +124,9 @@ export default {
 			this.cityArray = array
 		},
 		cityId () {
+			if (!this.district) {
+				return
+			}
 			let array = this.district.filter(function(item) {
 				return item.parentId === this.cityId
 			}.bind(this))
@@ -134,6 +143,25 @@ export default {
 	created () {
 		let shopdata = window.localStorage.getItem('shopdata')
 		let _this = this
+
+		// 获取用户申请数据
+		axios.post('shop/examine',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				_this.shopsLinkman = res.data.data.shopsLinkman
+				_this.shopsLinkphone = res.data.data.shopsLinkphone
+				_this.shopName = res.data.data.shopsName
+				_this.addressDetail = res.data.data.shopsAddress
+				_this.provinceId_err = res.data.data.province
+			  _this.districtId_err = res.data.data.county
+			  _this.cityId_err = res.data.data.city
+			}
+		})
+		.catch(function(){
+			Toast('连接失败，请检查网络是否正常!')
+		})
+
+		// 获取省市区数据
 		axios.post('getBaseRegionAll',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
@@ -154,7 +182,15 @@ export default {
 					_this.changeProvince()
 					_this.changeCity()
 				}
-					
+				
+				// 如果商家已申请，重新赋值省市区
+				if (_this.provinceId_err) {
+					_this.provinceId = _this.provinceId_err
+					_this.cityId = _this.cityId_err
+					_this.districtId = _this.districtId_err
+				}
+				
+
 			} else {
 				Toast(res.data.msg)
 			}
@@ -177,12 +213,20 @@ export default {
 		// 		_this.nodateStatus = true
 		// 			Toast('连接失败，请检查网络是否正常!')
 		// 	})
+
+
+
+
+
 	},
 	methods: {
 		back () {
 			this.$router.go(-1)
 		},
 		changeProvince (Id) {
+			if (!this.city) {
+				return
+			}
 			let array = this.city.filter(function(item) {
 				return item.parentId === this.provinceId
 			}.bind(this))
@@ -263,7 +307,7 @@ export default {
 	},
 	components: {
 		HeadTitle,
-	},
+	}
 }	
 </script>
 

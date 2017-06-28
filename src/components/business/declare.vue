@@ -218,7 +218,7 @@ export default {
 				return
 			}
 			if (!/^\d+\.?\d{1,2}$/.test(this.consumptionMoney)) {
-				MessageBox('提示', '消费金额不合法！')
+				MessageBox('提示', '消费金额必须为数字！')
 				return
 			}
 			if (this.consumptionMoney >= 100000000) {

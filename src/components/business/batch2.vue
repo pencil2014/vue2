@@ -121,7 +121,7 @@ export default {
 			let _this = this;
 			MessageBox({
 			  title: '提示',
-			  message: '确定删除该笔批量报单?',
+			  message: '确定删除批量报单?',
 			  showCancelButton: true
 			}).then(action => {
 				if (action === "confirm") {

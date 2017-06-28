@@ -87,8 +87,8 @@ export default {
 				text:'转存银行',
 				fixed: false
 			},
-			checkRealName: ''
-			// requestToken: ''
+			checkRealName: '',
+			requestToken: ''
 		}
 	},
 	computed: {
@@ -163,25 +163,24 @@ export default {
 			})
 
 		// 获取requestToken
-		//this.createRequestToken()
+		this.createRequestToken()
 
 	},
 	methods: {
-		// createRequestToken () {
-		// 	let _this = this
-		// 	axios.post('user/createRequestToken',qs.stringify({
-		// 		userId: 0,
-		// 		moduleId: 0
-		// 	})).then(function(res){
-		// 		if(res.data.code === '10000'){
-		// 			_this.requestToken = res.data.data
-		// 		}else{
-		// 			Toast(res.data.msg)
-		// 		}
-		// 	}).catch(function(){
-		// 		Toast('连接失败，请检查网络是否正常!')
-		// 	})
-		// },
+		createRequestToken () {
+			let _this = this
+			axios.post('user/createRequestToken',qs.stringify({
+				moduleId: 3
+			})).then(function(res){
+				if(res.data.code === '10000'){
+					_this.requestToken = res.data.data
+				}else{
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		back () {
 			this.$router.go(-1)
 		},
@@ -269,7 +268,7 @@ export default {
 			let route = usertype === '2' ? '/realname/shop' : '/realname'
 
 			if (!/^[1-9]\d+.?\d*$/.test(this.exchange)) {
-				MessageBox('提示', '提现金额不合法！')
+				MessageBox('提示', '提现金额必须大于100！')
 				return
 			}
 			if (this.exchange < 100) {
@@ -331,15 +330,16 @@ export default {
 				})
 				return
 			}
-
-
-
 			if (this.bankdata.status === '1') {
 				MessageBox('提示', '银行卡审核中，目前不能转存！')
 				return
 			}
 			if (this.bankdata.status === '2') {
 				MessageBox('提示', '银行卡审核不通过，目前不能转存！')
+				return
+			}
+			if (!this.requestToken) {
+				MessageBox('提示', '数据验证中,请稍后重试！')
 				return
 			}
 			if (this.repeatBtn) {
@@ -351,7 +351,7 @@ export default {
 			})
 			_this.repeatBtn = true
 
-			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id}))
+			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id,requestToken:this.requestToken}))
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
@@ -362,6 +362,9 @@ export default {
 				} else {
 					Toast( res.data.msg)
 				}
+				_this.requestToken = ''
+				_this.createRequestToken()
+				
 			})
 			.catch(function(){
 				Indicator.close()

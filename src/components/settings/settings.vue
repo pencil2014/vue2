@@ -136,9 +136,24 @@ export default {
 				cancelButtonText:'取消',
 			}).then(action =>{
 				if(action === "confirm"){
-					window.localStorage.setItem('token', '')
-					window.localStorage.setItem('usertype', '')
-					_this.$router.push('/login')
+					Indicator.open({
+					  text: '正在退出登录...',
+					  spinnerType: 'fading-circle'
+					})
+					axios.post('user/loginOut',qs.stringify({}))
+					.then(function(res){
+						Indicator.close()
+						if(res.data.code === '10000'){
+							window.localStorage.removeItem('token')
+							window.localStorage.removeItem('usertype')
+							_this.$router.push('/login')
+						}else{
+							Toast(res.data.msg)
+						}
+					}).catch(function(){
+						Indicator.close()
+						Toast('连接失败，请检查网络是否正常!')
+					})
 				}
 			});
 		},

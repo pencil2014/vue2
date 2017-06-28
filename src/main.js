@@ -56,7 +56,7 @@ if (!!window.localStorage.getItem('token')) {
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     // 拦截器token无效
-    if (response.data.msg==='token无效') {
+    if (response.data.code==='10001') {
       window.localStorage.removeItem('token')
       axios.defaults.headers.common['authorization'] = ''
       router.push('/login')

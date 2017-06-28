@@ -65,12 +65,11 @@ export default {
 			countdown: false,
 			second: 120,
 			RecommendPhone: '',
-			imgcode: ''
-			// requestToken: ''
+			imgcode: '',
+			requestToken: ''
 		}
 	},
 	computed: {
-		
 		disableBtn () {
 			return (this.phone && this.password && this.code  && this.agreement && this.imgcode) ? false : true 
 		}
@@ -78,7 +77,6 @@ export default {
 	created () {
 		this.userId = this.$route.params.code
 		let _this = this
-		// _this.createRequestToken()
 		axios.post('user/personalbase',qs.stringify({userCode: this.userId}))
 		.then(function(res){
 			if (res.data.code === '10000') {
@@ -97,27 +95,25 @@ export default {
 		.catch(function(){
 			Toast('连接失败，请检查网络是否正常!')
 		})
-
+		this.createRequestToken()
 		// 生成验证码
 		this.change()
 	},
 	methods: {
-		// createRequestToken () {
-		// 	let _this = this
-		// 	axios.post('user/createRequestToken',qs.stringify({
-		// 		userId: 0,
-		// 		moduleId: 0
-		// 	})).then(function(res){
-		// 		if(res.data.code === '10000'){
-		// 			_this.requestToken = res.data.data
-		// 		}else{
-		// 			Toast(res.data.msg)
-		// 		}
-		// 	}).catch(function(){
-		// 		Indicator.close()
-		// 		Toast('连接失败，请检查网络是否正常!')
-		// 	})
-		// },
+		createRequestToken () {
+			let _this = this
+			axios.post('user/createRequestToken',qs.stringify({
+				moduleId: 1
+			})).then(function(res){
+				if(res.data.code === '10000'){
+					_this.requestToken = res.data.data
+				}else{
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		change () {
 			this.imgcode = ''
 			// 生成验证码
@@ -127,21 +123,21 @@ export default {
 			})
 			let _this = this
 			initNECaptcha({
-	      captchaId: '25bf95669a354b2ba8f2af1b2d42e2cd',
-	      element: '#captcha',
-	      mode: 'embed',
-	      width: 'auto',
-	      onVerify: function (err, data) {
-	      	_this.imgcode =  data ? data.validate : ''
-	      },
-	      onReady: function (instance) {
-	      	Indicator.close()
-	      }
-	    }, function onload (instance) {
-	      // 初始化成功后，用户输入对应用户名和密码，以及完成验证后，直接点击登录按钮即可
-	    }, function onerror (err) {
-	      // 验证码初始化失败处理逻辑，例如：提示用户点击按钮重新初始化
-	    })
+		      captchaId: '25bf95669a354b2ba8f2af1b2d42e2cd',
+		      element: '#captcha',
+		      mode: 'embed',
+		      width: 'auto',
+		      onVerify: function (err, data) {
+		      	_this.imgcode =  data ? data.validate : ''
+		      },
+		      onReady: function (instance) {
+		      	Indicator.close()
+		      }
+		    }, function onload (instance) {
+		      // 初始化成功后，用户输入对应用户名和密码，以及完成验证后，直接点击登录按钮即可
+		    }, function onerror (err) {
+		      // 验证码初始化失败处理逻辑，例如：提示用户点击按钮重新初始化
+		    })
 		},
 		getcode () {
 			if (!(/^1\d{10}$/.test(this.phone))) {
@@ -234,6 +230,10 @@ export default {
 				MessageBox('提示', '请勾选同意《“e享时代”会员注册协议》！')
 				return
 			}
+			if(!this.requestToken){
+				MessageBox('提示', '数据验证中,请稍后重试！')
+				return
+			}
 			Indicator.open({
 			  text: '注册中...',
 			  spinnerType: 'fading-circle'
@@ -255,7 +255,7 @@ export default {
 						login_name: _this.phone,
 						password: _this.password,
 						phone_code: _this.code,
-						// requestToken: _this.requestToken
+						requestToken: _this.requestToken
 					}))
 					.then(function(res){
 						Indicator.close()
@@ -267,9 +267,11 @@ export default {
 							_this.$router.push('/index')
 						} else {
 							Indicator.close()
+							_this.change()
+							_this.requestToken = ''
+							_this.createRequestToken()
 							_this.second = 0
 							_this.repeatBtn = false
-							_this.change()
 							Toast(res.data.msg)
 						}
 					})

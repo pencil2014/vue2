@@ -215,7 +215,7 @@ export default {
 			let _this = this
 
 			if (!/^\d+.?\d*$/.test(this.exchange)) {
-				MessageBox('提示', '提现金额不合法！')
+				MessageBox('提示', '提现金额必须大于100！')
 				return
 			}
 			if (this.exchange < 100) {

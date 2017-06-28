@@ -243,7 +243,7 @@ export default {
 				return
 			}
 			if (! /^\d+(\.?\d{1,2})?$/.test(this.price)) {
-				MessageBox('提示', '商品价格不合法!')
+				MessageBox('提示', '商品价格必须为数字!')
 				return
 			}
 			if (this.imgurl.length < 1) {
