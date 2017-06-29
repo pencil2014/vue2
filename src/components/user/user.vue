@@ -152,11 +152,16 @@ export default {
 	},
 	created () {
 		let _this = this
+		Indicator.open({
+		  text: '加载中...',
+		  spinnerType: 'fading-circle'
+		})
 		 axios.all([
 		 	axios.post('user/personal'),
         	axios.post('message/getCount'),
         	axios.post('verify/checkRealName'),
 		 ]).then(axios.spread(function (personal,count,realname){
+		 	Indicator.close()
 		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
 		 		_this.count = count.data.data.count<=99 ? count.data.data.count : '99+';
@@ -170,6 +175,7 @@ export default {
 		 		Toast('系统错误')
 		 	}
 		 })).catch(function(){
+		 	Indicator.close()
 			Toast('连接失败，请检查网络是否正常!')
 		})
 	},	

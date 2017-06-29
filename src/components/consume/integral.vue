@@ -104,6 +104,14 @@ export default {
 			this.$router.push(this.path)
 		},
 		submit () {
+			if (!this.exchange) {
+				MessageBox('提示', '兑换的享积分不能为空！')
+				return
+			}
+			if (this.integral < this.exchange) {
+				MessageBox('提示', '可兑换的享积分不足！')
+				return
+			}
 			if (!/^[1-9]\d+$/.test(this.exchange)) {
 				MessageBox('提示', '兑换的享积分必须为100的倍数！')
 				return
@@ -112,10 +120,7 @@ export default {
 				MessageBox('提示', '兑换的享积分必须为100的倍数！')
 				return
 			}
-			if (this.integral < this.exchange) {
-				MessageBox('提示', '可兑换的享积分不足！')
-				return
-			}
+			
 			if (!this.requestToken) {
 				MessageBox('提示', '数据验证中,请稍后重试！')
 				return

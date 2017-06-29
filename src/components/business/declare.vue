@@ -55,6 +55,10 @@
 				<b>三、关注审批进度：</b>
 				<p>基本信息提交后，请到报单进度点击详情关注进度</p>
 			</div>
+			<div class="ex-declare-tips-item">
+				<b>温馨提示：</b>
+				<p class='red'>跨行转账超过五万一般到账时间为工作日的9:00 — 17:00</p>
+			</div>
 			</div>
 		</div>
 		<div class="ex-declare-cnt">
