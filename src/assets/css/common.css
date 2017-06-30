@@ -1,8 +1,8 @@
 /* CSS Reset */
-html,body{font-family: "Microsoft Yahei","PingFang SC","San Francisco";  background-color: #fff; height: 100%; font-size: 62.5%;}
+html,body{font-family: "Microsoft Yahei","San Francisco","sans-serif";  background-color: #fff; height: 100%; font-size: 62.5%;}
 body, dl, dd, h1, h2, h3, h4, h5, h6, p, form{margin:0;}
 ol,ul{margin:0; padding:0;list-style-type:none;}
-input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei","PingFang SC","San Francisco";vertical-align: middle;}
+input, select,button {vertical-align:middle; outline:none; font-family: "Microsoft Yahei";vertical-align: middle;}
 button{border: none;}
 table {border-collapse:collapse;border-spacing:0;}
 a{ text-decoration:none; outline:none;}
@@ -10,7 +10,6 @@ a:visited,a:active{ text-decoration:none; }
 i{ display: inline-block; text-decoration: none;}
 img{max-width: 100%;}
 [v-cloak] {display: none;}
-li{list-style: none;}
 
 /* 清除浮动 */
 .fn-clear:after {visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
@@ -34,28 +33,24 @@ url('../fonts/iconfont.svg#iconfont') format('svg');} /* iOS 4.1- */
 
 /*首页样式*/
 #app{overflow: auto; height: 100%; font-size: 1.2rem;}
-.activeRouter {color: #047dcb !important;}
+.activeRouter {color: #0470b6 !important;}
 
 
 .table {width: 100%;}
-.table th{ text-align: left; padding: 1.2rem 0.8rem; font-weight: normal; color: #848a9b; }
+.table th{ /*text-align: left;*/ padding: 1rem 0.8rem; font-weight: normal; color: #888; }
 .table tr{border-bottom: 1px solid #e5e5e5;}
-.table td{padding: 1.4rem 0.8rem; word-break: break-all;}
+.table td{padding: 1rem 0.8rem; word-break: break-all; text-align: center; font-size: 1.4rem;}
 
-.ex-topbar{height: 5rem; background-color: #2eadff; color: #fff; text-align: center; position: relative;}
+.ex-topbar{height: 5rem; background-color: #0470b6; color: #fff; text-align: center; position: relative;}
 .ex-topbar span {font-size: 1.8rem; display: block; line-height: 5rem;}
 .ex-topbar a{ position: absolute; left: 0; top: 0; bottom: 0; width: 5rem; line-height: 5rem; color: #fff; text-align: center; }
 .ex-topbar a i{font-size: 3rem;}
 .ex-topbar a:active{background-color: #29a0ec;}
-.disableBtn,.disableBtn:active { background-color: #ccc !important; color: #eee !important;}
+.disableBtn,.disableBtn:active { background-color: #eee !important; color: #ddd !important;}
 
 .nodata { height: 20rem; line-height: 2; text-align: center; color: #a6a9b0; font-size: 1.4rem;}
 .nodata img{ width: 15rem; height: auto;  padding-top: 5rem;}
 
-input{font-size: 1.4rem;}
-.mint-indicator-wrapper {z-index: 9999;}
 
 .mint-msgbox-message { line-height: 2rem !important; }
 .mint-msgbox-btn {font-size: 1.6rem !important; }
-
-

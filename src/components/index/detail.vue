@@ -2,15 +2,20 @@
 <div>
 	<div class="ex-topbar">
 		<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-		<span>下级代理商明细</span>
+		<span>下级商家收益</span>
 	</div>
+	<!-- <v-touch
+		  v-on:swipeleft="swipeleft"
+			v-on:swiperight="swipeleft"
+		> -->
 	<div class="ex-cnt">
 		<mt-loadmore :top-method="loadTop" ref="loadmore">
 			<table class="table">
 				<tr>
-					<th>名称</th>
-					<th>辖区商家数</th>
-					<th>历史结算e积分</th>
+					<th>时间</th>
+					<th>商家名称</th>
+					<th>商品名称</th>
+					<th>获得e积分</th>
 				</tr>
 				<tbody
 					v-show='dataList.length > 0'
@@ -19,9 +24,10 @@
 	  			infinite-scroll-distance="10"
 				>
 					<tr v-for="item in dataList">
-						<td>{{item.regionName}}</td>
-						<td>{{item.shopsNum}}</td>
-						<td>{{item.totalSettlement}}</td>
+						<td>{{item.orderDate | formatTime}}</td>
+						<td>{{item.shopName || '--'}}</td>
+						<td>{{item.goodsName || '--'}}</td>
+						<td>{{item.integral}}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -31,6 +37,7 @@
 				<p>还没有数据哦~</p>
 		</div>
 	</div>
+	<!-- </v-touch> -->
 </div>		
 </template>
 
@@ -49,50 +56,38 @@ export default {
 			totalPage: 1,
 			pageSize: 20,
 			nodateStatus: false,
-			loading: false
+			loading: false,
+			revenueExpenditureType: '1'
 		}
 	},
 	methods: {
 		back () {
 			this.$router.go(-1)
 		},
-		queryAgentInfo () {
-			let _this = this
-			axios.post('gmanager/queryAgentInfo',qs.stringify({userId: this.id}))
-			.then(function(res){ 
-				if (res.data.code === '10000') {
-					 _this.agentInfo = res.data.data
-					 window.localStorage.setItem('agentInfo', JSON.stringify(res.data.data))
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Toast('系统错误!')
-			})
-		},
+		// swipeleft () {
+		// 	this.$router.push('/index')
+		// },
 		loadTop () {
 			Indicator.open({
 			  text: '正在刷新...',
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('gmanager/querySubordinateAgents',qs.stringify({
-				regionType: '3',
-				regionId: this.agentInfo.province,
-				agencyLevel: this.agentInfo.agencyLevel,
+			axios.post('gmanager/childShopOrders',qs.stringify({
+				userId: this.userId,
+				startDate: this.time,
+				status: this.status,
 				pageSize: this.pageSize, 
-				page: 1,
-				userId: this.id
+				page: 1
 			}))
 			.then(function(res){
 				Indicator.close()
-				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
-					_this.dataList = res.data.data.list || []
+				if (res.data.code === '0') {
+					_this.totalPage = Math.ceil(res.data.data.total/_this.pageSize)
+					_this.dataList = res.data.data.rows || []
 					_this.page = 2
 				} else {
-					Toast(res.data.msg)
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -111,25 +106,24 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('gmanager/querySubordinateAgents',qs.stringify({
-				regionType: '3',
-				regionId: this.agentInfo.province,
-				agencyLevel: this.agentInfo.agencyLevel,
+			axios.post('gmanager/childShopOrders',qs.stringify({
+				userId: this.userId,
+				startDate: this.time,
+				status: this.status,
+				revenueExpenditureType: this.revenueExpenditureType,
 				pageSize: this.pageSize, 
-				page: this.page,
-				userId: this.id
+				page: this.page
 			}))
 			.then(function(res){
+				_this.loading = false
 				Indicator.close()
 				_this.nodateStatus = true
-				_this.loading = false
-				if (res.data.code === '10000') {
-					_this.totalPage = res.data.data.totalPage
-					_this.dataList.push(...res.data.data.list)
+				if (res.data.code === '0') {
+					_this.totalPage = Math.ceil(res.data.data.total/_this.pageSize)
+					_this.dataList.push(...res.data.data.rows)
 					_this.page += 1
 				} else {
-					_this.loading = true
-					Toast(res.data.msg)
+					MessageBox('提示', res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -143,20 +137,20 @@ export default {
 		this.userId = this.$route.params.userId
 		this.time = this.$route.params.time
 		this.status = this.$route.params.status
-		let agentInfo = window.localStorage.getItem('agentInfo')
-		if (agentInfo) {
-			this.agentInfo =JSON.parse(window.localStorage.getItem('agentInfo')) 
+		if (this.$route.params.status === '') {
+			this.revenueExpenditureType = '2'
 		} else {
-			this.queryAgentInfo()
+			this.revenueExpenditureType = '1'
 		}
 	},
 	filters: {
 		formatTime (value) {
-			if (value) {
-				return value.split(' ')[0]
-			} else {
-				return value
-			}	
+			// let time = new Date(value)
+			// let year = time.getFullYear()
+			// let month = time.getMonth() + 1
+			// let date = time.getDate()
+			// return [year,month,date].join('/')
+			return value.split(' ')[0]
 		}
 	},
 }	

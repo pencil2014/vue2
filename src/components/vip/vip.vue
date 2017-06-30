@@ -2,7 +2,7 @@
 	<div class="ex-index">
 		<div class="ex-header">
 			<span class="logo">
-				<img src="../../assets/images/logo.png" alt="">权限管理系统
+				<img src="../../assets/images/logo.png" alt="">VIP商家系统
 			</span>
 			<a href="javascript:;" class="logout" @click='logout'>退出登录</a>
 		</div>
@@ -22,8 +22,9 @@
 				<div class="ex-index-item" v-if='showTab === 1'>
 					<div class="data">
 						<div class='num'>
+							<span>当前VIP商家ID：<b>{{userCode}}</b></span>
 							<span>下级商家数：<b>{{children || 0}}</b></span>
-							<span>可结算e积分总额：<b>{{integral1 || 0}}</b></span>
+							<span>下级商家可结算e积分总额：<b>{{integral1 || 0}}</b></span>
 						</div>
 					<!-- 	<button type="button" :class="['btn', {disabled:disabled }]" @click='settlement'>结 算</button> -->
 					</div>
@@ -42,9 +43,9 @@
 				  			infinite-scroll-distance="10"
 							>
 								<tr v-for="item in IntegralDetail1">
-									<td>{{item.daily  | formatTime}}</td>
+									<td>{{item.createDate  }}</td>
 									<td>{{item.integralValue}}</td>
-									<!-- <td><a href="javascript:;" @click='goDetail(item.userId, item.daily)'>明细</a></td> -->
+									<!-- <td><a href="javascript:;" @click='goDetail(item.userId, item.createDate)'>明细</a></td> -->
 								</tr>
 							</tbody>
 						</table>
@@ -60,8 +61,9 @@
 				<div class="ex-index-item" v-if='showTab === 2'>
 				<div class="data">
 					<div class="num">
+						<span>当前VIP商家ID：<b>{{userCode}}</b></span>
 						<span>下级商家数：<b>{{children || 0}}</b></span>
-						<span>未结算e积分总额：<b>{{integral2 || 0}}</b></span>
+						<span>下级商家未结算e积分总额：<b>{{integral2 || 0}}</b></span>
 					</div>
 				</div>
 					<div class="ex-index-item-cnt">
@@ -79,9 +81,9 @@
 			  			infinite-scroll-distance="10"
 						>
 							<tr v-for="item in IntegralDetail2">
-									<td>{{item.daily  | formatTime}}</td>
+									<td>{{item.createDate  }}</td>
 									<td>{{item.integralValue}}</td>
-									<!-- <td><a href="javascript:;" @click='goDetail(item.userId, item.daily)'>明细</a></td> -->
+									<!-- <td><a href="javascript:;" @click='goDetail(item.userId, item.createDate)'>明细</a></td> -->
 								</tr>
 						</tbody>
 					</table>
@@ -97,8 +99,9 @@
 				<div class="ex-index-item" v-if='showTab === 3'>
 					<div class="data">
 						<div class="num">
+							<span>当前VIP商家ID：<b>{{userCode}}</b></span>
 							<span>下级商家数：<b>{{children || 0}}</b></span>
-							<span>结算成功e积分总额：<b>{{integral3 || 0}}</b></span>
+							<span>下级商家结算成功e积分总额：<b>{{integral3 || 0}}</b></span>
 						</div>
 						
 					</div>
@@ -117,9 +120,9 @@
 			  			infinite-scroll-distance="10"
 						>
 							<tr v-for="item in IntegralDetail3">
-									<td>{{item.daily | formatTime}}</td>
+									<td>{{item.createDate }}</td>
 									<td>{{item.integralValue}}</td>
-									<!-- <td><a href="javascript:;" @click='goDetail(item.userId, item.daily)'>明细</a></td> -->
+									<!-- <td><a href="javascript:;" @click='goDetail(item.userId, item.createDate)'>明细</a></td> -->
 								</tr>
 						</tbody>
 					</table>
@@ -135,7 +138,7 @@
 			</div>
 		</div>
 		</v-touch>
-		<navbar></navbar>
+		<!-- <navbar></navbar> -->
 	</div>
 </template>
 
@@ -148,6 +151,7 @@ export default {
 	data () {
 		return {
 			id: '',
+			userCode: '',
 			showTab: 1,
 			activeclass: 1,
 			children: 0,
@@ -189,7 +193,7 @@ export default {
 			this.getdata(this.page,this.showTab)
 			this.getIntegralSum(this.showTab)
 			this.nodateStatus = false
-			window.localStorage.setItem('tab',value)
+			window.localStorage.setItem('tab1',value)
 		},
 		swipeleft () {
 			if (this.showTab > 1) {
@@ -247,40 +251,31 @@ export default {
 		},
 
 		goDetail (userId,time) {
-			let status = this.showTab === 3 ? '' : '0'
-			this.$router.push({ name: 'Detail', params: { userId: userId, time: time, status: status}})
+			this.$router.push({ name: 'Info', params: { userId: userId, time: time}})
 		},
 		getIntegralSum (tab) {
 			let _this = this
 			let data = {
 				userId: this.id, 
-				status: '0',
-				settlementStatus: '1',
-				revenueExpenditureType: '1'
+				status: '0'
 			}
 			if (tab === 1) {
 				data.status = '0'
-				data.settlementStatus = '1'
-				data.revenueExpenditureType = '1'
 			} else if (tab === 2) {
-				data.status = '0'
-				data.settlementStatus = '2'
-				data.revenueExpenditureType = '1'
+				data.status = '1'
 			} else {
-				data.status = ''
-				data.settlementStatus = ''
-				data.revenueExpenditureType = '2'
+				data.status = '2'
 			}
-			axios.post('gmanager/getIntegralSum',qs.stringify(data))
+			axios.post('vipShops/queryChildren',qs.stringify(data))
 			.then(function(res){
-				if (res.data.code === '0') {
-					_this.children = res.data.data.childrenShopCount
+				if (res.data.code === '10000') {
+					_this.children = res.data.data.childrenCounts
 					if (_this.showTab === 1) {
-						_this.integral1 = res.data.data.settleintegral
+						_this.integral1 = res.data.data.integralValue
 					} else if (_this.showTab === 2) {
-						_this.integral2 = res.data.data.settleintegral
+						_this.integral2 = res.data.data.integralValue
 					} else {
-						_this.integral3 = res.data.data.settleintegral
+						_this.integral3 = res.data.data.integralValue
 					}
 				} else {
 					Toast(res.data.msg)
@@ -295,56 +290,46 @@ export default {
 			this.page = value ? 1 : this.page
 			let data = {
 				userId: this.id,
-				userType: '3',
-				integralSource: '9',
-				revenueExpenditureType: '1',
 				status: '0',
-				settlementStatus: '1',
 				pageSize: this.pageSize, 
 				page: this.page
 			}
 			if (tab === 1) {
-				data.status = '0'
-				data.settlementStatus = '1'
-				data.revenueExpenditureType = '1'
+				data.status = '1'
 			} else if (tab === 2) {
 				data.status = '0'
-				data.settlementStatus = '2'
-				data.revenueExpenditureType = '1'
 			} else {
-				data.status = ''
-				data.revenueExpenditureType = '2'
-				data.settlementStatus = ''
+				data.status = '2'
 			}
 			Indicator.open({
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
 			this.loading = true
-			axios.post('gmanager/gmanagerIntegralDetail', qs.stringify(data))
+			axios.post('vipShops/queryIntegralByDay', qs.stringify(data))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
 				_this.loading = false
-				if (res.data.code === '0') {
-					_this.totalPage = Math.ceil(res.data.data.total/_this.pageSize)
+				if (res.data.code === '10000') {
+					_this.totalPage = res.data.data.totalPage
 					if (_this.page === 1) {
 						_this.page = 2
 						if (tab === 1) {
-							_this.IntegralDetail1 = res.data.data.rows 
+							_this.IntegralDetail1 = res.data.data.list 
 						} else if (tab === 2) {
-							_this.IntegralDetail2 = res.data.data.rows
+							_this.IntegralDetail2 = res.data.data.list
 						} else {
-							_this.IntegralDetail3 = res.data.data.rows 
+							_this.IntegralDetail3 = res.data.data.list 
 						}
 					} else {
 						_this.page += 1
 						if (tab === 1) {
-							_this.IntegralDetail1.push(...res.data.data.rows)
+							_this.IntegralDetail1.push(...res.data.data.list)
 						} else if (tab === 2) {
-							_this.IntegralDetail2.push(...res.data.data.rows) 
+							_this.IntegralDetail2.push(...res.data.data.list) 
 						} else {
-							_this.IntegralDetail3.push(...res.data.data.rows) 
+							_this.IntegralDetail3.push(...res.data.data.list) 
 						}
 					}
 							
@@ -371,21 +356,10 @@ export default {
 		},
 		
 	},
-	filters: {
-		formatTime (value) {
-			// let time = new Date(value)
-			// let year = time.getFullYear()
-			// let month = time.getMonth() + 1
-			// let date = time.getDate()
-			// return [year,month,date].join('/')
-			return value.split(' ')[0]
-		}
-	},
-	watch: {
-	},
 	created () {
 		this.id = window.localStorage.getItem('id')
-		let tab = window.localStorage.getItem('tab')
+		this.userCode = window.localStorage.getItem('userCode')
+		let tab = window.localStorage.getItem('tab1')
 		if (!!tab) {
 			this.switchTab(tab*1)
 		} else {
