@@ -103,20 +103,25 @@ export default {
 				password: md5(_this.confirmpsw)
 			})).then(function(res){
 				if (res.data.code === '10000') {
-					_this.submitBtn = false;
-					Toast('修改成功，请重新登陆')
-					window.localStorage.setItem('token', '')
-					_this.$router.push('/login')
-					// MessageBox({
-					// 	title:'提示',
-					// 	message:'修改成功，请重新登陆',
-					// 	showConfirmButton:true,
-					// 	confirmButtonText:'确认',
-					// }).then(action =>{
-					// 	if(action === "confirm"){
-							
-					// 	}
-					// });
+					Indicator.open({
+					  text: '正在退出登录...',
+					  spinnerType: 'fading-circle'
+					})
+					axios.post('user/loginOut',qs.stringify({}))
+					.then(function(res){
+						Indicator.close()
+						if(res.data.code === '10000'){
+							window.localStorage.removeItem('token')
+							window.localStorage.removeItem('usertype')
+							Toast('修改成功，请重新登陆！')
+							_this.$router.push('/login')
+						}else{
+							Toast(res.data.msg)
+						}
+					}).catch(function(){
+						Indicator.close()
+						Toast('连接失败，请检查网络是否正常!')
+					})
 				} else {
 					_this.submitBtn = false;
 					Toast({message: res.data.msg});

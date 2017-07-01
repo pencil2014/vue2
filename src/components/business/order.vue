@@ -26,7 +26,7 @@
 							<td>{{item.createTime | formatTime}}</td>
 							<td>{{item.commodityName}}</td>
 							<td>￥{{item.consumptionMoney}}</td>
-							<td  @click='gotodec(item.status,item.id)'>
+							<td @click='gotodec(item.status,item.id)'>
 								<span v-if='item.status==="1"' >消费凭证审核<i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status ==="5"' >转账审核 <i class='iconfont'>&#xe606;</i></span>
 								<span v-if='item.status==="2"'>已撤销 <i class='iconfont remove'>&#xe6b3;</i></span>
@@ -170,7 +170,7 @@ export default {
 .ex-order-box {position: fixed; top: 0; width: 100%; z-index: 2; }
 /*.ex-order-cnt {padding-top: 5rem}*/
 .ex-order-cnt {padding-top: 4.5rem;background: #fff;}
-.ex-order-cnt td{position: relative;}
+.ex-order-cnt td{position: relative;padding-right: 0;}
 .ex-order-cnt td i { font-size: 1.4rem; color: #999; float: right; padding-right: 0.5rem; }
 .ex-order-cnt td i.remove{font-size: 2rem; position: absolute; right: 0.5rem; top: 1.2rem;}
 .ex-order-cnt td a {display: inline-block;font-size: 1.2rem;color: #0c87d5;border-radius: 0.2rem;border: 1px solid;padding: 0.4rem;}

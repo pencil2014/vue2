@@ -109,9 +109,25 @@ export default {
 				phoneCode: _this.phoneCode
 			})).then(res =>{
 				if (res.data.code === '10000') {
-					window.localStorage.setItem('token', '')
-					_this.$router.push('/login')
-					Toast('修改成功，请重新登陆！')
+					Indicator.open({
+					  text: '正在退出登录...',
+					  spinnerType: 'fading-circle'
+					})
+					axios.post('user/loginOut',qs.stringify({}))
+					.then(function(res){
+						Indicator.close()
+						if(res.data.code === '10000'){
+							window.localStorage.removeItem('token')
+							window.localStorage.removeItem('usertype')
+							Toast('修改成功，请重新登陆！')
+							_this.$router.push('/login')
+						}else{
+							Toast(res.data.msg)
+						}
+					}).catch(function(){
+						Indicator.close()
+						Toast('连接失败，请检查网络是否正常!')
+					})
 				} else {
 					_this.submitBtn = false;
 					Toast(res.data.msg)
