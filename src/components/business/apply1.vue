@@ -35,9 +35,16 @@
 			<div class="ex-field-wrapper">
 				<p>推广照片</p>
 				<div class="uploadIMG">
-					<img src="../../assets/images/again.png" alt="" class="again">
-					<img :src="facadePhoto" alt="">
-					<input type="file" class="file-prew" id="facadePhoto" @change="getfile">
+					<div class="report-file" :class="{'noImg': !facadePhoto}">
+						<span v-if="!facadePhoto" class="noIMG-wrap">
+							<i class="iconfont">&#xe608;</i>
+							<br>
+							上传照片
+						</span>
+						<img src="../../assets/images/again.png" alt="" class="again" v-if="facadePhoto">
+						<img :src="facadePhoto" alt="" v-if="facadePhoto">
+						<input type="file" class="file-prew" id="facadePhoto" @change="getfile">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -298,31 +305,9 @@ export default {
 						_this.shopsLinkphone = res.data.data.shopsLinkphone
 						_this.slots[0].defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
 						_this.facadePhoto = res.data.data.facadePhoto
-					}else if(res.data.data.status !== '2' && !applyData){
-						_this.getShop()
 					}
 				} else {
 					Toast('获取申请信息失败！')
-				}
-			}).catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		},
-		getShop () {
-			let _this = this;
-			Indicator.open({
-			  text: '加载中...',
-			  spinnerType: 'fading-circle'
-			});
-			axios.post('shop/examine',qs.stringify({}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-					_this.shopsEnterName = res.data.data.shopsName
-					_this.facadePhoto = res.data.data.facadePhoto
-				} else {
-					Toast(res.data.msg)
 				}
 			}).catch(function(){
 				Indicator.close()
@@ -421,6 +406,12 @@ export default {
 .ex-field .ex-field-wrapper .uploadIMG img{width: 100%;height: 100%;}
 .ex-field .ex-field-wrapper .uploadIMG .again{position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;}
 .ex-field .ex-field-wrapper .uploadIMG input{position: absolute;width: 100%;height: 100%;top: 0px;left: 0px;z-index: 3;opacity: 0;filter:Alpha(opacity=0)}
+
+
+.ex-field .ex-field-wrapper .uploadIMG .noImg.report-file{border: dotted 1px #d8d8d8; }
+.ex-field .ex-field-wrapper .uploadIMG .report-file{position: relative;width: 64px;height: 64px;}
+.ex-field .ex-field-wrapper .uploadIMG .report-file .noIMG-wrap{position: absolute;top: 0px;color: #aaafb6;font-size: 1.2rem;line-height: 20px;margin-top: 12px;text-align: center;width: 100%;height: 100%;}
+.ex-field .ex-field-wrapper .uploadIMG .report-file .noIMG-wrap i.iconfont {font-size: 1.6rem;}
 
 .ex-button{margin-top: 16px;padding: 0 15px;text-align: center;}
 .ex-button button{display: block;height: 48px;width: 100%;line-height: 48px;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;}

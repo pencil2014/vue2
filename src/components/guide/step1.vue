@@ -80,7 +80,7 @@ export default {
 					_this.totalPage = res.data.data.totalPage
 					_this.nodateStatus = true
 				} else {	
-					Toast('对不起数据加载失败！')
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 				Indicator.close()
@@ -108,7 +108,7 @@ export default {
 					_this.page += 1
 					_this.loading = false
 				} else {
-					Toast('对不起数据加载失败！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

@@ -76,7 +76,7 @@ export default {
 					_this.recordList = res.data.data.list || []
 					_this.page = 2
 				} else {
-					MessageBox('提示', '对不起数据加载失败！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){
@@ -106,7 +106,7 @@ export default {
 					_this.page += 1
 					_this.loading = false
 				} else {
-					MessageBox('提示', '对不起数据加载失败！')
+					Toast(res.data.msg)
 				}
 			})
 			.catch(function(){

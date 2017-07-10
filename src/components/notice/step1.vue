@@ -75,7 +75,7 @@ export default {
 					_this.page = 2
 					_this.nodateStatus = true
 				} else {	
-					Toast('对不起数据加载失败！')
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 				Indicator.open({ spinnerType: 'fading-circle'})
@@ -101,7 +101,7 @@ export default {
 					_this.loading = false;
 					_this.nodateStatus = true
 				} else {	
-					Toast('对不起数据加载失败！')
+					Toast(res.data.msg)
 				}
 			}).catch(function(){
 				Indicator.open({ spinnerType: 'fading-circle'})

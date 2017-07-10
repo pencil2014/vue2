@@ -36,7 +36,7 @@
 				<span>e积分{{userData.integralA |checknum}},支付后将获得e积分<label for="" class="orange">{{userData.money | checknum}}</label></span>
 			</div>
 		</div>
-		<div class="pay-option">
+		<!-- <div class="pay-option">
 			<div class="tip" v-if="type!=='3'">请选择付款方式</div>
 			<div class="table" :class="{disable: type!=='1'}">
 				<span class="m1">
@@ -44,8 +44,6 @@
 				</span>
 				<span class="m2">
 					<p class="title">微信支付</p>
-					<!-- <p>自然日6:00-7:00到账，单笔限额3000 <br>
-					参与微信支付奖励活动</p> -->
 				</span>
 				<span class="m3">
 					<i class="option" :class="{select: sel == '1'}"></i>
@@ -57,28 +55,12 @@
 				</span>
 				<span class="m2">
 					<p class="title">支付宝支付</p>
-					<!-- <p>交易时间段 9:00-22:00 <br>
-					不在此时间段内的交易自动转换为T+1到账</p> -->
 				</span>
 				<span class="m3">
 					<i class="option" :class="{select: sel == '2'}"></i>
 				</span>
 			</div>
-			<!-- <div class="table" @click="select('3')">
-				<span class="m1">
-					<img src="../../assets/images/bank.png" alt="">
-				</span>
-				<span class="m2">
-					<p class="title">银行卡收款</p>
-					<p>工作日15:00-18:00到账，单笔限额最高20000元<br>
-					不参与微信支付奖励活动
-					</p>
-				</span>
-				<span class="m3" >
-					<i class="option" :class="{select: sel == '3'}" v-if="type!=='3'"></i>
-				</span>
-			</div> -->
-		</div>
+		</div> -->
 		<div class="form_bt">
 			<input type="button" value="支付" @click="submit" :class="{disableBtn: type === '3' }">
 		</div>
@@ -145,11 +127,11 @@ export default {
 	},
 	created () {
 		this.sel = this.type;
-		let token = window.localStorage.paytoken
+		let token = window.sessionStorage.paytoken
 		if(!token){
 			this.$router.back()
 		}
-		this.userData = JSON.parse(window.localStorage.getItem('userData'))
+		this.userData = JSON.parse(window.sessionStorage.getItem('userData'))
 		this.logoImg = this.userData.logoImg
 	},
 	methods: {
@@ -168,7 +150,7 @@ export default {
 			})
 			_this.submitbtn = true
 			axios.create({
-				headers: {'authorization': 'Bearer ' +　window.localStorage.paytoken}
+				headers: {'authorization': 'Bearer ' +　window.sessionStorage.paytoken}
 			}).post('consume/toPay',qs.stringify({
 				payType: _this.type,
 				shopId: _this.userData.shopId,

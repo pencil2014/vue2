@@ -268,11 +268,11 @@ export default {
 			model: {
 		  	title: '温馨提示',
 		  	text: 
-		  	'<p>因系统功能升级，e享平台苹果App部分功能稍后才能正常使用，请前往安卓或H5版(需清理缓存)登陆，敬请知悉！</p></div>',
+		  	'<b>尊敬的e享时代用户：</b><p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护，特此通告！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年六月二日</p></div>',
 		  	confirm: '知道了',
-		  	end: new Date('2017-7-3').getTime(),
+		  	end: new Date('2017-7-8').getTime(),
 		  	identity: 'notice',
-		  	hide: true // false为默认显示， true为隐藏
+		  	hide: false // false为默认显示， true为隐藏
 		  },
 		  isDownload: false,
 		  androidUrl: '',
@@ -285,10 +285,6 @@ export default {
 		exNotice
 	},
 	methods: {
-		getIos () {
-			let ua = navigator.userAgent.toLowerCase()
-			this.model.hide = !ua.match(/\(i[^;]+;( u;)? cpu.+mac os x/)
-		},
 		download () {
 			let ua = navigator.userAgent.toLowerCase()
 			this.isAndroid = ua.indexOf('android') > -1 || ua.indexOf('adr') > -1
@@ -540,9 +536,6 @@ export default {
 		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
 		// 	window.localStorage.setItem('batchNotice', 'true')
 		// }
-
-		// 获取是否为苹果手机
-		this.getIos()
 		
 	},
 	mounted () {

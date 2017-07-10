@@ -168,7 +168,9 @@ export default {
 						colorDark: '#123'
 					});
 			 	}else{
-			 		Toast('系统错误！')
+			 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
+			 		shop.data.code !== '10000' ? Toast(shop.data.msg) : ''
+			 		card.data.code !== '10000' ? Toast(card.data.msg) : ''
 			 	}
 			 })).catch(function(){
 			 	Indicator.close();

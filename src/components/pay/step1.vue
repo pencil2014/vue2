@@ -68,7 +68,11 @@ export default {
 		},
 	},
 	created () {
-		
+		let userData = JSON.parse(window.sessionStorage.getItem('userData'))
+		if(userData){
+			this.money = userData.money
+			this.phone = userData.phone
+		}
 	},
 	methods: {
 		maxlen (id) {
@@ -134,6 +138,7 @@ export default {
 					})
 				}
 				else {
+					_this.submitbtn = false
 					Toast(res.data.msg)
 				}
 			})
@@ -158,7 +163,7 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if (res.data.code === '10000') {
-					window.localStorage.setItem('paytoken', res.data.data.token)
+					window.sessionStorage.setItem('paytoken', res.data.data.token)
 
 					let userData = {};
 					userData.shopId = res.data.data.shopId
@@ -173,7 +178,7 @@ export default {
 					userData.userName =  res.data.data.data.userName
 					userData.isNewUser = res.data.data.isNewUser
 					userData.logoImg = res.data.data.data.logoImg
-					window.localStorage.setItem('userData',JSON.stringify(userData))
+					window.sessionStorage.setItem('userData',JSON.stringify(userData))
 					_this.$router.push('/pay/step2')
 				} else {
 					_this.submitbtn = false
@@ -194,8 +199,8 @@ export default {
 .ex-contain{color: rgb(33,42,50);}
 .ex-contain .shopName{text-align: center;padding: 15px 0;font-size: 1.6rem;font-weight: bold;}
 .ex-contain .form{padding: 0 15px 15px 15px;}
-.ex-contain .form input[type=tel]{border-radius: 3px;border: solid 1px #e5e5e5;height: 40px;width: 100%;background: #eee;font-size: 1.6rem;text-indent: 1rem;}
-.ex-contain .form input[type=tel]:focus{border: solid 1px rgb(245,174,38);}
+.ex-contain .form input{border-radius: 3px;border: solid 1px #e5e5e5;height: 40px;width: 100%;background: #eee;font-size: 1.6rem;text-indent: 1rem;}
+.ex-contain .form input:focus{border: solid 1px rgb(245,174,38);}
 .ex-contain .form_bt{padding: 0 15px 0 15px;}
 .ex-contain .form_bt input[type=button]{width: 100%;height: 48px;background: #3dbc3c;border: none;border-radius: 3px;color: #fff;font-size: 1.6rem;}
 .ex-contain .form_bt input[type=button]:active{background: rgba(61,188,60,0.8);}

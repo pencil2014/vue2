@@ -70,7 +70,7 @@ export default {
 				if (res.data.code === '10000') {
 					let integral = res.data.data.integral >= 0 ? res.data.data.integral : 0
 					_this.integral = integral
-				} else {integral
+				} else {
 					Toast(res.data.msg)
 				}
 			})
