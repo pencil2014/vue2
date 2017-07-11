@@ -57,7 +57,7 @@
 			</div>
 			<div class="ex-declare-tips-item">
 				<b>温馨提示：</b>
-				<p class='red'>银行系统规定：跨行转账超过五万一般到账时间为工作日的9:00 — 17:00</p>
+				<p class='red'>银行系统规定：跨行转账超过五万一般到账时间为工作日的9:00-17:00</p>
 			</div>
 			</div>
 		</div>

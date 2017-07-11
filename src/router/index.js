@@ -108,9 +108,9 @@ const Apply1 = resolve => require(['../components/business/apply1'], resolve)
 const Apply2 = resolve => require(['../components/business/apply2'], resolve)
 const Apply3 = resolve => require(['../components/business/apply3'], resolve)
 
-const Fillform1 = resolve => require(['../components/business/fillform1'], resolve)
-const Fillform2 = resolve => require(['../components/business/fillform2'], resolve)
-const Fillform3 = resolve => require(['../components/business/fillform3'], resolve)
+// const Fillform1 = resolve => require(['../components/business/fillform1'], resolve)
+// const Fillform2 = resolve => require(['../components/business/fillform2'], resolve)
+// const Fillform3 = resolve => require(['../components/business/fillform3'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -552,21 +552,21 @@ export default new Router({
       name: 'Apply3',
       component: Apply3
     },
-    {
-      path: '/fillform/step1',
-      name: 'Fillform1',
-      component: Fillform1
-    },
-    {
-      path: '/fillform/step2',
-      name: 'Fillform2',
-      component: Fillform2
-    },
-    {
-      path: '/fillform/step3',
-      name: 'Fillform3',
-      component: Fillform3
-    },
+    // {
+    //   path: '/fillform/step1',
+    //   name: 'Fillform1',
+    //   component: Fillform1
+    // },
+    // {
+    //   path: '/fillform/step2',
+    //   name: 'Fillform2',
+    //   component: Fillform2
+    // },
+    // {
+    //   path: '/fillform/step3',
+    //   name: 'Fillform3',
+    //   component: Fillform3
+    // },
     {
       path:'*', 
       redirect:'/index'
