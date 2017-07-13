@@ -2,7 +2,7 @@
 	<div class="ex-fillform">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="top-wrap">
-			<div class="step">
+			<div class="step ">
 				<dl class="one active">
 					<dt>1</dt>
 					<dd>基本信息</dd>
@@ -25,7 +25,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">商家名称</span>
-				<input type="text" v-model="shopsName">
+				<input type="text" v-model="shopsName" placeholder="请输入商家名称">
 			</div>
 			<div class="form-item">
 				<span class="name">所在地区</span>
@@ -43,39 +43,29 @@
 			</div>
 			<div class="form-item">
 				<span class="name">详细地址</span>
-				<input type="text" v-model="shopsAddress">
+				<input type="text" v-model="shopsAddress" placeholder="请输入详细地址">
 			</div>
-			<div class="form-item" @click="OpenRangeSlots">
+			<div class="form-item">
 				<span class="name">行业分类</span>
-				<label for="" class="classify">
-					{{classificationName}}
-					<i class="iconfont" >&#xe606;</i>
-				</label>
+				<div class="select-content">
+					<select v-model="classNo1">
+						<option v-for="(item,index) in mccList1" :value="item.classNo">{{item.className}}</option>
+					</select>
+					<select v-model="classNo2" v-show="mccList2.length>0">
+						<option v-for="(item,index) in mccList2" :value="item.classNo">{{item.className}}</option>
+					</select>
+				</div>
 			</div>
 		</div>
 		<div class="save">
 			<input type="button" value="下一步" @click="save">
 		</div>
-		<mt-popup
-			v-model="isOpenRangeSlots"
-			position="bottom"
-			class="picker-range"
-		>
-			<mt-picker :slots="slots" @change="onRangeChange" :showToolbar="true">
-				<slot>
-					<div class="range-slots">
-						<span class="left" @click="closeRangeSlots">取消</span>
-						<span class="right" @click="selectRange">确认</span>
-					</div>
-				</slot>
-			</mt-picker>
-		</mt-popup>
 	</div>
 </template>
 <script>
 import axios from "axios"
 import qs from "qs"
-import { Toast, MessageBox , Indicator, Picker } from 'mint-ui'
+import { Toast, MessageBox , Indicator, Picker , Popup } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 export default {
 	data(){
@@ -99,19 +89,14 @@ export default {
 			shopsName: '',
 			shopsAddress: '',
 
-			isOpenRangeSlots: false,
-			isConfirm: false,
-			slots: [
-				{
-					values: [],
-					textAlign: 'center',
-					defaultIndex: 0
-				}
-			],
-			classifyList: [],
-			classificationName: '',
-			selclassificationName: '',
-			classificationId: ''
+			mccList1: [],
+			mccList2: [],
+			classNo1: '',
+			classNo2: '',
+			selclassNo2: '',
+			mccNo: '',
+			onlinePay: '',
+			status: '',
 		}
 	},
 	components: {
@@ -152,92 +137,181 @@ export default {
 				this.districtId = ''
 			}
 		},
-		isOpenRangeSlots (value) {
-			if(!value && this.isConfirm){
-				this.isConfirm = false
-			}
+		classNo1 () {
+			this.getMcc(this.classNo1)
+		},
+		classNo2 () {
+			
 		}
 	},
 	created () {
-		let _this = this
-		let onlinePay = JSON.parse(sessionStorage.getItem('onlinePay'))
-		Indicator.open({
-		  text: '加载中...',
-		  spinnerType: 'fading-circle'
-		})
-		 axios.all([
-		 	axios.post('getBaseRegionAll'),
-        	axios.post('shop/examine'),
-        	axios.post('shopClassification/list')
-		 ]).then(axios.spread(function (area,shop,classify){
-		 	Indicator.close()
-		 	if(area.data.code === '10000' && shop.data.code === '10000' && classify.data.code === '10000'){
-		 		_this.province.push(...area.data.data.province)
-				_this.city.push(...area.data.data.city)
-				_this.district.push(...area.data.data.district)
-
-				_this.classifyList = classify.data.data || []
-				if (_this.classifyList.length > 0) {
-					_this.classifyList.forEach(function(item){
-						_this.slots[0].values.push(item.name)
-					})
-				}
-				if(!onlinePay){
-					_this.provinceId = shop.data.data.province ? shop.data.data.province : _this.provinceId = _this.province[0].id
-					_this.selcityId = shop.data.data.city
-					_this.seldistrictId = shop.data.data.county
-					_this.shopsAddress = shop.data.data.shopsAddress
-					_this.shopsName = shop.data.data.shopsName
-				}else{
-					_this.provinceId = onlinePay.provinceId
-					_this.selcityId = onlinePay.cityId
-					_this.seldistrictId = onlinePay.districtId
-					_this.shopsAddress = onlinePay.shopsAddress
-					_this.shopsName = onlinePay.shopsName
-					_this.classificationName = onlinePay.classificationName
-					_this.slots[0].defaultIndex = _this.slots[0].values.indexOf(onlinePay.classificationName)
-					_this.classificationId = onlinePay.classificationId
-				}
-
-		 	}else{
-		 		Toast('请求数据失败！')
-		 	}
-		 })).catch(function(){
-		 	Indicator.close()
-			Toast('连接失败，请检查网络是否正常!')
-		})
+		this.onlinePay = JSON.parse(sessionStorage.getItem('onlinePay'))
+		this.shopExpandStatus()
 	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
-		OpenRangeSlots () {
-			this.isOpenRangeSlots = true
+		shopExpandStatus () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.status = res.data.data.status
+					_this.getBaseRegionAll()
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		},
-		onRangeChange (picker,value) {
-			this.selclassificationName = value[0]
+		shopExpandDetail () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					if(!_this.onlinePay){
+						_this.shopsName = res.data.data.shopsName
+						_this.provinceId = res.data.data.province*1
+						_this.selcityId = res.data.data.city*1
+						_this.seldistrictId = res.data.data.district*1
+						_this.shopsAddress = res.data.data.address
+						_this.classNo1 = _this.mccList1[0].classNo
+					}else{
+						_this.getData()
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		},
-		closeRangeSlots () {
-			this.isOpenRangeSlots = false
+		getData () {
+			if(!this.onlinePay){
+				this.provinceId = this.province[0].id
+				this.classNo1 = this.mccList1[0].classNo
+			}else{
+				this.provinceId = this.onlinePay.provinceId
+				this.selcityId = this.onlinePay.cityId
+				this.seldistrictId = this.onlinePay.districtId
+				this.shopsAddress = this.onlinePay.shopsAddress
+				this.shopsName = this.onlinePay.shopsName
+				this.classNo1 = this.onlinePay.classNo1
+				this.selclassNo2 = this.onlinePay.classNo2
+			}
 		},
-		selectRange () {
-			this.isOpenRangeSlots = false
-			this.isConfirm = true
-			this.classificationName = this.selclassificationName
-			let selectValue = this.classifyList.filter(function(item){
-				return this.classificationName === item.name
-			}.bind(this))
-			this.classificationId = selectValue[0].id
+		getBaseRegionAll () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('getBaseRegionAll',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.province.push(...res.data.data.province)
+					_this.city.push(...res.data.data.city)
+					_this.district.push(...res.data.data.district)
+					_this.initMcc()
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		initMcc () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/getMcc',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.mccList1.push(...res.data.data.childs)
+					if(_this.status === '4'){
+						_this.shopExpandDetail()
+					}else{
+						_this.getData()
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		getMcc (classNo) {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/getMcc',qs.stringify({pNo: classNo}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					if(res.data.data){
+						_this.mccList2.push(...res.data.data)
+						_this.classNo2 = _this.selclassNo2 ? _this.selclassNo2 : _this.mccList2[0].classNo
+						_this.selclassNo2 = '';
+					}else{
+						_this.mccList2 = []
+						_this.classNo2 = ''
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		},
 		save () {
+			if(!this.shopsName){
+				MessageBox('提示','商家名称不能为空！')
+				return
+			}
+			if(!this.shopsAddress){
+				MessageBox('提示','详细地址不能为空！')
+				return
+			}
+			if(!this.classNo2 && !this.classNo1){
+				MessageBox('提示','行业分类不能为空！')
+				return
+			}
 			let obj = {
 				shopsName: this.shopsName,
 				provinceId: this.provinceId,
 				cityId: this.cityId,
 				districtId: this.districtId,
 				shopsAddress: this.shopsAddress,
-				classificationName: this.classificationName,
-				classificationId: this.classificationId
+				classNo1: this.classNo1,
+				classNo2: this.classNo2,
 			}
 			sessionStorage.setItem('onlinePay',JSON.stringify(obj))
 			this.$router.push('/fillform/step2')
@@ -249,15 +323,18 @@ export default {
 *{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
 .ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;position: absolute;font-size: 1.4rem;}
 .step{width: 75%;position: relative;margin: 34px 12.5% 0;padding-bottom: 60px;}
-.step dl {position: absolute;text-align: center;width: 70px;margin-left: -35px;color: #aaafb6;margin-top: -12px;z-index: 3;}
+.step dl {position: absolute;text-align: center;width: 70px;margin-left: -35px;color: #aaafb6;z-index: 3;}
 .step dl.active{color: #58c86b;}
 .step dl.one{left: 0;}
 .step dl.two{left: 33.5%;}
 .step dl.three{left: 66.66%;}
 .step dl.four{left: 100%;}
-.step dl dt{width: 30px;height: 30px;border: solid 3px #e3e3e3;margin: 0 auto;border-radius: 50%;line-height: 24px;margin-bottom: 5px;background: #f0f0f0;}
-.step dl.active dt{width: 40px;height: 40px;line-height: 34px;background: #58c86b;color: #fff;margin-bottom: 0;margin-top: -5px;}
-.step span{width: 100%;height: 7px;background: #e3e3e3;display: inline-block;position: absolute;top: 0;left: 0;}
+.step dl dt{width: 40px;height: 40px;border: solid 3px #e3e3e3;margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -18px;}
+.step dl.active dt{line-height: 34px;background: #37a936;color: #fff;}
+.ex-fillform .step dl.active,.ex-fillform .step dl.finish{color: #37a936;}
+.step dl.finish dt{width: 32px;height: 32px;margin-top: -14px;margin-bottom: 4px;color: #fff;background: #37a936;line-height: 26px;}
+.step span{width: 100%;height: 4px;background: #e3e3e3;display: inline-block;position: absolute;top: 0;left: 0;}
+.step span em{display: inline-block;height: 4px;position: absolute;z-index: 2;background: #37a936;}
 
 .form-wrap{width: 100%;padding: 0 0 0 15px;background: #fff;margin-top: 16px;}
 .form-wrap .form-item{border-bottom: solid 1px #ebebeb;height: 46px;line-height: 30px;padding: 8px 0;}
@@ -266,7 +343,7 @@ export default {
 .form-wrap .form-item input{width: 70%;border: none;}
 .form-wrap .form-item label.classify{color: #aaafb6;float: right;margin-right: 15px;}
 .select-content{display: table;width: 70%;}
-.select-content select{display: table-cell;margin-right: 1%;height: 2rem;width: 25%;}
+.select-content select{display: table-cell;margin-right: 1%;height: 2rem;width: 25%;background: #fff;}
 .save{width: 100%;padding: 0 15px;margin-top: 15px;}
 .save input[type=button]{width: 100%;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;border:none;height: 48px;line-height: 48px;}
 .save input[type=button]:active{background: #0470b6;}

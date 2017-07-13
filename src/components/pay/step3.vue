@@ -1,14 +1,13 @@
 <template>
-	<div class="wx-warpper">
-		<div class="logo">
-			<i class="iconfont">&#xe636;</i>
-			<p class="">支付成功</p>
+	<div class="ex-warpper">
+		<div class="top">
+			<img src="../../assets/images/packs.png" alt=""><br>
+			<p>
+				<span class="active">111111111元</span>&nbsp;现金返利已存入您的e享账户
+			</p>
 		</div>
-		<div class="bottom">
-			<p>关注e享时代</p>
-			<div class="button">
-				<a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI0NjYwMjQyNw==&scene=110#wechat_redirect">关注</a>
-			</div>
+		<div class="btn">
+			<input @click="toCheck" type="button" value="立即查看 >" />
 		</div>
 	</div>
 </template>
@@ -19,24 +18,43 @@ import { Toast , Indicator , MessageBox} from 'mint-ui'
 export default {
 	data () {
 		return{
-
+			
 		}
 	},
 	computed: { 
-		
+		outNo () {
+			return this.$route.query.outNo
+		}
 	},
 	created () {
-		
+		console.log(this.outNo)
 	},
 	methods: {
-		
+		toCheck () {
+			this.$router.push('/login')
+		}
+	},
+	filters: {
+		checknum (value) {
+			value = value? value+'' : '0'
+			let num = '0.00'
+			num = value >= 0 ? value : '0.00' 
+			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+			return num 
+		},
+	},
+	components: {
+
 	},
 }
 </script>
 <style scoped>
-.wx-warpper{width: 100%;height: 100%;overflow-x: hidden;background: #fff;}
-.wx-warpper .logo{text-align: center;color: #58c86b;font-size: 1.8rem;margin-top: 30%;}
-.wx-warpper .logo i{font-size: 6rem;}
-.wx-warpper .bottom{width: 100%;text-align: center;margin-top: 10%;color: #999;line-height: 30px;}
-.wx-warpper .button a{display: inline-block;width: 120px;height: 30px;border: solid 1px #d6d6d6;background: #fff;border-radius: 3px;color: #212a32;}
+.ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;font-size: 1.6rem;}
+.ex-warpper .top{width: 100%;text-align: center;margin-top: 15%;}
+.ex-warpper .top img{width: 160px;height: 160px;}
+.ex-warpper .top .active{width: 100%;color: #ea3925;font-size: 2rem;}
+.ex-warpper .top p{padding: 10px 15px 20px 15px;}
+.ex-warpper .btn{padding: 0 15px 0 15px;}
+.ex-warpper .btn input[type=button]{width: 100%;background: #58c86b;border: none;color: #fff;height: 46px;border-radius: 5px;font-size: 1.6rem;}
+.ex-warpper .btn input[type=button]:active{background: rgba(88,200,107,0.8);}
 </style>

@@ -1,6 +1,8 @@
 <template>
 	<div class="ex-warpper">
-		<div class="ex-header"></div>
+		<div class="ex-header">
+			<img src="../../assets/images/paytop.png" alt="">
+		</div>
 		<div class="ex-contain">
 			<div class="shopName">{{shopname}}</div>
 			<div class="form">
@@ -73,6 +75,22 @@ export default {
 			this.money = userData.money
 			this.phone = userData.phone
 		}
+		let _this = this
+		axios.post('user/checkUserIsShop',qs.stringify({userId: this.userID}))
+		.then(function(res){
+			Indicator.close()
+			if (res.data.code === '10000') {
+				if(res.data.data.isShop !== '1'){
+					MessageBox('提示','')
+				}
+			} else {
+				Toast(res.data.msg)
+			}
+		})
+		.catch(function(){
+			Indicator.close()
+			Toast('连接失败，请检查网络是否正常!')
+		})
 	},
 	methods: {
 		maxlen (id) {
@@ -90,7 +108,7 @@ export default {
 				return
 			}
 			if(!this.money){
-				MessageBox('提示','金额非法！')
+				MessageBox('提示','请输入正确的金额！')
 				return
 			}
 			if(!this.phone){
@@ -195,7 +213,9 @@ export default {
 </script>
 <style scoped>
 .ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;}
-.ex-header{width: 100%;height: 12rem;background: url(../../assets/images/pay_bg.png) no-repeat center;background-size: cover;}
+/*.ex-header{width: 100%;height: 12rem;background: url(../../assets/images/paytop.png) no-repeat center;background-size: cover;}*/
+.ex-header{width: 100%;}
+.ex-header img{width: 100%;}
 .ex-contain{color: rgb(33,42,50);}
 .ex-contain .shopName{text-align: center;padding: 15px 0;font-size: 1.6rem;font-weight: bold;}
 .ex-contain .form{padding: 0 15px 15px 15px;}

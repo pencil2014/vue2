@@ -36,35 +36,10 @@
 				<span>e积分{{userData.integralA |checknum}},支付后将获得e积分<label for="" class="orange">{{userData.money | checknum}}</label></span>
 			</div>
 		</div>
-		<!-- <div class="pay-option">
-			<div class="tip" v-if="type!=='3'">请选择付款方式</div>
-			<div class="table" :class="{disable: type!=='1'}">
-				<span class="m1">
-					<img src="../../assets/images/wechat.png" alt="">
-				</span>
-				<span class="m2">
-					<p class="title">微信支付</p>
-				</span>
-				<span class="m3">
-					<i class="option" :class="{select: sel == '1'}"></i>
-				</span>
-			</div>
-			<div class="table" :class="{disable: type!=='2'}">
-				<span class="m1">
-					<img src="../../assets/images/zhifubao.png" alt="">
-				</span>
-				<span class="m2">
-					<p class="title">支付宝支付</p>
-				</span>
-				<span class="m3">
-					<i class="option" :class="{select: sel == '2'}"></i>
-				</span>
-			</div>
-		</div> -->
 		<div class="form_bt">
 			<input type="button" value="支付" @click="submit" :class="{disableBtn: type === '3' }">
 		</div>
-		<div class="qrcode_modal" v-show="qrcode.show">
+		<!-- <div class="qrcode_modal" v-show="qrcode.show">
 	        <div class="qrcode_box">
 	            <div class="qrcode_content">
 	                <p class="tip">长按二维码付款</p>
@@ -77,7 +52,7 @@
 	                </div>
 	            </div>
 	        </div>
-	    </div>
+	    </div> -->
 		<div class="modal_Bj" v-show="type === '3'">
 			<div class="modal">
 				<div class="content">
@@ -91,18 +66,17 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import Qrcode from '../../assets/lib/qrcode'
+// import Qrcode from '../../assets/lib/qrcode'
 import { Toast , Indicator , MessageBox} from 'mint-ui'
 export default {
 	data () {
 		return{
 			sel: '',
 			userData: '',
-			qrcode:{
-				show:false,
-				link:''
-			},
-			qrCls: 'qrcode',
+			// qrcode:{
+			// 	show:false,
+			// 	link:''
+			// },
 			logoImg: '',
 			submitbtn:false
 		}
@@ -159,17 +133,16 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if(res.data.code === '10000'){
-					let data = res
 
 					if(res.data.data.hasOwnProperty('option')){
 						MessageBox({
 							title:'提示',
 							message: data.data.data.option,
-							showConfirmButton:true,
-							showCancelButton:true,
+							showConfirmButton: true,
+							showCancelButton: true,
 						}).then(action => {
 							if(action === "confirm"){
-								_this.pay(data.data.data)
+								window.location.href = res.data.data.url
 							}else{
 								_this.submitbtn = false
 							}
@@ -185,7 +158,7 @@ export default {
 							showCancelButton:true,
 						}).then(action =>{
 							if(action === "confirm"){
-								_this.pay(data.data.data)
+								window.location.href = res.data.data.url
 							}else{
 								_this.submitbtn = false
 							}
@@ -193,8 +166,7 @@ export default {
 						return
 					}
 
-					_this.pay(data.data.data)
-
+					window.location.href = res.data.data.url
 				}else{
 					_this.submitbtn = false
 					Toast(res.data.msg)
@@ -205,20 +177,20 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		pay (data) {
-			let _this = this
-			if(_this.type === '1'){
-				_this.qrcode = {show: true,link: data.url}
-				let qrcode = new Qrcode('qrcode', {
-					text: _this.qrcode.link,
-					width : 230,	
-					height : 230,
-					colorDark: '#123'
-				});
-			}else{
-				window.location.href = data.url
-			}
-		}
+		// pay (data) {
+		// 	let _this = this
+		// 	if(_this.type === '1'){
+		// 		_this.qrcode = {show: true,link: data.url}
+		// 		let qrcode = new Qrcode('qrcode', {
+		// 			text: _this.qrcode.link,
+		// 			width : 230,	
+		// 			height : 230,
+		// 			colorDark: '#123'
+		// 		});
+		// 	}else{
+		// 		window.location.href = data.url
+		// 	}
+		// }
 	},
 	filters: {
 		checknum (value) {
@@ -230,7 +202,7 @@ export default {
 		},
 	},
 	components: {
-		Qrcode
+		//Qrcode
 	},
 }
 </script>
