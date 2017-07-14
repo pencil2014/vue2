@@ -139,5 +139,5 @@ export default {
 .ex-avatar-list .ex-avatar-item ul li{min-height: 56px;font-size: 1.4rem;width: 100%;padding: 8px 4px 8px 0;line-height: 30px;border-bottom: solid 1px #e5e5e5;}
 .ex-avatar-list .ex-avatar-item ul li:last-child{border: none;}
 .ex-avatar-list .ex-avatar-item ul li .iconfont{color: rgba(4,112,182,1);float: right;padding: 0 20px 0 0;display: block;line-height: 58px;font-size: 2rem;}
-.ex-avatar-list .ex-avatar-item ul li img{width: 44px;display: inline-block;margin-top: 6.5px;}
+.ex-avatar-list .ex-avatar-item ul li img{width: 55px;display: inline-block;margin-top: 6.5px;}
 </style>

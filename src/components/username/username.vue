@@ -57,7 +57,6 @@ export default {
 		axios.post('user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.username = res.data.data.userName;
-
 			} else {
 				Toast(res.data.msg)
 			}

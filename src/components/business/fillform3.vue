@@ -30,7 +30,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">营业执照编号</span>
-				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model="licenseNo"></span>
+				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model="licenseNo" @input="inputIdCard('licenseNo')"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">营业执照生效时间</span>
@@ -87,7 +87,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">支行名称</span>
-				<span class="text"><input type="text" placeholder="请输入支行名称" v-model="branch"></span>
+				<span class="text"><input type="text" placeholder="请输入支行名称" v-model="branch" @input="standard('branch')"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">银行户名</span>
@@ -150,8 +150,8 @@
 		  year-format="{value} 年"
 		  month-format="{value} 月"
 		  date-format="{value} 日"
-		  :startDate='start'
-      	  :endDate='end'
+		  :startDate='start1'
+      	  :endDate='end1'
       	  v-model='date1'
       	  @confirm='changeDate1'
 		>
@@ -162,8 +162,8 @@
 		  year-format="{value} 年"
 		  month-format="{value} 月"
 		  date-format="{value} 日"
-		  :startDate='start'
-      	  :endDate='end'
+		  :startDate='start2'
+      	  :endDate='end2'
       	  v-model='date2'
       	  @confirm='changeDate2'
 		>
@@ -200,18 +200,14 @@ export default {
 				text:'在线支付申请',
 				fixed: false
 			},
-			start: (function(){
-				let year = new Date().getFullYear() - 10
-				return new Date(year,0,1)
-			})(),
-			end: (function(){
-				let year = new Date().getFullYear() + 10
-				return new Date(year,11,31)
-			})(),
-			licenseSdate: new Date(),
-			licenseEdate: new Date(),
-			date1: new Date(),
-			date2: new Date(),
+			start1: '',
+			end1: '',
+			start2: '',
+			end2: '',
+			licenseSdate: '',
+			licenseEdate: '',
+			date1: '',
+			date2: '',
 			accountType: '2',  //2 对私，1 对公
 			accountVal: '对公账户',
 			selaccountType: '2',
@@ -286,16 +282,49 @@ export default {
 				}
 			}
 		}
+		this.setdate()
 	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
+		setdate () {
+			let date = new Date()
+			this.start1 = (function(){
+				let year = new Date().getFullYear() - 10
+				return new Date(year,0,1)
+			})()
+			this.end1 = this.getdate(date)
+			this.start2 = this.getdate(date)
+			this.end2 = (function(){
+				let year = new Date().getFullYear() + 10
+				return new Date(year,11,31)
+			})()
+			this.licenseSdate = this.getdate(date)
+			this.licenseEdate = this.getdate(date)
+			this.date1 = this.getdate(date)
+			this.date2 = this.getdate(date)
+			this.shopExpandStatus()
+		},
+		getdate (date) {
+			let year = date.getFullYear()
+			let month = date.getMonth()
+			let day = date.getDate()
+			return new Date(year,month,day)
+		},
+		inputIdCard(value){
+			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')
+		},
+		standard(value) {
+		 	this[value] = this[value].replace(/[^\u4E00-\u9FA5]|\s/g,'')
+		},
 		changeDate1 (date) {
-	    	this.licenseSdate = date
+			let date1 = this.getdate(date)
+	    	this.licenseSdate = date1
 		},
 		changeDate2 (date) {
-	    	this.licenseEdate = date
+			let date1 = this.getdate(date)
+	    	this.licenseEdate = date1
 		},
 		openPicker1 () {
 			this.$refs.date1.open();
@@ -348,10 +377,6 @@ export default {
 		UpLoadIMG () {
 			let _this = this
 			let formData = new FormData()
-			if(this.imgIds.length === 0){
-				this.addShopExpand()
-				return
-			}
 			for (let i =0, j = this.imgIds.length; i<j; i++) {
 				formData.append("imgStr", this.imgbase64[this.imgIds[i]])
 			}
@@ -384,13 +409,17 @@ export default {
 		addShopExpand () {
 			let _this = this;
 			let formatdate = time => {
-				return new Date(time).getFullYear() + '-' + (new Date(time).getMonth()+1) + '-' + new Date(time).getDate()
+				let date = new Date(time)
+				let month = (date.getMonth()+1) < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)
+				return date.getFullYear() + '-' + month + '-' + date.getDate()
 			}
+			let mccNo = (this.onlinePay1.classNo2 || this.onlinePay1.classNo1) + '';
+			console.log(this.onlinePay1.classNo2,mccNo)
 			axios.post('shop/addShopExpand',qs.stringify({
 				shopsName: this.onlinePay1.shopsName,
-				province: this.onlinePay1.provinceId,
-				city: this.onlinePay1.cityId,
-				district: this.onlinePay1.districtId,
+				province: this.onlinePay1.provinceName,
+				city: this.onlinePay1.cityName,
+				district: this.onlinePay1.districtName,
 				address: this.onlinePay1.shopsAddress,
 				legalName: this.onlinePay2.legalName,
 				legalId: this.onlinePay2.legalId,
@@ -400,7 +429,7 @@ export default {
 				licenseNo: this.licenseNo,
 				licenseSdate: formatdate(this.licenseSdate),
 				licenseEdate: formatdate(this.licenseEdate),
-				mccNo: this.onlinePay1.mccName,
+				mccNo: mccNo,
 				accountType: this.accountType,
 				bank: this.bank,
 				branch: this.branch,
@@ -417,8 +446,8 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.sessionStorage.removeItem('onlinePay')
-					_this.sessionStorage.removeItem('onlinePay2')
+					sessionStorage.removeItem('onlinePay')
+					sessionStorage.removeItem('onlinePay2')
 					_this.$router.push('/fillform/step4')
 				} else {
 					_this.submitbtn = false
@@ -435,20 +464,20 @@ export default {
 			if(this.submitbtn){
 				return
 			}
-			if(!this.onlinePay1){
-				MessageBox('提示','请完成基本信息填写！')
-				return
-			}
-			if(!this.onlinePay2){
-				MessageBox('提示','请完成法人信息填写！')
-				return
-			}
-			if(!this.licenseNo){
-				MessageBox('提示','营业执照编号不能为空！')
-				return
-			}
+			// if(!this.onlinePay1){
+			// 	MessageBox('提示','请完成基本信息填写！')
+			// 	return
+			// }
+			// if(!this.onlinePay2){
+			// 	MessageBox('提示','请完成法人信息填写！')
+			// 	return
+			// }
+			// if(!this.licenseNo){
+			// 	MessageBox('提示','营业执照编号不能为空！')
+			// 	return
+			// }
 			if(this.licenseSdate.getTime() >= this.licenseEdate.getTime()){
-				MessageBox('提示','营业执照证件生效日期不能超过或等于过期日期！')
+				MessageBox('提示','“营业执照生效日期”必须小于 “营业执照过期时间”！')
 				return
 			}
 			if(!(this.imgurl.licensePic || this.imgbase64.licensePic)){
@@ -488,7 +517,70 @@ export default {
 				return
 			}
 			this.submitbtn = true
-			this.UpLoadIMG()
+			if(this.imgIds.length === 0){
+				this.addShopExpand()
+			}else{
+				this.UpLoadIMG()
+			}
+		},
+		shopExpandStatus () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					if(res.data.data.status === '4'){
+						_this.shopExpandDetail()
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		shopExpandDetail () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.licenseNo = res.data.data.licenseNo
+					_this.licenseSdate = _this.getdate(res.data.data.licenseSdate)
+					_this.licenseEdate = _this.getdate(res.data.data.licenseEdate)
+					_this.accountType = res.data.data.accountType
+					_this.bank = res.data.data.bank
+					_this.branch = res.data.data.branch
+					_this.accountName = res.data.data.accountName
+					_this.accountNo = res.data.data.accountNo.replace(/\s/g, '').replace(/(.{4})/g, "$1 ")
+					_this.imgurl.licensePic = res.data.data.licensePic
+					_this.imgurl.frontPic = res.data.data.frontPic
+					_this.imgurl.counterPic = res.data.data.counterPic
+					_this.imgurl.viewPic = res.data.data.viewPic
+					_this.slots[0].values.forEach(function(item,index){
+						if(item.id === _this.accountType){
+							_this.slots[0].defaultIndex = index
+							_this.accountVal = item.type
+						}
+					}.bind(_this))
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
 		},
 		formatcard (id) {
 			if(/\S{5}/.test(this[id])){

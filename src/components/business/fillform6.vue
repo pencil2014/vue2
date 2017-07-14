@@ -78,19 +78,10 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.push('/index');
+			this.$router.push('/business');
 		},
 		edict () {
 			this.$router.push('/fillform/step1');
-		}
-	},
-	beforeRouteLeave (to,from,next) {
-		let path = window.localStorage.getItem('integralPath')
-		localStorage.setItem('$backType','/user')
-		if(to.path !== path && to.path === '/index'){
-			next(path)
-		}else{
-			next()
 		}
 	},
 }

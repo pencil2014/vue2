@@ -62,12 +62,12 @@
 					<ul>
 						<li>1、每页不少于3笔才能使用批量报单；</li>
 						<li>2、每页中同一买家只可出现一次；</li>
-						<li>3、每页限20笔，当日限5页；</li>
+						<li>3、每页限20笔；</li>
 						<li>4、每笔消费金额不能超过2万；</li>
 						<li>5、每页让利款总额不能超过5万；</li>
 						<li>6、转款户名处必须填写为向平台转账的卡号人名或户名，否则无效；</li>
 						<li>7、转款金额必须与每次让利款总额完全相符（包括小数点后面的数字），否则无法审核；</li>
-						<li>8、提交后转款，请及时在自己的账户中查询转款是否成功，请耐心等待审核，不需要上传任何凭证，审核是以到款为准，T+1即过；</li>
+						<li>8、提交后转款，请及时在自己的账户中查询转款是否成功，请耐心等待审核，不需要上传任何凭证，审核是以到款为准；</li>
 						<li>9、转款附言处请注明:“B*****批量”字样（ B表示商家身份，*****表示商家ID号。如无法注明，请联系客服）。</li>
 					</ul>
 				</div>
@@ -347,28 +347,28 @@ export default {
 				Indicator.close()
 				Toast('连接失败，请检查网络是否正常!')
 			})
-		},
-		checkBatshCount () {
-			let _this = this
-			axios.post('declaration/checkBatshCount',qs.stringify({}))
-			.then(function(res){
-				if (res.data.code === '10000') {
-					if (res.data.data.status === '0') {
-						MessageBox({
-						  title: '提示',
-						  message: '批量报单每天最多5次，您目前无法进行批量报单！'
-						}).then(action => {
-							_this.$router.push('/business')
-						})
-					}
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Toast('连接失败，请检查网络是否正常!')
-			})
 		}
+		// checkBatshCount () {
+		// 	let _this = this
+		// 	axios.post('declaration/checkBatshCount',qs.stringify({}))
+		// 	.then(function(res){
+		// 		if (res.data.code === '10000') {
+		// 			if (res.data.data.status === '0') {
+		// 				MessageBox({
+		// 				  title: '提示',
+		// 				  message: '批量报单每天最多5次，您目前无法进行批量报单！'
+		// 				}).then(action => {
+		// 					_this.$router.push('/business')
+		// 				})
+		// 			}
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	})
+		// 	.catch(function(){
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// }
 	},
 	filters: {
 		formatPhone (value) {
@@ -381,7 +381,7 @@ export default {
 	},
 	created () {
 		// 检查批量报单是否超过5笔
-		this.checkBatshCount()
+		// this.checkBatshCount()
 
 		let _this = this
 		axios.post('declaration/getRangliProportion',qs.stringify({}))

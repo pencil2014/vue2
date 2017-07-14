@@ -49,7 +49,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">法人证件号码</span>
-				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId"></span>
+				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId" maxlength="20" @input="inputIdCard('legalId')"></span>
 			</div>
 			<div class="form-item">
 				<div>法人身份证正面</div>
@@ -124,14 +124,14 @@ export default {
 				fixed: false
 			},
 
-			start1: new Date(1900,0,1),
-			end1: new Date(),
-			start2: new Date(),
-			end2: new Date(2099,12,31),
-			legalSdate: new Date(),
-			legalEdate: new Date(),
-			date1: new Date(),
-			date2: new Date(),
+			start1: '',
+			end1: '',
+			start2: '',
+			end2: '',
+			legalSdate: '',
+			legalEdate: '',
+			date1: '',
+			date2: '',
 			legalName: '',
 			legalPhone: '',
 			legalId: '',
@@ -143,7 +143,9 @@ export default {
 				legalFront: '',
 				legalBack: '',
 			},
-			islrz: false
+			islrz: false,
+			onlinePay2: '',
+			status: '',
 		}
 	},
 	components: {
@@ -155,24 +157,33 @@ export default {
 		},
 	},
 	created () {
-		let onlinePay2  = JSON.parse(sessionStorage.getItem('onlinePay2'))
-		if(onlinePay2){
-			this.legalName = onlinePay2.legalName
-			this.legalPhone = onlinePay2.legalPhone
-			this.legalSdate = new Date(onlinePay2.legalSdate)
-			this.legalEdate = new Date(onlinePay2.legalEdate)
-			this.date1 = new Date(onlinePay2.legalSdate)
-			this.date2 = new Date(onlinePay2.legalEdate)
-			this.legalSdateVal = onlinePay2.legalSdateVal
-			this.legalEdateVal = onlinePay2.legalEdateVal
-			this.legalId = onlinePay2.legalId
-			this.imgurl = onlinePay2.imgurl
-			this.imgbase64 = onlinePay2.imgbase64
-		}
+		this.onlinePay2  = JSON.parse(sessionStorage.getItem('onlinePay2'))
+		this.setdate()
 	},
 	methods: {
 		back () {
 			this.$router.back();
+		},
+		inputIdCard(value){
+			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')
+		},
+		setdate () {
+			let date = new Date()
+			this.start1 = new Date(1900,0,1)
+			this.end1 = this.getdate(date)
+			this.start2 = this.getdate(date)
+			this.end2 = new Date(2099,12,31)
+			this.legalSdate = this.getdate(date)
+			this.legalEdate = this.getdate(date)
+			this.date1 = this.getdate(date)
+			this.date2 = this.getdate(date)
+			this.shopExpandStatus()
+		},
+		getdate (date) {
+			let year = date.getFullYear()
+			let month = date.getMonth()
+			let day = date.getDate()
+			return new Date(year,month,day)
 		},
 		openPicker1 () {
 			this.$refs.date1.open();
@@ -181,10 +192,12 @@ export default {
 			this.$refs.date2.open();
 	    },
 	    changeDate1 (date) {
-	    	this.legalSdate = date
+	    	let date1 = this.getdate(date)
+	    	this.legalSdate = date1
 	    },
 	    changeDate2 (date) {
-	    	this.legalEdate = date
+	    	let date1 = this.getdate(date)
+	    	this.legalEdate = date1
 	    },
 	    getfile (id) {
 	    	let _this = this;
@@ -218,6 +231,10 @@ export default {
 			if(!this.legalPhone){
 				MessageBox('提示','法人联系电话不能为空！')
 				return
+			}
+			if(!/^1\d{10}$/.test(this.legalPhone)){
+				MessageBox('提示','手机号不正确！')
+				return 
 			}
 			if(this.legalSdate.getTime() >= this.legalEdate.getTime()){
 				MessageBox('提示','法人证件生效日期不能超过或等于过期日期！')
@@ -254,7 +271,79 @@ export default {
 				imgbase64: this.imgbase64
 			}
 			sessionStorage.setItem('onlinePay2',JSON.stringify(onlinePay2))
-		}
+			console.log(onlinePay2)
+		},
+		shopExpandStatus () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					if(res.data.data.status === '4'){
+						_this.shopExpandDetail()
+					}else{
+						_this.getdata()
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		shopExpandDetail () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					if(!_this.onlinePay2){
+						_this.legalName = res.data.data.legalName
+						_this.legalPhone = res.data.data.legalPhone
+						_this.legalSdate = _this.getdate(res.data.data.legalSdate)
+						_this.legalEdate = _this.getdate(res.data.data.legalEdate)
+						_this.date1 = _this.getdate(res.data.data.legalSdate)
+						_this.date2 = _this.getdate(res.data.data.legalEdate)
+						_this.legalId = res.data.data.legalId
+						_this.imgurl = {
+							legalFront: res.data.data.legalFront,
+							legalBack: res.data.data.legalBack
+						}
+					}else{
+						_this.getdata()
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		getdata () {
+			if(this.onlinePay2){
+				this.legalName = this.onlinePay2.legalName
+				this.legalPhone = this.onlinePay2.legalPhone
+				this.legalSdate = this.getdate(new Date(this.onlinePay2.legalSdate))
+				this.legalEdate = this.getdate(new Date(this.onlinePay2.legalEdate))
+				this.date1 = this.getdate(new Date(this.onlinePay2.legalSdate))
+				this.date2 = this.getdate(new Date(this.onlinePay2.legalEdate))
+				this.legalId = this.onlinePay2.legalId
+				this.imgurl = this.onlinePay2.imgurl
+				this.imgbase64 = this.onlinePay2.imgbase64
+			}
+		},
 	},
 	filters: {
 		formatdate (date) {

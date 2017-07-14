@@ -10,21 +10,21 @@
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">协议签署日期</span>
 				<span class="text f_right">
-					{{contractSdate | formatdate}}
+					{{signDate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item" @click="openPicker2()">
 				<span class="name">协议生效日期</span>
 				<span class="text f_right">
-					{{contractEdate | formatdate}}
+					{{contractSdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item" @click="openPicker3()">
 				<span class="name">协议到期日期</span>
 				<span class="text f_right">
-					{{signDate | formatdate}}
+					{{contractEdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
@@ -58,8 +58,8 @@
 		  year-format="{value} 年"
 		  month-format="{value} 月"
 		  date-format="{value} 日"
-		  :startDate='start'
-      	  :endDate='end'
+		  :startDate='start1'
+      	  :endDate='end1'
       	  v-model='date1'
       	  @confirm='changeDate1'
 		>
@@ -71,8 +71,8 @@
 		  year-format="{value} 年"
 		  month-format="{value} 月"
 		  date-format="{value} 日"
-		  :startDate='start'
-      	  :endDate='end'
+		  :startDate='start1'
+      	  :endDate='end1'
       	  v-model='date2'
       	  @confirm='changeDate2'
 		>
@@ -84,8 +84,8 @@
 		  year-format="{value} 年"
 		  month-format="{value} 月"
 		  date-format="{value} 日"
-		  :startDate='start'
-      	  :endDate='end'
+		  :startDate='start2'
+      	  :endDate='end2'
       	  v-model='date3'
       	  @confirm='changeDate3'
 		>
@@ -113,20 +113,16 @@ export default {
 			imgbase64: {
 				contractPic: '',
 			},
-			start: (function(){
-				let year = new Date().getFullYear() - 10
-				return new Date(year,0,1)
-			})(),
-			end: (function(){
-				let year = new Date().getFullYear() + 10
-				return new Date(year,11,31)
-			})(),
-			contractSdate: new Date(),
-			contractEdate: new Date(),
-			signDate: new Date(),
-			date1: new Date(),
-			date2: new Date(),
-			date3: new Date(),
+			start1: '',
+			end1: '',
+			start2: '',
+			end2: '',
+			signDate: '',
+			contractSdate: '',
+			contractEdate: '',
+			date1: '',
+			date2: '',
+			date3: '',
 			submitbtn: false,
 			islrz: false,
 			example: 'http://pic24.photophoto.cn/20120814/0005018328053992_b.jpg'
@@ -153,19 +149,49 @@ export default {
 		// 	this.imgurl = onlinePay5.imgurl
 		// 	this.imgbase64 = onlinePay5.imgbase64
 		// }
+		this.setdate()
 	},
 	methods: {
 		back () {
 			this.$router.back();
 		},
+		setdate () {
+			let date = new Date()
+			this.start1 = (function(){
+				let year = new Date().getFullYear() - 10
+				return new Date(year,0,1)
+			})()
+			this.end1 = this.getdate(date)
+			this.start2 = this.getdate(date)
+			this.end2 = (function(){
+				let year = new Date().getFullYear() + 10
+				return new Date(year,11,31)
+			})()
+			this.contractSdate = this.getdate(date)
+			this.contractEdate = this.getdate(date)
+			this.signDate = this.getdate(date)
+			this.date1 = this.getdate(date)
+			this.date2 = this.getdate(date)
+			this.date3 = this.getdate(date)
+			this.shopExpandStatus()
+		},
+		getdate (date) {
+			let year = date.getFullYear()
+			let month = date.getMonth()
+			let day = date.getDate()
+			return new Date(year,month,day)
+		},
 		changeDate1 (date) {
-			this.contractSdate = date
+			let date1 = this.getdate(date)
+			this.signDate = date1
 		},
 		changeDate2 (date) {
-			this.contractEdate = date
+			let date1 = this.getdate(date)
+			this.contractSdate = date1
 		},
 		changeDate3 (date) {
-			this.signDate = date
+			let date1 = this.getdate(date)
+			this.contractEdate = date1
 		},
 		openPicker1 () {
 			this.$refs.date1.open();
@@ -204,12 +230,16 @@ export default {
 			if(this.submitbtn){
 				return
 			}
-			if(this.contractSdate.getTime() >= this.contractEdate.getTime()){
-				MessageBox('提示','协议签署日期不能超过或与协议生效日期在同一天！')
+			if(this.signDate.getTime() > this.contractSdate.getTime()){
+				MessageBox('提示','“协议签署日期”必须小于或等于“协议生效日期”')
 				return
 			}
-			if(this.contractEdate.getTime() >= this.signDate.getTime()){
-				MessageBox('提示','协议生效日期不能超过或与协议到期日期在同一天！')
+			if(this.signDate.getTime() >= this.contractEdate.getTime()){
+				MessageBox('提示','“协议签署日期”必须小于 “协议到期日期”')
+				return
+			}
+			if(this.contractSdate.getTime() >= this.contractEdate.getTime()){
+				MessageBox('提示','“协议生效日期”必须小于“协议到期日期”')
 				return
 			}
 			if(this.islrz){
@@ -221,7 +251,11 @@ export default {
 				return
 			}
 			this.submitbtn = true
-			this.upLoadImg()
+			if(!this.imgurl.contractPic){
+				this.upLoadImg()
+			}else{
+				this.submitFun()
+			}
 		},
 		upLoadImg () {
 			let _this = this
@@ -256,7 +290,9 @@ export default {
 		submitFun () {
 			let _this = this
 			let formatdate = time => {
-				return new Date(time).getFullYear() + '-' + (new Date(time).getMonth()+1) + '-' + new Date(time).getDate()
+				let date = new Date(time)
+				let month = (date.getMonth()+1) < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)
+				return date.getFullYear() + '-' + month + '-' + date.getDate()
 			}
 			axios.post('shop/addContract',qs.stringify({
 				contractSdate: formatdate(this.contractSdate),
@@ -267,7 +303,6 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					console.log(res.data)
 					_this.$router.push('/fillform/step6')
 				} else {
 					_this.submitbtn = false
@@ -289,7 +324,55 @@ export default {
 				imgbase64: this.imgbase64
 			}
 			sessionStorage.setItem('onlinePay5',JSON.stringify(onlinePay5))
-		}
+		},
+		shopExpandStatus () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					if( res.data.data.status === '4'){
+						_this.shopExpandDetail()
+					}
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		shopExpandDetail () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.contractSdate = _this.getdate(new Date(res.data.data.contractSdate))
+					_this.contractEdate = _this.getdate(new Date(res.data.data.contractEdate))
+					_this.signDate = _this.getdate(new Date(res.data.data.signDate))
+					_this.date1 = _this.signDate
+					_this.date2 = _this.contractSdate
+					_this.date3 = _this.contractEdate
+					_this.imgurl.contractPic = res.data.data.contractPic
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 	},
 	filters: {
 		formatdate (date) {

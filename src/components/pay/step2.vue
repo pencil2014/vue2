@@ -13,17 +13,17 @@
 		<div class="points" v-if="userData.isNewUser === 1">*登录密码会发送至您的手机号{{phone}}，请注意查收</div>
 		<div class="user">
 			<div class="avatar">
-				<img src="../../assets/images/head.png" alt="" v-show="!logoImg">
-				<img src="../../assets/images/girl01.png" alt="" v-show="logoImg === 'girl01'">
-				<img src="../../assets/images/girl02.png" alt="" v-show="logoImg === 'girl02'">
-				<img src="../../assets/images/girl03.png" alt="" v-show="logoImg === 'girl03'">
-				<img src="../../assets/images/girl04.png" alt="" v-show="logoImg === 'girl04'">
-				<img src="../../assets/images/girl05.png" alt="" v-show="logoImg === 'girl05'">
-				<img src="../../assets/images/boy01.png" alt="" v-show="logoImg === 'boy01'">
-				<img src="../../assets/images/boy02.png" alt="" v-show="logoImg === 'boy02'">
-				<img src="../../assets/images/boy03.png" alt="" v-show="logoImg === 'boy03'">
-				<img src="../../assets/images/boy04.png" alt="" v-show="logoImg === 'boy04'">
-				<img src="../../assets/images/boy05.png" alt="" v-show="logoImg === 'boy05'">
+				<img src="../../assets/images/head.png" alt="" v-show="!userData.logoImg">
+				<img src="../../assets/images/girl01.png" alt="" v-show="userData.logoImg === 'girl01'">
+				<img src="../../assets/images/girl02.png" alt="" v-show="userData.logoImg === 'girl02'">
+				<img src="../../assets/images/girl03.png" alt="" v-show="userData.logoImg === 'girl03'">
+				<img src="../../assets/images/girl04.png" alt="" v-show="userData.logoImg === 'girl04'">
+				<img src="../../assets/images/girl05.png" alt="" v-show="userData.logoImg === 'girl05'">
+				<img src="../../assets/images/boy01.png" alt="" v-show="userData.logoImg === 'boy01'">
+				<img src="../../assets/images/boy02.png" alt="" v-show="userData.logoImg === 'boy02'">
+				<img src="../../assets/images/boy03.png" alt="" v-show="userData.logoImg === 'boy03'">
+				<img src="../../assets/images/boy04.png" alt="" v-show="userData.logoImg === 'boy04'">
+				<img src="../../assets/images/boy05.png" alt="" v-show="userData.logoImg === 'boy05'">
 				<span class="identity" :class="{'vip': userData.userLev === '2'}">e享会员</span>
 			</div>
 			<div class="message">
@@ -61,6 +61,14 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal_Bj" v-if="isShop === '0'">
+			<div class="modal">
+				<div class="content">
+					<div class="title">提示</div>
+					<div class="text">二维码已失效</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -78,7 +86,8 @@ export default {
 			// 	link:''
 			// },
 			logoImg: '',
-			submitbtn:false
+			submitbtn:false,
+			isShop: '',
 		}
 	},
 	computed: { 
@@ -101,12 +110,13 @@ export default {
 	},
 	created () {
 		this.sel = this.type;
-		let token = window.sessionStorage.paytoken
-		if(!token){
+		let userData = JSON.parse(window.sessionStorage.getItem('userData'))
+		if(!userData){
 			this.$router.back()
+			return
 		}
-		this.userData = JSON.parse(window.sessionStorage.getItem('userData'))
-		this.logoImg = this.userData.logoImg
+		this.userData = userData
+		this.checkUserIsShop()
 	},
 	methods: {
 		select (type) {
@@ -114,17 +124,24 @@ export default {
 		},
 		submit () {
 			let _this = this;
-			if(_this.submitbtn || _this.type === '3'){
+			if(_this.submitbtn){
 				return 
 			}
-			
+			if(_this.type === '3'){
+				MessageBox('提示','该功能不支持使用浏览器操作，请用微信或支付宝扫描二维码')
+				return 
+			}
+			if(_this.isShop === '0'){
+				MessageBox('提示','二维码已失效')
+				return 
+			}
 			Indicator.open({
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			})
 			_this.submitbtn = true
 			axios.create({
-				headers: {'authorization': 'Bearer ' +　window.sessionStorage.paytoken}
+				headers: {'authorization': 'Bearer ' +　this.userData.paytoken}
 			}).post('consume/toPay',qs.stringify({
 				payType: _this.type,
 				shopId: _this.userData.shopId,
@@ -133,23 +150,21 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if(res.data.code === '10000'){
-
 					if(res.data.data.hasOwnProperty('option')){
 						MessageBox({
 							title:'提示',
-							message: data.data.data.option,
+							message: res.data.data.option,
 							showConfirmButton: true,
 							showCancelButton: true,
 						}).then(action => {
 							if(action === "confirm"){
-								window.location.href = res.data.data.url
+								window.location.href = res.data.data.payUrl
 							}else{
 								_this.submitbtn = false
 							}
 						})
 						return 
 					}
-
 					if(_this.userData.money > 2000){
 						MessageBox({
 							title:'提示',
@@ -158,7 +173,7 @@ export default {
 							showCancelButton:true,
 						}).then(action =>{
 							if(action === "confirm"){
-								window.location.href = res.data.data.url
+								window.location.href = res.data.data.payUrl
 							}else{
 								_this.submitbtn = false
 							}
@@ -166,7 +181,7 @@ export default {
 						return
 					}
 
-					window.location.href = res.data.data.url
+					window.location.href = res.data.data.payUrl
 				}else{
 					_this.submitbtn = false
 					Toast(res.data.msg)
@@ -177,20 +192,26 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		// pay (data) {
-		// 	let _this = this
-		// 	if(_this.type === '1'){
-		// 		_this.qrcode = {show: true,link: data.url}
-		// 		let qrcode = new Qrcode('qrcode', {
-		// 			text: _this.qrcode.link,
-		// 			width : 230,	
-		// 			height : 230,
-		// 			colorDark: '#123'
-		// 		});
-		// 	}else{
-		// 		window.location.href = data.url
-		// 	}
-		// }
+		checkUserIsShop () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('user/checkUserIsShop',qs.stringify({userId: this.userData.shopId}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.isShop = res.data.data.isShop
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 	},
 	filters: {
 		checknum (value) {
@@ -202,7 +223,7 @@ export default {
 		},
 	},
 	components: {
-		//Qrcode
+		
 	},
 }
 </script>

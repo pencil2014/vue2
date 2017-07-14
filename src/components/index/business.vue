@@ -151,7 +151,7 @@
 				<li><router-link to="/recommend">
 				<img src="../../assets/images/7.png" alt="">
 				<!-- <b class=" m6"><i class="iconfont">&#xe603;</i></b> -->
-				<span>我的推荐</span></router-link>
+				<span>我的分享</span></router-link>
 				</li>
 				<!-- <li v-if='false'>
 					<a href="javascript:;" @click='gotovip'>
@@ -268,9 +268,9 @@ export default {
 			model: {
 		  	title: '温馨提示',
 		  	text: 
-		  	'<b>尊敬的e享时代用户：</b><p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护，特此通告！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年六月二日</p></div>',
+		  	'<b>尊敬的e享时代用户：</b><p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护；为了数据传输安全快捷，部分明细只显示近期（7天左右）数据。请各会员及时查看明细记录，特此通告！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年六月二日</p></div>',
 		  	confirm: '知道了',
-		  	end: new Date('2017-7-8').getTime(),
+		  	end: new Date('2018-7-14').getTime(),
 		  	identity: 'notice',
 		  	hide: false // false为默认显示， true为隐藏
 		  },

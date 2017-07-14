@@ -261,8 +261,8 @@ export default {
 .ex-personal-list .logout{text-align: center;padding-right: 0px;font-size: 1.6rem;color: #f0544d !important;}
 .ex-personal-list .ex-personal-item ul li .iconfont{color: rgba(173,180,190,1);float: right;padding: 0 15px 0 0;}
 .ex-personal-list .ex-personal-item ul li label{float: right;color: #aaafb6;padding: 0 5px 0 0;}
-.ex-personal-avatar{height: 40px;line-height: 40px !important;}
-.ex-personal-avatar .avatar{width: 44px;height: 44px;background: url('../../assets/images/head.png')no-repeat center; -webkit-background-size: cover;position: absolute;right: 30px;border-radius: 50%;}
+.ex-personal-list .ex-personal-item .ex-personal-avatar{min-height: 55px;line-height:55px;}
+.ex-personal-avatar .avatar{width: 55px;height: 55px;background: url('../../assets/images/head.png')no-repeat center; -webkit-background-size: cover;position: absolute;right: 30px;border-radius: 50%;}
 .ex-sexpicker{width: 100%;}
 .picker-slot-wrapper,.picker-item {backface-visibility: hidden; }
 .ex-sexslot{text-align: center;display: block;line-height: 40px;font-size: 2rem;color: #26a2ff;border-bottom: solid 1px #ebebeb;box-shadow:1px 1px 1px #ebebeb }

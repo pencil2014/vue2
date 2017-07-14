@@ -3,14 +3,14 @@
 		<!-- <div class="ex-recommend-box">
 			<div class="ex-topbar">
 				<a href="javascript:;" @click="back"><i class="iconfont">&#xe605;</i></a>
-				<span>我的推荐</span>
+				<span>我的分享</span>
 			</div>
 		</div> -->
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-recommend-cnt" >
 			<div class="ex-recommend-tips">
-				<span class='id'>上级会员ID：<b>{{parentUserCode}}</b></span>
-				<span>下级会员总数：<b>{{totalSize}}</b></span>
+				<span class='id'>分享人ID：<b>{{parentUserCode}}</b></span>
+				<span>消费者人数：<b>{{totalSize}}</b></span>
 			</div>
 			<mt-loadmore :top-method="loadTop" ref="loadmore">
 				<table class="table"
@@ -61,7 +61,7 @@ export default {
 			nodateStatus: false,
 			loading: false,
 			modal: {
-				text:'我的推荐',
+				text:'我的分享',
 				fixed: false
 			},
 		}

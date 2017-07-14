@@ -5,7 +5,7 @@
 			<p>*认证名将与后续绑定的银行卡挂钩，请谨慎填写有大陆银行卡的法人姓名</p>		
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
-					<label class="ex-field-title">法人姓名</label>
+					<label class="ex-field-title">开户名</label>
 					<input type="text" placeholder="银行提现人姓名" v-model="legalName" @input="standard('legalName')">
 				</div>
 				<div class="ex-field-wrapper">

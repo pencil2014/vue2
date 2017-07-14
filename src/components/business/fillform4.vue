@@ -89,7 +89,7 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.back();
+			this.$router.push('/business');
 		},
 		download () {
 			window.location.href="http://download.exgj.com.cn/htmb.pdf";
@@ -100,7 +100,7 @@ export default {
 		save () {
 			this.$router.push('/fillform/step5')
 		}
-	}
+	},
 }
 </script>
 <style scoped>

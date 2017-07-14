@@ -51,8 +51,8 @@
 					<select v-model="classNo1">
 						<option v-for="(item,index) in mccList1" :value="item.classNo">{{item.className}}</option>
 					</select>
-					<select v-model="classNo2" v-show="mccList2.length>0">
-						<option v-for="(item,index) in mccList2" :value="item.classNo">{{item.className}}</option>
+					<select v-model="classNo2" v-show="selmccList2.length>0">
+						<option v-for="(item,index) in selmccList2" :value="item.classNo">{{item.className}}</option>
 					</select>
 				</div>
 			</div>
@@ -85,12 +85,17 @@ export default {
 			selcityId: '',
 			districtId: '',
 			seldistrictId: '',
+
+			provinceName: '',
+			cityName: '',
+			districtName: '',
 			
 			shopsName: '',
 			shopsAddress: '',
 
 			mccList1: [],
 			mccList2: [],
+			selmccList2:[],
 			classNo1: '',
 			classNo2: '',
 			selclassNo2: '',
@@ -109,6 +114,12 @@ export default {
 	},
 	watch: {
 		provinceId () {
+			//重置名称
+			let province = this.province.filter(function(item){
+				return item.id === this.provinceId
+			}.bind(this))
+			this.provinceName = province[0].name
+			//重置城市列表
 			let arr = this.city.filter(function(item){
 				return item.parentId === this.provinceId
 			}.bind(this))
@@ -121,6 +132,12 @@ export default {
 			}
 		},
 		cityId () {
+			//重置名称
+			let city = this.city.filter(function(item){
+				return item.id === this.cityId
+			}.bind(this))
+			this.cityName = city[0].name
+			//重置地区列表
 			let arr = this.district.filter(function(item){
 				return item.parentId === this.cityId
 			}.bind(this))
@@ -137,8 +154,24 @@ export default {
 				this.districtId = ''
 			}
 		},
+		districtId () {
+			//获取名称
+			let district = this.district.filter(function(item){
+				return item.id === this.districtId
+			}.bind(this))
+			this.districtName = district[0].name
+		},
 		classNo1 () {
-			this.getMcc(this.classNo1)
+			let arr = this.mccList2.filter(function(item){
+				return item.parentNo === this.classNo1
+			}.bind(this))
+			if(arr.length > 0){
+				this.selmccList2 = arr
+				this.classNo2 = arr[0].classNo
+			}else{
+				this.selmccList2 = []
+				this.classNo2 = ''
+			}
 		},
 		classNo2 () {
 			
@@ -150,7 +183,18 @@ export default {
 	},
 	methods: {
 		back () {
-			this.$router.back();
+			MessageBox({
+				title:'提示',
+				message:'是否放弃本次操作?',
+				showConfirmButton:true,
+				showCancelButton:true,
+				confirmButtonText:'确认',
+				cancelButtonText:'取消',
+			}).then(action =>{
+				if(action === "confirm"){
+					this.$router.back();
+				}
+			})
 		},
 		shopExpandStatus () {
 			let _this = this
@@ -185,11 +229,26 @@ export default {
 				if (res.data.code === '10000') {
 					if(!_this.onlinePay){
 						_this.shopsName = res.data.data.shopsName
-						_this.provinceId = res.data.data.province*1
-						_this.selcityId = res.data.data.city*1
-						_this.seldistrictId = res.data.data.district*1
+						_this.provinceName = res.data.data.province
+						_this.cityName = res.data.data.city
+					
+						let province = _this.province.filter(function(item){
+							return item.name === _this.provinceName
+						}.bind(_this))
+						let city = _this.city.filter(function(item){
+							return item.name === _this.cityName
+						}.bind(_this))
+						_this.provinceId = province[0].id
+						_this.selcityId = city[0].id
+						if(res.data.data.district){
+							_this.districtName = res.data.data.district
+							let district = _this.district.filter(function(item){
+								return item.name === _this.districtName
+							}.bind(_this))
+							_this.seldistrictId = district[0].id
+						}
+
 						_this.shopsAddress = res.data.data.address
-						_this.classNo1 = _this.mccList1[0].classNo
 					}else{
 						_this.getData()
 					}
@@ -245,42 +304,17 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/getMcc',qs.stringify({}))
+			axios.post('shop/getAllMcc',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.mccList1.push(...res.data.data.childs)
+					_this.mccList1.push(...res.data.data.parents)
+					_this.mccList2.push(...res.data.data.childs)
+					_this.classNo1 = _this.mccList1[0].classNo
 					if(_this.status === '4'){
 						_this.shopExpandDetail()
 					}else{
 						_this.getData()
-					}
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		},
-		getMcc (classNo) {
-			let _this = this
-			Indicator.open({
-			  text: '加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			axios.post('shop/getMcc',qs.stringify({pNo: classNo}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-					if(res.data.data){
-						_this.mccList2.push(...res.data.data)
-						_this.classNo2 = _this.selclassNo2 ? _this.selclassNo2 : _this.mccList2[0].classNo
-						_this.selclassNo2 = '';
-					}else{
-						_this.mccList2 = []
-						_this.classNo2 = ''
 					}
 				} else {
 					Toast(res.data.msg)
@@ -309,6 +343,9 @@ export default {
 				provinceId: this.provinceId,
 				cityId: this.cityId,
 				districtId: this.districtId,
+				provinceName: this.provinceName,
+				cityName: this.cityName,
+				districtName: this.districtName,
 				shopsAddress: this.shopsAddress,
 				classNo1: this.classNo1,
 				classNo2: this.classNo2,

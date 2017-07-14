@@ -16,11 +16,19 @@
 				<input type="button" value="支付" @click="submit" :class="{disableBtn:disableBtn}">
 			</div>
 		</div>
-		<div class="modal_Bj" v-show="type === '3'">
+		<div class="modal_Bj" v-if="type === '3'">
 			<div class="modal">
 				<div class="content">
 					<div class="title">提示</div>
 					<div class="text">该功能不支持使用浏览器操作，请用微信或支付宝扫描二维码</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal_Bj" v-if="isShop === '0'">
+			<div class="modal">
+				<div class="content">
+					<div class="title">提示</div>
+					<div class="text">二维码已失效</div>
 				</div>
 			</div>
 		</div>
@@ -35,7 +43,8 @@ export default {
 		return{
 			money:'',
 			phone:'',
-			submitbtn:false
+			submitbtn:false,
+			isShop: ''
 		}
 	},
 	computed: {
@@ -75,24 +84,30 @@ export default {
 			this.money = userData.money
 			this.phone = userData.phone
 		}
-		let _this = this
-		axios.post('user/checkUserIsShop',qs.stringify({userId: this.userID}))
-		.then(function(res){
-			Indicator.close()
-			if (res.data.code === '10000') {
-				if(res.data.data.isShop !== '1'){
-					MessageBox('提示','')
-				}
-			} else {
-				Toast(res.data.msg)
-			}
-		})
-		.catch(function(){
-			Indicator.close()
-			Toast('连接失败，请检查网络是否正常!')
-		})
+		this.checkUserIsShop()
+		
 	},
 	methods: {
+		checkUserIsShop () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('user/checkUserIsShop',qs.stringify({userId: this.userID}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.isShop = res.data.data.isShop
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		maxlen (id) {
 		    this[id] = this[id].slice(0,11)
 		},
@@ -106,6 +121,10 @@ export default {
 			let rule1 = /^1\d{10}$/;
 			if(_this.submitbtn){
 				return
+			}
+			if(this.isShop === '0'){
+				MessageBox('提示','二维码已失效！')
+				return 
 			}
 			if(!this.money){
 				MessageBox('提示','请输入正确的金额！')
@@ -181,8 +200,6 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if (res.data.code === '10000') {
-					window.sessionStorage.setItem('paytoken', res.data.data.token)
-
 					let userData = {};
 					userData.shopId = res.data.data.shopId
 					userData.shopCode = _this.$route.query.userCode
@@ -196,6 +213,7 @@ export default {
 					userData.userName =  res.data.data.data.userName
 					userData.isNewUser = res.data.data.isNewUser
 					userData.logoImg = res.data.data.data.logoImg
+					userData.paytoken = res.data.data.token
 					window.sessionStorage.setItem('userData',JSON.stringify(userData))
 					_this.$router.push('/pay/step2')
 				} else {
@@ -212,7 +230,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;}
+.ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;position: absolute;}
 /*.ex-header{width: 100%;height: 12rem;background: url(../../assets/images/paytop.png) no-repeat center;background-size: cover;}*/
 .ex-header{width: 100%;}
 .ex-header img{width: 100%;}

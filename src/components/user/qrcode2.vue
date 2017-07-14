@@ -39,7 +39,8 @@ export default {
 	        },
 	        userData:'',
 	        shopData:'',
-	        link:''
+	        link:'',
+	        ExpandStatus: '',
 		}
 	},
 	computed:{
@@ -69,110 +70,119 @@ export default {
 			 	axios.post('user/personal'),
 	        	axios.post('shop/examine'),
 	        	axios.post('bankard/list'),
-			 ]).then(axios.spread(function (personal,shop,card){
+	        	axios.post('shop/shopExpandStatus')
+			 ]).then(axios.spread(function (personal,shop,card,shopExpandStatus){
 			 	Indicator.close();
-			 	if(personal.data.code === '10000' &&　shop.data.code === '10000' && card.data.code === '10000') {
-			 		_this.userData = personal.data.data
-			 		let cardlist = card.data.data
-			 		let isRealName = _this.userData.isRealName
-			 		if(isRealName === '1'){
-			 			MessageBox({
-							title:'提示',
-							message:'请去实名认证！',
-							showConfirmButton:true,
-							showCancelButton:true,
-							confirmButtonText:'确认',
-							cancelButtonText:'取消',
-						}).then(action =>{
-							if(action === "confirm"){
-								_this.$router.push('/realname')
-							}else{
-								_this.$router.back()
-							}
+			 	   if(personal.data.code === '10000' &&　shop.data.code === '10000' && card.data.code === '10000' &&shopExpandStatus.data.code === '10000') {
+				 		_this.userData = personal.data.data
+				 		let cardlist = card.data.data
+				 		let isRealName = _this.userData.isRealName
+				 		if(shopExpandStatus.data.data.status !== '3'){
+				 			MessageBox('提示','请先通过在线支付申请！').then(action =>{
+								if(action === "confirm"){
+									_this.$router.back()
+								}
+							});
+							return
+						}
+				 		if(isRealName === '1'){
+				 			MessageBox({
+								title:'提示',
+								message:'请去实名认证！',
+								showConfirmButton:true,
+								showCancelButton:true,
+								confirmButtonText:'确认',
+								cancelButtonText:'取消',
+							}).then(action =>{
+								if(action === "confirm"){
+									_this.$router.push('/realname')
+								}else{
+									_this.$router.back()
+								}
+							});
+							return
+						}
+						if (isRealName === '4') {
+							MessageBox('提示','实名认证审核中，请先通过实名认证！').then(action =>{
+								if(action === "confirm"){
+									_this.$router.back()
+								}
+							});
+							return
+						}
+						if (isRealName === '5') {
+							MessageBox({
+								title:'提示',
+								message:'实名认证失败，请先通过实名认证！',
+								showConfirmButton:true,
+								showCancelButton:true,
+								confirmButtonText:'确认',
+								cancelButtonText:'取消',
+							}).then(action =>{
+								if(action === "confirm"){
+									_this.$router.push('realname/detail')
+								}else{
+									_this.$router.back()
+								}
+							});
+							return
+						}	
+						if( isRealName === '6' ){
+				 			MessageBox({
+								title:'提示',
+								message:'实名认证升级后才能获取商家收款二维码！',
+								showConfirmButton:true,
+								showCancelButton:true,
+								confirmButtonText:'去认证',
+								cancelButtonText:'取消',
+							}).then(action =>{
+								if(action === "confirm"){
+									_this.$router.push('realname')
+								}else{
+									_this.$router.back()
+								}
+							});
+			        		return
+				 		}
+						if(cardlist.length === 0){
+							MessageBox({
+								title:'提示',
+								message:'请去添加银行卡',
+								showConfirmButton:true,
+								showCancelButton:true,
+								confirmButtonText:'确认',
+								cancelButtonText:'取消',
+							}).then(action =>{
+								if(action === "confirm"){
+									_this.$router.push('/addcard')
+								}else{
+									_this.$router.back()
+								}
+							});
+							return
+						}
+						if(cardlist[0].status !== '3'){
+							MessageBox('提示','请先通过银行卡审核！').then(action =>{
+								if(action === "confirm"){
+									_this.$router.back()
+								}
+							});
+			        		return
+						}
+				 		_this.shopData = shop.data.data
+				 		_this.link = window.location.origin + '/#/pay?userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
+				 		let qrcode = new Qrcode('qrcode', {
+							text:  _this.link,
+							width : 230,	
+							height : 230,
+							colorDark: '#123'
 						});
-						return
-					}
-					if (isRealName === '4') {
-						MessageBox('提示','实名认证审核中，请先通过实名认证！').then(action =>{
-							if(action === "confirm"){
-								_this.$router.back()
-							}
-						});
-						return
-					}
-					if (isRealName === '5') {
-						MessageBox({
-							title:'提示',
-							message:'实名认证失败，请先通过实名认证！',
-							showConfirmButton:true,
-							showCancelButton:true,
-							confirmButtonText:'确认',
-							cancelButtonText:'取消',
-						}).then(action =>{
-							if(action === "confirm"){
-								_this.$router.push('realname/detail')
-							}else{
-								_this.$router.back()
-							}
-						});
-						return
-					}	
-					if( isRealName === '6' ){
-			 			MessageBox({
-							title:'提示',
-							message:'实名认证升级后才能获取商家收款二维码！',
-							showConfirmButton:true,
-							showCancelButton:true,
-							confirmButtonText:'去认证',
-							cancelButtonText:'取消',
-						}).then(action =>{
-							if(action === "confirm"){
-								_this.$router.push('realname')
-							}else{
-								_this.$router.back()
-							}
-						});
-		        		return
-			 		}
-					if(cardlist.length === 0){
-						MessageBox({
-							title:'提示',
-							message:'请去添加银行卡',
-							showConfirmButton:true,
-							showCancelButton:true,
-							confirmButtonText:'确认',
-							cancelButtonText:'取消',
-						}).then(action =>{
-							if(action === "confirm"){
-								_this.$router.push('/addcard')
-							}else{
-								_this.$router.back()
-							}
-						});
-						return
-					}
-					if(cardlist[0].status !== '3'){
-						MessageBox('提示','请先通过银行卡审核！').then(action =>{
-							if(action === "confirm"){
-								_this.$router.back()
-							}
-						});
-		        		return
-					}
-			 		_this.shopData = shop.data.data
-			 		_this.link = window.location.origin + '/#/pay?userId=' + _this.userData.userId + '&shopname=' + encodeURIComponent(_this.shopData.shopsName)
-			 		let qrcode = new Qrcode('qrcode', {
-						text:  _this.link,
-						width : 230,	
-						height : 230,
-						colorDark: '#123'
-					});
 			 	}else{
 			 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
 			 		shop.data.code !== '10000' ? Toast(shop.data.msg) : ''
 			 		card.data.code !== '10000' ? Toast(card.data.msg) : ''
 			 	}
-			 })).catch(function(){
+			})).catch(function(){
 			 	Indicator.close();
 				Toast('连接失败，请检查网络是否正常!')
 			})
