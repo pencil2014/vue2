@@ -217,14 +217,15 @@ export default {
 			if (this.checkRealName.status === '0') {
 				MessageBox({
 				  title: '提示',
-				  message: '实名认证失败！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname/detail')
-					}
+				  message: '请先完成“个人实名认证”或者“商家法人实名认证”！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push('/realname/detail')
+				// 	}
+				// })
 				return
 			}
 
@@ -232,13 +233,14 @@ export default {
 				MessageBox({
 				  title: '提示',
 				  message: '为保障您的账户安全，现在实名认证流程升级，为了不影响使用，请尽快进行资料补充！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname')
-					}
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
 
@@ -250,14 +252,15 @@ export default {
 			if (this.checkRealName.status === '3') {
 				MessageBox({
 				  title: '提示',
-				  message: '请先进行实名认证！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push(route)
-					}
+				  message: '请先完成“个人实名认证”或者“商家法人实名认证”！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
 			
@@ -287,14 +290,15 @@ export default {
 			if (this.checkRealName.status === '0') {
 				MessageBox({
 				  title: '提示',
-				  message: '实名认证失败，目前不能转存！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname/detail')
-					}
+				  message: '请先完成“个人实名认证”或者“商家法人实名认证”！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push('/realname/detail')
+				// 	}
+				// })
 				return
 			}
 
@@ -306,14 +310,15 @@ export default {
 			if (this.checkRealName.status === '3') {
 				MessageBox({
 				  title: '提示',
-				  message: '请先进行实名认证！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push(route)
-					}
+				  message: '请先完成“个人实名认证”或者“商家法人实名认证”！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
 
@@ -321,13 +326,14 @@ export default {
 				MessageBox({
 				  title: '提示',
 				  message: '实名认证需要升级，目前不能转存！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname')
-					}
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
 			if (this.bankdata.status === '1') {

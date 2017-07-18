@@ -59,3 +59,5 @@ input{font-size: 1.4rem;}
 .mint-msgbox-btn {font-size: 1.6rem !important; }
 
 
+input[type=button]{-webkit-appearance:none;outline:none}
+

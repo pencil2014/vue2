@@ -5,7 +5,7 @@
 			<i class="iconfont">&#xe7be;</i><br>
 			进件基本资料已提交
 			<div class="box">
-				您需要和e享平台签订《商户服务协议》以完成申请流程；协议将会通过以下任意方式进行发送，您需打印并仔细阅读协议，在完全同意协议所有条目后，签字并上传规定格式的协议图片。
+				您需要和商玖支付（平安银行战略合作伙伴）签订《商户服务协议》以完成申请流程；您需打印并仔细阅读协议，在完全同意协议所有条目后，签字并上传规定格式的协议照片。可以通过以下两种方式完成协议签署：
 			</div>
 		</div>
 		<div class="types">
@@ -15,10 +15,14 @@
 					<em>方法一：打开指定链接下载协议</em>
 				</div>
 				<!-- <span class="explain">在浏览器中打开链接，下载协议；<br>*苹果手机用户请在电脑端打开链接。</span> -->
-				<span class="explain"> <span  v-if="type!=='3'">长按复制以下链接在浏览器打开<br></span>*苹果手机用户请在电脑端打开链接。</span>
+				<span class="explain"> 
+					<span  v-if="type ==='1'">长按复制以下链接在电脑端打开，下载并打印协议。</span>
+					<span  v-if="type !=='1'">请在电脑端打开链接，下载并打印协议。
+					</span>
+				</span>
 				<div class="download">
 					<a href="http://download.exgj.com.cn/htmb.pdf">http://download.exgj.com.cn/htmb.pdf</a>
-					<div class="button-wrap" v-if="type==='3'">
+					<div class="button-wrap" v-if="type !== '1'">
 						<input type="button" value="下载协议" @click="download">
 					</div>
 				</div>
@@ -28,7 +32,7 @@
 					<span></span>
 					<em>方法二：联系客服</em>
 				</div>
-				<span class="explain">客服人员将指导您进行后续资料提交</span>
+				<span class="explain">客服人员将指导您完成协议签署事宜</span>
 				<div class="service-wrap">
 					<div class="service">
 						<span>客服电话：</span>
@@ -94,9 +98,6 @@ export default {
 		download () {
 			window.location.href="http://download.exgj.com.cn/htmb.pdf";
 		},
-		sendCode () {
-
-		},
 		save () {
 			this.$router.push('/fillform/step5')
 		}
@@ -119,7 +120,7 @@ export default {
 .ex-fillform .types .types-item .service-wrap .service span{display: inline-block;width: 100%;color: #999;}
 .ex-fillform .types .types-item .service-wrap .service a{color: #639de7;display: inline-block;padding: 0 10px;}
 .ex-fillform .types .types-item .download{font-size: 1.6rem;padding: 0 0 15px;}
-.ex-fillform .types .types-item .download a{color: #666;background: #ebebeb;padding: 0 20px;border-radius: 5px;}
+.ex-fillform .types .types-item .download a{color: #666;background: #ebebeb;border-radius: 5px;word-break: break-all;}
 .ex-fillform .types .types-item .download input[type=button]{background: #fff;border: solid 1px;color: #047dcb;border-radius: 5px;padding: 5px 15px;margin-top: 15px;}
 .ex-fillform .types .types-item .download input[type=button]:active{background: #ebebeb;}
 

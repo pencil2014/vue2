@@ -3,9 +3,10 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="top">
 			<div class="box">
-				您在签署协议后，请参照协议内容，填写以下协议信息并上传协议照片。<br>如有疑问，请联系商玖支付客服，电话：
+				您在签署协议后，请参照协议内容，填写以下协议信息并上传协议照片。<br>如有疑问，请联系客服(商玖支付公司)，电话：
 			</div>
 		</div>
+		<p class="tip">需提交协议信息：</p>
 		<div class="form-wrap">
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">协议签署日期</span>
@@ -30,7 +31,7 @@
 			</div>
 			<div class="form-item upload">
 				<div class="name">协议照片</div>
-				<div class="explain">*图片规范：将协议首页与签字页重叠放置，首页在上，露出签字页的签字信息，如下图所示：</div>
+				<div class="explain">图片规范：将协议首页与签字页重叠放置，首页在上，露出签字页的签字信息，如下图所示：</div>
 				<div class="upladImg-box">
 					<div class="upladImg-wrap">
 						<img :src="imgurl.contractPic || imgbase64.contractPic" alt="" v-show="imgurl.contractPic || imgbase64.contractPic">
@@ -39,11 +40,12 @@
 							<br>
 							上传照片
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.contractPic || imgbase64.contractPic">
 						<input type="file" name="" class="file-prew" id="contractPic" @change="getfile('contractPic')" />
 					</div>
 					<div class="example">
 						范本:
-						<img src="https://www.baidu.com/img/bd_logo1.png"  v-preview="example" preview-nav-enable="false">
+						<img :src="example"  v-preview="example" preview-nav-enable="false">
 					</div>
 				</div>
 			</div>
@@ -100,6 +102,7 @@ import { Toast, MessageBox , Indicator , DatetimePicker } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 import lrz from 'lrz'
 import imgPreview from '../common/image'
+import example from '../../assets/images/modal.jpg'
 export default {
 	data(){
 		return{
@@ -125,7 +128,7 @@ export default {
 			date3: '',
 			submitbtn: false,
 			islrz: false,
-			example: 'http://pic24.photophoto.cn/20120814/0005018328053992_b.jpg'
+			example: example
 		}
 	},
 	components: {
@@ -173,7 +176,7 @@ export default {
 			this.date1 = this.getdate(date)
 			this.date2 = this.getdate(date)
 			this.date3 = this.getdate(date)
-			this.shopExpandStatus()
+			//this.shopExpandStatus()
 		},
 		getdate (date) {
 			let year = date.getFullYear()
@@ -247,7 +250,7 @@ export default {
 				return
 			}
 			if(!this.imgurl.contractPic && !this.imgbase64.contractPic){
-				MessageBox('提示','协议照片不能为空！')
+				MessageBox('提示','您还未上传协议照片！')
 				return
 			}
 			this.submitbtn = true
@@ -325,54 +328,54 @@ export default {
 			}
 			sessionStorage.setItem('onlinePay5',JSON.stringify(onlinePay5))
 		},
-		shopExpandStatus () {
-			let _this = this
-			Indicator.open({
-			  text: '加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			axios.post('shop/shopExpandStatus',qs.stringify({}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-					if( res.data.data.status === '4'){
-						_this.shopExpandDetail()
-					}
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		},
-		shopExpandDetail () {
-			let _this = this
-			Indicator.open({
-			  text: '加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			axios.post('shop/shopExpandDetail',qs.stringify({}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-					_this.contractSdate = _this.getdate(new Date(res.data.data.contractSdate))
-					_this.contractEdate = _this.getdate(new Date(res.data.data.contractEdate))
-					_this.signDate = _this.getdate(new Date(res.data.data.signDate))
-					_this.date1 = _this.signDate
-					_this.date2 = _this.contractSdate
-					_this.date3 = _this.contractEdate
-					_this.imgurl.contractPic = res.data.data.contractPic
-				} else {
-					Toast(res.data.msg)
-				}
-			})
-			.catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		},
+		// shopExpandStatus () {
+		// 	let _this = this
+		// 	Indicator.open({
+		// 	  text: '加载中...',
+		// 	  spinnerType: 'fading-circle'
+		// 	})
+		// 	axios.post('shop/shopExpandStatus',qs.stringify({}))
+		// 	.then(function(res){
+		// 		Indicator.close()
+		// 		if (res.data.code === '10000') {
+		// 			if( res.data.data.status === '4'){
+		// 				_this.shopExpandDetail()
+		// 			}
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	})
+		// 	.catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
+		// shopExpandDetail () {
+		// 	let _this = this
+		// 	Indicator.open({
+		// 	  text: '加载中...',
+		// 	  spinnerType: 'fading-circle'
+		// 	})
+		// 	axios.post('shop/shopExpandDetail',qs.stringify({}))
+		// 	.then(function(res){
+		// 		Indicator.close()
+		// 		if (res.data.code === '10000') {
+		// 			_this.contractSdate = _this.getdate(new Date(res.data.data.contractSdate))
+		// 			_this.contractEdate = _this.getdate(new Date(res.data.data.contractEdate))
+		// 			_this.signDate = _this.getdate(new Date(res.data.data.signDate))
+		// 			_this.date1 = _this.signDate
+		// 			_this.date2 = _this.contractSdate
+		// 			_this.date3 = _this.contractEdate
+		// 			_this.imgurl.contractPic = res.data.data.contractPic
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	})
+		// 	.catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
 	},
 	filters: {
 		formatdate (date) {
@@ -388,7 +391,8 @@ export default {
 .ex-fillform .top i.iconfont{color: #3dbc3c;font-size: 4rem;}
 .ex-fillform .top .box{text-align: left;background: #fff9e3;color: #f05850;padding: 10px;font-size: 1.4rem;}
 
-.form-wrap{width: 100%;padding: 0 0 0 15px;background: #fff;margin-top: 16px;}
+p.tip{color: #666;height: 36px;line-height: 36px;padding-left: 15px;font-size: 1.2rem;}
+.form-wrap{width: 100%;padding: 0 0 0 15px;background: #fff;}
 .form-wrap .form-item{border-bottom: solid 1px #ebebeb;min-height: 46px;padding: 8px 0;display: table;width: 100%;position: relative;padding-right: 15px;}
 .form-wrap .form-item:last-child{border-bottom: none;}
 .form-wrap .form-item span{display: table-cell;vertical-align: middle;}
@@ -406,7 +410,7 @@ export default {
 .form-wrap .form-item.upload .upladImg-box{width: 100%;position: relative;margin: 10px 0;}
 .form-wrap .form-item.upload .upladImg-box .example{position: absolute;right: 0px;top: 0px;color: #999;}
 .form-wrap .form-item.upload .upladImg-box .example img{width: 64px;height: 64px;border: solid 1px;vertical-align: bottom;}
-
+.ex-field .ex-field-wrapper .upladImg-wrap .again{position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;}
 
 
 .save{width: 100%;padding: 0 15px;margin-top: 15px;}

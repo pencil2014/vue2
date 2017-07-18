@@ -26,33 +26,33 @@
 		</div>
 		<div class="form-wrap">
 			<div class="form-item">
-				<span class="name">法人姓名</span>
+				<span class="name">*法人姓名</span>
 				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model="legalName"></span>
 			</div>
 			<div class="form-item">
-				<span class="name">法人联系电话</span>
-				<span class="text"><input type="tel" placeholder="请输入法人手机号" maxlength="11" v-model="legalPhone"></span>
+				<span class="name">*法人联系电话</span>
+				<span class="text"><input type="tel" placeholder="请输入法人手机号" maxlength="11" v-model="legalPhone" @input="formatPhone('legalPhone')"></span>
+			</div>
+			<div class="form-item">
+				<span class="name">*法人证件号码</span>
+				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId" maxlength="19" @input="inputIdCard('legalId')"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
-				<span class="name">法人证件生效日期</span>
+				<span class="name">*法人证件生效日期</span>
 				<span class="text f_right">
 					{{legalSdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item" @click="openPicker2()">
-				<span class="name">法人证件过期日期</span>
+				<span class="name">*法人证件过期日期</span>
 				<span class="text f_right">
 					{{legalEdate | formatdate }}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item">
-				<span class="name">法人证件号码</span>
-				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId" maxlength="20" @input="inputIdCard('legalId')"></span>
-			</div>
-			<div class="form-item">
-				<div>法人身份证正面</div>
+				<div>*法人身份证正面</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.legalFront || imgbase64.legalFront" alt="" v-show="imgurl.legalFront || imgbase64.legalFront">
@@ -61,12 +61,13 @@
 							<br>
 							上传正面
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.legalFront || imgbase64.legalFront">
 						<input type="file" name="" class="file-prew" id="legalFront" @change="getfile('legalFront')" />
 					</div>
 				</div>
 			</div>
 			<div class="form-item">
-				<div>法人身份证背面</div>
+				<div>*法人身份证背面</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.legalBack || imgbase64.legalBack" alt="" v-show="imgurl.legalBack || imgbase64.legalBack">
@@ -75,6 +76,7 @@
 							<br>
 							上传反面
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.legalBack || imgbase64.legalBack">
 						<input type="file" name="" class="file-prew" id="legalBack" @change="getfile('legalBack')" />
 					</div>
 					
@@ -167,6 +169,9 @@ export default {
 		inputIdCard(value){
 			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')
 		},
+		formatPhone(value){
+			this[value] = this[value].replace(/[^0-9]|\s/g,'')
+		},
 		setdate () {
 			let date = new Date()
 			this.start1 = new Date(1900,0,1)
@@ -232,7 +237,7 @@ export default {
 				MessageBox('提示','法人联系电话不能为空！')
 				return
 			}
-			if(!/^1\d{10}$/.test(this.legalPhone)){
+			if(!/^1[3-9]\d{9}$/.test(this.legalPhone)){
 				MessageBox('提示','手机号不正确！')
 				return 
 			}
@@ -244,34 +249,28 @@ export default {
 				MessageBox('提示','法人证件号码不能为空！')
 				return
 			}
-			if(!(this.imgurl.legalFront || this.imgbase64.legalFront)){
-				MessageBox('提示','请上传法人身份证正面照！')
+			if(!this.imgurl.legalFront && !this.imgbase64.legalFront){
+				MessageBox('提示','您还未上传法人身份证正面照！')
 				return
 			}
-			if(!(this.imgurl.legalBack || this.imgbase64.legalBack)){
-				MessageBox('提示','请上传法人身份证背面照！')
+			if(!this.imgurl.legalBack && !this.imgbase64.legalBack){
+				MessageBox('提示','您还未上传法人身份证背面照！')
 				return
 			}
 			if(this.islrz){
 				MessageBox('提示','图片上传中，请稍候重试！')
 				return
 			}
-			
-			this.savedata()
-			this.$router.push('/fillform/step3')
-		},
-		savedata () {
-			let onlinePay2 = {
-				legalName: this.legalName,
-				legalPhone: this.legalPhone,
-				legalSdate: this.legalSdate.getTime(),
-				legalEdate: this.legalEdate.getTime(),
-				legalId: this.legalId,
-				imgurl: this.imgurl,
-				imgbase64: this.imgbase64
-			}
+			let onlinePay2 = {}
+			onlinePay2.legalName = this.legalName
+			onlinePay2.legalPhone = this.legalPhone
+			onlinePay2.legalSdate = this.legalSdate.getTime()
+			onlinePay2.legalEdate = this.legalEdate.getTime()
+			onlinePay2.legalId = this.legalId
+			onlinePay2.imgurl = this.imgurl
+			onlinePay2.imgbase64 = this.imgbase64
 			sessionStorage.setItem('onlinePay2',JSON.stringify(onlinePay2))
-			console.log(onlinePay2)
+			this.$router.push('/fillform/step3')
 		},
 		shopExpandStatus () {
 			let _this = this
@@ -310,10 +309,10 @@ export default {
 					if(!_this.onlinePay2){
 						_this.legalName = res.data.data.legalName
 						_this.legalPhone = res.data.data.legalPhone
-						_this.legalSdate = _this.getdate(res.data.data.legalSdate)
-						_this.legalEdate = _this.getdate(res.data.data.legalEdate)
-						_this.date1 = _this.getdate(res.data.data.legalSdate)
-						_this.date2 = _this.getdate(res.data.data.legalEdate)
+						_this.legalSdate = _this.getdate(new Date(res.data.data.legalSdate))
+						_this.legalEdate = _this.getdate(new Date(res.data.data.legalEdate))
+						_this.date1 = _this.legalSdate
+						_this.date2 = _this.legalEdate
 						_this.legalId = res.data.data.legalId
 						_this.imgurl = {
 							legalFront: res.data.data.legalFront,
@@ -362,10 +361,11 @@ export default {
 .step dl.two{left: 33.5%;}
 .step dl.three{left: 66.66%;}
 .step dl.four{left: 100%;}
-.step dl dt{width: 40px;height: 40px;border: solid 3px #e3e3e3;margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -18px;}
+.step dl dt{width: 34px;height: 34px;/*border: solid 3px #e3e3e3;*/margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -15px;margin-bottom: 4px;}
 .step dl.active dt{line-height: 34px;background: #37a936;color: #fff;}
-.ex-fillform .step dl.active,.ex-fillform .step dl.finish{color: #37a936;}
-.step dl.finish dt{width: 32px;height: 32px;margin-top: -14px;margin-bottom: 4px;color: #fff;background: #37a936;line-height: 26px;}
+.ex-fillform .step dl.active{color: #37a936;}
+.step dl.finish dt{width: 26px;height: 26px;color: #fff;background: #37a936;line-height: 26px;margin-top: -11px;margin-bottom: 7.5px;}
+.step dl.finish dt i.iconfont{font-size: 1.4rem;}
 .step span{width: 100%;height: 4px;background: #e3e3e3;display: inline-block;position: absolute;top: 0;left: 0;}
 .step span em{display: inline-block;height: 4px;position: absolute;z-index: 2;background: #37a936;}
 
@@ -383,6 +383,8 @@ export default {
 .form-wrap .form-item .upladImg-wrap .upladImg{position: absolute;text-align: center;border:dotted 1px #d8d8d8;height: 64px;width: 64px;color: #aaafb6;padding-top: 12px;}
 .form-wrap .form-item .upladImg-wrap .upladImg i.iconfont{font-size: 1.6rem;}
 .form-wrap .form-item .upladImg-wrap .file-prew{height: 64px;width: 64px;position: absolute;left: 0;top: 0;height: 100%;width: 100%;z-index: 10;opacity: 0;filter: alpha(opacity=0);cursor: pointer;}
+.ex-field .ex-field-wrapper .upladImg-wrap .again{position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;}
+
 
 .save{width: 100%;padding: 0 15px;margin-top: 15px;}
 .save input[type=button]{width: 100%;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;border:none;height: 48px;line-height: 48px;}

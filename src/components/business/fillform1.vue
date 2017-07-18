@@ -24,11 +24,11 @@
 		</div>
 		<div class="form-wrap">
 			<div class="form-item">
-				<span class="name">商家名称</span>
+				<span class="name">*商家名称</span>
 				<input type="text" v-model="shopsName" placeholder="请输入商家名称">
 			</div>
 			<div class="form-item">
-				<span class="name">所在地区</span>
+				<span class="name">*所在地区</span>
 				<div class="select-content">
 					<select v-model="provinceId">
 						<option v-for="(item,index) in province" :value="item.id">{{item.name}}</option>
@@ -42,11 +42,11 @@
 				</div>
 			</div>
 			<div class="form-item">
-				<span class="name">详细地址</span>
-				<input type="text" v-model="shopsAddress" placeholder="请输入详细地址">
+				<span class="name">*详细地址</span>
+				<input type="text" v-model="shopsAddress" placeholder="请输入详细地址(不含省市区)">
 			</div>
 			<div class="form-item">
-				<span class="name">行业分类</span>
+				<span class="name">*行业分类</span>
 				<div class="select-content">
 					<select v-model="classNo1">
 						<option v-for="(item,index) in mccList1" :value="item.classNo">{{item.className}}</option>
@@ -114,12 +114,6 @@ export default {
 	},
 	watch: {
 		provinceId () {
-			//重置名称
-			let province = this.province.filter(function(item){
-				return item.id === this.provinceId
-			}.bind(this))
-			this.provinceName = province[0].name
-			//重置城市列表
 			let arr = this.city.filter(function(item){
 				return item.parentId === this.provinceId
 			}.bind(this))
@@ -132,12 +126,6 @@ export default {
 			}
 		},
 		cityId () {
-			//重置名称
-			let city = this.city.filter(function(item){
-				return item.id === this.cityId
-			}.bind(this))
-			this.cityName = city[0].name
-			//重置地区列表
 			let arr = this.district.filter(function(item){
 				return item.parentId === this.cityId
 			}.bind(this))
@@ -154,28 +142,23 @@ export default {
 				this.districtId = ''
 			}
 		},
-		districtId () {
-			//获取名称
-			let district = this.district.filter(function(item){
-				return item.id === this.districtId
-			}.bind(this))
-			this.districtName = district[0].name
-		},
 		classNo1 () {
 			let arr = this.mccList2.filter(function(item){
 				return item.parentNo === this.classNo1
 			}.bind(this))
 			if(arr.length > 0){
 				this.selmccList2 = arr
-				this.classNo2 = arr[0].classNo
+				if(this.selclassNo2){
+					this.classNo2 = this.selclassNo2
+					this.selclassNo2 = ''
+				}else{
+					this.classNo2 = arr[0].classNo
+				}
 			}else{
 				this.selmccList2 = []
 				this.classNo2 = ''
 			}
 		},
-		classNo2 () {
-			
-		}
 	},
 	created () {
 		this.onlinePay = JSON.parse(sessionStorage.getItem('onlinePay'))
@@ -229,28 +212,23 @@ export default {
 				if (res.data.code === '10000') {
 					if(!_this.onlinePay){
 						_this.shopsName = res.data.data.shopsName
-						_this.provinceName = res.data.data.province
-						_this.cityName = res.data.data.city
 					
-						let province = _this.province.filter(function(item){
-							return item.name === _this.provinceName
-						}.bind(_this))
-						let city = _this.city.filter(function(item){
-							return item.name === _this.cityName
-						}.bind(_this))
-						_this.provinceId = province[0].id
-						_this.selcityId = city[0].id
-						if(res.data.data.district){
-							_this.districtName = res.data.data.district
-							let district = _this.district.filter(function(item){
-								return item.name === _this.districtName
-							}.bind(_this))
-							_this.seldistrictId = district[0].id
-						}
-
+						_this.provinceId = res.data.data.province*1
+						_this.selcityId = res.data.data.city*1
 						_this.shopsAddress = res.data.data.address
+						if(res.data.data.district){
+							_this.seldistrictId = res.data.data.district*1
+						}
+						if(res.data.data.pclassNo){
+							_this.classNo1 = res.data.data.pclassNo
+							_this.selclassNo2 = res.data.data.mccNo
+						}else{
+							_this.classNo1 = _this.mccList1[0].classNo
+						}
+						
 					}else{
 						_this.getData()
+
 					}
 				} else {
 					Toast(res.data.msg)
@@ -310,7 +288,6 @@ export default {
 				if (res.data.code === '10000') {
 					_this.mccList1.push(...res.data.data.parents)
 					_this.mccList2.push(...res.data.data.childs)
-					_this.classNo1 = _this.mccList1[0].classNo
 					if(_this.status === '4'){
 						_this.shopExpandDetail()
 					}else{
@@ -343,9 +320,6 @@ export default {
 				provinceId: this.provinceId,
 				cityId: this.cityId,
 				districtId: this.districtId,
-				provinceName: this.provinceName,
-				cityName: this.cityName,
-				districtName: this.districtName,
 				shopsAddress: this.shopsAddress,
 				classNo1: this.classNo1,
 				classNo2: this.classNo2,
@@ -366,10 +340,11 @@ export default {
 .step dl.two{left: 33.5%;}
 .step dl.three{left: 66.66%;}
 .step dl.four{left: 100%;}
-.step dl dt{width: 40px;height: 40px;border: solid 3px #e3e3e3;margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -18px;}
+.step dl dt{width: 34px;height: 34px;/*border: solid 3px #e3e3e3;*/margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -15px;margin-bottom: 4px;}
 .step dl.active dt{line-height: 34px;background: #37a936;color: #fff;}
-.ex-fillform .step dl.active,.ex-fillform .step dl.finish{color: #37a936;}
-.step dl.finish dt{width: 32px;height: 32px;margin-top: -14px;margin-bottom: 4px;color: #fff;background: #37a936;line-height: 26px;}
+.ex-fillform .step dl.active{color: #37a936;}
+.step dl.finish dt{width: 26px;height: 26px;color: #fff;background: #37a936;line-height: 26px;margin-top: -11px;margin-bottom: 7.5px;}
+.step dl.finish dt i.iconfont{font-size: 1.4rem;}
 .step span{width: 100%;height: 4px;background: #e3e3e3;display: inline-block;position: absolute;top: 0;left: 0;}
 .step span em{display: inline-block;height: 4px;position: absolute;z-index: 2;background: #37a936;}
 

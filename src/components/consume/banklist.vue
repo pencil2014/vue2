@@ -44,10 +44,17 @@ export default {
 				fixed: false,
 			},
 			showaddBtn: false,
-			showSelectBtn: false
+			showSelectBtn: false,
+			freezeMoney: 0
 		}
 	},
 	created () {
+		if (window.localStorage.userinfo) {
+			this.freezeMoney = JSON.parse(window.localStorage.userinfo).freezeMoney
+		} else {
+			this.getuserinfo()
+		}
+		
 		let _this = this
 		axios.post('bankard/list',qs.stringify({})) 
 			.then(function(res){
@@ -76,7 +83,19 @@ export default {
 			this.$router.go(-1)
 		},
 		gotoedit (id,status) {
+			// 提现审核中不允许操作
+			if (this.freezeMoney > 0) {
+				MessageBox({
+				  title: '提示',
+				  message: '当前有提现申请正在审核中，暂不能修改或删除银行卡！',
+				  confirmButtonText: '知道了'
+				})
+				return
+			}
+
 			let _this = this
+			let usertype = window.localStorage.getItem('usertype')
+			let route = usertype === '2' ? '/realname/shop' : '/realname'
 			if (status === '1') {
 				MessageBox('提示', '银行卡审核中，无法操作！')
 				return
@@ -84,19 +103,30 @@ export default {
 			if (this.checkRealName.status === '4') {
 				MessageBox({
 				  title: '提示',
-				  message: '升级实名认证后才能编辑银行卡！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname')
-					}
+				  message: '完成个人或者商家实法人名认证后才能编辑银行卡！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
 			this.$router.push({ name: 'Editcard', params: { id: id}})
 		},
 		delcard (item,index) {
+			// 提现审核中不允许操作
+			if (this.freezeMoney > 0) {
+				MessageBox({
+				  title: '提示',
+				  message: '当前有提现申请正在审核中，暂不能修改或删除银行卡！',
+				  confirmButtonText: '知道了'
+				})
+				return
+			}
+
 			let _this = this
 			MessageBox({
 				  title: '提示',
@@ -163,14 +193,15 @@ export default {
 			if (this.checkRealName.status === '0') {
 				MessageBox({
 				  title: '提示',
-				  message: '实名认证失败！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname/detail')
-					}
+				  message: '请先完成“个人实名认证”或者“商家法人实名认证”！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push('/realname/detail')
+				// 	}
+				// })
 				return
 			}
 
@@ -178,13 +209,14 @@ export default {
 				MessageBox({
 				  title: '提示',
 				  message: '为保障您的账户安全，现在实名认证流程升级，为了不影响使用，请尽快进行资料补充！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push('/realname')
-					}
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
 			if (this.checkRealName.status === '2') {
@@ -195,17 +227,39 @@ export default {
 			if (this.checkRealName.status === '3') {
 				MessageBox({
 				  title: '提示',
-				  message: '请先进行实名认证！',
-				  showCancelButton: true,
-				  confirmButtonText: '去认证'
-				}).then(action => {
-					if (action === 'confirm') {
-						_this.$router.push(route)
-					}
+				  message: '请先完成“个人实名认证”或者“商家法人实名认证”！',
+				  // showCancelButton: true,
+				  confirmButtonText: '知道了'
 				})
+				// .then(action => {
+				// 	if (action === 'confirm') {
+				// 		_this.$router.push(route)
+				// 	}
+				// })
 				return
 			}
+		},
+
+		// 获取是否有提现审核
+		getuserinfo () {
+			let _this = this
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('user/personal',qs.stringify({})).then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					_this.freezeMoney = res.data.data.freezeMoney
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Indicator.close()
+					Toast('连接失败，请检查网络是否正常!')
+			})
 		}
+		
 	},
 	// beforeRouteEnter (to, from, next) {
 	// 	next(vm => {

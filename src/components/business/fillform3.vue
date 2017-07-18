@@ -29,25 +29,25 @@
 
 		<div class="form-wrap">
 			<div class="form-item">
-				<span class="name">营业执照编号</span>
+				<span class="name">*营业执照编号</span>
 				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model="licenseNo" @input="inputIdCard('licenseNo')"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
-				<span class="name">营业执照生效时间</span>
+				<span class="name">*营业执照生效时间</span>
 				<span class="text f_right">
 					{{licenseSdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item" @click="openPicker2()">
-				<span class="name">营业执照过期时间</span>
+				<span class="name">*营业执照过期时间</span>
 				<span class="text f_right">
 					{{licenseEdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item">
-				<div>营业执照照片</div>
+				<div>*营业执照照片</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.licensePic || imgbase64.licensePic" alt="" v-show="imgurl.licensePic || imgbase64.licensePic ">
@@ -56,6 +56,7 @@
 							<br>
 							上传照片
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.licensePic || imgbase64.licensePic">
 						<input type="file" name="" class="file-prew" id="licensePic" @change="getfile('licensePic')" />
 					</div>
 				</div>
@@ -75,30 +76,33 @@
 
 		<div class="form-wrap">
 			<div class="form-item" @click="OpenSlots">
-				<span class="name">账户类型</span>
+				<span class="name">*账户类型</span>
 				<span class="text f_right">
 					{{accountVal}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
-			<div class="form-item">
-				<span class="name">开户行名称</span>
-				<span class="text"><input type="text" placeholder="请输入开户行名称" v-model="bank"></span>
+			<div class="form-item" @click="OpenSlots2">
+				<span class="name">*开户行名称</span>
+				<span class="text f_right">
+					{{bank}}
+					<i class="iconfont" >&#xe606;</i>
+				</span>
 			</div>
 			<div class="form-item">
-				<span class="name">支行名称</span>
+				<span class="name">*支行名称</span>
 				<span class="text"><input type="text" placeholder="请输入支行名称" v-model="branch" @input="standard('branch')"></span>
 			</div>
 			<div class="form-item">
-				<span class="name">银行户名</span>
-				<span class="text"><input type="text" placeholder="请输入银行户名" v-model="accountName"></span>
+				<span class="name">*银行户名</span>
+				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model="accountName"></span>
 			</div>
 			<div class="form-item">
-				<span class="name">银行账号</span>
+				<span class="name">*银行账号</span>
 				<span class="text"><input type="text" placeholder="请输入银行账号" v-model="accountNo" @keyup="formatcard('accountNo')"></span>
 			</div>
 			<div class="form-item">
-				<div>整体门面（含招牌）图片</div>
+				<div>*整体门面（含招牌）图片</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.frontPic || imgbase64.frontPic" alt="" v-show="imgurl.frontPic || imgbase64.frontPic">
@@ -107,12 +111,13 @@
 							<br>
 							上传照片
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.frontPic || imgbase64.frontPic">
 						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')" />
 					</div>
 				</div>
 			</div>
 			<div class="form-item">
-				<div>收银台照片</div>
+				<div>*收银台照片</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.counterPic || imgbase64.counterPic" alt="" v-show="imgurl.counterPic || imgbase64.counterPic">
@@ -121,12 +126,13 @@
 							<br>
 							上传照片
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.counterPic || imgbase64.counterPic">
 						<input type="file" name="" class="file-prew" id="counterPic" @change="getfile('counterPic')" />
 					</div>
 				</div>
 			</div>
 			<div class="form-item">
-				<div>店内环境照片</div>
+				<div>*店内环境照片</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.viewPic || imgbase64.viewPic" alt="" v-show="imgurl.viewPic || imgbase64.viewPic">
@@ -135,13 +141,14 @@
 							<br>
 							上传照片
 						</div>
+						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.viewPic || imgbase64.viewPic">
 						<input type="file" name="" class="file-prew" id="viewPic" @change="getfile('viewPic')" />
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="save">
-			<input type="button" value="下一步" @click="submit">
+			<input type="button" value="提交" @click="submit">
 		</div>
 
 		<mt-datetime-picker
@@ -184,7 +191,20 @@
 			</mt-picker>
 		</mt-popup>
 
-
+		<mt-popup
+			v-model="isOpenSlots2"
+			position="bottom"
+			class="picker-range"
+		>
+			<mt-picker :slots="slots2" @change="slotsChange2" :showToolbar="true" valueKey="name">
+				<slot>
+					<div class="range-slots">
+						<span class="left" @click="cancle2">取消</span>
+						<span class="right" @click="confirm2">确认</span>
+					</div>
+				</slot>
+			</mt-picker>
+		</mt-popup>
 	</div>
 </template>
 <script>
@@ -193,6 +213,8 @@ import qs from "qs"
 import { Toast, MessageBox , Indicator , DatetimePicker , Picker , Popup} from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 import lrz from 'lrz'
+import banks from '../../api/banks'
+
 export default {
 	data(){
 		return{
@@ -208,11 +230,7 @@ export default {
 			licenseEdate: '',
 			date1: '',
 			date2: '',
-			accountType: '2',  //2 对私，1 对公
-			accountVal: '对公账户',
-			selaccountType: '2',
-			selaccountVal: '对公账户',
-			isOpenSlots: false,
+			
 			slots: [
 				{
 					values: [
@@ -222,13 +240,32 @@ export default {
 						},
 						{
 							id: '1',
-							type: '对私账户'
+							type: '个人账户'
 						}
 					],
 					textAlign: 'center',
 					defaultIndex: 0
 				}
 			],
+			isOpenSlots: false,
+			accountType: '2',  //2 对私，1 对公
+			accountVal: '对公账户',
+			selaccountType: '2',
+			selaccountVal: '对公账户',
+
+			slots2: [
+				{
+					values: banks,
+					textAlign: 'center',
+					defaultIndex: 0
+				}
+			],
+			isOpenSlots2: false,
+			selbank: banks[0].name,
+			bank: banks[0].name,
+			selbankId: banks[0].id,
+			bankId: banks[0].id,
+
 			licenseNo: '',
 			imgurl: {
 				licensePic: '',
@@ -248,11 +285,12 @@ export default {
 			},
 			imgIds: [],
 			imgArray: [],
-			bank: '',
 			branch: '',
 			accountName: '',
 			accountNo: '',
 			submitbtn: false,
+
+
 			onlinePay1: '',
 			onlinePay2: '',
 		}
@@ -374,6 +412,21 @@ export default {
 			this.accountVal = this.selaccountVal
 			this.isOpenSlots = false
 		},
+		OpenSlots2 () {
+			this.isOpenSlots2 = true
+		},
+		slotsChange2 (picker,value) {
+			this.selbank = value[0].name
+			this.selbankId = value[0].id
+		},
+		cancle2 () {
+			this.isOpenSlots2 = false
+		},
+		confirm2 () {
+			this.bank = this.selbank
+			this.bankId = this.selbankId
+			this.isOpenSlots2 = false
+		},
 		UpLoadIMG () {
 			let _this = this
 			let formData = new FormData()
@@ -413,13 +466,12 @@ export default {
 				let month = (date.getMonth()+1) < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)
 				return date.getFullYear() + '-' + month + '-' + date.getDate()
 			}
-			let mccNo = (this.onlinePay1.classNo2 || this.onlinePay1.classNo1) + '';
-			console.log(this.onlinePay1.classNo2,mccNo)
+			let mccNo = this.onlinePay1.classNo2 + '';
 			axios.post('shop/addShopExpand',qs.stringify({
 				shopsName: this.onlinePay1.shopsName,
-				province: this.onlinePay1.provinceName,
-				city: this.onlinePay1.cityName,
-				district: this.onlinePay1.districtName,
+				province: this.onlinePay1.provinceId,
+				city: this.onlinePay1.cityId,
+				district: this.onlinePay1.districtId,
 				address: this.onlinePay1.shopsAddress,
 				legalName: this.onlinePay2.legalName,
 				legalId: this.onlinePay2.legalId,
@@ -431,7 +483,7 @@ export default {
 				licenseEdate: formatdate(this.licenseEdate),
 				mccNo: mccNo,
 				accountType: this.accountType,
-				bank: this.bank,
+				bank: this.bankId,
 				branch: this.branch,
 				accountName: this.accountName,
 				accountNo: this.account,
@@ -464,24 +516,25 @@ export default {
 			if(this.submitbtn){
 				return
 			}
-			// if(!this.onlinePay1){
-			// 	MessageBox('提示','请完成基本信息填写！')
-			// 	return
-			// }
-			// if(!this.onlinePay2){
-			// 	MessageBox('提示','请完成法人信息填写！')
-			// 	return
-			// }
-			// if(!this.licenseNo){
-			// 	MessageBox('提示','营业执照编号不能为空！')
-			// 	return
-			// }
+			if(!this.onlinePay1){
+				MessageBox('提示','请完成基本信息填写！')
+				return
+			}
+			if(!this.onlinePay2){
+				MessageBox('提示','请完成法人信息填写！')
+				return
+			}
+			if(!this.licenseNo){
+				MessageBox('提示','营业执照编号不能为空！')
+				return
+			}
 			if(this.licenseSdate.getTime() >= this.licenseEdate.getTime()){
 				MessageBox('提示','“营业执照生效日期”必须小于 “营业执照过期时间”！')
 				return
 			}
-			if(!(this.imgurl.licensePic || this.imgbase64.licensePic)){
-				MessageBox('提示','请上传营业执照照片！')
+
+			if(!this.imgurl.licensePic && !this.imgbase64.licensePic){
+				MessageBox('提示','您还未上传营业执照照片！')
 				return
 			}
 			if(!this.bank){
@@ -504,24 +557,35 @@ export default {
 				MessageBox('提示','图片压缩中，请稍后重试！')
 				return
 			}
-			if(!(this.imgurl.frontPic || this.imgbase64.frontPic)){
-				MessageBox('提示','请上传整体门面（含招牌）图片！')
+			if(!this.imgurl.frontPic && !this.imgbase64.frontPic){
+				MessageBox('提示','您还未上传整体门面（含招牌）图片！')
 				return
 			}
-			if(!(this.imgurl.counterPic || this.imgbase64.counterPic)){
-				MessageBox('提示','请上传收银台照片！')
+			if(!this.imgurl.counterPic && !this.imgbase64.counterPic){
+				MessageBox('提示','您还未上传收银台照片！')
 				return
 			}
-			if(!(this.imgurl.viewPic || this.imgbase64.viewPic)){
-				MessageBox('提示','请上传店内环境照片！')
+			if(!this.imgurl.viewPic && !this.imgbase64.viewPic){
+				MessageBox('提示','您还未上传店内环境照片！')
 				return
 			}
-			this.submitbtn = true
-			if(this.imgIds.length === 0){
-				this.addShopExpand()
-			}else{
-				this.UpLoadIMG()
-			}
+			MessageBox({
+				title:'提示',
+				message:'确认提交以上资料？提交后若需修改请联系客服',
+				showConfirmButton:true,
+				showCancelButton:true,
+				confirmButtonText:'确认',
+				cancelButtonText:'取消',
+			}).then(action =>{
+				if(action === "confirm"){
+					this.submitbtn = true
+					if(this.imgIds.length === 0){
+						this.addShopExpand()
+					}else{
+						this.UpLoadIMG()
+					}
+				}
+			})
 		},
 		shopExpandStatus () {
 			let _this = this
@@ -556,10 +620,12 @@ export default {
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.licenseNo = res.data.data.licenseNo
-					_this.licenseSdate = _this.getdate(res.data.data.licenseSdate)
-					_this.licenseEdate = _this.getdate(res.data.data.licenseEdate)
+					_this.licenseSdate = _this.getdate(new Date(res.data.data.licenseSdate))
+					_this.licenseEdate = _this.getdate(new Date(res.data.data.licenseEdate))
+					_this.date1 = _this.licenseSdate
+					_this.date2 = _this.licenseEdate
 					_this.accountType = res.data.data.accountType
-					_this.bank = res.data.data.bank
+					_this.bankId = res.data.data.bank
 					_this.branch = res.data.data.branch
 					_this.accountName = res.data.data.accountName
 					_this.accountNo = res.data.data.accountNo.replace(/\s/g, '').replace(/(.{4})/g, "$1 ")
@@ -571,6 +637,12 @@ export default {
 						if(item.id === _this.accountType){
 							_this.slots[0].defaultIndex = index
 							_this.accountVal = item.type
+						}
+					}.bind(_this))
+					_this.slots2[0].values.forEach(function(item,index){
+						if(item.id === _this.bankId){
+							_this.slots2[0].defaultIndex = index
+							_this.bank = item.name
 						}
 					}.bind(_this))
 				} else {
@@ -605,10 +677,11 @@ export default {
 .step dl.two{left: 33.5%;}
 .step dl.three{left: 66.66%;}
 .step dl.four{left: 100%;}
-.step dl dt{width: 40px;height: 40px;border: solid 3px #e3e3e3;margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -18px;}
+.step dl dt{width: 34px;height: 34px;/*border: solid 3px #e3e3e3;*/margin: 0 auto;border-radius: 50%;line-height: 34px;background: #e3e3e3;margin-top: -15px;margin-bottom: 4px;}
 .step dl.active dt{line-height: 34px;background: #37a936;color: #fff;}
-.ex-fillform .step dl.active,.ex-fillform .step dl.finish{color: #37a936;}
-.step dl.finish dt{width: 32px;height: 32px;margin-top: -14px;margin-bottom: 4px;color: #fff;background: #37a936;line-height: 26px;}
+.ex-fillform .step dl.active{color: #37a936;}
+.step dl.finish dt{width: 26px;height: 26px;color: #fff;background: #37a936;line-height: 26px;margin-top: -11px;margin-bottom: 7.5px;}
+.step dl.finish dt i.iconfont{font-size: 1.4rem;}
 .step span{width: 100%;height: 4px;background: #e3e3e3;display: inline-block;position: absolute;top: 0;left: 0;}
 .step span em{display: inline-block;height: 4px;position: absolute;z-index: 2;background: #37a936;}
 
@@ -626,6 +699,7 @@ export default {
 .form-wrap .form-item .upladImg-wrap .upladImg{position: absolute;text-align: center;border:dotted 1px #d8d8d8;height: 64px;width: 64px;color: #aaafb6;padding-top: 12px;}
 .form-wrap .form-item .upladImg-wrap .upladImg i.iconfont{font-size: 1.6rem;}
 .form-wrap .form-item .upladImg-wrap .file-prew{height: 64px;width: 64px;position: absolute;left: 0;top: 0;height: 100%;width: 100%;z-index: 10;opacity: 0;filter: alpha(opacity=0);cursor: pointer;}
+.ex-field .ex-field-wrapper .upladImg-wrap .again{position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;}
 
 .save{width: 100%;padding: 0 15px;margin-top: 15px;}
 .save input[type=button]{width: 100%;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;border:none;height: 48px;line-height: 48px;}

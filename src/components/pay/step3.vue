@@ -7,7 +7,7 @@
 			</div>
 			<div class="shopname">
 				<img src="../../assets/images/shop.png" alt="">
-				<span>{{shopname}}</span>
+				<span>{{shopname || '平安银行特约商户'}}</span>
 			</div>
 		</div>
 		<div class="top">
@@ -29,7 +29,7 @@ export default {
 	data () {
 		return{
 			money: '0',
-			shopname: '平安银行特约商户'
+			shopname: ''
 		}
 	},
 	computed: { 
@@ -38,7 +38,6 @@ export default {
 		}
 	},
 	created () {
-		console.log(this.outNo)
 		let _this = this
 		Indicator.open({
 		  text: '加载中...',

@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<div class="form_bt">
-			<input type="button" value="支付" @click="submit" :class="{disableBtn: type === '3' }">
+			<input type="button" value="支付" @click="submit" :class="{disableBtn: disable }">
 		</div>
 		<!-- <div class="qrcode_modal" v-show="qrcode.show">
 	        <div class="qrcode_box">
@@ -107,6 +107,13 @@ export default {
 				return phone.replace(/^(\d{3})(\d{4})(\d{4})/,'$1****$3')
 			}
 		},
+		disable () {
+			if(this.type === '3' || this.isShop === '0' ){
+				return true
+			}else{
+				return false
+			}
+		}
 	},
 	created () {
 		this.sel = this.type;
@@ -275,7 +282,7 @@ export default {
 .modal_Bj .modal .content .button input{width: 100%;height: 40px;border: none;background: #3dbc3c;color: #fff;border-radius: 3px;}
 .modal_Bj .modal .content .button input:active{background: rgba(61,188,60,0.8);}
 
-.qrcode_modal{width: 100%;height: 100%;background:#0470b6;position: fixed;top: 0;left: 0;z-index: 999;display: table;}
+/*.qrcode_modal{width: 100%;height: 100%;background:#0470b6;position: fixed;top: 0;left: 0;z-index: 999;display: table;}
 .qrcode_modal .qrcode_box{vertical-align: middle;display: table-cell;padding: 0 12%;}
 .qrcode_modal .qrcode_box .qrcode_content{background: #fff;width: 100%;border-radius: 5px;text-align: center;padding: 0 0 0 0;}
 .qrcode_modal .qrcode_box .qrcode_content .qrcode img{}
@@ -283,5 +290,5 @@ export default {
 .qrcode_modal .qrcode_box .qrcode_content .tip2{padding: 20px 0 30px 0;}
 .qrcode_modal .qrcode_box .qrcode_content .tip2 a:after{content: " (" attr(href) ")"}
 .qrcode{padding-left: 15px;}
-.qrcode_modal .qrcode_box .qrcode_content .code #qrcode{width: 230px;margin: auto;}
+.qrcode_modal .qrcode_box .qrcode_content .code #qrcode{width: 230px;margin: auto;}*/
 </style>

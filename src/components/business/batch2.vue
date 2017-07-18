@@ -14,7 +14,7 @@
 		  </div>
 		  <div class="ex-batch-result-item" v-else>
 		  	<i class="iconfont err">&#xe63f;</i>
-		  	<h3>抱歉，审核不通过！</h3>
+		  	<h3>抱歉，审核未通过！</h3>
 		  	<p>{{orderinfo.auditReason}}</p>
 		  </div>
 

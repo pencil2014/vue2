@@ -76,7 +76,7 @@
 					</li>
 					<li @click="toRealName2" v-if="isShop">
 						<img src="../../assets/images/renzhen.png" alt="">
-						<span>商家法人实名认证</span>
+						<span>商家实名认证</span>
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>

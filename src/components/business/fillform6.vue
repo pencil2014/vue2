@@ -1,9 +1,9 @@
 <template>
 	<div class="ex-fillform">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
-		<div class="ex-top" v-if="status === '0'">
+		<div class="ex-top" v-if="status === '0' || status === '1' || status === '2'">
 			<i class="iconfont ex">&#xe609;</i>
-			<p class="strong">审核中</p>
+			<p class="strong">正在审核中</p>
 			您的二维码收款申请已经进入审核流程，<br>审核时间为1-3个工作日。
 		</div>
 		<div class="ex-top" v-if="status === '3'">
@@ -15,7 +15,7 @@
 		<div class="ex-top" v-if="status === '4'">
 			<i class="iconfont err">&#xe63f;</i>
 			<p class="strong">抱歉，审核未通过！</p>
-			原因是：
+			失败原因：{{remark}}
 		</div>
 		<div class="save" v-if="status === '4'" @click="edict">
 			<input type="button" value="重新编辑">
@@ -66,7 +66,7 @@ export default {
 			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.status = res.data.data.status
-				_this.option = res.data.data.remark
+				_this.remark = res.data.data.remark
 			} else {
 				Toast(res.data.msg)
 			}

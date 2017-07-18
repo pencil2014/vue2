@@ -61,7 +61,7 @@ export default {
 		disableBtn () {
 			let rule1 = /^1\d{10}$/;
 			let rule2 = /^\d+(\.\d{1,2})?$/
-			if(!this.money|| (this.money == 0) ||!this.phone|| !rule1.test(this.phone) || !rule2.test(this.money)){
+			if(!this.money|| (this.money == 0) ||!this.phone|| !rule1.test(this.phone) || !rule2.test(this.money) || this.isShop === '0'){
 				return true
 			}else{
 				return false
@@ -138,12 +138,7 @@ export default {
 				MessageBox('提示','手机号不正确！')
 				return 
 			}
-			// if(_this.money > 50000){
-			// 	Toast('每笔不能大于50000')
-			// 	return
-			// }
 			_this.submitbtn = true
-
 			Indicator.open({
 			  text: '用户检测中...',
 			  spinnerType: 'fading-circle'
