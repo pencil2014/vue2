@@ -25,7 +25,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*商家名称</span>
-				<input type="text" v-model="shopsName" placeholder="请输入商家名称">
+				<input type="text" v-model="shopsName" placeholder="请输入商家名称" maxlength="20">
 			</div>
 			<div class="form-item">
 				<span class="name">*所在地区</span>
@@ -43,7 +43,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*详细地址</span>
-				<input type="text" v-model="shopsAddress" placeholder="请输入详细地址(不含省市区)">
+				<input type="text" v-model="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="60">
 			</div>
 			<div class="form-item">
 				<span class="name">*行业分类</span>
@@ -315,6 +315,10 @@ export default {
 				MessageBox('提示','行业分类不能为空！')
 				return
 			}
+			Indicator.open({
+			  text: '数据保存中，请稍候...',
+			  spinnerType: 'fading-circle'
+			})
 			let obj = {
 				shopsName: this.shopsName,
 				provinceId: this.provinceId,
@@ -324,9 +328,13 @@ export default {
 				classNo1: this.classNo1,
 				classNo2: this.classNo2,
 			}
+			Indicator.close()
 			sessionStorage.setItem('onlinePay',JSON.stringify(obj))
 			this.$router.push('/fillform/step2')
 		},
+	},
+	destroyed () {
+		Indicator.close()
 	}
 }
 </script>

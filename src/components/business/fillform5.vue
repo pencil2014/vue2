@@ -3,7 +3,7 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="top">
 			<div class="box">
-				您在签署协议后，请参照协议内容，填写以下协议信息并上传协议照片。<br>如有疑问，请联系客服(商玖支付公司)，电话：
+				您在签署协议后，请参照协议内容，填写以下协议信息并上传协议照片。<!-- <br>如有疑问，请联系客服(商玖支付公司)，电话： -->
 			</div>
 		</div>
 		<p class="tip">需提交协议信息：</p>
@@ -176,7 +176,7 @@ export default {
 			this.date1 = this.getdate(date)
 			this.date2 = this.getdate(date)
 			this.date3 = this.getdate(date)
-			//this.shopExpandStatus()
+			this.shopExpandDetail()
 		},
 		getdate (date) {
 			let year = date.getFullYear()
@@ -245,12 +245,12 @@ export default {
 				MessageBox('提示','“协议生效日期”必须小于“协议到期日期”')
 				return
 			}
-			if(this.islrz){
-				MessageBox('提示','图片压缩中，请稍后重试！')
-				return
-			}
 			if(!this.imgurl.contractPic && !this.imgbase64.contractPic){
 				MessageBox('提示','您还未上传协议照片！')
+				return
+			}
+			if(this.islrz){
+				MessageBox('提示','图片压缩中，请稍后重试！')
 				return
 			}
 			this.submitbtn = true
@@ -350,32 +350,36 @@ export default {
 		// 		Toast('连接失败，请检查网络是否正常!')
 		// 	})
 		// },
-		// shopExpandDetail () {
-		// 	let _this = this
-		// 	Indicator.open({
-		// 	  text: '加载中...',
-		// 	  spinnerType: 'fading-circle'
-		// 	})
-		// 	axios.post('shop/shopExpandDetail',qs.stringify({}))
-		// 	.then(function(res){
-		// 		Indicator.close()
-		// 		if (res.data.code === '10000') {
-		// 			_this.contractSdate = _this.getdate(new Date(res.data.data.contractSdate))
-		// 			_this.contractEdate = _this.getdate(new Date(res.data.data.contractEdate))
-		// 			_this.signDate = _this.getdate(new Date(res.data.data.signDate))
-		// 			_this.date1 = _this.signDate
-		// 			_this.date2 = _this.contractSdate
-		// 			_this.date3 = _this.contractEdate
-		// 			_this.imgurl.contractPic = res.data.data.contractPic
-		// 		} else {
-		// 			Toast(res.data.msg)
-		// 		}
-		// 	})
-		// 	.catch(function(){
-		// 		Indicator.close()
-		// 		Toast('连接失败，请检查网络是否正常!')
-		// 	})
-		// },
+		shopExpandDetail () {
+			let _this = this
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+					let today = _this.getdate(new Date())
+					let signDate = res.data.data.signDate ? _this.getdate(new Date(res.data.data.signDate)) : today
+					let Sdate = res.data.data.contractSdate ? _this.getdate(new Date(res.data.data.contractSdate)) : today
+					let endDate = res.data.data.contractEdate ? _this.getdate(new Date(res.data.data.contractEdate)) : today
+					_this.signDate = signDate.getTime() > today.getTime() ? today : signDate
+					_this.contractSdate = Sdate.getTime() > today.getTime() ? today : Sdate
+					_this.contractEdate = endDate.getTime() < today.getTime() ? today : endDate
+					_this.date1 = _this.signDate
+					_this.date2 = _this.contractSdate
+					_this.date3 = _this.contractEdate
+					_this.imgurl.contractPic = res.data.data.contractPic ? res.data.data.contractPic : ''
+				} else {
+					Toast(res.data.msg)
+				}
+			})
+			.catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 	},
 	filters: {
 		formatdate (date) {

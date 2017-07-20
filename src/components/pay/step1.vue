@@ -6,7 +6,7 @@
 		<div class="ex-contain">
 			<div class="shopName">{{shopname}}</div>
 			<div class="form">
-				<input type="text" placeholder="请输入金额" v-model.trim="money" @input="currency('money')">
+				<input type="tel" placeholder="请输入金额" v-model.trim="money" @input="currency('money')">
 			</div>
 			<div class="form">
 				<div class="tip">输入手机号参与商家分享</div>
@@ -32,6 +32,24 @@
 				</div>
 			</div>
 		</div>
+		<!-- <div class="modal_Bj">
+			<div class="modal">
+				<div class="content">
+					<div class="box">
+						<div class="title">
+							提示
+						</div>
+						<div class="text">
+							qqqqqqqqq
+						</div>
+					</div>
+					<div class="option">
+						<span @click="cancle">取消</span>
+						<span class="blue" @click="confirm">确定</span>
+					</div>
+				</div>
+			</div>
+		</div> -->
 	</div>
 </template>
 <script>
@@ -44,7 +62,7 @@ export default {
 			money:'',
 			phone:'',
 			submitbtn:false,
-			isShop: ''
+			isShop: '',
 		}
 	},
 	computed: {
@@ -155,7 +173,7 @@ export default {
 							str = "<span>用户编号："+res.data.data.userCode+"<br/>姓名："+res.data.data.realName+"<br />手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对信息，报错单损失无法追回！)</p>"
 						}
 					} else {
-						str = "您还不是易享时代会员，系统会自动帮您注册成为会员！"
+						str = "<span style='color:red;font-size:bold;'>"+_this.phone+" </span>还不是易享会员，点击确定视为您了解并同意易享平台《服务协议》，并自动注册成为平台会员！"
 					}
 					MessageBox({
 					  title: '提示',
@@ -226,7 +244,6 @@ export default {
 </script>
 <style scoped>
 .ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;position: absolute;}
-/*.ex-header{width: 100%;height: 12rem;background: url(../../assets/images/paytop.png) no-repeat center;background-size: cover;}*/
 .ex-header{width: 100%;}
 .ex-header img{width: 100%;}
 .ex-contain{color: rgb(33,42,50);}
@@ -241,10 +258,16 @@ export default {
 
 .modal_Bj{width: 100%;height: 100%;background:rgba(0,0,0,0.42);position: fixed;top: 0;left: 0;z-index: 999;display: table;}
 .modal_Bj .modal{vertical-align: middle;display: table-cell;padding: 0 12%;}
-.modal_Bj .modal .content{background: #fff;width: 100%;border-radius: 5px;text-align: center;}
+.modal_Bj .modal .content{background: #fff;width: 100%;border-radius: 5px;text-align: center;overflow: hidden;}
 .modal_Bj .modal .content .title{line-height: 30px;font-size: 2rem;padding: 10px 0;}
 .modal_Bj .modal .content .text{line-height: 20px;font-size: 1.4rem;color: rgb(33,42,50);padding: 0 15px 25px 15px;}
-.modal_Bj .modal .content .button{padding: 20px;}
+/*.modal_Bj .modal .content .button{padding: 20px;}
 .modal_Bj .modal .content .button input{width: 100%;height: 40px;border: none;background: #3dbc3c;color: #fff;border-radius: 3px;}
-.modal_Bj .modal .content .button input:active{background: rgba(61,188,60,0.8);}
+.modal_Bj .modal .content .button input:active{background: rgba(61,188,60,0.8);}*/
+/*.modal_Bj .modal .content .box{border-bottom: solid 1px #ebebeb;}
+.modal_Bj .modal .content .option{display: table;width: 100%;}
+.modal_Bj .modal .content .option span{display: table-cell;width: 50%;border-right: solid 1px #ebebeb;font-size: 1.6rem;color: #212a32;padding: 8px 0;}
+.modal_Bj .modal .content .option span.blue{color: #29a0ec;}
+.modal_Bj .modal .content .option span:last-child{border-right: none;}
+.modal_Bj .modal .content .option span:active{background: #ebebeb;}*/
 </style>

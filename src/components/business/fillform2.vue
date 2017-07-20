@@ -27,7 +27,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*法人姓名</span>
-				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model="legalName"></span>
+				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model="legalName" maxlength="20"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*法人联系电话</span>
@@ -35,7 +35,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*法人证件号码</span>
-				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId" maxlength="19" @input="inputIdCard('legalId')"></span>
+				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId" maxlength="20" @input="inputIdCard('legalId')"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">*法人证件生效日期</span>
@@ -177,7 +177,7 @@ export default {
 			this.start1 = new Date(1900,0,1)
 			this.end1 = this.getdate(date)
 			this.start2 = this.getdate(date)
-			this.end2 = new Date(2099,12,31)
+			this.end2 = new Date(2099,11,31)
 			this.legalSdate = this.getdate(date)
 			this.legalEdate = this.getdate(date)
 			this.date1 = this.getdate(date)
@@ -261,6 +261,10 @@ export default {
 				MessageBox('提示','图片上传中，请稍候重试！')
 				return
 			}
+			Indicator.open({
+			  text: '数据保存中，请稍候...',
+			  spinnerType: 'fading-circle'
+			})
 			let onlinePay2 = {}
 			onlinePay2.legalName = this.legalName
 			onlinePay2.legalPhone = this.legalPhone
@@ -270,6 +274,7 @@ export default {
 			onlinePay2.imgurl = this.imgurl
 			onlinePay2.imgbase64 = this.imgbase64
 			sessionStorage.setItem('onlinePay2',JSON.stringify(onlinePay2))
+			Indicator.close()
 			this.$router.push('/fillform/step3')
 		},
 		shopExpandStatus () {
@@ -309,8 +314,11 @@ export default {
 					if(!_this.onlinePay2){
 						_this.legalName = res.data.data.legalName
 						_this.legalPhone = res.data.data.legalPhone
-						_this.legalSdate = _this.getdate(new Date(res.data.data.legalSdate))
-						_this.legalEdate = _this.getdate(new Date(res.data.data.legalEdate))
+						let today = _this.getdate(new Date())
+						let Sdate = _this.getdate(new Date(res.data.data.legalSdate))
+						let endDate = _this.getdate(new Date(res.data.data.legalEdate))
+						_this.legalSdate = Sdate.getTime() > today.getTime() ? today : Sdate
+						_this.legalEdate = endDate.getTime() < today.getTime() ? today : endDate
 						_this.date1 = _this.legalSdate
 						_this.date2 = _this.legalEdate
 						_this.legalId = res.data.data.legalId
@@ -334,10 +342,13 @@ export default {
 			if(this.onlinePay2){
 				this.legalName = this.onlinePay2.legalName
 				this.legalPhone = this.onlinePay2.legalPhone
-				this.legalSdate = this.getdate(new Date(this.onlinePay2.legalSdate))
-				this.legalEdate = this.getdate(new Date(this.onlinePay2.legalEdate))
-				this.date1 = this.getdate(new Date(this.onlinePay2.legalSdate))
-				this.date2 = this.getdate(new Date(this.onlinePay2.legalEdate))
+				let today = this.getdate(new Date())
+				let Sdate = this.getdate(new Date(this.onlinePay2.legalSdate))
+				let endDate = this.getdate(new Date(this.onlinePay2.legalEdate))
+				this.legalSdate = Sdate.getTime() > today.getTime() ? today : Sdate
+				this.legalEdate = endDate.getTime() < today.getTime() ? today : endDate
+				this.date1 = this.legalSdate
+				this.date2 = this.legalEdate
 				this.legalId = this.onlinePay2.legalId
 				this.imgurl = this.onlinePay2.imgurl
 				this.imgbase64 = this.onlinePay2.imgbase64
@@ -349,6 +360,9 @@ export default {
 			return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
 		}
 	},
+	destroyed () {
+		Indicator.close()
+	}
 }
 </script>
 <style scoped>

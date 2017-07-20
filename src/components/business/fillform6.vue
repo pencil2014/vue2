@@ -3,7 +3,7 @@
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-top" v-if="status === '0' || status === '1' || status === '2'">
 			<i class="iconfont ex">&#xe609;</i>
-			<p class="strong">正在审核中</p>
+			<p class="strong">正在审核中...</p>
 			您的二维码收款申请已经进入审核流程，<br>审核时间为1-3个工作日。
 		</div>
 		<div class="ex-top" v-if="status === '3'">

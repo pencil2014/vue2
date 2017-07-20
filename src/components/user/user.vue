@@ -80,16 +80,16 @@
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
-					<router-link to="/qrcode" tag="li" >
+					<router-link to="/qrcode" tag="li" v-if="!isShop">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<!-- <router-link to="/qrcode2" tag="li" v-if="isShop">
+					<router-link to="/qrcode2" tag="li" v-if="isShop && ExpandStatus === '3'">
 						<img src="../../assets/images/pay.png" alt="">
 						<span>商家收款二维码</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link> -->
+					</router-link>
 				</ul>
 			</div>
 			<div class="ex-user-item">
@@ -121,7 +121,8 @@ export default {
 				fixed: false
 			},
 			realType:'',
-			enterstatus: ''
+			enterstatus: '',
+			ExpandStatus: ''
 		}
 	},
 	computed:{
@@ -158,11 +159,12 @@ export default {
 		})
 		 axios.all([
 		 	axios.post('user/personal'),
-        	axios.post('message/getCount'),
-        	axios.post('verify/checkRealName'),
-		 ]).then(axios.spread(function (personal,count,realname){
+    	axios.post('message/getCount'),
+    	axios.post('verify/checkRealName'),
+    	axios.post('shop/shopExpandStatus')
+		 ]).then(axios.spread(function (personal,count,realname,shopExpandStatus){
 		 	Indicator.close()
-		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
+		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000' && shopExpandStatus.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
 		 		_this.count = count.data.data.count<=99 ? count.data.data.count : '99+';
 		 		_this.checkRealName = realname.data.data
@@ -171,10 +173,13 @@ export default {
 		 		if(_this.userinfo.userCode.slice(0,1) === 'B'){
 		 			_this.getenterdetail()
 		 		}
+
+		 		_this.ExpandStatus = shopExpandStatus.data.data.status
 		 	}else{
 		 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
 		 		count.data.code !== '10000' ? Toast(count.data.msg) : ''
 		 		realname.data.code !== '10000' ? Toast(realname.data.msg) : ''
+		 		shopExpandStatus.data.code !== '10000' ? Toast(shopExpandStatus.data.msg) : ''
 		 	}
 		 })).catch(function(){
 		 	Indicator.close()
@@ -235,6 +240,25 @@ export default {
 				}
 			}).catch(function(){
 					Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+		shopExpandStatus () {
+			let _this = this;
+			Indicator.open({
+			  text: '数据加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			.then(function(res){
+				Indicator.close()
+				if (res.data.code === '10000') {
+				 	_this.ExpandStatus = res.data.data.status
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+				Indicator.close()
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	},

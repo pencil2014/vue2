@@ -30,7 +30,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*营业执照编号</span>
-				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model="licenseNo" @input="inputIdCard('licenseNo')"></span>
+				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model="licenseNo" @input="inputIdCard('licenseNo')" maxlength="20"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">*营业执照生效时间</span>
@@ -68,8 +68,8 @@
 			<p class="text">*选择个人账户银行卡，银行卡户名应为营业执照上的法人姓名；<br>
 			&nbsp;选择对公账户银行卡，银行卡户名应为营业执照上的公司名。</p>
 			<p class="text">
-				*开户行名称须填写银行全称，如：平安银行；<br>
-				&nbsp;支行名称须填写支行全称，如：广东省深圳市科技园支行。
+				*支行名称须按格式填写：地区 (不含省) +支行名称；<br>
+				&nbsp;如：杭州西湖支行。
 			</p>
 		</div>
 
@@ -91,15 +91,15 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*支行名称</span>
-				<span class="text"><input type="text" placeholder="请输入支行名称" v-model="branch" @input="standard('branch')"></span>
+				<span class="text"><input type="text" placeholder="请输入支行名称" v-model="branch" @input="standard('branch')" maxlength="20"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行户名</span>
-				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model="accountName"></span>
+				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model="accountName" maxlength="20"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行账号</span>
-				<span class="text"><input type="text" placeholder="请输入银行账号" v-model="accountNo" @keyup="formatcard('accountNo')"></span>
+				<span class="text"><input type="text" placeholder="请输入银行账号" v-model.trim="accountNo" @input="formatcard('accountNo')" maxlength="25"></span>
 			</div>
 			<div class="form-item">
 				<div>*整体门面（含招牌）图片</div>
@@ -215,6 +215,7 @@ import HeadTitle from '../common/title.vue'
 import lrz from 'lrz'
 import banks from '../../api/banks'
 
+const accountTypes = [{id: '1',type: '对公账户'},{id: '2',type: '个人账户'}]
 export default {
 	data(){
 		return{
@@ -233,25 +234,16 @@ export default {
 			
 			slots: [
 				{
-					values: [
-						{
-							id: '2',
-							type: '对公账户'
-						},
-						{
-							id: '1',
-							type: '个人账户'
-						}
-					],
+					values: accountTypes,
 					textAlign: 'center',
 					defaultIndex: 0
 				}
 			],
 			isOpenSlots: false,
-			accountType: '2',  //2 对私，1 对公
-			accountVal: '对公账户',
-			selaccountType: '2',
-			selaccountVal: '对公账户',
+			accountType: accountTypes[0].id,
+			accountVal: accountTypes[0].type,
+			selaccountType: accountTypes[0].id,
+			selaccountVal: accountTypes[0].type,
 
 			slots2: [
 				{
@@ -349,12 +341,6 @@ export default {
 			let month = date.getMonth()
 			let day = date.getDate()
 			return new Date(year,month,day)
-		},
-		inputIdCard(value){
-			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')
-		},
-		standard(value) {
-		 	this[value] = this[value].replace(/[^\u4E00-\u9FA5]|\s/g,'')
 		},
 		changeDate1 (date) {
 			let date1 = this.getdate(date)
@@ -467,6 +453,10 @@ export default {
 				return date.getFullYear() + '-' + month + '-' + date.getDate()
 			}
 			let mccNo = this.onlinePay1.classNo2 + '';
+			Indicator.open({
+			  text: '提交中...',
+			  spinnerType: 'fading-circle'
+			})
 			axios.post('shop/addShopExpand',qs.stringify({
 				shopsName: this.onlinePay1.shopsName,
 				province: this.onlinePay1.provinceId,
@@ -553,10 +543,6 @@ export default {
 				MessageBox('提示','银行账号不能为空！')
 				return
 			}
-			if(this.islrz){
-				MessageBox('提示','图片压缩中，请稍后重试！')
-				return
-			}
 			if(!this.imgurl.frontPic && !this.imgbase64.frontPic){
 				MessageBox('提示','您还未上传整体门面（含招牌）图片！')
 				return
@@ -567,6 +553,10 @@ export default {
 			}
 			if(!this.imgurl.viewPic && !this.imgbase64.viewPic){
 				MessageBox('提示','您还未上传店内环境照片！')
+				return
+			}
+			if(this.islrz){
+				MessageBox('提示','图片压缩中，请稍后重试！')
 				return
 			}
 			MessageBox({
@@ -620,8 +610,11 @@ export default {
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.licenseNo = res.data.data.licenseNo
-					_this.licenseSdate = _this.getdate(new Date(res.data.data.licenseSdate))
-					_this.licenseEdate = _this.getdate(new Date(res.data.data.licenseEdate))
+					let Sdate = _this.getdate(new Date(res.data.data.licenseSdate))
+					let endDate = _this.getdate(new Date(res.data.data.licenseEdate))
+					let today = _this.getdate(new Date())
+					_this.licenseSdate = Sdate.getTime() > today.getTime() ? today : Sdate
+					_this.licenseEdate = endDate.getTime() < today.getTime() ? today : endDate
 					_this.date1 = _this.licenseSdate
 					_this.date2 = _this.licenseEdate
 					_this.accountType = res.data.data.accountType
@@ -655,10 +648,15 @@ export default {
 			})
 		},
 		formatcard (id) {
-			if(/\S{5}/.test(this[id])){
-		      this[id] = this[id].replace(/\s/g, '').replace(/(.{4})/g, "$1 ");
-		    }
-		} 
+		 	let value = this[id]
+		 	this[id] = value.replace(/[^0-9]|\s/g,'').replace(/(.{4})/g, "$1 ")
+		},
+		inputIdCard(value){
+			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')
+		},
+		standard(value) {
+		 	this[value] = this[value].replace(/[^\u4E00-\u9FA5]|\s/g,'')
+		},
 	},
 	filters: {
 		formatdate (date) {
