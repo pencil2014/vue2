@@ -9,7 +9,7 @@
 			</div>
 			<div class="ex-addgoods-item">
 				<span>商品价格</span>
-				<input type="text" placeholder="请输入价格" maxlength="11" v-model.trim='price' readonly="true">
+				<input type="number" placeholder="请输入价格" maxlength="11" v-model.trim='price' readonly="true">
 			</div>
 			<div class="ex-addgoods-pic">
 				

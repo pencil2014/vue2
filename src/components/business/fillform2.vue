@@ -27,20 +27,20 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*法人姓名</span>
-				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model="legalName" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model.trim="legalName" maxlength="20"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*法人联系电话</span>
-				<span class="text"><input type="tel" placeholder="请输入法人手机号" maxlength="11" v-model="legalPhone" @input="formatPhone('legalPhone')"></span>
+				<span class="text"><input type="tel" placeholder="请输入法人手机号" maxlength="11" v-model.trim="legalPhone" @input="formatPhone('legalPhone')"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*法人证件号码</span>
-				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model="legalId" maxlength="20" @input="inputIdCard('legalId')"></span>
+				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model.trim="legalId" maxlength="20"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">*法人证件生效日期</span>
 				<span class="text f_right">
-					{{legalSdate | formatdate}}
+					{{legalSdate | formatdate }}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
@@ -178,8 +178,8 @@ export default {
 			this.end1 = this.getdate(date)
 			this.start2 = this.getdate(date)
 			this.end2 = new Date(2099,11,31)
-			this.legalSdate = this.getdate(date)
-			this.legalEdate = this.getdate(date)
+			// this.legalSdate = this.getdate(date)
+			//this.legalEdate = this.getdate(date)
 			this.date1 = this.getdate(date)
 			this.date2 = this.getdate(date)
 			this.shopExpandStatus()
@@ -238,23 +238,35 @@ export default {
 				return
 			}
 			if(!/^1[3-9]\d{9}$/.test(this.legalPhone)){
-				MessageBox('提示','手机号不正确！')
+				MessageBox('提示','电话号码不正确！')
 				return 
-			}
-			if(this.legalSdate.getTime() >= this.legalEdate.getTime()){
-				MessageBox('提示','法人证件生效日期不能超过或等于过期日期！')
-				return
 			}
 			if(!this.legalId){
 				MessageBox('提示','法人证件号码不能为空！')
 				return
 			}
+			if(!/^[a-zA-Z0-9]+$/g.test(this.legalId)){
+				MessageBox('提示','法人证件号码只能输入数字和英文！')
+				return
+			}
+			if(!this.legalSdate){
+				MessageBox('提示','请选择法人证件生效日期！')
+				return
+			}
+			if(!this.legalEdate){
+				MessageBox('提示','请选择法人证件过期日期！')
+				return
+			}
+			if(this.legalSdate.getTime() >= this.legalEdate.getTime()){
+				MessageBox('提示','“法人证件生效日期”必须小于 “法人证件过期日期”！')
+				return
+			}
 			if(!this.imgurl.legalFront && !this.imgbase64.legalFront){
-				MessageBox('提示','您还未上传法人身份证正面照！')
+				MessageBox('提示','请上传身份证正面照片！')
 				return
 			}
 			if(!this.imgurl.legalBack && !this.imgbase64.legalBack){
-				MessageBox('提示','您还未上传法人身份证背面照！')
+				MessageBox('提示','请上传身份证背面照片！')
 				return
 			}
 			if(this.islrz){
@@ -357,7 +369,11 @@ export default {
 	},
 	filters: {
 		formatdate (date) {
-			return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
+			if(!date){
+				return '请选择'
+			}else{
+				return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
+			}
 		}
 	},
 	destroyed () {

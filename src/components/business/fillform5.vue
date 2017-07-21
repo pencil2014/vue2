@@ -170,9 +170,9 @@ export default {
 				let year = new Date().getFullYear() + 10
 				return new Date(year,11,31)
 			})()
-			this.contractSdate = this.getdate(date)
-			this.contractEdate = this.getdate(date)
-			this.signDate = this.getdate(date)
+			// this.contractSdate = this.getdate(date)
+			// this.contractEdate = this.getdate(date)
+			// this.signDate = this.getdate(date)
 			this.date1 = this.getdate(date)
 			this.date2 = this.getdate(date)
 			this.date3 = this.getdate(date)
@@ -231,6 +231,18 @@ export default {
 	    },
 		submit () {
 			if(this.submitbtn){
+				return
+			}
+			if(!this.signDate){
+				MessageBox('提示','请选择协议签署日期！')
+				return
+			}
+			if(!this.contractSdate){
+				MessageBox('提示','请选择协议生效日期！')
+				return
+			}
+			if(!this.contractEdate){
+				MessageBox('提示','请选择协议到期日期！')
 				return
 			}
 			if(this.signDate.getTime() > this.contractSdate.getTime()){
@@ -361,16 +373,19 @@ export default {
 				Indicator.close()
 				if (res.data.code === '10000') {
 					let today = _this.getdate(new Date())
-					let signDate = res.data.data.signDate ? _this.getdate(new Date(res.data.data.signDate)) : today
-					let Sdate = res.data.data.contractSdate ? _this.getdate(new Date(res.data.data.contractSdate)) : today
-					let endDate = res.data.data.contractEdate ? _this.getdate(new Date(res.data.data.contractEdate)) : today
-					_this.signDate = signDate.getTime() > today.getTime() ? today : signDate
-					_this.contractSdate = Sdate.getTime() > today.getTime() ? today : Sdate
-					_this.contractEdate = endDate.getTime() < today.getTime() ? today : endDate
-					_this.date1 = _this.signDate
-					_this.date2 = _this.contractSdate
-					_this.date3 = _this.contractEdate
+					let signDate = res.data.data.signDate ? _this.getdate(new Date(res.data.data.signDate)) : ''
+					let Sdate = res.data.data.contractSdate ? _this.getdate(new Date(res.data.data.contractSdate)) : ''
+					let endDate = res.data.data.contractEdate ? _this.getdate(new Date(res.data.data.contractEdate)) : ''
+					if(signDate && Sdate && endDate){
+						_this.signDate = signDate.getTime() > today.getTime() ? today : signDate
+						_this.contractSdate = Sdate.getTime() > today.getTime() ? today : Sdate
+						_this.contractEdate = endDate.getTime() < today.getTime() ? today : endDate
+						_this.date1 = _this.signDate
+						_this.date2 = _this.contractSdate
+						_this.date3 = _this.contractEdate
+					}
 					_this.imgurl.contractPic = res.data.data.contractPic ? res.data.data.contractPic : ''
+					
 				} else {
 					Toast(res.data.msg)
 				}
@@ -383,7 +398,11 @@ export default {
 	},
 	filters: {
 		formatdate (date) {
-			return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
+			if(!date){
+				return '请选择'
+			}else{
+				return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
+			}
 		}
 	}
 }

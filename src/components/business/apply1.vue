@@ -6,20 +6,20 @@
 			<div class="ex-field">
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">商家名称</label>
-					<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model="shopsEnterName" maxlength="15">
+					<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model.trim="shopsEnterName" maxlength="15">
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系人</label>
-					<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model="shopsLinkman" maxlength="15">
+					<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model.trim="shopsLinkman" maxlength="15">
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系电话</label>
-					<input type="tel" placeholder="请输入联系人手机号" @input="standardPhone('shopsLinkphone')" v-model="shopsLinkphone" maxlength="11">
+					<input type="tel" placeholder="请输入联系人手机号" @input="standardPhone('shopsLinkphone')" v-model.trim="shopsLinkphone" maxlength="11">
 				</div>
 				<div class="ex-field-wrapper" @click="openRangeSlots">
 					<label class="ex-field-title">经营范围</label>
 					<i class="iconfont arrow">&#xe606;</i>
-					<span class="float_right">{{classifyName}}</span>
+					<span class="float_right">{{classifyName || '请选择'}}</span>
 				</div>
 			</div>
 		</div>
@@ -51,18 +51,32 @@
 		<div class="ex-button">
 			<button @click="submit" :class="{disable:disableBtn}">提交</button>
 		</div>
-		<mt-popup
+		<!-- <mt-popup
 			v-model="isOpenRangeSlots"
 			position="bottom"
 			class="picker-range"
 		>
 			<mt-picker :slots="slots" @change="onRangeChange">
-				<!-- <slot>
+				<slot>
 					<div class="ex-range-slots">
 						<span class="left" @click="closeRangeSlots">取消</span>
 						<span class="right" @click="selectRange">确认</span>
 					</div>
-				</slot> -->
+				</slot>
+			</mt-picker>
+		</mt-popup> -->
+		<mt-popup
+			v-model="isOpenRangeSlots"
+			position="bottom"
+			class="picker-range"
+		>
+			<mt-picker :slots="slots" @change="onRangeChange" :showToolbar="true" valueKey="name">
+				<slot>
+					<div class="range-slots">
+						<span class="left" @click="cancle">取消</span>
+						<span class="right" @click="confirm">确认</span>
+					</div>
+				</slot>
 			</mt-picker>
 		</mt-popup>
 	</div>
@@ -86,10 +100,12 @@ export default {
 					defaultIndex: 0
 				}
 			],
-			classifyList: [],
 			isOpenRangeSlots: false,
+			selclassificationId: '',
+			selclassifyName: '',
 			classificationId: '',
 			classifyName: '',
+
 			applyAddress: '',
 			shopsEnterName: '',
 			shopsLinkman: '',
@@ -122,28 +138,33 @@ export default {
 		},
 		toapply2 () {
 			let obj = {
-				defaultIndex: this.slots[0].values.indexOf(this.classifyName),
 				shopsEnterName: this.shopsEnterName,
 				shopsLinkman: this.shopsLinkman,
 				shopsLinkphone: this.shopsLinkphone,
 				facadePhoto: this.facadePhoto,
-				imgbase64: this.imgbase64
+				imgbase64: this.imgbase64,
+				classificationId: this.classificationId
 			}
-			localStorage.setItem('applyData',JSON.stringify(obj))
+			sessionStorage.setItem('applyData',JSON.stringify(obj))
 			this.$router.push('/apply2')
+		},
+		cancle () {
+			this.isOpenRangeSlots = false
+		},
+		confirm () {
+			this.classificationId = this.selclassificationId
+			this.classifyName = this.selclassifyName
+			this.isOpenRangeSlots = false
 		},
 		openRangeSlots () {
 			this.isOpenRangeSlots = true
 		},
-		onRangeChange (picker) {
-			if(this.classifyList.length <= 0){
+		onRangeChange (picker,value) {
+			if(value[0] === undefined || !value[0]){
 				return
 			}
-			this.classifyName = picker.values[0]
-			let selectValue = this.classifyList.filter(function(item){
-				return this.classifyName === item.name
-			}.bind(this))
-			this.classificationId = selectValue[0].id
+			this.selclassificationId = value[0].id
+			this.selclassifyName = value[0].name
 		},
 		getfile () {
 			let _this = this
@@ -164,7 +185,6 @@ export default {
 	       		.catch(function (err) {
 	       			Indicator.close()
 	       			_this.islrz = false
-	      			_this.imgbase64 = ''
 	      			Toast('图片压缩失败')
 	       		})  
 			}
@@ -220,6 +240,7 @@ export default {
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.facadePhoto = res.data.urls[0]
+					_this.imgbase64 = ''
 					_this.shopEnter()
 				} else {
 					_this.isSubmit = false
@@ -269,15 +290,15 @@ export default {
 		},
 		getEnterShop () {
 			let _this = this;
-			let applyData = this.getdata('applyData')
-			let applyAddress = this.getdata('applyAddress')
+			let applyData = JSON.parse(sessionStorage.getItem('applyData'))
+			let applyAddress = JSON.parse(sessionStorage.getItem('applyAddress'))
 			if(!!applyData){
 				this.facadePhoto = applyData.facadePhoto 
 				this.imgbase64 = applyData.imgbase64
 				this.shopsEnterName = applyData.shopsEnterName
 				this.shopsLinkman = applyData.shopsLinkman
 				this.shopsLinkphone = applyData.shopsLinkphone
-				this.slots[0].defaultIndex = applyData.defaultIndex
+				this.classificationId = applyData.classificationId
 			}
 			this.applyAddress = applyAddress ? applyAddress : ''
 			Indicator.open({
@@ -303,9 +324,15 @@ export default {
 						_this.shopsEnterName = res.data.data.shopsEnterName
 						_this.shopsLinkman = res.data.data.shopsLinkman
 						_this.shopsLinkphone = res.data.data.shopsLinkphone
-						_this.slots[0].defaultIndex = _this.slots[0].values.indexOf(res.data.data.classificationName)
 						_this.facadePhoto = res.data.data.facadePhoto
+						_this.classificationId = res.data.data.classificationId
 					}
+					_this.slots[0].values.forEach(function(item,index){
+						if(item.id === _this.classificationId){
+							_this.slots[0].defaultIndex = index
+							_this.classifyName = item.name
+						}
+					}.bind(_this))
 				} else {
 					Toast('获取申请信息失败！')
 				}
@@ -323,12 +350,7 @@ export default {
 			axios.post('shopClassification/list',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.classifyList = res.data.data || []
-					if (_this.classifyList.length > 0) {
-						_this.classifyList.forEach(function(item){
-							_this.slots[0].values.push(item.name)
-						})
-					}
+					_this.slots[0].values.push(...res.data.data)
 					_this.getEnterShop();
 				} else {
 					Toast(res.data.msg)
@@ -346,15 +368,6 @@ export default {
 		},
 		checkPhone (value){
 			return (/1\d{10}/.test(value) ? true : false)
-		},
-		getdata (k) {
-			let v = localStorage.getItem(k);
-            try {
-                v = JSON.parse(v);
-            } catch(e) {
-
-            }
-            return v;
 		},
 		cut (str,repeatStr) {
 			let index = str.indexOf(repeatStr)
@@ -417,4 +430,9 @@ export default {
 .ex-button button{display: block;height: 48px;width: 100%;line-height: 48px;font-size: 1.6rem;color: #fff;background: #047dcb;border-radius: 4px;}
 .ex-button button:active{background: #0470b6;}
 .ex-button button.disable{background: #999 !important;}
+
+.picker-range{width: 100%;}
+.range-slots{display: block;line-height: 40px;font-size: 1.6rem;color: #26a2ff;border-bottom: solid 1px #ebebeb;box-shadow:1px 1px 1px #ebebeb;padding: 0 15px;}
+.range-slots span{width: 25%;display: inline-block;text-align: center;}
+.range-slots span.right{float: right;}
 </style>

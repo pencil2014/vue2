@@ -9,7 +9,7 @@
 				</li>
 				<li class="item">
 					<span>商品价格</span>
-					<input type="tel" placeholder="请输入价格" maxlength="11" v-model.trim="price" @input="currency('price')">
+					<input type="number" placeholder="请输入价格" maxlength="11" v-model.trim="price" @input="currency('price')">
 				</li>
 				<li class="item picture">
 					<p>商品图片</p>

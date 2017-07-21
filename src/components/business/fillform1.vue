@@ -25,7 +25,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*商家名称</span>
-				<input type="text" v-model="shopsName" placeholder="请输入商家名称" maxlength="20">
+				<input type="text" v-model.trim="shopsName" placeholder="请输入商家名称" maxlength="20">
 			</div>
 			<div class="form-item">
 				<span class="name">*所在地区</span>
@@ -43,23 +43,34 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*详细地址</span>
-				<input type="text" v-model="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="60">
+				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="60">
 			</div>
-			<div class="form-item">
+			<div class="form-item" @click="openRangeSlots">
 				<span class="name">*行业分类</span>
-				<div class="select-content">
-					<select v-model="classNo1">
-						<option v-for="(item,index) in mccList1" :value="item.classNo">{{item.className}}</option>
-					</select>
-					<select v-model="classNo2" v-show="selmccList2.length>0">
-						<option v-for="(item,index) in selmccList2" :value="item.classNo">{{item.className}}</option>
-					</select>
-				</div>
+				<span class="text f_right">
+					{{className || '请选择'}}
+					<i class="iconfont" >&#xe606;</i>
+				</span>
 			</div>
 		</div>
 		<div class="save">
 			<input type="button" value="下一步" @click="save">
 		</div>
+
+		<mt-popup
+			v-model="isOpenRangeSlots"
+			position="bottom"
+			class="picker-range"
+		>
+			<mt-picker :slots="slots" @change="onRangeChange" :showToolbar="true" valueKey="className">
+				<slot>
+					<div class="range-slots">
+						<span class="left" @click="cancle">取消</span>
+						<span class="right" @click="confirm">确认</span>
+					</div>
+				</slot>
+			</mt-picker>
+		</mt-popup>
 	</div>
 </template>
 <script>
@@ -93,15 +104,26 @@ export default {
 			shopsName: '',
 			shopsAddress: '',
 
-			mccList1: [],
+			onlinePay: '',
+			status: '',
+			
+			isOpenRangeSlots: false,
+			slots: [
+				{flex: 1,values: [],className: 'slot1',textAlign: 'center'},
+				{divider: true,content: '-',className: 'slot2'}, 
+				{flex: 1,values: [],className: 'slot3',textAlign: 'center'}
+			],
 			mccList2: [],
 			selmccList2:[],
 			classNo1: '',
 			classNo2: '',
+			selclassNo1: '',
 			selclassNo2: '',
-			mccNo: '',
-			onlinePay: '',
-			status: '',
+			selclassName1: '',
+			selclassName2: '',
+			initclassNo2: '',
+			className: ''
+			
 		}
 	},
 	components: {
@@ -142,29 +164,51 @@ export default {
 				this.districtId = ''
 			}
 		},
-		classNo1 () {
-			let arr = this.mccList2.filter(function(item){
-				return item.parentNo === this.classNo1
-			}.bind(this))
-			if(arr.length > 0){
-				this.selmccList2 = arr
-				if(this.selclassNo2){
-					this.classNo2 = this.selclassNo2
-					this.selclassNo2 = ''
-				}else{
-					this.classNo2 = arr[0].classNo
-				}
-			}else{
-				this.selmccList2 = []
-				this.classNo2 = ''
-			}
-		},
 	},
 	created () {
 		this.onlinePay = JSON.parse(sessionStorage.getItem('onlinePay'))
 		this.shopExpandStatus()
 	},
 	methods: {
+		openRangeSlots () {
+			this.isOpenRangeSlots = true
+		},
+		onRangeChange (picker,value) {
+			if(value[0] === undefined || !value[0]){
+				return
+			}
+			this.selclassNo1 = value[0].classNo
+			this.selclassName1 = value[0].className
+			let selmccList2 = this.mccList2.filter(function(item){
+				return item.parentNo === this.selclassNo1
+			}.bind(this))
+			picker.setSlotValues(1, selmccList2)
+			if(value[1] === undefined || !value[1]){
+				return
+			}
+			if(this.initclassNo2){
+				selmccList2.forEach(function(item,index){
+					if(item.classNo === this.initclassNo2){
+						picker.setSlotValue(1,item)
+					}
+				}.bind(this))
+				this.classNo2 = this.initclassNo2
+				this.initclassNo2 = ''
+			}else{
+				this.selclassNo2 = value[1].classNo
+				this.selclassName2 = value[1].className
+			}
+			// console.log(this.classNo1,this.classNo2)
+		},
+		cancle () {
+			this.isOpenRangeSlots = false
+		},
+		confirm () {
+			this.classNo1 = this.selclassNo1
+			this.classNo2 = this.selclassNo2
+			this.className = this.selclassName1 + '/' + this.selclassName2
+			this.isOpenRangeSlots = false
+		},
 		back () {
 			MessageBox({
 				title:'提示',
@@ -219,12 +263,15 @@ export default {
 						if(res.data.data.district){
 							_this.seldistrictId = res.data.data.district*1
 						}
-						if(res.data.data.pclassNo){
-							_this.classNo1 = res.data.data.pclassNo
-							_this.selclassNo2 = res.data.data.mccNo
-						}else{
-							_this.classNo1 = _this.mccList1[0].classNo
-						}
+
+						_this.classNo1 = res.data.data.pclassNo
+						_this.initclassNo2 = res.data.data.mccNo
+						_this.className = res.data.data.pname + '/' + res.data.data.className
+						_this.slots[0].values.forEach(function(item,index){
+							if(item.classNo === _this.classNo1){
+								_this.slots[0].defaultIndex = index
+							}
+						}.bind(_this))
 						
 					}else{
 						_this.getData()
@@ -242,7 +289,6 @@ export default {
 		getData () {
 			if(!this.onlinePay){
 				this.provinceId = this.province[0].id
-				this.classNo1 = this.mccList1[0].classNo
 			}else{
 				this.provinceId = this.onlinePay.provinceId
 				this.selcityId = this.onlinePay.cityId
@@ -250,7 +296,13 @@ export default {
 				this.shopsAddress = this.onlinePay.shopsAddress
 				this.shopsName = this.onlinePay.shopsName
 				this.classNo1 = this.onlinePay.classNo1
-				this.selclassNo2 = this.onlinePay.classNo2
+				this.initclassNo2 = this.onlinePay.classNo2
+				this.className = this.onlinePay.className
+				this.slots[0].values.forEach(function(item,index){
+					if(item.classNo === this.classNo1){
+						this.slots[0].defaultIndex = index
+					}
+				}.bind(this))
 			}
 		},
 		getBaseRegionAll () {
@@ -286,7 +338,7 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.mccList1.push(...res.data.data.parents)
+					_this.slots[0].values.push(...res.data.data.parents)
 					_this.mccList2.push(...res.data.data.childs)
 					if(_this.status === '4'){
 						_this.shopExpandDetail()
@@ -311,7 +363,7 @@ export default {
 				MessageBox('提示','详细地址不能为空！')
 				return
 			}
-			if(!this.classNo2 && !this.classNo1){
+			if(!this.className){
 				MessageBox('提示','行业分类不能为空！')
 				return
 			}
@@ -327,6 +379,7 @@ export default {
 				shopsAddress: this.shopsAddress,
 				classNo1: this.classNo1,
 				classNo2: this.classNo2,
+				className: this.className
 			}
 			Indicator.close()
 			sessionStorage.setItem('onlinePay',JSON.stringify(obj))
@@ -362,6 +415,8 @@ export default {
 .form-wrap .form-item .name{width: 25%;float: left;}
 .form-wrap .form-item input{width: 70%;border: none;}
 .form-wrap .form-item label.classify{color: #aaafb6;float: right;margin-right: 15px;}
+.form-wrap .form-item span.f_right{float: right;padding-right: 15px;vertical-align: middle;color: #aaafb6;}
+
 .select-content{display: table;width: 70%;}
 .select-content select{display: table-cell;margin-right: 1%;height: 2rem;width: 25%;background: #fff;}
 .save{width: 100%;padding: 0 15px;margin-top: 15px;}

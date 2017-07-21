@@ -157,37 +157,36 @@ export default {
 			})).then(res =>{
 				Indicator.close();
 				if(res.data.code === '10000'){
-					if(res.data.data.hasOwnProperty('option')){
-						MessageBox({
-							title:'提示',
-							message: res.data.data.option,
-							showConfirmButton: true,
-							showCancelButton: true,
-						}).then(action => {
-							if(action === "confirm"){
-								window.location.href = res.data.data.payUrl
-							}else{
-								_this.submitbtn = false
-							}
-						})
-						return 
-					}
-					if(_this.userData.money > 3000){
-						MessageBox({
-							title:'提示',
-							message:'您的订单交易金额大于3000，报单需要人工审核',
-							showConfirmButton:true,
-							showCancelButton:true,
-						}).then(action =>{
-							if(action === "confirm"){
-								window.location.href = res.data.data.payUrl
-							}else{
-								_this.submitbtn = false
-							}
-						});
-						return
-					}
-
+					// if(res.data.data.limitStatus === '1'){
+					// 	MessageBox({
+					// 		title:'提示',
+					// 		message: '',
+					// 		showConfirmButton: true,
+					// 		showCancelButton: true,
+					// 	}).then(action => {
+					// 		if(action === "confirm"){
+					// 			window.location.href = res.data.data.payUrl
+					// 		}else{
+					// 			_this.submitbtn = false
+					// 		}
+					// 	})
+					// 	return 
+					// }
+					// if(_this.userData.money > 5){
+					// 	MessageBox({
+					// 		title:'提示',
+					// 		message:'您的订单交易金额大于5，报单需要人工审核',
+					// 		showConfirmButton:true,
+					// 		showCancelButton:true,
+					// 	}).then(action =>{
+					// 		if(action === "confirm"){
+					// 			window.location.href = res.data.data.payUrl
+					// 		}else{
+					// 			_this.submitbtn = false
+					// 		}
+					// 	});
+					// 	return
+					// }
 					window.location.href = res.data.data.payUrl
 				}else{
 					_this.submitbtn = false

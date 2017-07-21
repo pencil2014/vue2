@@ -30,17 +30,17 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*营业执照编号</span>
-				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model="licenseNo" @input="inputIdCard('licenseNo')" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model.trim="licenseNo" maxlength="20"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
-				<span class="name">*营业执照生效时间</span>
+				<span class="name">*营业执照生效日期</span>
 				<span class="text f_right">
 					{{licenseSdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item" @click="openPicker2()">
-				<span class="name">*营业执照过期时间</span>
+				<span class="name">*营业执照过期日期</span>
 				<span class="text f_right">
 					{{licenseEdate | formatdate}}
 					<i class="iconfont" >&#xe606;</i>
@@ -78,31 +78,31 @@
 			<div class="form-item" @click="OpenSlots">
 				<span class="name">*账户类型</span>
 				<span class="text f_right">
-					{{accountVal}}
+					{{accountVal || '请选择'}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item" @click="OpenSlots2">
 				<span class="name">*开户行名称</span>
 				<span class="text f_right">
-					{{bank}}
+					{{bank || '请选择'}}
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
 			<div class="form-item">
 				<span class="name">*支行名称</span>
-				<span class="text"><input type="text" placeholder="请输入支行名称" v-model="branch" @input="standard('branch')" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入支行名称" v-model.trim="branch" maxlength="20"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行户名</span>
-				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model="accountName" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model.trim="accountName" maxlength="20"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行账号</span>
-				<span class="text"><input type="text" placeholder="请输入银行账号" v-model.trim="accountNo" @input="formatcard('accountNo')" maxlength="25"></span>
+				<span class="text"><input type="tel" placeholder="请输入银行账号" v-model.trim="accountNo" @input="formatcard('accountNo')" maxlength="25"></span>
 			</div>
 			<div class="form-item">
-				<div>*整体门面（含招牌）图片</div>
+				<div>*整体门面（含招牌）照片</div>
 				<div>
 					<div class="upladImg-wrap">
 						<img :src="imgurl.frontPic || imgbase64.frontPic" alt="" v-show="imgurl.frontPic || imgbase64.frontPic">
@@ -240,10 +240,10 @@ export default {
 				}
 			],
 			isOpenSlots: false,
-			accountType: accountTypes[0].id,
-			accountVal: accountTypes[0].type,
-			selaccountType: accountTypes[0].id,
-			selaccountVal: accountTypes[0].type,
+			accountType: '',
+			accountVal: '',
+			selaccountType: '',
+			selaccountVal: '',
 
 			slots2: [
 				{
@@ -253,10 +253,10 @@ export default {
 				}
 			],
 			isOpenSlots2: false,
-			selbank: banks[0].name,
-			bank: banks[0].name,
-			selbankId: banks[0].id,
-			bankId: banks[0].id,
+			selbank: '',
+			bank: '',
+			selbankId: '',
+			bankId: '',
 
 			licenseNo: '',
 			imgurl: {
@@ -330,8 +330,8 @@ export default {
 				let year = new Date().getFullYear() + 10
 				return new Date(year,11,31)
 			})()
-			this.licenseSdate = this.getdate(date)
-			this.licenseEdate = this.getdate(date)
+			// this.licenseSdate = this.getdate(date)
+			// this.licenseEdate = this.getdate(date)
 			this.date1 = this.getdate(date)
 			this.date2 = this.getdate(date)
 			this.shopExpandStatus()
@@ -503,6 +503,8 @@ export default {
 			})
 		},
 		submit () {
+			let rule1 = /^[a-zA-Z0-9]+$/g
+			let rule2 = /^[\u4E00-\u9FA5]+$/g
 			if(this.submitbtn){
 				return
 			}
@@ -518,21 +520,40 @@ export default {
 				MessageBox('提示','营业执照编号不能为空！')
 				return
 			}
+			if(!rule1.test(this.licenseNo)){
+				MessageBox('提示','营业执照编号只能输入数字和英文！')
+				return
+			}
+			if(!this.licenseSdate){
+				MessageBox('提示','请选择营业执照生效日期！')
+				return
+			}
+			if(!this.licenseEdate){
+				MessageBox('提示','请选择营业执照过期日期！')
+				return
+			}
 			if(this.licenseSdate.getTime() >= this.licenseEdate.getTime()){
-				MessageBox('提示','“营业执照生效日期”必须小于 “营业执照过期时间”！')
+				MessageBox('提示','“营业执照生效日期”必须小于 “营业执照过期日期”！')
 				return
 			}
-
 			if(!this.imgurl.licensePic && !this.imgbase64.licensePic){
-				MessageBox('提示','您还未上传营业执照照片！')
+				MessageBox('提示','请上传营业执照照片！')
 				return
 			}
-			if(!this.bank){
-				MessageBox('提示','开户行名称不能为空！')
+			if(!this.accountType){
+				MessageBox('提示','请选择账户类型！')
+				return
+			}
+			if(!this.bankId){
+				MessageBox('提示','请选择开户行名称！')
 				return
 			}
 			if(!this.branch){
 				MessageBox('提示','支行名称不能为空！')
+				return
+			}
+			if(!rule2.test(this.branch)){
+				MessageBox('提示','支行名称只能输入中文！')
 				return
 			}
 			if(!this.accountName){
@@ -544,15 +565,15 @@ export default {
 				return
 			}
 			if(!this.imgurl.frontPic && !this.imgbase64.frontPic){
-				MessageBox('提示','您还未上传整体门面（含招牌）图片！')
+				MessageBox('提示','请上传整体门面照片！')
 				return
 			}
 			if(!this.imgurl.counterPic && !this.imgbase64.counterPic){
-				MessageBox('提示','您还未上传收银台照片！')
+				MessageBox('提示','请上传收银台照片！')
 				return
 			}
 			if(!this.imgurl.viewPic && !this.imgbase64.viewPic){
-				MessageBox('提示','您还未上传店内环境照片！')
+				MessageBox('提示','请上传店内环境照片！')
 				return
 			}
 			if(this.islrz){
@@ -660,7 +681,11 @@ export default {
 	},
 	filters: {
 		formatdate (date) {
-			return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
+			if(!date){
+				return '请选择'
+			}else{
+				return date.getFullYear() + '年' + (date.getMonth()+1) + '月' + date.getDate() + '日'
+			}
 		}
 	}
 }

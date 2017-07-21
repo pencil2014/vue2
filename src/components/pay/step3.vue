@@ -12,8 +12,12 @@
 		</div>
 		<div class="top">
 			<img src="../../assets/images/pack.png" alt=""><br>
-			<p>
-				<span class="active">{{money | checknum}}元</span>&nbsp;现金返利已存入您的e享账户
+			<p v-if="!isReview">
+				<span class="active">{{money | checknum}}元</span>&nbsp;
+				现金返利已存入您的e享账户
+			</p>
+			<p v-if="isReview">
+				消费成功，审核后可领取e享现金分享
 			</p>
 		</div>
 		<div class="btn">
@@ -29,7 +33,8 @@ export default {
 	data () {
 		return{
 			money: '0',
-			shopname: ''
+			shopname: '',
+			isReview: false
 		}
 	},
 	computed: { 
@@ -51,6 +56,9 @@ export default {
 			if (res.data.code === '10000') {
 				_this.shopname = res.data.data.shopName
 				_this.money = res.data.data.money
+				if(_this.money > 5 || res.data.data.limitStatus*1 === 1){
+					_this.isReview = true
+				}
 			} else {
 				Toast(res.data.msg)
 			}
@@ -81,7 +89,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;font-size: 1.4rem;}
+.ex-warpper{min-height: 100%;width: 100%;overflow-x: hidden;font-size: 1.6rem;}
 
 .head{background: #fff;padding-left: 10px;margin-bottom: 18px;}
 .head .money{color: rgb(33,42,50);font-size: 3rem;text-align: center;line-height: 30px;border-bottom: solid 1px #ebebeb;padding: 30px 0;}

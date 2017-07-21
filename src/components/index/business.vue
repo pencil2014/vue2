@@ -171,7 +171,7 @@
 					<span>下载APP</span>
 				</a></li>
 				<li v-if="ExpandStatus !== '3'">
-					<a href="javascript:;" @click="toFillForm">
+					<a href="javascript:;" @click='toFillForm'>
 						<img src="../../assets/images/18.png" alt="">
 						<span>二维码收款申请</span>
 					</a>
@@ -401,11 +401,16 @@ export default {
 		// 	}
 		// },
 		goapply () {
+			let path = '/apply'
+			Indicator.open({
+			  text: '正在跳转页面，请稍候...',
+			  spinnerType: 'fading-circle'
+			})
 			if(this.enterstatus !== '3'){
-				this.$router.push('/apply3')
-				return
+				path = '/apply3'
 			}
-			this.$router.push('/apply')
+			Indicator.close()
+			this.$router.push(path)
 		},
 		showcustomer () {
 			this.customerService = true

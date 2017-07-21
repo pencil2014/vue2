@@ -25,7 +25,7 @@
 			</div>
 			<div class="ex-bank-exchange">
 				<label for="exchange">转存金额</label>
-				<input type="text" name="" id="exchange" v-model='exchange' placeholder="请输入金额">
+				<input type="number" name="" id="exchange" v-model='exchange' placeholder="请输入金额">
 			</div>
 			<!-- <div class="ex-bank-card" @click.stop='gobank' v-if='!showAdd'>
 				<label for="">银 行 卡：</label>

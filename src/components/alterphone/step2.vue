@@ -5,7 +5,7 @@
 			<div class="ex-field-wrapper">
 				<label class="ex-field-title">新手机</label>
 				<div class="ex-field-value">
-					<input type="text" maxlength="11" placeholder="请输入新手机号" v-model.trim="phone">
+					<input type="tel" maxlength="11" placeholder="请输入新手机号" v-model.trim="phone">
 				</div>
 			</div>
 			<div class="ex-field-wrapper">

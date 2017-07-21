@@ -6,7 +6,7 @@
 		<div class="ex-contain">
 			<div class="shopName">{{shopname}}</div>
 			<div class="form">
-				<input type="tel" placeholder="请输入金额" v-model.trim="money" @input="currency('money')">
+				<input type="number" placeholder="请输入金额" v-model.trim="money" @input="currency('money')">
 			</div>
 			<div class="form">
 				<div class="tip">输入手机号参与商家分享</div>

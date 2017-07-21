@@ -78,7 +78,7 @@
 			</div>
 			<div class="ex-declare-cnt-item">
 				<span>*消费金额</span>
-				<input type="text" placeholder="请输入消费金额" v-model.trim='consumptionMoney' maxlength="11" @change='formatMoney'>
+				<input type="number" placeholder="请输入消费金额" v-model.trim='consumptionMoney' maxlength="11" @change='formatMoney'>
 			</div>
 			</div>
 		</div>

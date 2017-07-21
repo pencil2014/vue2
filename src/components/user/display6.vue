@@ -9,7 +9,7 @@
 				</li>
 				<li class="item">
 					<span>商品价格</span>
-					<input type="text" placeholder="" maxlength="8" v-model.trim="price" readonly>
+					<input type="number" placeholder="" maxlength="8" v-model.trim="price" readonly>
 				</li>
 				<li class="item picture">
 					<p>商品图片</p>

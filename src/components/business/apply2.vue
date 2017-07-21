@@ -25,7 +25,7 @@
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">详细地址</label>
 					<div class="ex-field-value">
-						<input type="text" v-model="shopsAddress" placeholder="请输入详细街道地址" @input="standard('shopsAddress')" maxlength="60">
+						<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细街道地址" @input="standard('shopsAddress')" maxlength="60">
 					</div>
 				</div>
 			</div>
@@ -203,12 +203,12 @@ export default {
 			obj.cityName = this.cityName
 			obj.countyName = this.countyName
 			obj.shopsAddress = this.shopsAddress
-			localStorage.setItem('applyAddress',JSON.stringify(obj))
+			sessionStorage.setItem('applyAddress',JSON.stringify(obj))
 			this.$router.push('/apply')
 		},
 		getArea (record) {
 			let _this = this
-			let applyAddress = _this.getdata('applyAddress')
+			let applyAddress = JSON.parse(sessionStorage.getItem('applyAddress'))
 			Indicator.open({
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
@@ -220,7 +220,10 @@ export default {
 					_this.province.push(...res.data.data.province)
 					_this.city.push(...res.data.data.city)
 					_this.district.push(...res.data.data.district)
-					//有缓存取缓存
+
+					//默认值
+					_this.provinceId = _this.province[0].id
+					//取缓存
 					if(!!applyAddress){
 						_this.applyAddress = applyAddress
 						_this.provinceId = _this.applyAddress.provinceId
@@ -242,8 +245,6 @@ export default {
 						_this.shopsAddress = record.shopsAddress
 						return
 					}
-					//默认值
-					_this.provinceId = _this.province[0].id
 				} else {
 					Toast('请求数据失败！')
 				}
@@ -278,15 +279,6 @@ export default {
 		},
 		toapply2 () {
 			this.$router.push('/apply2')
-		},
-		getdata (k) {
-			let v = localStorage.getItem(k);
-            try {
-                v = JSON.parse(v);
-            } catch(e) {
-
-            }
-            return v;
 		},
 	},
 }
