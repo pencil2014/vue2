@@ -250,11 +250,11 @@ export default {
 				return
 			}
 			if(!this.legalSdate){
-				MessageBox('提示','请选择法人证件生效日期！')
+				MessageBox('提示','法人证件生效日期不能为空！')
 				return
 			}
 			if(!this.legalEdate){
-				MessageBox('提示','请选择法人证件过期日期！')
+				MessageBox('提示','法人证件过期日期不能为空！')
 				return
 			}
 			if(this.legalSdate.getTime() >= this.legalEdate.getTime()){

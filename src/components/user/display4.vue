@@ -194,7 +194,7 @@ export default {
 .ex-display .wrapper .item-content i{color: #8f959e;font-size: 2rem;}
 .ex-display .bottom{text-align: center;margin-top: 15px;background: #fff;padding: 10px 0;}
 .ex-display .bottom i {color: #999;}
-.ex-display .modal_BJ {background: rgba(0,0,0,0.42);width: 100%;height: 100%;position: fixed;top: 0px;left: 0px;z-index: 999;display: table;}
+.ex-display .modal_BJ {background: rgba(0,0,0,0.42);width: 100%;height: 100%;position: fixed;top: 0px;left: 0px;z-index: 9999;display: table;}
 .ex-display .modal_BJ .modal{display: table-cell;padding: 0 12%;vertical-align: middle;}
 .ex-display .modal_BJ .modal .modal_box{background: #fff;width: 100%;border-radius: 5px;overflow: hidden;text-align: center;padding-top: 15px;}
 .ex-display .modal_BJ .modal .modal_box .title{font-size: 1.6rem;}

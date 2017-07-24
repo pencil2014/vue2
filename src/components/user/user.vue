@@ -161,25 +161,21 @@ export default {
 		 	axios.post('user/personal'),
     	axios.post('message/getCount'),
     	axios.post('verify/checkRealName'),
-    	axios.post('shop/shopExpandStatus')
-		 ]).then(axios.spread(function (personal,count,realname,shopExpandStatus){
+		 ]).then(axios.spread(function (personal,count,realname){
 		 	Indicator.close()
-		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000' && shopExpandStatus.data.code === '10000'){
+		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
 		 		_this.count = count.data.data.count<=99 ? count.data.data.count : '99+';
 		 		_this.checkRealName = realname.data.data
 		 		_this.realType = _this.checkRealName.hasOwnProperty('type') ? _this.checkRealName.type : false
-
 		 		if(_this.userinfo.userCode.slice(0,1) === 'B'){
+		 			_this.shopExpandStatus()
 		 			_this.getenterdetail()
 		 		}
-
-		 		_this.ExpandStatus = shopExpandStatus.data.data.status
 		 	}else{
 		 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
 		 		count.data.code !== '10000' ? Toast(count.data.msg) : ''
 		 		realname.data.code !== '10000' ? Toast(realname.data.msg) : ''
-		 		shopExpandStatus.data.code !== '10000' ? Toast(shopExpandStatus.data.msg) : ''
 		 	}
 		 })).catch(function(){
 		 	Indicator.close()

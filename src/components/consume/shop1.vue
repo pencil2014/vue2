@@ -24,7 +24,7 @@
 		</div>
 		<div class="ex-shop1-cnt">
 			<div class="ex-shop1-cnt-item">
-				<span>*商家名称</span><input type="text" name="" id="" placeholder="请输入商家名称" maxlength="15" v-model.trim='shopName'>
+				<span>*商家名称</span><input type="text" name="" id="" placeholder="请输入商家名称" maxlength="30" v-model.trim='shopName'>
 			</div>
 			<div class="ex-shop1-cnt-item">
 				<span>*联系地址</span>

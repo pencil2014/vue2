@@ -264,8 +264,8 @@ export default {
 				MessageBox('提示', '商品名称不能为空!')
 				return
 			}
-			if (! /^\d+(\.?\d{1,2})?$/.test(this.price)) {
-				MessageBox('提示', '商品价格必须为数字!')
+			if (! /^\d+(\.?\d{1,2})?$/.test(this.price) || this.price*1 === 0) {
+				MessageBox('提示', '商品价格不正确!')
 				return
 			}
 			if (this.imgurl.length === 0) {
@@ -392,7 +392,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-display {width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;padding-bottom: 56px;}
+.ex-display {width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;padding-bottom: 56px;min-height: 100%;}
 .ex-display .wrapper {}
 .ex-display .wrapper .item-content{background: #fff;margin-top: 15px;}
 .ex-display .wrapper .item-content .item {min-height: 30px;line-height: 30px;font-size: 1.4rem;padding: 9px 0;border-bottom: solid 1px #ebebeb;margin-left: 10px;}

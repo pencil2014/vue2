@@ -296,10 +296,6 @@ export default {
 	},
 	methods: {
 		toFillForm () {
-			Indicator.open({
-			  text: '正在跳转页面，请稍候...',
-			  spinnerType: 'fading-circle'
-			})
 			let path = '/fillform/step1'
 			if(this.ExpandStatus === '5'){
 				path = '/fillform/step4'
@@ -307,7 +303,6 @@ export default {
 			if(this.ExpandStatus === '0' || this.ExpandStatus === '4' || this.ExpandStatus === '1' || this.ExpandStatus === '2'){
 				path =  '/fillform/step6' 
 			}
-			Indicator.close()
 			this.$router.push(path)
 		},
 		download () {
@@ -402,14 +397,9 @@ export default {
 		// },
 		goapply () {
 			let path = '/apply'
-			Indicator.open({
-			  text: '正在跳转页面，请稍候...',
-			  spinnerType: 'fading-circle'
-			})
 			if(this.enterstatus !== '3'){
 				path = '/apply3'
 			}
-			Indicator.close()
 			this.$router.push(path)
 		},
 		showcustomer () {

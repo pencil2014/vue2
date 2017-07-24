@@ -1,4 +1,4 @@
-<template>
+	<template>
 	<div class="ex-fillform">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="top-wrap">
@@ -25,7 +25,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*商家名称</span>
-				<input type="text" v-model.trim="shopsName" placeholder="请输入商家名称" maxlength="20">
+				<input type="text" v-model.trim="shopsName" placeholder="请输入商家名称" maxlength="30">
 			</div>
 			<div class="form-item">
 				<span class="name">*所在地区</span>
@@ -198,7 +198,6 @@ export default {
 				this.selclassNo2 = value[1].classNo
 				this.selclassName2 = value[1].className
 			}
-			// console.log(this.classNo1,this.classNo2)
 		},
 		cancle () {
 			this.isOpenRangeSlots = false
@@ -355,8 +354,13 @@ export default {
 			})
 		},
 		save () {
+			let rule1 = /^[^a-zA-Z0-9]+$/g
 			if(!this.shopsName){
 				MessageBox('提示','商家名称不能为空！')
+				return
+			}
+			if(!rule1.test(this.shopsName)){
+				MessageBox('提示','商家名称不能含有数字和英文！')
 				return
 			}
 			if(!this.shopsAddress){

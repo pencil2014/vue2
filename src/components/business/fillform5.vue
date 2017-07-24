@@ -234,15 +234,15 @@ export default {
 				return
 			}
 			if(!this.signDate){
-				MessageBox('提示','请选择协议签署日期！')
+				MessageBox('提示','协议签署日期不能为空！')
 				return
 			}
 			if(!this.contractSdate){
-				MessageBox('提示','请选择协议生效日期！')
+				MessageBox('提示','协议生效日期不能为空！')
 				return
 			}
 			if(!this.contractEdate){
-				MessageBox('提示','请选择协议到期日期！')
+				MessageBox('提示','协议到期日期不能为空！')
 				return
 			}
 			if(this.signDate.getTime() > this.contractSdate.getTime()){

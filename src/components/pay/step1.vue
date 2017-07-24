@@ -137,6 +137,7 @@ export default {
 		submit () {
 			let _this = this;
 			let rule1 = /^1\d{10}$/;
+			let rule2 = /^\d+(\.?\d{1,2})?$/
 			if(_this.submitbtn){
 				return
 			}
@@ -144,8 +145,12 @@ export default {
 				MessageBox('提示','二维码已失效！')
 				return 
 			}
-			if(!this.money){
+			if(!rule2.test(this.money) || this.money*1 === 0){
 				MessageBox('提示','请输入正确的金额！')
+				return
+			}
+			if(this.money > 50000){
+				MessageBox('提示','单笔不能超过50000！')
 				return
 			}
 			if(!this.phone){

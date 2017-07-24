@@ -525,11 +525,11 @@ export default {
 				return
 			}
 			if(!this.licenseSdate){
-				MessageBox('提示','请选择营业执照生效日期！')
+				MessageBox('提示','营业执照生效日期不能为空！')
 				return
 			}
 			if(!this.licenseEdate){
-				MessageBox('提示','请选择营业执照过期日期！')
+				MessageBox('提示','营业执照过期日期不能为空！')
 				return
 			}
 			if(this.licenseSdate.getTime() >= this.licenseEdate.getTime()){
@@ -541,11 +541,11 @@ export default {
 				return
 			}
 			if(!this.accountType){
-				MessageBox('提示','请选择账户类型！')
+				MessageBox('提示','账户类型不能为空！')
 				return
 			}
 			if(!this.bankId){
-				MessageBox('提示','请选择开户行名称！')
+				MessageBox('提示','开户行名称不能为空！')
 				return
 			}
 			if(!this.branch){
