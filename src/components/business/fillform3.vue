@@ -21,7 +21,7 @@
 				</dl>
 				<dl class="four">
 					<dt>4</dt>
-					<dd>合同打印上传</dd>
+					<dd>协议打印上传</dd>
 				</dl>
 				<span><em style="width:66.66%;"></em></span>
 			</div>
@@ -91,11 +91,11 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*支行名称</span>
-				<span class="text"><input type="text" placeholder="请输入支行名称" v-model.trim="branch" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入支行名称" v-model.trim="branch" maxlength="40"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行户名</span>
-				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model.trim="accountName" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model.trim="accountName" maxlength="40"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行账号</span>
@@ -210,7 +210,7 @@
 <script>
 import axios from "axios"
 import qs from "qs"
-import { Toast, MessageBox , Indicator , DatetimePicker , Picker , Popup} from 'mint-ui'
+import { Toast, MessageBox , Indicator , DatetimePicker , Picker , Popup } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 import lrz from 'lrz'
 import banks from '../../api/banks'
@@ -670,7 +670,7 @@ export default {
 		},
 		formatcard (id) {
 		 	let value = this[id]
-		 	this[id] = value.replace(/[^0-9]|\s/g,'').replace(/(.{4})/g, "$1 ")
+		 	this[id] = value.replace(/[^0-9]|\s/g,'').replace(/(.{4})/g, "$1 ").replace(/(^\s*)|(\s*$)/g,'')
 		},
 		inputIdCard(value){
 			this[value] = this[value].replace(/[^a-zA-Z0-9]|\s/g,'')

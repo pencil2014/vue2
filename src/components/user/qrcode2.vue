@@ -9,7 +9,7 @@
 		<div class="qrcode-content">
 			<div class="tip1">扫二维码向我付钱</div>
 			<div class="code">
-				<div id="qrcode"></div>
+				<vue-qrcode :value="link" :options="{ size: 230 }"></vue-qrcode>
 			</div>
 			<div class="tip2">商家可以保存二维码图片，并打印作为支付台码</div>
 		</div>
@@ -20,8 +20,8 @@
 import axios from "axios"
 import qs from "qs"
 import { MessageBox,Indicator,Toast } from 'mint-ui'
-import Qrcode from '../../assets/lib/qrcode.js'
 import HeadTitle from '../common/title.vue'
+import VueQrcode from 'vue-qrcode'
 export default {
 	data(){
 		return{
@@ -41,14 +41,8 @@ export default {
 	        ExpandStatus: '',
 		}
 	},
-	computed:{
-
-	},
 	created () {
 		 this.makeqrcode()
-	},
-	mounted () {
-		
 	},
 	methods: {
 		back () {
@@ -77,13 +71,6 @@ export default {
 							return
 						}
 				 		_this.link = window.location.origin + '/#/pay?userId=' + personal.data.data.userId + '&shopname=' + encodeURIComponent(shop.data.data.shopsName)
-
-				 		let qrcode = new Qrcode('qrcode', {
-							text:  _this.link,
-							width : 230,	
-							height : 230,
-							colorDark: '#123'
-						});
 			 	}else{
 			 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
 			 		shop.data.code !== '10000' ? Toast(shop.data.msg) : ''
@@ -97,7 +84,7 @@ export default {
 	},
 	components: {
 		HeadTitle,
-		Qrcode
+		VueQrcode
 	},
 }
 </script>

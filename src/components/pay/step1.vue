@@ -132,7 +132,7 @@ export default {
 		currency (id) {
 			let value = this[id];
 			value = value.replace(/^([0-9]{1,})(\.+)$/,'$1.').replace(/^([0-9]{1,})(\.[0-9]{1,2})(.*)$/,'$1$2')
-			this[id] = value.slice(0,9)
+			this[id] = value.slice(0,8)
 		},
 		submit () {
 			let _this = this;
@@ -150,7 +150,7 @@ export default {
 				return
 			}
 			if(this.money > 50000){
-				MessageBox('提示','单笔不能超过50000！')
+				MessageBox('提示','单笔金额不能超过50000！')
 				return
 			}
 			if(!this.phone){

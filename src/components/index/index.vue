@@ -88,8 +88,8 @@
 					</tr>
 					<tr>
 						<td>
-							<b>昨日交易总额</b>
-							<span>{{sysData.yesterdayMoney | checknum}}（元）</span>
+							<b>应分享单元值</b>
+							<span>{{sysData.yesterdayMoney | checknum}}</span>
 						</td>
 						<td>
 							<b>昨日分享平均值</b>

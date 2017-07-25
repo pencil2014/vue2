@@ -17,7 +17,7 @@
 				</dl>
 				<dl class="four">
 					<dt>4</dt>
-					<dd>合同打印上传</dd>
+					<dd>协议打印上传</dd>
 				</dl>
 				<span><em></em></span>
 			</div>
@@ -43,7 +43,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*详细地址</span>
-				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="60">
+				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="40">
 			</div>
 			<div class="form-item" @click="openRangeSlots">
 				<span class="name">*行业分类</span>
@@ -354,13 +354,13 @@ export default {
 			})
 		},
 		save () {
-			let rule1 = /^[^a-zA-Z0-9]+$/g
+			let rule1 = /^[\u4E00-\u9FA5\(\)\）\（]+$/g
 			if(!this.shopsName){
 				MessageBox('提示','商家名称不能为空！')
 				return
 			}
 			if(!rule1.test(this.shopsName)){
-				MessageBox('提示','商家名称不能含有数字和英文！')
+				MessageBox('提示','商家名称只能输入中文和括号！')
 				return
 			}
 			if(!this.shopsAddress){

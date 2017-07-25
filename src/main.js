@@ -47,7 +47,7 @@ new Vue({
 Vue.prototype.$bus = new Vue()  // this.$bus调用
 
 // 配置全局ajax请求域名
-axios.defaults.baseURL = 'https://exsd-test-pay-new.exgj.com.cn/exsd-web/'  // 'https://exsd-test-new.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'https://exsd-test-pay-new.exgj.com.cn/exsd-web/' 'http://www.exgj.com.cn/exsd-web/'
+axios.defaults.baseURL = 'http://192.168.1.201:8080/exsd-web/'  // 'https://exsd-test-new.exgj.com.cn/exsd-web/' 'http://192.168.1.201:8080/exsd-web/' 'https://exsd-test-pay-new.exgj.com.cn/exsd-web/' 'http://www.exgj.com.cn/exsd-web/'
 
 if (!!window.localStorage.getItem('token')) {
 	axios.defaults.headers.common['authorization'] = 'Bearer ' + window.localStorage.getItem('token')

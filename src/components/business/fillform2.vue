@@ -19,7 +19,7 @@
 				</dl>
 				<dl class="four">
 					<dt>4</dt>
-					<dd>合同打印上传</dd>
+					<dd>协议打印上传</dd>
 				</dl>
 				<span><em style="width:33.5%;"></em></span>
 			</div>
@@ -178,7 +178,7 @@ export default {
 			this.end1 = this.getdate(date)
 			this.start2 = this.getdate(date)
 			this.end2 = new Date(2099,11,31)
-			// this.legalSdate = this.getdate(date)
+			//this.legalSdate = this.getdate(date)
 			//this.legalEdate = this.getdate(date)
 			this.date1 = this.getdate(date)
 			this.date2 = this.getdate(date)

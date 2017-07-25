@@ -84,8 +84,8 @@
 					</tr>
 					<tr>
 						<td>
-							<b>昨日交易总额</b>
-							<span>{{sysData.yesterdayMoney | checknum}}（元）</span>
+							<b>应分享单元值</b>
+							<span>{{sysData.yesterdayMoney | checknum}}</span>
 						</td>
 						<td>
 							<b>昨日分享平均值</b>
@@ -170,7 +170,7 @@
 					<img src="../../assets/images/17.png" alt="">
 					<span>下载APP</span>
 				</a></li>
-				<li v-if="ExpandStatus !== '3'">
+				<!-- <li v-if="ExpandStatus !== '3'">
 					<a href="javascript:;" @click='toFillForm'>
 						<img src="../../assets/images/18.png" alt="">
 						<span>二维码收款申请</span>
@@ -181,7 +181,7 @@
 						<img src="../../assets/images/18.png" alt="">
 						<span>商家收款二维码</span>
 					</router-link>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 		<div class="ex-index-service" @click='showcustomer'><img src="../../assets/images/16.png" alt=""></div>
@@ -295,16 +295,16 @@ export default {
 		exNotice
 	},
 	methods: {
-		toFillForm () {
-			let path = '/fillform/step1'
-			if(this.ExpandStatus === '5'){
-				path = '/fillform/step4'
-			}
-			if(this.ExpandStatus === '0' || this.ExpandStatus === '4' || this.ExpandStatus === '1' || this.ExpandStatus === '2'){
-				path =  '/fillform/step6' 
-			}
-			this.$router.push(path)
-		},
+		// toFillForm () {
+		// 	let path = '/fillform/step1'
+		// 	if(this.ExpandStatus === '5'){
+		// 		path = '/fillform/step4'
+		// 	}
+		// 	if(this.ExpandStatus === '0' || this.ExpandStatus === '4' || this.ExpandStatus === '1' || this.ExpandStatus === '2'){
+		// 		path =  '/fillform/step6' 
+		// 	}
+		// 	this.$router.push(path)
+		// },
 		download () {
 			let ua = navigator.userAgent.toLowerCase()
 			this.isAndroid = ua.indexOf('android') > -1 || ua.indexOf('adr') > -1
@@ -492,25 +492,25 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		shopExpandStatus () {
-			let _this = this;
-			Indicator.open({
-			  text: '数据加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			axios.post('shop/shopExpandStatus',qs.stringify({}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-				 	_this.ExpandStatus = res.data.data.status
-				} else {
-					Toast(res.data.msg)
-				}
-			}).catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		}
+		// shopExpandStatus () {
+		// 	let _this = this;
+		// 	Indicator.open({
+		// 	  text: '数据加载中...',
+		// 	  spinnerType: 'fading-circle'
+		// 	})
+		// 	axios.post('shop/shopExpandStatus',qs.stringify({}))
+		// 	.then(function(res){
+		// 		Indicator.close()
+		// 		if (res.data.code === '10000') {
+		// 		 	_this.ExpandStatus = res.data.data.status
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// }
 	},
 	beforeRouteLeave (to,from,next) {
 		 window.localStorage.setItem('integralPath', '/business')
@@ -575,7 +575,7 @@ export default {
 		this.getexamine()
 		this.getenterdetail()
 		this.getandroidUrl()
-		this.shopExpandStatus()
+		// this.shopExpandStatus()
 		// if (!window.localStorage.getItem('batchNotice')) {
 		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
 		// 	window.localStorage.setItem('batchNotice', 'true')

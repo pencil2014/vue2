@@ -80,16 +80,16 @@
 						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
 						<label for="">{{realnamestatus}}</label>
 					</li>
-					<router-link to="/qrcode" tag="li" v-if="!isShop">
+					<router-link to="/qrcode" tag="li">
 						<img src="../../assets/images/QR_code.png" alt="">
 						<span>我的二维码</span>
 						<i class="iconfont" >&#xe606;</i>
 					</router-link>
-					<router-link to="/qrcode2" tag="li" v-if="isShop && ExpandStatus === '3'">
+					<!-- <router-link to="/qrcode2" tag="li" v-if="isShop && ExpandStatus === '3'">
 						<img src="../../assets/images/pay.png" alt="">
 						<span>商家收款二维码</span>
 						<i class="iconfont">&#xe606;</i>
-					</router-link>
+					</router-link> -->
 				</ul>
 			</div>
 			<div class="ex-user-item">
@@ -159,8 +159,8 @@ export default {
 		})
 		 axios.all([
 		 	axios.post('user/personal'),
-    	axios.post('message/getCount'),
-    	axios.post('verify/checkRealName'),
+    		axios.post('message/getCount'),
+    		axios.post('verify/checkRealName'),
 		 ]).then(axios.spread(function (personal,count,realname){
 		 	Indicator.close()
 		 	if(personal.data.code === '10000' && count.data.code === '10000' && realname.data.code === '10000'){
@@ -169,7 +169,7 @@ export default {
 		 		_this.checkRealName = realname.data.data
 		 		_this.realType = _this.checkRealName.hasOwnProperty('type') ? _this.checkRealName.type : false
 		 		if(_this.userinfo.userCode.slice(0,1) === 'B'){
-		 			_this.shopExpandStatus()
+		 			//_this.shopExpandStatus()
 		 			_this.getenterdetail()
 		 		}
 		 	}else{
@@ -224,7 +224,7 @@ export default {
 				return
 			}
 			this.$router.push('/display1')
-		},	
+		},
 		getenterdetail () {
 			let _this = this;
 			axios.post('shop/enterDetail',qs.stringify({}))
@@ -238,25 +238,25 @@ export default {
 					Toast('连接失败，请检查网络是否正常!')
 			})
 		},
-		shopExpandStatus () {
-			let _this = this;
-			Indicator.open({
-			  text: '数据加载中...',
-			  spinnerType: 'fading-circle'
-			})
-			axios.post('shop/shopExpandStatus',qs.stringify({}))
-			.then(function(res){
-				Indicator.close()
-				if (res.data.code === '10000') {
-				 	_this.ExpandStatus = res.data.data.status
-				} else {
-					Toast(res.data.msg)
-				}
-			}).catch(function(){
-				Indicator.close()
-				Toast('连接失败，请检查网络是否正常!')
-			})
-		}
+		// shopExpandStatus () {
+		// 	let _this = this;
+		// 	Indicator.open({
+		// 	  text: '数据加载中...',
+		// 	  spinnerType: 'fading-circle'
+		// 	})
+		// 	axios.post('shop/shopExpandStatus',qs.stringify({}))
+		// 	.then(function(res){
+		// 		Indicator.close()
+		// 		if (res.data.code === '10000') {
+		// 		 	_this.ExpandStatus = res.data.data.status
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 		Indicator.close()
+		// 		Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// }
 	},
 	beforeRouteLeave (to,from,next) {
 		let path = window.localStorage.getItem('integralPath')
