@@ -62,7 +62,7 @@
 							上传正面
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.legalFront || imgbase64.legalFront">
-						<input type="file" name="" class="file-prew" id="legalFront" @change="getfile('legalFront')" />
+						<input type="file"  accept="image/*" name="" class="file-prew" id="legalFront" @change="getfile('legalFront')" />
 					</div>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 							上传反面
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.legalBack || imgbase64.legalBack">
-						<input type="file" name="" class="file-prew" id="legalBack" @change="getfile('legalBack')" />
+						<input type="file"  accept="image/*" name="" class="file-prew" id="legalBack" @change="getfile('legalBack')" />
 					</div>
 					
 				</div>

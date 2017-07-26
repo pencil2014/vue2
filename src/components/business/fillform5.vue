@@ -45,7 +45,7 @@
 					</div>
 					<div class="example">
 						范本:
-						<img :src="example"  v-preview="example" preview-nav-enable="false">
+						<img src="static/modal.jpg"  v-preview="'static/modal.jpg'" preview-nav-enable="false">
 					</div>
 				</div>
 			</div>
@@ -102,7 +102,6 @@ import { Toast, MessageBox , Indicator , DatetimePicker } from 'mint-ui'
 import HeadTitle from '../common/title.vue'
 import lrz from 'lrz'
 import imgPreview from '../common/image'
-import example from '../../assets/images/modal.jpg'
 export default {
 	data(){
 		return{
@@ -128,7 +127,6 @@ export default {
 			date3: '',
 			submitbtn: false,
 			islrz: false,
-			example: example
 		}
 	},
 	components: {
@@ -162,13 +160,17 @@ export default {
 			let date = new Date()
 			this.start1 = (function(){
 				let year = new Date().getFullYear() - 10
-				return new Date(year,0,1)
+				let month = new Date().getMonth()
+				let day = new Date().getDate()
+				return new Date(year,month,day)
 			})()
 			this.end1 = this.getdate(date)
 			this.start2 = this.getdate(date)
 			this.end2 = (function(){
 				let year = new Date().getFullYear() + 10
-				return new Date(year,11,31)
+				let month = new Date().getMonth()
+				let day = new Date().getDate()
+				return new Date(year,month,day)
 			})()
 			// this.contractSdate = this.getdate(date)
 			// this.contractEdate = this.getdate(date)

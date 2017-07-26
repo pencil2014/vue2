@@ -230,7 +230,7 @@ export default {
 			})
 			axios.post('shop/shopExpandStatus',qs.stringify({}))
 			.then(function(res){
-				Indicator.close()
+				// Indicator.close()
 				if (res.data.code === '10000') {
 					_this.status = res.data.data.status
 					_this.getBaseRegionAll()
@@ -312,7 +312,7 @@ export default {
 			})
 			axios.post('getBaseRegionAll',qs.stringify({}))
 			.then(function(res){
-				Indicator.close()
+				// Indicator.close()
 				if (res.data.code === '10000') {
 					_this.province.push(...res.data.data.province)
 					_this.city.push(...res.data.data.city)

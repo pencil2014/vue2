@@ -90,6 +90,7 @@ export default {
 		}
 	},
 	created () {
+
 	},
 	methods: {
 		back () {
@@ -100,6 +101,13 @@ export default {
 		},
 		save () {
 			this.$router.push('/fillform/step5')
+		}
+	},
+	beforeRouteLeave (to,from,next) {
+		if(to.path !== '/fillform/step5'  && to.path !== '/business'){
+			next('/business')
+		}else{
+			next()
 		}
 	},
 }

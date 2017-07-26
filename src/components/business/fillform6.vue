@@ -84,6 +84,13 @@ export default {
 			this.$router.push('/fillform/step1');
 		}
 	},
+	beforeRouteLeave (to,from,next) {
+		if(to.path !== '/fillform/step1'  && to.path !== '/business'){
+			next('/business')
+		}else{
+			next()
+		}
+	},
 }
 </script>
 <style scoped>

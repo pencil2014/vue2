@@ -6,10 +6,10 @@
 				<span>商家名称</span>
 				<span class="float_right">{{examineData.shopsName}}</span>
 			</div>
-			<div class="ex-field">
+			<!-- <div class="ex-field">
 				<span>所属行业</span>
 				<span class="float_right">{{examineData.classificationName}}</span>
-			</div>
+			</div> -->
 			<div class="ex-field">
 				<span>联系地址</span>
 				<span class="float_right">{{examineData.shopsAddress2}}</span>

@@ -57,7 +57,7 @@
 							上传照片
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.licensePic || imgbase64.licensePic">
-						<input type="file" name="" class="file-prew" id="licensePic" @change="getfile('licensePic')" />
+						<input type="file"  accept="image/*" name="" class="file-prew" id="licensePic" @change="getfile('licensePic')" />
 					</div>
 				</div>
 			</div>
@@ -112,7 +112,7 @@
 							上传照片
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.frontPic || imgbase64.frontPic">
-						<input type="file" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')" />
+						<input type="file"  accept="image/*" name="" class="file-prew" id="frontPic" @change="getfile('frontPic')" />
 					</div>
 				</div>
 			</div>
@@ -127,7 +127,7 @@
 							上传照片
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.counterPic || imgbase64.counterPic">
-						<input type="file" name="" class="file-prew" id="counterPic" @change="getfile('counterPic')" />
+						<input type="file"  accept="image/*" name="" class="file-prew" id="counterPic" @change="getfile('counterPic')" />
 					</div>
 				</div>
 			</div>
@@ -142,7 +142,7 @@
 							上传照片
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.viewPic || imgbase64.viewPic">
-						<input type="file" name="" class="file-prew" id="viewPic" @change="getfile('viewPic')" />
+						<input type="file"  accept="image/*" name="" class="file-prew" id="viewPic" @change="getfile('viewPic')" />
 					</div>
 				</div>
 			</div>
@@ -320,16 +320,22 @@ export default {
 		},
 		setdate () {
 			let date = new Date()
-			this.start1 = (function(){
-				let year = new Date().getFullYear() - 10
-				return new Date(year,0,1)
-			})()
+			// this.start1 = (function(){
+			// 	let year = new Date().getFullYear() - 10
+			// 	let month = new Date().getMonth()
+			// 	let day = new Date().getDate()
+			// 	return new Date(year,month,day)
+			// })()
+			this.start1 = new Date(1900,0,1)
 			this.end1 = this.getdate(date)
 			this.start2 = this.getdate(date)
-			this.end2 = (function(){
-				let year = new Date().getFullYear() + 10
-				return new Date(year,11,31)
-			})()
+			this.end2 = new Date(2100,11,31)
+			// this.end2 = (function(){
+			// 	let year = new Date().getFullYear() + 10
+			// 	let month = new Date().getMonth()
+			// 	let day = new Date().getDate()
+			// 	return new Date(year,month,day)
+			// })()
 			// this.licenseSdate = this.getdate(date)
 			// this.licenseEdate = this.getdate(date)
 			this.date1 = this.getdate(date)
