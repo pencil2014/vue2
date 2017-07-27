@@ -374,19 +374,21 @@ export default {
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					let today = _this.getdate(new Date())
-					let signDate = res.data.data.signDate ? _this.getdate(new Date(res.data.data.signDate)) : ''
-					let Sdate = res.data.data.contractSdate ? _this.getdate(new Date(res.data.data.contractSdate)) : ''
-					let endDate = res.data.data.contractEdate ? _this.getdate(new Date(res.data.data.contractEdate)) : ''
-					if(signDate && Sdate && endDate){
-						_this.signDate = signDate.getTime() > today.getTime() ? today : signDate
-						_this.contractSdate = Sdate.getTime() > today.getTime() ? today : Sdate
-						_this.contractEdate = endDate.getTime() < today.getTime() ? today : endDate
-						_this.date1 = _this.signDate
-						_this.date2 = _this.contractSdate
-						_this.date3 = _this.contractEdate
+					if(res.data.hasOwnProperty('data')){
+						let today = _this.getdate(new Date())
+						let signDate = res.data.data.signDate ? _this.getdate(new Date(res.data.data.signDate)) : ''
+						let Sdate = res.data.data.contractSdate ? _this.getdate(new Date(res.data.data.contractSdate)) : ''
+						let endDate = res.data.data.contractEdate ? _this.getdate(new Date(res.data.data.contractEdate)) : ''
+						if(signDate && Sdate && endDate){
+							_this.signDate = signDate.getTime() > today.getTime() ? today : signDate
+							_this.contractSdate = Sdate.getTime() > today.getTime() ? today : Sdate
+							_this.contractEdate = endDate.getTime() < today.getTime() ? today : endDate
+							_this.date1 = _this.signDate
+							_this.date2 = _this.contractSdate
+							_this.date3 = _this.contractEdate
+						}
+						_this.imgurl.contractPic = res.data.data.contractPic ? res.data.data.contractPic : ''
 					}
-					_this.imgurl.contractPic = res.data.data.contractPic ? res.data.data.contractPic : ''
 					
 				} else {
 					Toast(res.data.msg)

@@ -17,11 +17,11 @@
 				<b>2</b>
 				<span>消费凭证</span>
 			</div>
-			<div class="ex-declare-progress-item">
+			<div class="ex-declare-progress-item active">
 				<b>3</b>
 				<span>汇款凭证</span>
 			</div>
-			<div class="ex-declare-progress-item">
+			<div class="ex-declare-progress-item active">
 				<b>4</b>
 				<span>审核结果</span>
 			</div>

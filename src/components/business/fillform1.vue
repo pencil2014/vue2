@@ -71,6 +71,28 @@
 				</slot>
 			</mt-picker>
 		</mt-popup>
+
+	    <div class="ex-noticeBJ" v-show="isOpenNotice && status === '6'" >
+	        <div class="ex-notice">
+	            <div class="content">
+	                <div class="contentBOX">
+	                    <p class="title">商家二维码收款功能上线公告</p>
+	                    <div class="info-text">
+	                        <p>尊敬的e享时代用户：</p>
+	                        <p class="text">为了保障平台的稳定性，以及方便e享商家收款，平台新版本推出了商家二维码收款功能，商家可以通过让消费者扫描二维码进行收款，避免了手动报单的繁琐操作以及缩短了报单审核时间。</p>
+	                        <p class="text">目前该功能处于内测阶段，欢迎商家通过“二维码收款申请”功能提交申请，平台会邀请部分商家进行测试。</p><br>
+	                        <p class="f_right">
+	                        	深圳易享时代运营服务有限公司 <br>
+								二〇一七年七月三十一日 
+	                        </p>
+	                    </div>
+	                </div>
+	                <div class="operate" @click="closeNotice">
+	                	确认
+	                </div>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 </template>
 <script>
@@ -122,7 +144,9 @@ export default {
 			selclassName1: '',
 			selclassName2: '',
 			initclassNo2: '',
-			className: ''
+			className: '',
+
+			isOpenNotice: true
 			
 		}
 	},
@@ -170,6 +194,9 @@ export default {
 		this.shopExpandStatus()
 	},
 	methods: {
+		closeNotice () {
+			this.isOpenNotice = false
+		},
 		openRangeSlots () {
 			this.isOpenRangeSlots = true
 		},
@@ -431,5 +458,17 @@ export default {
 .range-slots{display: block;line-height: 40px;font-size: 1.6rem;color: #26a2ff;border-bottom: solid 1px #ebebeb;box-shadow:1px 1px 1px #ebebeb;padding: 0 15px;}
 .range-slots span{width: 25%;display: inline-block;text-align: center;}
 .range-slots span.right{float: right;}
+
+.ex-noticeBJ{width: 100%;height: 100%;background: rgba(0,0,0,0.42);position: fixed;z-index: 999;top: 0;left: 0;display: table;}
+.ex-notice{display: table-cell;vertical-align: middle;padding: 0 10%;}
+.ex-notice .title{font-size: 1.6rem;text-align: center;padding: 15px 0; margin: 0;font-weight: bold;}
+.ex-notice .content{background: #fff;border-radius: 5px;overflow: hidden;}
+.ex-notice .content .text{line-height: 25px;text-indent: 2em;max-height: 250px;overflow: auto;}
+.ex-notice .content .info-text{height: 22rem;overflow: auto;padding-bottom: 15px; line-height: 1.5}
+.ex-notice .content .info-text a{ color: #047dcb; }
+.ex-notice .content .f_right{text-align: right;}
+.ex-notice .contentBOX{font-size: 1.4rem;padding:0 15px;word-break:break-all;}
+.ex-notice .operate{text-align: center;border-top: 1px solid #e5e5e5;height: 52px;padding: 0;line-height: 52px;font-size: 1.6rem;color: #047dcb;}
+.ex-notice .operate:active{background: #ebebeb; }
 </style>
 
