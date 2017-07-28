@@ -30,7 +30,7 @@
 			<div class="ex-declare-result" v-if="check === 1">
 		  	<i class="iconfont suc">&#xe609;</i>
 		  	<h3>审核中...</h3>
-		  	<p>您提交的资料正在审核中...</p>
+		  	<p>您提交的资料正在审核中，请稍后...</p>
 		  </div>
 
 		  <div class="ex-declare-result" v-if="check === 2">
