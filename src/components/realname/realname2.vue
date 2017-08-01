@@ -240,6 +240,9 @@ export default {
 			// if(this.disable){
 			// 	return;
 			// }
+			if(this.submitBtn){
+				return 
+			}
 			if(!this.legalName){
 				MessageBox('提示','法人姓名不能为空！')
 				return
@@ -268,10 +271,6 @@ export default {
 				MessageBox('提示','图片上传中，请稍候重试！')
 				return
 			}
-			if(this.submitBtn){
-				return 
-			}
-			this.submitBtn = true;
 			Indicator.open({
 			  text: '图片上传中...',
 			  spinnerType: 'fading-circle'

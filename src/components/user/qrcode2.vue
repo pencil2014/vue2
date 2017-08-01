@@ -9,7 +9,7 @@
 		<div class="qrcode-content">
 			<div class="tip1">扫二维码向我付钱</div>
 			<div class="code">
-				<vue-qrcode :value="link" :options="{ size: 230 }"></vue-qrcode>
+				<vue-qrcode :value="link" :options="{ size: 230 }" tag="img"></vue-qrcode>
 			</div>
 			<div class="tip2">商家可以保存二维码图片，并打印作为支付台码</div>
 		</div>
