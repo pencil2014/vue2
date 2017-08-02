@@ -93,7 +93,7 @@ const User = resolve => require(['../components/user/user'], resolve)
 const Notice1 = resolve => require(['../components/notice/step1'], resolve)
 const Notice2 = resolve => require(['../components/notice/step2'], resolve)
 const Twopassword = resolve => require(['../components/twopassword/twopassword'], resolve)
-const QRcode2 = resolve => require(['../components/user/qrcode2'], resolve)
+// const QRcode2 = resolve => require(['../components/user/qrcode2'], resolve)
 const Businessinfo = resolve => require(['../components/user/businessinfo'], resolve)
 const Pay = resolve => require(['../components/pay/step1'], resolve)
 const Pay2 = resolve => require(['../components/pay/step2'], resolve)
@@ -110,12 +110,12 @@ const Apply1 = resolve => require(['../components/business/apply1'], resolve)
 const Apply2 = resolve => require(['../components/business/apply2'], resolve)
 const Apply3 = resolve => require(['../components/business/apply3'], resolve)
 
-const Fillform1 = resolve => require(['../components/business/fillform1'], resolve)
-const Fillform2 = resolve => require(['../components/business/fillform2'], resolve)
-const Fillform3 = resolve => require(['../components/business/fillform3'], resolve)
-const Fillform4 = resolve => require(['../components/business/fillform4'], resolve)
-const Fillform5 = resolve => require(['../components/business/fillform5'], resolve)
-const Fillform6 = resolve => require(['../components/business/fillform6'], resolve)
+// const Fillform1 = resolve => require(['../components/business/fillform1'], resolve)
+// const Fillform2 = resolve => require(['../components/business/fillform2'], resolve)
+// const Fillform3 = resolve => require(['../components/business/fillform3'], resolve)
+// const Fillform4 = resolve => require(['../components/business/fillform4'], resolve)
+// const Fillform5 = resolve => require(['../components/business/fillform5'], resolve)
+// const Fillform6 = resolve => require(['../components/business/fillform6'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -492,11 +492,11 @@ export default new Router({
       name: 'Twopassword',
       component: Twopassword
     },
-    {
-      path: '/qrcode2',
-      name: 'QRcode2',
-      component: QRcode2
-    },
+    // {
+    //   path: '/qrcode2',
+    //   name: 'QRcode2',
+    //   component: QRcode2
+    // },
     {
       path: '/businessinfo',
       name: 'Businessinfo',
@@ -562,36 +562,36 @@ export default new Router({
       name: 'Apply3',
       component: Apply3
     },
-    {
-      path: '/fillform/step1',
-      name: 'Fillform1',
-      component: Fillform1
-    },
-    {
-      path: '/fillform/step2',
-      name: 'Fillform2',
-      component: Fillform2
-    },
-    {
-      path: '/fillform/step3',
-      name: 'Fillform3',
-      component: Fillform3
-    },
-    {
-      path: '/fillform/step4',
-      name: 'Fillform4',
-      component: Fillform4
-    },
-    {
-      path: '/fillform/step5',
-      name: 'Fillform5',
-      component: Fillform5
-    },
-    {
-      path: '/fillform/step6',
-      name: 'Fillform6',
-      component: Fillform6
-    },
+    // {
+    //   path: '/fillform/step1',
+    //   name: 'Fillform1',
+    //   component: Fillform1
+    // },
+    // {
+    //   path: '/fillform/step2',
+    //   name: 'Fillform2',
+    //   component: Fillform2
+    // },
+    // {
+    //   path: '/fillform/step3',
+    //   name: 'Fillform3',
+    //   component: Fillform3
+    // },
+    // {
+    //   path: '/fillform/step4',
+    //   name: 'Fillform4',
+    //   component: Fillform4
+    // },
+    // {
+    //   path: '/fillform/step5',
+    //   name: 'Fillform5',
+    //   component: Fillform5
+    // },
+    // {
+    //   path: '/fillform/step6',
+    //   name: 'Fillform6',
+    //   component: Fillform6
+    // },
     {
       path:'*', 
       redirect:'/index'

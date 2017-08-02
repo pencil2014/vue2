@@ -104,8 +104,9 @@ export default {
 		}
 	},
 	beforeRouteLeave (to,from,next) {
-		if(to.path !== '/fillform/step5'  && to.path !== '/business'){
-			next('/business')
+		let integralPath = window.localStorage.getItem('integralPath')
+		if(to.path !== '/fillform/step5'  && to.path !== integralPath && to.path !== '/login'){
+			next(integralPath)
 		}else{
 			next()
 		}

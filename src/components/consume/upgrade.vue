@@ -20,7 +20,7 @@
 			<label for="checkbox">我已阅读并同意<a href="javascript:;" @click='gorule'>《会员升级VIP协议》</a></label>
 		</div>
 		<div class="ex-upgrade-pay">
-			<a href="javascript:;" @click='gowechat'  :class="['wechat',{disableBtn:!checked}]"><i class="iconfont">&#xe734;</i> 微信支付</a>
+			<!-- <a href="javascript:;" @click='gowechat'  :class="['wechat',{disableBtn:!checked}]"><i class="iconfont">&#xe734;</i> 微信支付</a> -->
 			<a href="javascript:;" @click='gobank' :class="['bank',{disableBtn:!checked}]"><i class="iconfont">&#xe66f;</i> 银行转账</a>
 		</div>
 		
