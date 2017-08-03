@@ -37,7 +37,7 @@
 				</div>
 			</div>
 			<div class="img">
-				<span>*法人身份证正反面</span>
+				<span>*法人身份证正、反面</span>
 				<div class="upload">
 					<i class='iconfont'>&#xe608;</i>
 					<b>上传正面</b>

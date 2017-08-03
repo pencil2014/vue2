@@ -9,7 +9,7 @@
 					<input type="text" placeholder="请输入商家名称" @input="standard('shopsEnterName')" v-model.trim="shopsEnterName" maxlength="15">
 				</div>
 				<div class="ex-field-wrapper">
-					<label class="ex-field-title">联系人</label>
+					<label class="ex-field-title">联系人姓名</label>
 					<input type="text" placeholder="请输入联系人姓名" @input="standard('shopsLinkman')" v-model.trim="shopsLinkman" maxlength="15">
 				</div>
 				<div class="ex-field-wrapper">
