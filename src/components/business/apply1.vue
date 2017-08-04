@@ -218,15 +218,26 @@ export default {
 				return
 			}
 			if(!this.facadePhoto){
-				MessageBox('提示','请上传店铺门头照片！')
+				MessageBox('提示','请上传推广照片！')
 				return
 			}
-			this.isSubmit = true
-			if(!this.imgbase64){
-				this.shopEnter();
-			}else{
-				this.upload();
-			}
+			MessageBox({
+				title:'提示',
+				message:'请确认申请信息，提交后如需修改，请联系e享时代客服',
+				showConfirmButton:true,
+				showCancelButton:true,
+				confirmButtonText:'确定',
+				cancelButtonText:'取消',
+			}).then(action =>{
+				if(action === "confirm"){
+					this.isSubmit = true
+					if(!this.imgbase64){
+						this.shopEnter();
+					}else{
+						this.upload();
+					}
+				}
+			})
 		},
 		upload () {
 			let _this = this;
@@ -400,8 +411,8 @@ export default {
 .ex-form p{line-height: 20px;word-wrap: break-word;padding: 10px 0 10px 10px;color: rgb(93,100,110);}
 .ex-field{background: #fff;padding: 0 0 0 15px;margin-bottom: 15px;}
 .ex-field-wrapper{width: 100%;padding: 8px  4px 8px 0;font-size: 1.4rem;position: relative;min-height: 30px;line-height: 30px;}
-.ex-field-wrapper .ex-field-title{display: inline-block;width: 20%;font-size: 1.4rem;}
-.ex-field-wrapper input{width: 70%;border: none;font-size: 1.4rem;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;height: 30px;}
+.ex-field-wrapper .ex-field-title{display: inline-block;width: 30%;font-size: 1.4rem;}
+.ex-field-wrapper input{width: 60%;border: none;font-size: 1.4rem;box-sizing:border-box; -moz-box-sizing:border-box;-webkit-box-sizing:border-box;height: 30px;}
 .ex-field-wrapper .ex-field-value input[type=button]{background: #fff;border: solid 1px #047dcb;color: #047dcb;border-radius: 3px;position: absolute;top: 0;right: 10px;font-size: 1.4rem;padding: 4px 10px;top: 9px;}
 .ex-field-wrapper .ex-field-value input[type=button]:active{background: #29a0ec;}
 .ex-field .ex-field-wrapper{border-bottom: solid 1px #ebebeb;}

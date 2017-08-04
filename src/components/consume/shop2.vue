@@ -9,8 +9,8 @@
 			<p class="percent">
 				<span></span>
 			</p>
-			<div class="ex-shop-progress-item active">
-				<b>1</b>
+			<div class="ex-shop-progress-item suc">
+				<b>√</b>
 				<span>商家信息</span>
 			</div>
 			<div class="ex-shop-progress-item secend active">
@@ -303,8 +303,9 @@ export default {
 .ex-shop-progress-item { width: 33%; float: left; height: 5rem;  text-align: center; z-index: 2; position: relative;}
 .ex-shop-progress-item.secend {margin: 0;}
 .ex-shop-progress-item b{display:block; border: 0.3rem solid #e3e3e3;border-radius: 50%; height: 2rem; width: 2rem; line-height: 2rem; text-align: center; color: #aaafb6; font-weight: normal; margin: auto; margin-bottom: 0.2rem;background-color: #f4f5f7;}
-.ex-shop-progress-item span {position: absolute; left: 0; bottom: 0; width: 100%;}
-.active {color: #58c86b;}
+.ex-shop-progress-item span {position: absolute; left: 0; bottom: 0; width: 100%; color: #999;}
+.suc b{background-color: #58c86b; color: #fff; font-size: 1.5rem;}
+.active,.active span {color: #58c86b;}
 .active b{height: 2.5rem; width: 2.5rem; line-height: 2.5rem; background-color: #58c86b; color: #fff;}
 
 

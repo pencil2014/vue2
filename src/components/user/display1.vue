@@ -191,7 +191,7 @@ export default {
 .item span{display: inline-block;vertical-align: top;}
 .item .left{width: 28%;font-size: 1.4rem;}
 .item .right{width: 70%;text-align: right;color: #aaafb6}
-.item .right label{color: #212a32;}
+.item .right label{}
 .item .right img{width: 7rem;vertical-align: middle;}
 .item .right i{}
 </style>

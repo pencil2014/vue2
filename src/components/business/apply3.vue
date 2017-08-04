@@ -17,11 +17,11 @@
 				<span class="float_right">{{applydata.shopsEnterName}}</span>
 			</div>
 			<div class="ex-field">
-				<span>联系人</span>
+				<span>联系人姓名</span>
 				<span class="float_right">{{applydata.shopsLinkman}}</span>
 			</div>
 			<div class="ex-field">
-				<span>联系电话</span>
+				<span>联系人电话</span>
 				<span class="float_right">{{applydata.shopsLinkphone}}</span>
 			</div>
 			<div class="ex-field">
