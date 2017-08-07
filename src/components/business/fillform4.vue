@@ -41,8 +41,9 @@
 					</div>
 					<div class="service">
 						<span>客服QQ：</span>
-						<a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a>
+						<a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512826&version=1&src_type=web&web_src=oicqzone.com">2852512826</a>
 						<a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512824&version=1&src_type=web&web_src=oicqzone.com">2852512824</a>
+						<a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a>
 					</div>
 				</div>
 			</div>

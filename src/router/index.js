@@ -93,7 +93,7 @@ const User = resolve => require(['../components/user/user'], resolve)
 const Notice1 = resolve => require(['../components/notice/step1'], resolve)
 const Notice2 = resolve => require(['../components/notice/step2'], resolve)
 const Twopassword = resolve => require(['../components/twopassword/twopassword'], resolve)
-// const QRcode2 = resolve => require(['../components/user/qrcode2'], resolve)
+const QRcode2 = resolve => require(['../components/user/qrcode2'], resolve)
 const Businessinfo = resolve => require(['../components/user/businessinfo'], resolve)
 const Pay = resolve => require(['../components/pay/step1'], resolve)
 const Pay2 = resolve => require(['../components/pay/step2'], resolve)
@@ -492,11 +492,11 @@ export default new Router({
       name: 'Twopassword',
       component: Twopassword
     },
-    // {
-    //   path: '/qrcode2',
-    //   name: 'QRcode2',
-    //   component: QRcode2
-    // },
+    {
+      path: '/qrcode2',
+      name: 'QRcode2',
+      component: QRcode2
+    },
     {
       path: '/businessinfo',
       name: 'Businessinfo',

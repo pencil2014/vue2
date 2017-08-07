@@ -194,8 +194,9 @@
 				</div>
 				<div class="ex-customer-cnt-item">
 					<h3>客服QQ</h3>
-					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a></p>
+					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512826&version=1&src_type=web&web_src=oicqzone.com">2852512826</a></p>
 					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512824&version=1&src_type=web&web_src=oicqzone.com">2852512824</a></p>
+					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a></p>
 				</div>
 				<div class="ex-customer-cnt-item">
 					<h3>服务时间</h3>
@@ -279,9 +280,9 @@ export default {
 		  	text: 
 		  	'<b>尊敬的e享时代用户：</b><p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护；为了数据传输安全快捷，部分明细只显示近期（7天左右）数据。请各会员及时查看明细记录，特此通告！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年七月二十六日</p></div>',
 		  	confirm: '知道了',
-		  	end: new Date('2018-7-14').getTime(),
+		  	end: new Date('2017-7-14').getTime(),
 		  	identity: 'notice',
-		  	hide: false // false为默认显示， true为隐藏
+		  	hide: true // false为默认显示， true为隐藏
 		  },
 		  isDownload: false,
 		  androidUrl: '',
@@ -575,7 +576,7 @@ export default {
 		this.getexamine()
 		this.getenterdetail()
 		this.getandroidUrl()
-		// this.shopExpandStatus()
+		//this.shopExpandStatus()
 		// if (!window.localStorage.getItem('batchNotice')) {
 		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
 		// 	window.localStorage.setItem('batchNotice', 'true')

@@ -171,8 +171,9 @@
 				</div>
 				<div class="ex-customer-cnt-item">
 					<h3>客服QQ</h3>
-					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a></p>
+					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512826&version=1&src_type=web&web_src=oicqzone.com">2852512826</a></p>
 					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512824&version=1&src_type=web&web_src=oicqzone.com">2852512824</a></p>
+					<p><a href="mqqwpa://im/chat?chat_type=wpa&uin=2852512825&version=1&src_type=web&web_src=oicqzone.com">2852512825</a></p>
 				</div>
 				<div class="ex-customer-cnt-item">
 					<h3>服务时间</h3>
@@ -257,9 +258,9 @@ export default {
 		  	text: 
 		  	'<b>尊敬的e享时代用户：</b><p>为了符合数据规范化透明化，现把昨日交易总额更改为显示历史应分享单元值。参数为历史剩下的分享单元总额。请刷新页面自动更新！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年七月二十六日</p></div>',
 		  	confirm: '知道了',
-		  	end: new Date('2018-7-14').getTime(),
+		  	end: new Date('2017-7-14').getTime(),
 		  	identity: 'notice',
-		  	hide: false // false为默认显示， true为隐藏
+		  	hide: true // false为默认显示， true为隐藏
 		  },
 		  isDownload: false,
 		  androidUrl: '',
