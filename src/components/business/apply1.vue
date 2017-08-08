@@ -74,7 +74,7 @@
 				<slot>
 					<div class="range-slots">
 						<span class="left" @click="cancle">取消</span>
-						<span class="right" @click="confirm">确认</span>
+						<span class="right" @click="confirm">确定</span>
 					</div>
 				</slot>
 			</mt-picker>

@@ -25,7 +25,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*商家名称</span>
-				<input type="text" v-model.trim="shopsName" placeholder="请输入商家名称" maxlength="30">
+				<input type="text" v-model.trim="shopsName" placeholder="请输入商家名称" maxlength="30"  @input="filteremoji('shopsName')">
 			</div>
 			<div class="form-item">
 				<span class="name">*所在地区</span>
@@ -43,7 +43,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*详细地址</span>
-				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="40">
+				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="40"  @input="filteremoji('shopsAddress')">
 			</div>
 			<div class="form-item" @click="openRangeSlots">
 				<span class="name">*行业分类</span>
@@ -66,7 +66,7 @@
 				<slot>
 					<div class="range-slots">
 						<span class="left" @click="cancle">取消</span>
-						<span class="right" @click="confirm">确认</span>
+						<span class="right" @click="confirm">确定</span>
 					</div>
 				</slot>
 			</mt-picker>
@@ -88,7 +88,7 @@
 	                    </div>
 	                </div>
 	                <div class="operate" @click="closeNotice">
-	                	确认
+	                	确定
 	                </div>
 	            </div>
 	        </div>
@@ -194,6 +194,10 @@ export default {
 		this.shopExpandStatus()
 	},
 	methods: {
+		filteremoji (id) {
+			let regStr = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig;
+			this[id] = this[id].replace(regStr, '')
+		},
 		closeNotice () {
 			this.isOpenNotice = false
 		},
@@ -221,10 +225,9 @@ export default {
 				}.bind(this))
 				this.classNo2 = this.initclassNo2
 				this.initclassNo2 = ''
-			}else{
-				this.selclassNo2 = value[1].classNo
-				this.selclassName2 = value[1].className
 			}
+			this.selclassNo2 = value[1].classNo
+			this.selclassName2 = value[1].className
 		},
 		cancle () {
 			this.isOpenRangeSlots = false
@@ -241,11 +244,11 @@ export default {
 				message:'是否放弃本次操作?',
 				showConfirmButton:true,
 				showCancelButton:true,
-				confirmButtonText:'确认',
+				confirmButtonText:'确定',
 				cancelButtonText:'取消',
 			}).then(action =>{
 				if(action === "confirm"){
-					this.$router.back();
+					this.$router.push('/business')
 				}
 			})
 		},
@@ -394,6 +397,10 @@ export default {
 				MessageBox('提示','详细地址不能为空！')
 				return
 			}
+			if(this.$emoji(this.shopsAddress)){
+				MessageBox('提示','详细地址不能为表情图片！')
+				return
+			}
 			if(!this.className){
 				MessageBox('提示','行业分类不能为空！')
 				return
@@ -419,7 +426,14 @@ export default {
 	},
 	destroyed () {
 		Indicator.close()
-	}
+	},
+	beforeRouteLeave (to,from,next) {
+		if(to.path !== '/fillform/step2' && to.path !== '/login' && to.path !== '/business'){
+			next('/business')
+		}else{
+			next()
+		}
+	},
 }
 </script>
 <style scoped>

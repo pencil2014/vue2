@@ -30,7 +30,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*营业执照编号</span>
-				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model.trim="licenseNo" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入营业执照编号" v-model.trim="licenseNo" maxlength="20" @input="filteremoji('licenseNo')"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">*营业执照生效日期</span>
@@ -91,11 +91,11 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*支行名称</span>
-				<span class="text"><input type="text" placeholder="请输入支行名称" v-model.trim="branch" maxlength="40"></span>
+				<span class="text"><input type="text" placeholder="请输入支行名称" v-model.trim="branch" maxlength="40" @input="filteremoji('branch')"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行户名</span>
-				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model.trim="accountName" maxlength="40"></span>
+				<span class="text"><input type="text" placeholder="请输入开户人名称" v-model.trim="accountName" maxlength="40" @input="filteremoji('accountName')"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*银行账号</span>
@@ -185,7 +185,7 @@
 				<slot>
 					<div class="range-slots">
 						<span class="left" @click="cancle">取消</span>
-						<span class="right" @click="confirm">确认</span>
+						<span class="right" @click="confirm">确定</span>
 					</div>
 				</slot>
 			</mt-picker>
@@ -200,7 +200,7 @@
 				<slot>
 					<div class="range-slots">
 						<span class="left" @click="cancle2">取消</span>
-						<span class="right" @click="confirm2">确认</span>
+						<span class="right" @click="confirm2">确定</span>
 					</div>
 				</slot>
 			</mt-picker>
@@ -317,6 +317,10 @@ export default {
 	methods: {
 		back () {
 			this.$router.back();
+		},
+		filteremoji (id) {
+			let regStr = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig;
+			this[id] = this[id].replace(regStr, '')
 		},
 		setdate () {
 			let date = new Date()
@@ -566,6 +570,10 @@ export default {
 				MessageBox('提示','银行户名不能为空！')
 				return
 			}
+			if(this.$emoji(this.accountName)){
+				MessageBox('提示','银行户名不能为表情图片！')
+				return
+			}
 			if(!this.accountNo){
 				MessageBox('提示','银行账号不能为空！')
 				return
@@ -591,7 +599,7 @@ export default {
 				message:'确认提交以上资料？提交后若需修改请联系客服',
 				showConfirmButton:true,
 				showCancelButton:true,
-				confirmButtonText:'确认',
+				confirmButtonText:'确定',
 				cancelButtonText:'取消',
 			}).then(action =>{
 				if(action === "confirm"){

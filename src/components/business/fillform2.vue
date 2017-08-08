@@ -27,7 +27,7 @@
 		<div class="form-wrap">
 			<div class="form-item">
 				<span class="name">*法人姓名</span>
-				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model.trim="legalName" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入法人姓名" v-model.trim="legalName" maxlength="20" @input="filteremoji('legalName')"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*法人联系电话</span>
@@ -35,7 +35,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*法人证件号码</span>
-				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model.trim="legalId" maxlength="20"></span>
+				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model.trim="legalId" maxlength="20" @input="filteremoji('legalId')"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">*法人证件生效日期</span>
@@ -163,6 +163,10 @@ export default {
 		this.setdate()
 	},
 	methods: {
+		filteremoji (id) {
+			let regStr = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig;
+			this[id] = this[id].replace(regStr, '')
+		},
 		back () {
 			this.$router.back();
 		},
@@ -233,6 +237,10 @@ export default {
 				MessageBox('提示','法人姓名不能为空！')
 				return
 			}
+			if(this.$emoji(this.legalName)){
+				MessageBox('提示','法人姓名不能为表情图片！')
+				return
+			}
 			if(!this.legalPhone){
 				MessageBox('提示','法人联系电话不能为空！')
 				return
@@ -246,7 +254,7 @@ export default {
 				return
 			}
 			if(!/^[a-zA-Z0-9]+$/g.test(this.legalId)){
-				MessageBox('提示','法人证件号码只能输入数字和英文！')
+				MessageBox('提示','证件号码不正确！')
 				return
 			}
 			if(!this.legalSdate){

@@ -132,7 +132,7 @@ export default {
 				message:'是否退出登录?',
 				showConfirmButton:true,
 				showCancelButton:true,
-				confirmButtonText:'确认',
+				confirmButtonText:'确定',
 				cancelButtonText:'取消',
 			}).then(action =>{
 				if(action === "confirm"){

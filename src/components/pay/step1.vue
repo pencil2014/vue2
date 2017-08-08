@@ -161,7 +161,7 @@ export default {
 				MessageBox('提示','手机号不正确！')
 				return 
 			}
-			_this.submitbtn = true
+			
 			Indicator.open({
 			  text: '用户检测中...',
 			  spinnerType: 'fading-circle'
@@ -187,13 +187,10 @@ export default {
 					}).then(action => {
 						if (action === 'confirm') {
 							_this.submitFun()
-						} else {
-							_this.submitbtn = false
 						}
 					})
 				}
 				else {
-					_this.submitbtn = false
 					Toast(res.data.msg)
 				}
 			})
@@ -205,6 +202,7 @@ export default {
 		},
 		submitFun () {
 			let _this = this;
+			this.submitbtn = true
 			Indicator.open({
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'

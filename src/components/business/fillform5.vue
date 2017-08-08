@@ -41,7 +41,7 @@
 							上传照片
 						</div>
 						<img src="../../assets/images/again.png" alt="" class="again" v-show="imgurl.contractPic || imgbase64.contractPic">
-						<input type="file" name="" class="file-prew" id="contractPic" @change="getfile('contractPic')" />
+						<input type="file" name="" class="file-prew" id="contractPic" @change="getfile('contractPic')"  accept="image/*"/>
 					</div>
 					<div class="example">
 						范本:

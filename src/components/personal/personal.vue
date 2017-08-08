@@ -92,7 +92,7 @@
       		:showToolbar="true"
       		>
       			<slot>
-				    <b class="ex-sexslot" @click="selSex">确认</b>
+				    <b class="ex-sexslot" @click="selSex">确定</b>
 				</slot>	
       		</Picker>
       	</Popup>

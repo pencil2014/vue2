@@ -77,7 +77,7 @@ export default {
 				if (res.data.code === '10000') {
 					_this.shopname = res.data.data.shopName
 					_this.money = res.data.data.money
-					if(_this.money > 5 || res.data.data.limitStatus*1 === 1){
+					if(_this.money > 3000 || res.data.data.limitStatus*1 === 1){
 						_this.isReview = true
 					}
 				} else {
