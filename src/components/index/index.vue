@@ -166,8 +166,8 @@
 			<div class="ex-customer-cnt" @click.stop=''>
 				<div class="ex-customer-cnt-item">
 					<h3>客服电话</h3>
-					<p><a href="tel:075523300320">0755-23300320</a></p>
 					<p><a href="tel:4006543888">4006543888</a></p>
+					<p><a href="tel:075523300320">0755-23300320</a></p>
 				</div>
 				<div class="ex-customer-cnt-item">
 					<h3>客服QQ</h3>

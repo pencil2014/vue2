@@ -36,8 +36,8 @@
 				<div class="service-wrap">
 					<div class="service">
 						<span>客服电话：</span>
-						<a href="tel:0755-23300320">0755-23300320</a>
 						<a href="tel:400-6543-888">400-6543-888</a>
+						<a href="tel:0755-23300320">0755-23300320</a>
 					</div>
 					<div class="service">
 						<span>客服QQ：</span>

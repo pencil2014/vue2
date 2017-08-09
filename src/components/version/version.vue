@@ -25,12 +25,12 @@
 					<li>
 						<span>联系电话1</span>
 						<i class="iconfont">&#xe606;</i>
-						<label for=""><a href="tel:0755-23300320">0755-23300320</a></label>
+						<label for=""><a href="tel:400-6543-888">400-6543-888</a></label>
 					</li>
 					<li>
 						<span>联系电话2</span>
 						<i class="iconfont">&#xe606;</i>
-						<label for=""><a href="tel:400-6543-888">400-6543-888</a></label>
+						<label for=""><a href="tel:0755-23300320">0755-23300320</a></label>
 					</li>
 					<li>
 						<span>客服QQ号1</span>
