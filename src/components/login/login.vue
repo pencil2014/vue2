@@ -102,7 +102,7 @@ export default {
 			this.repeatBtn = true //防止重复提交
 			let _this = this
 			// 验证用户名是否存在
-			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
+			axios.post('/exsd-web/user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				Indicator.close()
 				if (res.data.msg === 'false') {
 					_this.repeatBtn = false 
@@ -112,13 +112,14 @@ export default {
 					// 保存用户手机号码
 					window.localStorage.setItem('phone', _this.phone)
 					// 请求登录接口
-					axios.post('user/login',qs.stringify({loginName: _this.phone, password: md5(_this.password)}))
+					axios.post('/exsd-web/user/login',qs.stringify({loginName: _this.phone, password: md5(_this.password)}))
 					.then(function(res){
 						Indicator.close()
 						_this.repeatBtn = false
 						if (res.data.code === '10000') {
 							window.localStorage.setItem('token', res.data.data.token)
 							window.localStorage.setItem('usertype', '1')
+							window.localStorage.removeItem('notice_1')
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 							_this.$router.push('/index')
 						} else {

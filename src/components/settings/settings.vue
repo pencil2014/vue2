@@ -111,7 +111,7 @@ export default {
 	created () {
 		let _this = this 
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.userinfo = res.data.data;
 			} else {
@@ -140,7 +140,7 @@ export default {
 					  text: '正在退出登录...',
 					  spinnerType: 'fading-circle'
 					})
-					axios.post('user/loginOut',qs.stringify({}))
+					axios.post('/exsd-web/user/loginOut',qs.stringify({}))
 					.then(function(res){
 						Indicator.close()
 						if(res.data.code === '10000'){

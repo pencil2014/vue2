@@ -77,7 +77,7 @@ export default {
 	created () {
 		this.userId = this.$route.params.code
 		let _this = this
-		axios.post('user/personalbase',qs.stringify({userCode: this.userId}))
+		axios.post('/exsd-web/user/personalbase',qs.stringify({userCode: this.userId}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.id = res.data.data.id
@@ -102,7 +102,7 @@ export default {
 	methods: {
 		createRequestToken () {
 			let _this = this
-			axios.post('user/createRequestToken',qs.stringify({
+			axios.post('/exsd-web/user/createRequestToken',qs.stringify({
 				moduleId: 1
 			})).then(function(res){
 				if(res.data.code === '10000'){
@@ -156,14 +156,14 @@ export default {
 			})
 			let _this = this
 			// 验证用户名是否存在
-			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
+			axios.post('/exsd-web/user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				if (res.data.msg ==='true') {
 					Indicator.close()
 					MessageBox('提示', "手机号码已经注册!")
 					return
 				} else {
 					// 请求验证码接口
-					axios.post('verify/sendPhoneCode',qs.stringify({ 
+					axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
 						codeType: 1,
 						smsType: 1,
@@ -242,7 +242,7 @@ export default {
 			let _this = this
 
 			// 验证用户名是否存在
-			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
+			axios.post('/exsd-web/user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				if (res.data.msg ==='true') {
 					_this.repeatBtn = false 
 					Indicator.close()
@@ -250,7 +250,7 @@ export default {
 					return
 				} else {
 					// 请求注册接口
-					axios.post('user/register',qs.stringify({
+					axios.post('/exsd-web/user/register',qs.stringify({
 						user_id: _this.id, 
 						login_name: _this.phone,
 						password: _this.password,

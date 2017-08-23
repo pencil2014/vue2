@@ -43,7 +43,7 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*详细地址</span>
-				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="40"  @input="filteremoji('shopsAddress')">
+				<input type="text" v-model.trim="shopsAddress" placeholder="请输入详细地址(不含省市区)" maxlength="40"  @input="filteremoji('shopsAddress')"  @focus="toView($event)">
 			</div>
 			<div class="form-item" @click="openRangeSlots">
 				<span class="name">*行业分类</span>
@@ -194,6 +194,10 @@ export default {
 		this.shopExpandStatus()
 	},
 	methods: {
+		toView (event) {
+			let $target = event.currentTarget
+			$target.scrollIntoView(true)
+		},
 		filteremoji (id) {
 			let regStr = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig;
 			this[id] = this[id].replace(regStr, '')
@@ -223,7 +227,6 @@ export default {
 						picker.setSlotValue(1,item)
 					}
 				}.bind(this))
-				this.classNo2 = this.initclassNo2
 				this.initclassNo2 = ''
 			}
 			this.selclassNo2 = value[1].classNo
@@ -258,7 +261,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
 			.then(function(res){
 				// Indicator.close()
 				if (res.data.code === '10000') {
@@ -279,7 +282,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -294,6 +297,7 @@ export default {
 						}
 
 						_this.classNo1 = res.data.data.pclassNo
+						_this.classNo2 = res.data.data.mccNo
 						_this.initclassNo2 = res.data.data.mccNo
 						_this.className = res.data.data.pname + '/' + res.data.data.className
 						_this.slots[0].values.forEach(function(item,index){
@@ -325,6 +329,7 @@ export default {
 				this.shopsAddress = this.onlinePay.shopsAddress
 				this.shopsName = this.onlinePay.shopsName
 				this.classNo1 = this.onlinePay.classNo1
+				this.classNo2 = this.onlinePay.classNo2
 				this.initclassNo2 = this.onlinePay.classNo2
 				this.className = this.onlinePay.className
 				this.slots[0].values.forEach(function(item,index){
@@ -340,7 +345,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('getBaseRegionAll',qs.stringify({}))
+			axios.post('/exsd-web/getBaseRegionAll',qs.stringify({}))
 			.then(function(res){
 				// Indicator.close()
 				if (res.data.code === '10000') {
@@ -363,7 +368,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/getAllMcc',qs.stringify({}))
+			axios.post('/exsd-web/shop/getAllMcc',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -401,7 +406,7 @@ export default {
 				MessageBox('提示','详细地址不能为表情图片！')
 				return
 			}
-			if(!this.className){
+			if(!this.classNo2){
 				MessageBox('提示','行业分类不能为空！')
 				return
 			}
@@ -438,7 +443,7 @@ export default {
 </script>
 <style scoped>
 *{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
-.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;position: absolute;font-size: 1.4rem;}
+.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 56px;position: fixed;font-size: 1.4rem;overflow-y: scroll;}
 .step{width: 75%;position: relative;margin: 34px 12.5% 0;padding-bottom: 60px;}
 .step dl {position: absolute;text-align: center;width: 70px;margin-left: -35px;color: #aaafb6;z-index: 3;}
 .step dl.active{color: #58c86b;}

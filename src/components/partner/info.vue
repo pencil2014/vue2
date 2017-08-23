@@ -125,7 +125,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: 1,
+			axios.post('/exsd-web/commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: 1,
 				status: '3', 
 				shopsId: this.id,
 				groupId: this.groupId}))
@@ -155,7 +155,7 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: this.page,
+			axios.post('/exsd-web/commodityInfo/list',qs.stringify({pageSize: this.pageSize, page: this.page,
 				status: '3',
 				shopsId: this.id,
 				groupId: this.groupId}))
@@ -182,7 +182,7 @@ export default {
 	created () {
 		let _this = this
 		this.id = this.$route.params.id
-		axios.post('shop/detail',qs.stringify({id: this.id}))
+		axios.post('/exsd-web/shop/detail',qs.stringify({id: this.id}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				if (!!res.data.data) {

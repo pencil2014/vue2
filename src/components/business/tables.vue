@@ -84,7 +84,7 @@ export default {
 			})
 			let _this = this
 			let batch = this.showTab === 1 ? '1' : '0'
-			axios.post('declaration/list',qs.stringify({batch: batch, pageSize: this.pageSize, page: 1,status: 6}))
+			axios.post('/exsd-web/declaration/list',qs.stringify({batch: batch, pageSize: this.pageSize, page: 1,status: 6}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -112,7 +112,7 @@ export default {
 			let _this = this
 			let batch = this.showTab === 1 ? '1' : '0'
 			this.loading = true
-			axios.post('declaration/list',qs.stringify({batch: batch, pageSize: this.pageSize, page: this.page,status: 6}))
+			axios.post('/exsd-web/declaration/list',qs.stringify({batch: batch, pageSize: this.pageSize, page: this.page,status: 6}))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true

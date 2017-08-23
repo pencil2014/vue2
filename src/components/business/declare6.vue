@@ -28,6 +28,10 @@
 				<span>消费金额</span>
 				<b>￥{{checkdata.consumptionMoney}}</b>
 			</div>
+			<div class="ex-declare-item">
+				<span>附言</span>
+				<b>{{checkdata.remark  || ''}}</b>
+			</div>
 			<!-- <div class="ex-declare-item" v-if='checkdata.rangliMoney'>
 				<span>让利款</span>
 				<b>￥{{checkdata.rangliMoney}}</b>
@@ -76,7 +80,7 @@ export default {
 	created () {
 		this.id = this.$route.params.id
 		let _this = this
-		axios.post('declaration/get',qs.stringify({id: this.id}))
+		axios.post('/exsd-web/declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.auditOpinion = res.data.data.orderAudit.auditOpinion ? res.data.data.orderAudit.auditOpinion : ''
@@ -103,7 +107,7 @@ export default {
 				  confirmButtonText: '确定'
 				}).then(action => {
 					if (action === "confirm") {
-						axios.post('declaration/revoke',qs.stringify({id: _this.id}))
+						axios.post('/exsd-web/declaration/revoke',qs.stringify({id: _this.id}))
 						.then(function(res){
 							if (res.data.code === '10000') {
 								_this.$router.push('/order')

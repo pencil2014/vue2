@@ -270,7 +270,7 @@ export default {
 				userCode = "M" + userCode
 			}
 			let _this = this
-			axios.post('declaration/returnPhone',qs.stringify({
+			axios.post('/exsd-web/declaration/returnPhone',qs.stringify({
 				userCode: userCode
 			}))
 			.then(function(res){
@@ -329,7 +329,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('declaration/batchDeclaration',qs.stringify({
+			axios.post('/exsd-web/declaration/batchDeclaration',qs.stringify({
 				transferUserName: this.name,
 				orderListStr: JSON.stringify(this.valid)
 			}))
@@ -350,7 +350,7 @@ export default {
 		}
 		// checkBatshCount () {
 		// 	let _this = this
-		// 	axios.post('declaration/checkBatshCount',qs.stringify({}))
+		// 	axios.post('/exsd-web/declaration/checkBatshCount',qs.stringify({}))
 		// 	.then(function(res){
 		// 		if (res.data.code === '10000') {
 		// 			if (res.data.data.status === '0') {
@@ -384,7 +384,7 @@ export default {
 		// this.checkBatshCount()
 
 		let _this = this
-		axios.post('declaration/getRangliProportion',qs.stringify({}))
+		axios.post('/exsd-web/declaration/getRangliProportion',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.rate = res.data.data

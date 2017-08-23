@@ -74,7 +74,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({pageSize: this.pageSize, page: 1,classificationId: this.id, city: this.regionId}))
+			axios.post('/exsd-web/shopClassification/queryShopsById',qs.stringify({pageSize: this.pageSize, page: 1,classificationId: this.id, city: this.regionId}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -101,7 +101,7 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({city: this.regionId, classificationId:this.id, pageSize: this.pageSize, page: this.page}))
+			axios.post('/exsd-web/shopClassification/queryShopsById',qs.stringify({city: this.regionId, classificationId:this.id, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				
@@ -126,7 +126,7 @@ export default {
 		this.regionId = window.localStorage.getItem('regionId') || ''
 		this.id = this.$route.params.id
 		let _this = this
-		axios.post('shopClassification/list',qs.stringify({}))
+		axios.post('/exsd-web/shopClassification/list',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				let title = res.data.data.filter(function(item) {

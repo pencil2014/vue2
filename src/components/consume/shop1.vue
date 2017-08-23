@@ -145,7 +145,7 @@ export default {
 		let _this = this
 
 		// 获取用户申请数据
-		axios.post('shop/examine',qs.stringify({}))
+		axios.post('/exsd-web/shop/examine',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.shopsLinkman = res.data.data.shopsLinkman
@@ -162,7 +162,7 @@ export default {
 		})
 
 		// 获取省市区数据
-		axios.post('getBaseRegionAll',qs.stringify({}))
+		axios.post('/exsd-web/getBaseRegionAll',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 					_this.province = res.data.data.province 
@@ -199,7 +199,7 @@ export default {
 			Toast('连接失败，请检查网络是否正常!')
 		})
 
-		// axios.post('shopClassification/list',qs.stringify({})).then(function(res){
+		// axios.post('/exsd-web/shopClassification/list',qs.stringify({})).then(function(res){
 		// 		if (res.data.code === '10000') {
 		// 			_this.classifyList = res.data.data|| []
 		// 			if (_this.classifyList.length > 0) {

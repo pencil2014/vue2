@@ -55,7 +55,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('user/personalbase',qs.stringify({userCode: this.code}))
+			axios.post('/exsd-web/user/personalbase',qs.stringify({userCode: this.code}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

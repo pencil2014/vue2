@@ -115,7 +115,7 @@ export default {
 			window.localStorage.removeItem('exchange')
 		}
 		let _this = this
-		axios.post('user/personal',qs.stringify({}))
+		axios.post('/exsd-web/user/personal',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.userdata = res.data.data
@@ -129,7 +129,7 @@ export default {
 
 		let defaultCard = window.localStorage.getItem('defaultCard')
 		if (!defaultCard) {
-			axios.post('bankard/list',qs.stringify({}))
+			axios.post('/exsd-web/bankard/list',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					if (!!res.data.data[0] ) {
@@ -152,7 +152,7 @@ export default {
 		}
 		
 
-		axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/verify/checkRealName',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.checkRealName = res.data.data
 				} else {
@@ -169,7 +169,7 @@ export default {
 	methods: {
 		createRequestToken () {
 			let _this = this
-			axios.post('user/createRequestToken',qs.stringify({
+			axios.post('/exsd-web/user/createRequestToken',qs.stringify({
 				moduleId: 3
 			})).then(function(res){
 				if(res.data.code === '10000'){
@@ -357,7 +357,7 @@ export default {
 			})
 			_this.repeatBtn = true
 
-			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id,requestToken:this.requestToken}))
+			axios.post('/exsd-web/integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id,requestToken:this.requestToken}))
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false

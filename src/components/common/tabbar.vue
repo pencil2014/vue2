@@ -53,7 +53,7 @@ export default {
 	},
 	created () {
 		// let _this = this;
-		// axios.post('message/getCount',qs.stringify({}))
+		// axios.post('/exsd-web/message/getCount',qs.stringify({}))
 		// .then(function(res){
 		// 	if (res.data.code === '10000') {
 		// 		_this.read = res.data.data.count > 0 ? true : false

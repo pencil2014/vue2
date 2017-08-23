@@ -81,7 +81,7 @@ export default {
 		let _this = this;
 		Indicator.open({ spinnerType: 'fading-circle'})
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
@@ -111,7 +111,7 @@ export default {
 				return;
 			}
 			_this.submitBtn = true;
-			axios.post('user/setTwoPwd',qs.stringify({
+			axios.post('/exsd-web/user/setTwoPwd',qs.stringify({
 				password: md5(_this.confirmpsw),
 				phoneCode: _this.VeryCode
 			})).then(res =>{
@@ -132,7 +132,7 @@ export default {
 			//获取短信验证码
 			_this.countdown = true
 			Indicator.open({ spinnerType: 'fading-circle'})
-			axios.post('verify/sendPhoneCode',qs.stringify({
+			axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({
 				phone: _this.phone,
 				codeType: 5,
 				smsType: 1

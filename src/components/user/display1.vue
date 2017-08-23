@@ -87,7 +87,7 @@ export default {
 		  text: '加载中...',
 		  spinnerType: 'fading-circle'
 		});
-		axios.post('shop/enterDetail',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/shop/enterDetail',qs.stringify({})).then(function(res){
 			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.info = res.data.data;
@@ -126,7 +126,7 @@ export default {
 			  text: '图片上传中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.imgurl = res.data.urls[0]
@@ -143,7 +143,7 @@ export default {
 		},
 		changephoto () {
 			let _this = this;
-			axios.post('shop/updateShopInfo',qs.stringify({
+			axios.post('/exsd-web/shop/updateShopInfo',qs.stringify({
 				id: _this.info.shopsId,
 				facadePhoto: _this.imgurl
 			})).then(function(res){

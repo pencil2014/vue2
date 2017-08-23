@@ -47,7 +47,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('message/get',qs.stringify({
+		axios.post('/exsd-web/message/get',qs.stringify({
 			id: _this.id,
 			type: 1
 		})).then(function(res){

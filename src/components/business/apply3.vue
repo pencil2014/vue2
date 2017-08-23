@@ -93,7 +93,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			});
 			
-			axios.post('shop/enterDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

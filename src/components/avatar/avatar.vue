@@ -90,7 +90,7 @@ export default {
 	created () {
 		let _this = this;
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.isCreact = true
 				_this.personalData = res.data.data
@@ -111,7 +111,7 @@ export default {
 			
 			let sex = /girl/gi.test(value) ? '0' : '1';
 	    	// 改变用户资料
-			axios.post('user/update',qs.stringify({
+			axios.post('/exsd-web/user/update',qs.stringify({
 				sex: sex,
 				picPath: picPath
 			})).then(res =>{

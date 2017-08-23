@@ -76,7 +76,7 @@ export default {
 	created () {
 		let _this = this;
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.originalPhone = res.data.data.phone
 			} else {
@@ -104,7 +104,7 @@ export default {
 				return 
 			}
 			_this.submitBtn = true;
-			axios.post('user/updateRegPhone2',qs.stringify({
+			axios.post('/exsd-web/user/updateRegPhone2',qs.stringify({
 				phone:_this.phone,
 				phoneCode: _this.phoneCode
 			})).then(res =>{
@@ -113,7 +113,7 @@ export default {
 					  text: '正在退出登录...',
 					  spinnerType: 'fading-circle'
 					})
-					axios.post('user/loginOut',qs.stringify({}))
+					axios.post('/exsd-web/user/loginOut',qs.stringify({}))
 					.then(function(res){
 						Indicator.close()
 						if(res.data.code === '10000'){
@@ -155,7 +155,7 @@ export default {
 			_this.countdown = true
 			Indicator.open({ spinnerType: 'fading-circle'})
 			//获取短信验证码
-			axios.post('verify/sendPhoneCode',qs.stringify({
+			axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({
 				phone: _this.phone,
 				codeType: 4,
 				smsType: 1

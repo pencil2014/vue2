@@ -37,7 +37,7 @@ export default {
 	created () {
 		let id = this.$route.params.id
 		let _this = this
-		axios.post('artic/get',qs.stringify({id: id}))
+		axios.post('/exsd-web/artic/get',qs.stringify({id: id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.article = res.data.data

@@ -87,6 +87,10 @@
 					<img :src="checkdata.transferVoucher"  @click='preimg(checkdata.transferVoucher)'>
 				</div>
 			</div>
+			<div class="ex-declare-item">
+				<span>附言</span>
+				<b>{{checkdata.remark || ''}}</b>
+			</div>
 		</div>
 		<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>
 		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
@@ -135,7 +139,7 @@ export default {
 	created () {
 		this.id = this.$route.params.id
 		let _this = this
-		axios.post('declaration/get',qs.stringify({id: this.id}))
+		axios.post('/exsd-web/declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.auditOpinion = res.data.data.orderAudit.auditOpinion ? res.data.data.orderAudit.auditOpinion : ''

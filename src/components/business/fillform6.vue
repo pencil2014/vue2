@@ -61,7 +61,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('shop/shopExpandStatus',qs.stringify({}))
+		axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
 		.then(function(res){
 			Indicator.close()
 			if (res.data.code === '10000') {

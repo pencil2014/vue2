@@ -149,14 +149,14 @@ export default {
 			this.code = ''
 			let _this = this
 			// 验证用户名是否存在
-			axios.post('user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
+			axios.post('/exsd-web/user/isEixt',qs.stringify({phone: _this.phone})).then(function(res){
 				if (res.data.msg === 'false') {
 					Indicator.close()
 					MessageBox('提示', "手机号码未注册!")
 					return
 				} else {
 					// 请求验证码接口
-					axios.post('verify/sendPhoneCode',qs.stringify({ 
+					axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({ 
 						phone: _this.phone,
 						codeType: 8,
 						smsType: 1,
@@ -217,7 +217,7 @@ export default {
 			})
 			this.repeatBtn = true //防止重复提交
 			let _this = this
-			axios.post('verify/validatePhoneCode',qs.stringify({
+			axios.post('/exsd-web/verify/validatePhoneCode',qs.stringify({
 				phone: _this.phone,
 				phoneCode:_this.code,
 				codeType:8
@@ -252,7 +252,7 @@ export default {
 			})
 			this.repeatBtn = true //防止重复提交
 			let _this = this
-			axios.post('user/forgetPasswod',qs.stringify({phone: _this.phone,phoneCode:_this.code,password:_this.password})).then(function(res){
+			axios.post('/exsd-web/user/forgetPasswod',qs.stringify({phone: _this.phone,phoneCode:_this.code,password:_this.password})).then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
 				if (res.data.code === '10000') {

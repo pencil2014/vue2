@@ -85,7 +85,7 @@ export default {
 		} else {
 			let _this = this 
 			// 获取用户详情
-			axios.post('shop/examine',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/shop/examine',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					let id = res.data.data.id
 					_this.$router.push({name: 'Display2',params:{id: id}})

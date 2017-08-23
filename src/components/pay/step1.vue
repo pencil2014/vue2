@@ -112,7 +112,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('user/checkUserIsShop',qs.stringify({userId: this.userID}))
+			axios.post('/exsd-web/user/checkUserIsShop',qs.stringify({userId: this.userID}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -166,16 +166,16 @@ export default {
 			  text: '用户检测中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('user/isEixt',qs.stringify({phone: this.phone}))
+			axios.post('/exsd-web/user/isEixt',qs.stringify({phone: this.phone}))
 			.then(function(res){
 				Indicator.close()
 				let str = ''	
 				if (res.data.code === '10000') {
 					if (res.data.msg === 'true') {
 						if(!res.data.data.realName){
-							str = "<span>用户编号："+res.data.data.userCode+"<br/>手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对信息，报错单损失无法追回！)</p>"
+							str = "<span>用户编号："+res.data.data.userCode+"<br/>手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对，信息错误积分将无法到达您的账户！)</p>"
 						}else{
-							str = "<span>用户编号："+res.data.data.userCode+"<br/>姓名："+res.data.data.realName+"<br />手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对信息，报错单损失无法追回！)</p>"
+							str = "<span>用户编号："+res.data.data.userCode+"<br/>姓名："+res.data.data.realName+"<br />手机号："+ _this.phone.replace(/(\d{3})(\d{4})(\d{3})/,'$1****$3')+"</span><p style='color:red;font-size:1.2rem; line-height:1.5;'>(注：请仔细核对，信息错误积分将无法到达您的账户！)</p>"
 						}
 					} else {
 						str = "<span style='color:red;font-size:bold;'>"+_this.phone+" </span>还不是易享会员，点击确定视为您了解并同意易享平台《服务协议》，并自动注册成为平台会员！"
@@ -209,7 +209,7 @@ export default {
 			})
 			axios.create({
 				headers: {'authorization': ''}
-			}).post('consume/toChoosePayment',qs.stringify({
+			}).post('/exsd-web/consume/toChoosePayment',qs.stringify({
 				shopId: _this.userID,
 				amount: _this.money,
 				phone: _this.phone

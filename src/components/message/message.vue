@@ -2,8 +2,16 @@
 	<div class="ex-message">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="tabbar">
-			<div class="m1" @click="tap(1)" :class="{active:messageType==1}">消息</div>
-			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">系统</div>
+			<div class="m1" @click="tap(1)" :class="{active:messageType==1}">
+				<div class="numbox">消息
+					<span class="num">99+</span>
+				</div>
+			</div>
+			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">
+				<div class="numbox">系统
+					<span class="num">3</span>
+				</div>
+			</div>
 		</div>
 		<div class="ex-message-list">
 			<div class="ex-message-item" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
@@ -23,7 +31,6 @@
 				<div class="page-infinite-loading" v-show="loading">
 			       <mt-spinner type="fading-circle"></mt-spinner>
 			    </div>
-			
 			</div>
 		</div>
 	</div>
@@ -41,9 +48,8 @@ export default {
 			page: 1,
 			totalPage: 1,
 			pageSize: 20,
-			// messageType: 1,
 			messageType: (function(){
-				return (localStorage.getItem('messageType') ? localStorage.getItem('messageType') : 1)
+				return (sessionStorage.getItem('messageType') ? sessionStorage.getItem('messageType') : 1)
 			})(),
 			modal: {
 				text:'我的消息',
@@ -86,12 +92,15 @@ export default {
     },
 	methods: {
 		back () {
-			localStorage.setItem('messageType','')
+			sessionStorage.setItem('messageType','')
 			this.$router.back()
 		},
 		tap (id) {
 			// this.$router.push({ name: 'Message', params: { id: id}})
-			localStorage.setItem('messageType',id)
+			if(this.messageType === id){
+				return 
+			}
+			sessionStorage.setItem('messageType',id)
 			this.messageType = id;
 			this.getData();
 		},
@@ -105,7 +114,7 @@ export default {
 		getData () {
 			let _this = this;
 			_this.nodateStatus = false
-			axios.post('message/list',qs.stringify({
+			axios.post('/exsd-web/message/list',qs.stringify({
 				messageType: _this.messageType,	
 				pageSize: _this.pageSize,
 				page: 1
@@ -121,7 +130,7 @@ export default {
 				}
 			}).catch(function(){
 				Indicator.close();
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		loadMore () {
@@ -131,7 +140,7 @@ export default {
 			}
 			this.loading = true
 			_this.nodateStatus = false
-			axios.post('message/list',qs.stringify({
+			axios.post('/exsd-web/message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
 				messageType: _this.messageType
@@ -146,7 +155,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	},
@@ -170,6 +179,8 @@ export default {
 .tabbar{height: 44px;background: #fff;border-bottom: solid 1px #ebebeb;text-align: center;line-height: 44px;font-size: 1.6rem;padding:0 0 3px 0;color: rgb(170,175,182);z-index: 1000;}
 .tabbar .m1{margin:0 5% 0 15%;width: 30%;float: left;}
 .tabbar .m2{margin:0 15% 0 5%;width: 30%;float: left;}
+.tabbar div.numbox {position: relative;display: inline;}
+.tabbar div .num{display: inline-block;min-width: 20px;height: 20px;line-height: 20px;border-radius: 10px;text-align: center;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 0 5px;font-size: 1.2rem;background: #f0544d;color: #fff;position: absolute;top: -0.6rem;left: 30px;}
 .active{border-bottom: solid 3px rgb(4,112,182);color: rgb(4,112,182);}
 .ex-message-item{overflow-y: scroll;}
 .ex-message-item li{display: block;font-size: 1.4rem;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;background: rgb(241,250,255)}

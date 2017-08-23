@@ -54,7 +54,7 @@ export default {
 	created () {
 		let _this = this;
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.username = res.data.data.userName;
 			} else {
@@ -79,7 +79,7 @@ export default {
 			}
 			_this.submitBtn = true
 			// 改变用户资料
-			axios.post('user/update',qs.stringify({
+			axios.post('/exsd-web/user/update',qs.stringify({
 				userName: _this.username,
 			}),_this.config).then(res =>{
 				Indicator.close();

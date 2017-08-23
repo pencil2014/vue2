@@ -111,7 +111,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('user/personal',qs.stringify({}))
+		axios.post('/exsd-web/user/personal',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.userdata = res.data.data
@@ -123,7 +123,7 @@ export default {
 			Toast('连接失败，请检查网络是否正常!')
 		})
 
-		axios.post('verify/checkRealName',qs.stringify({}))
+		axios.post('/exsd-web/verify/checkRealName',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.checkRealName = res.data.data
@@ -252,7 +252,7 @@ export default {
 			})
 			_this.repeatBtn = true
 
-			axios.post('integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id}))
+			axios.post('/exsd-web/integral/toBank',qs.stringify({money: this.exchange, bankId: this.bankdata.id}))
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
@@ -273,7 +273,7 @@ export default {
 		},
 		getDefaultCard (type) {
 			let _this = this;
-			axios.post('bankard/findDefault',qs.stringify({}))
+			axios.post('/exsd-web/bankard/findDefault',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					if (!!res.data.data ) {

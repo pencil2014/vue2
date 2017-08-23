@@ -84,7 +84,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('getBaseRegionAll',qs.stringify({}))
+		axios.post('/exsd-web/getBaseRegionAll',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 					_this.province = res.data.data.province 
@@ -197,7 +197,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shop/list',qs.stringify({
+			axios.post('/exsd-web/shop/list',qs.stringify({
 				pageSize: this.pageSize, 
 				page: 1,
 				province: this.provinceId,
@@ -229,7 +229,7 @@ export default {
 			}
 			let _this = this
 			this.loading = true
-			axios.post('shop/list',qs.stringify({
+			axios.post('/exsd-web/shop/list',qs.stringify({
 				pageSize: this.pageSize, 
 				page: this.page,
 				province: this.provinceId,

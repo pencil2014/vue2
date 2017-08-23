@@ -47,7 +47,7 @@ export default {
 	},
 	created () {
 		let _this = this;
-		axios.post('artic/get',qs.stringify({
+		axios.post('/exsd-web/artic/get',qs.stringify({
 			id: _this.id
 		})).then(function(res){
 			if (res.data.code === '10000') {

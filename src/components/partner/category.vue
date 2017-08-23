@@ -86,7 +86,7 @@ export default {
 		  spinnerType: 'fading-circle'
 		})
 		let _this = this
-		axios.post('shopClassification/list',qs.stringify({}))
+		axios.post('/exsd-web/shopClassification/list',qs.stringify({}))
 		.then(function(res){
 			Indicator.close()
 			if (res.data.code === '10000') {

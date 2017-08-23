@@ -168,7 +168,7 @@ export default {
 				this.currentPosition.latitude = '39.915'
 				this.currentPosition.longitude = '116.404'
 			}
-			axios.post('getAddressByLngAndLat',qs.stringify({
+			axios.post('/exsd-web/getAddressByLngAndLat',qs.stringify({
 				lat: this.currentPosition.latitude ,
 				lng: this.currentPosition.longitude 
 			}))
@@ -205,7 +205,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({
+			axios.post('/exsd-web/shop/queryNearShop',qs.stringify({
 				city:this.id, 
 				lat: this.currentPosition.latitude,
 				lng: this.currentPosition.longitude, 
@@ -237,7 +237,7 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('shop/queryNearShop',qs.stringify({city:this.id, lat: this.currentPosition.latitude,
+			axios.post('/exsd-web/shop/queryNearShop',qs.stringify({city:this.id, lat: this.currentPosition.latitude,
 				lng: this.currentPosition.longitude, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
@@ -267,6 +267,7 @@ export default {
 		// this.id = JSON.parse(window.localStorage.getItem('userinfo')).userId
 		let address = JSON.parse(window.localStorage.getItem('historycity'))
 		let currentPosition = window.localStorage.getItem('currentPosition')
+		let address2 = window.localStorage.getItem('address')
 		if(!!address) {
 			this.address = address[0].regionName
 			this.id = address[0].regionId
@@ -275,7 +276,12 @@ export default {
 				this.currentPosition = JSON.parse(currentPosition)
 			} 
 			this.loadMore()
-		} else {
+		} else if (!!address2) {
+			this.address = window.localStorage.getItem('address')
+			this.id = window.localStorage.getItem('regionId')
+			this.loadMore()
+		}
+		 else {
 			this.getposition()
 		}
 		

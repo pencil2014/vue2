@@ -136,7 +136,7 @@ export default {
 		  text: '加载中...',
 		  spinnerType: 'fading-circle'
 		})
-		axios.post('shop/examine',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/shop/examine',qs.stringify({})).then(function(res){
 			Indicator.close()
 			if (res.data.code === '10000') {
 				_this.shopsName = res.data.data.shopsName
@@ -191,7 +191,7 @@ export default {
 			ids.forEach(function(value){
 				formData.append("imgStr", _this.files[value])
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function (res) {
 				Indicator.close();
 				if (res.data.code === '10000') {
@@ -213,7 +213,7 @@ export default {
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			});
-			axios.post('shop/realName',qs.stringify({
+			axios.post('/exsd-web/shop/realName',qs.stringify({
 				legalName: _this.legalName,
 				legalIdcard: _this.legalIdcard,
 				licenseNumber: _this.licenseNumber,

@@ -68,7 +68,7 @@ export default {
 		},
 		getList () {
 			let _this = this
-			axios.post('commodityGroup/list',qs.stringify({})) 
+			axios.post('/exsd-web/commodityGroup/list',qs.stringify({})) 
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.groupList = res.data.data.list
@@ -105,7 +105,7 @@ export default {
 		},
 		delgroupFun (id,index) {
 			let _this = this	
-			axios.post('commodityGroup/delete',qs.stringify({groupId: id})) 
+			axios.post('/exsd-web/commodityGroup/delete',qs.stringify({groupId: id})) 
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.groupList.splice(index, 1)
@@ -149,7 +149,7 @@ export default {
 		},
 		addGroupFun () {
 			let _this = this
-			axios.post('commodityGroup/add',qs.stringify({groupName: this.newGroupName})) 
+			axios.post('/exsd-web/commodityGroup/add',qs.stringify({groupName: this.newGroupName})) 
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.getList()
@@ -165,7 +165,7 @@ export default {
 		},
 		editGroupFun (id,groupName) {
 			let _this = this
-			axios.post('commodityGroup/update',qs.stringify({id: id, groupName: groupName})) 
+			axios.post('/exsd-web/commodityGroup/update',qs.stringify({id: id, groupName: groupName})) 
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.getList()

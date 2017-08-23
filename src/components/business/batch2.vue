@@ -100,7 +100,7 @@ export default {
 		},
 		getInfo () {
 			let _this = this
-			axios.post('declaration/batchDetails',qs.stringify({
+			axios.post('/exsd-web/declaration/batchDetails',qs.stringify({
 				orderNo: this.id
 			}))
 			.then(function(res){
@@ -131,7 +131,7 @@ export default {
 		},
 		removeRevoke () {
 			let _this = this
-			axios.post('declaration/deleteOrders',qs.stringify({orderNo: this.id}))
+			axios.post('/exsd-web/declaration/deleteOrders',qs.stringify({orderNo: this.id}))
 				.then(function(res){
 					if (res.data.code === '10000') {
 						MessageBox({

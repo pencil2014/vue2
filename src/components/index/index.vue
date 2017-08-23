@@ -254,13 +254,13 @@ export default {
 		  customerService: false,
 		  repeatBtn: false,
 		  model: {
-		  	title: '温馨提示',
+		  	title: '公  告',
 		  	text: 
-		  	'<b>尊敬的e享时代用户：</b><p>为了符合数据规范化透明化，现把昨日交易总额更改为显示历史应分享单元值。参数为历史剩下的分享单元总额。请刷新页面自动更新！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年七月二十六日</p></div>',
-		  	confirm: '知道了',
-		  	end: new Date('2017-7-14').getTime(),
-		  	identity: 'notice',
-		  	hide: true // false为默认显示， true为隐藏
+		  	'<b>全国各区域代理、联盟商家、消费者会员：</b><p>为了进一步促进消费分享经济的良性规范发展，依据国家相关部门指导性意见，特制定如下消费分享普惠政策。</p><p>1.会员（M）当月消费总额大于或等于E积分当月分享总额2倍以上的，次月，e积分享受公众比例。</p><p>2.会员（M）当月消费总额小于e积分当月分享总额2倍的，次月e积分享受：公众比例*系统月度参数值，按月以此类推。</p><p>（例如：M会员身份e积分100万，当月分享为3万左右，当月消费额大于或等于6万左右者，次月才能享受e积分公众比例。当月消费小于6万左右者，则享受公众比例*系统参数值）</p><p>3.系统识别计算从8月1日0点为起点，从9月1日0点执行。</p><p>4.本公告内容最终解释权归属于市场战略管理委员会。电话：<a href="tel:4006543888">4006543888</a></p><p>（注：公众比例是指《平台规则》设置的逐天消费分享比例，即逐天1‰左右）</p><p class="right">浙江易享时代商业服务（集团）有限公司市场战略管理委员会<br/>2017.8.20</p></div>',
+		  	confirm: '我知道了',
+		  	end: new Date('2018-8-14').getTime(),
+		  	identity: 'notice_1',
+		  	hide: false // false为默认显示， true为隐藏
 		  },
 		  isDownload: false,
 		  androidUrl: '',
@@ -317,7 +317,7 @@ export default {
 			})
 			let _this = this
 			this.repeatBtn = true
-			axios.post('user/switchUser',qs.stringify({type: 1}))
+			axios.post('/exsd-web/user/switchUser',qs.stringify({type: 1}))
 				.then(function(res){
 					Indicator.close()
 					_this.repeatBtn = false
@@ -378,7 +378,7 @@ export default {
 		},
 		getandroidUrl () {
 			let _this = this
-			axios.post('appversion/queryUrl',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/appversion/queryUrl',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.androidUrl = res.data.data
 				} else {
@@ -394,7 +394,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('user/personal',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
@@ -414,7 +414,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('user/sysIndex',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/sysIndex',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.sysData = res.data.data
@@ -430,7 +430,7 @@ export default {
 		},
 		getexamine () {
 			let _this = this
-			axios.post('user/examine',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/examine',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userVipStatus = res.data.data
 					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))

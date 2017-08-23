@@ -149,7 +149,7 @@ export default {
 				  text: '数据加载中...',
 				  spinnerType: 'fading-circle'
 				})
-			axios.post('cityList',qs.stringify({}))
+			axios.post('/exsd-web/cityList',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()			
 				if (res.data.code === '10000') {

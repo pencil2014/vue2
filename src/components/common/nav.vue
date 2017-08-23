@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped>
-.ex-nav{background-color: #fafafa; border-top: 1px solid #e6e6e6;  position: fixed; bottom: 0; left: 0; width: 100%; }
+.ex-nav{background-color: #fafafa; border-top: 1px solid #e6e6e6;  position: fixed; bottom: 0; left: 0; width: 100%;}
 .ex-nav a {display: inline-block; width: 33.3%; text-align: center; color: #aaa;padding-bottom: 0.5rem;}
 .ex-nav a i{display: block; padding-bottom: 0.1rem;}
 .ex-nav .m1{font-size: 2.5rem;}

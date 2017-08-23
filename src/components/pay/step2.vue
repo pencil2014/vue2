@@ -149,7 +149,7 @@ export default {
 			_this.submitbtn = true
 			axios.create({
 				headers: {'authorization': 'Bearer ' +　this.userData.paytoken}
-			}).post('consume/toPay',qs.stringify({
+			}).post('/exsd-web/consume/toPay',qs.stringify({
 				payType: _this.type,
 				shopId: _this.userData.shopId,
 				userId: _this.userData.userId,
@@ -204,7 +204,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('user/checkUserIsShop',qs.stringify({userId: this.userData.shopId}))
+			axios.post('/exsd-web/user/checkUserIsShop',qs.stringify({userId: this.userData.shopId}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

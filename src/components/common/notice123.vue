@@ -1,14 +1,14 @@
 <template>
 	<div class="ex-modal">
 		<div class="ex-content">
-			<div class="imgbox"><img src="../../assets/images/bg_notice.png" alt=""></div>
+			<div><img src="../../assets/images/bg_notice.png" alt=""></div>
 			<div class="ex-box">
 				<h3 class="title">{{modal.title || '公告'}}</h3>
-				<div class="text" v-html="modal.text"></div>
-				<!-- <div class="footer">
+				<div class="text" v-html="formatHtml"></div>
+				<div class="footer">
 					<span>{{modal.author}}</span>
-					<span class="time">{{modal.time}}</span>
-				</div> -->
+					<span class="time">{{modal.publishTime}}</span>
+				</div>
 				<div class="option">
 					<span class="confirm" @click="confirm" >{{modal.confirm || '我知道了'}}</span>
 				</div>
@@ -17,11 +17,7 @@
 	</div>
 </template>
 <script>
-/**
-* end： 结束日期 （必填）
-* identity： 本地储存的标志 （必填）
-* hide: true 隐藏 false 显示 （必填）
-**/
+
 export default{	
 	props:['modal'],
 	data () {
@@ -30,16 +26,14 @@ export default{
 		} 
 	},
 	created () {
-		let time1 = new Date().getTime()
-		let time2 = this.notice.end
-		let identity = window.localStorage[this.notice.identity] ? true : false
-		if((time1 >= time2) || identity){
-			this.notice.hide = true
+	},
+	computed: {
+		formatHtml () {
+			return this.modal.text.replace(/style="[^"]+"/ig,"")
 		}
 	},
 	methods: {
 		confirm () {
-			window.localStorage.setItem([this.notice.identity],true)
 			this.$emit('confirm')
 		}
 	}
@@ -59,17 +53,11 @@ export default{
 .ex-modal .ex-box .option span.cancle{color: #666;}
 .ex-modal .ex-box .option span:active{background: #ebebeb;}
 .ex-modal .ex-box .option .confirm{ color: #047dcb; font-size: 1.6rem;}
-
-.ex-modal .ex-content .imgbox img{width: 100%;}
 </style>
 
 <style>
 .ex-modal .ex-box .text p { text-indent: 2rem; padding-top: 0.5rem;}
 .ex-modal .ex-box .text p a { margin: 0 0.5rem; color: #047dcb;}
-.ex-modal .ex-box .text p.right{text-align: right;}
 .ex-modal .ex-box .text .inscribe {text-align: right; padding-top: 0.5rem;}
 .ex-modal .ex-box .text .inscribe p{padding-top: 0;}
-
-.ex-modal .ex-box .text .time{text-align: right;}
-.ex-modal .ex-box .text .name{ text-align: right;}
 </style>

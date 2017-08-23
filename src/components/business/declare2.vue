@@ -76,7 +76,7 @@ export default {
 	created () {
 		this.id = this.$route.params.id
 		let _this = this
-		axios.post('declaration/get',qs.stringify({id: this.id}))
+		axios.post('/exsd-web/declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					let status = res.data.data.status
@@ -151,7 +151,7 @@ export default {
 			  text: '正在处理图片...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
@@ -174,7 +174,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('declaration/supplement',qs.stringify({
+			axios.post('/exsd-web/declaration/supplement',qs.stringify({
 				consumptionCertificate: this.resurl[0],
 				physicalPic: this.resurl[0],
 				type: this.type,

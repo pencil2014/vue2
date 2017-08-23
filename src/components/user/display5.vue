@@ -275,7 +275,7 @@ export default {
 			  text: '图片处理中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -299,7 +299,7 @@ export default {
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('commodityInfo/update',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/update',qs.stringify({
 				id: _this.id,
 				commodityName: _this.commodityName,
 				commodityTypeId: _this.commodityTypeId,
@@ -330,7 +330,7 @@ export default {
 		},
 		getGroupList () {
 				let _this = this
-				axios.post('commodityGroup/list',qs.stringify({})).then(function(res){
+				axios.post('/exsd-web/commodityGroup/list',qs.stringify({})).then(function(res){
 					if (res.data.code === '10000') {
 						_this.groupList = res.data.data.list
 						//console.log(_this.groupList)
@@ -343,7 +343,7 @@ export default {
 		},
 		getList() {
 			let _this = this
-			axios.post('commodityType/list',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/commodityType/list',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.TypeList = res.data.data
 				} else {
@@ -356,7 +356,7 @@ export default {
 		},
 		getDetail () {
 			let _this = this
-			axios.post('commodityInfo/get',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/get',qs.stringify({
 				id: _this.id
 			})).then(function(res){
 				if (res.data.code === '10000') {

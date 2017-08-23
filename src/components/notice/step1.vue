@@ -10,10 +10,12 @@
 				 >
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
 				 	<no-data :hasdata="hasdata"></no-data>
-					<li v-for="(item, index) in list" @click="todetail(item.id)">
-					    <span class="title" v-text="item.messageTitle" :class="{read:item.isRead == '1'}" ></span> <br/>
-						<span class="summary">{{item.messageContent | formatHtml}}</span>
-						<span class="time">{{item.pushTime | localTime}}</span>
+					<li v-for="(item, index) in list" @click="todetail(item.id)"  :class="{read:item.isRead == '1'}">
+					    <div class="list-item">
+					    <span class="title" v-text="item.messageTitle" ></span>
+							<span class="summary">{{item.messageContent | formatHtml}}</span>
+							<span class="time">{{item.pushTime | localTime}}</span>
+					    </div>
 					</li>
 					</mt-loadmore>
 				</ul>
@@ -64,7 +66,7 @@ export default {
 		loadTop () {
 			let _this = this;
 			_this.nodateStatus = false
-			axios.post('message/list',qs.stringify({
+			axios.post('/exsd-web/message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: 1,
 				messageType: 3
@@ -89,7 +91,7 @@ export default {
 			}
 			this.loading = true
 			_this.nodateStatus = false
-			axios.post('message/list',qs.stringify({
+			axios.post('/exsd-web/message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
 				messageType: 3
@@ -134,12 +136,13 @@ export default {
 <style>
 .ex-notice{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;position: relative;}
 .ex-notice-item{padding-top: 4.5rem;}
-.ex-notice-item li{display: block;font-size: 1.6rem;background: #fff;padding: 20px 10px 30px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
+.ex-notice-item li{display: block;font-size: 1.6rem;background: #fff;padding: 15px 10px 30px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;}
 .ex-notice-item li:last-child{border-bottom: none;}
-.ex-notice-item span.title:before{content:"● "; font-family:Arial;color:#f0544d;font-size:1.2rem;float:left;line-height:18px; display:inline-block;width:10px;}
-.ex-notice-item span.read:before{display: none;}
-.ex-notice-item span.read{}
-.ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;padding-top: 10px;}
-.ex-notice-item .time{color: #aaafb6;float: right;padding-top: 5px;font-size: 1rem;}
+.ex-notice-item li:before{content:"●"; font-family:Arial;color:#f0544d;font-size:0.8rem;float:left;line-height:18px; display:inline-block;width:10px;}
+.ex-notice-item li.read:before{display: none;}
+.ex-notice-item li .list-item{padding-left: 1rem;}
+.ex-notice-item span.title{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;display: inline-block;width: 100%;}
+.ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;}
+.ex-notice-item .time{color: #aaafb6;float: left;padding-top: 5px;font-size: 1rem;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>

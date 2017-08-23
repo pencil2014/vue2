@@ -16,6 +16,8 @@ const Business = resolve => require(['../components/index/business'], resolve)
 const Record = resolve => require(['../components/consume/record'], resolve)
 const Integral = resolve => require(['../components/consume/integral'], resolve)
 const Detail = resolve => require(['../components/consume/detail'], resolve)
+const MonthDetail = resolve => require(['../components/consume/monthdetail'], resolve)
+
 const Money = resolve => require(['../components/consume/money'], resolve)
 const Bank = resolve => require(['../components/consume/bank'], resolve)
 const BankList = resolve => require(['../components/consume/banklist'], resolve)
@@ -171,6 +173,11 @@ export default new Router({
       path: '/detail',
       name: 'Detail',
       component: Detail
+    },
+    {
+      path: '/monthdetail',
+      name: 'MonthDetail',
+      component: MonthDetail
     },
     {
       path: '/money',

@@ -22,7 +22,7 @@
 					<i class="iconfont" >&#xe606;</i>
 				</span>
 			</div>
-			<div class="form-item" @click="openPicker3()">
+			<div class="form-item" @click="openPicker3($event)">
 				<span class="name">协议到期日期</span>
 				<span class="text f_right">
 					{{contractEdate | formatdate}}
@@ -204,7 +204,9 @@ export default {
 		openPicker2 () {
 			this.$refs.date2.open();
 		},
-		openPicker3 () {
+		openPicker3 (event) {
+			let $target = event.currentTarget
+			$target.scrollIntoView(true)
 			this.$refs.date3.open();
 		},
 		getfile (id) {
@@ -286,7 +288,7 @@ export default {
 			  text: '图片上传中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -311,7 +313,7 @@ export default {
 				let month = (date.getMonth()+1) < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)
 				return date.getFullYear() + '-' + month + '-' + date.getDate()
 			}
-			axios.post('shop/addContract',qs.stringify({
+			axios.post('/exsd-web/shop/addContract',qs.stringify({
 				contractSdate: formatdate(this.contractSdate),
 				contractEdate: formatdate(this.contractEdate),
 				signDate: formatdate(this.signDate),
@@ -348,7 +350,7 @@ export default {
 		// 	  text: '加载中...',
 		// 	  spinnerType: 'fading-circle'
 		// 	})
-		// 	axios.post('shop/shopExpandStatus',qs.stringify({}))
+		// 	axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
 		// 	.then(function(res){
 		// 		Indicator.close()
 		// 		if (res.data.code === '10000') {
@@ -370,7 +372,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -413,7 +415,7 @@ export default {
 </script>
 <style scoped>
 *{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
-.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;position: absolute;font-size: 1.4rem;}
+.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 56px;position: fixed;font-size: 1.4rem;overflow-y: scroll;}
 .ex-fillform .top{text-align: center;font-size: 1.8rem;background: #fff;padding: 20px;}
 .ex-fillform .top i.iconfont{color: #3dbc3c;font-size: 4rem;}
 .ex-fillform .top .box{text-align: left;background: #fff9e3;color: #f05850;padding: 10px;font-size: 1.4rem;}

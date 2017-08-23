@@ -31,11 +31,11 @@
 			</div>
 			<div class="form-item">
 				<span class="name">*法人联系电话</span>
-				<span class="text"><input type="tel" placeholder="请输入法人手机号" maxlength="11" v-model.trim="legalPhone" @input="formatPhone('legalPhone')"></span>
+				<span class="text"><input type="tel" placeholder="请输入法人手机号" maxlength="11" v-model.trim="legalPhone" @input="formatPhone('legalPhone')" @focus="toView($event)"></span>
 			</div>
 			<div class="form-item">
 				<span class="name">*法人证件号码</span>
-				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model.trim="legalId" maxlength="20" @input="filteremoji('legalId')"></span>
+				<span class="text"><input type="text" placeholder="请输入法人身份证号" v-model.trim="legalId" maxlength="20" @input="filteremoji('legalId')" @focus="toView($event)"></span>
 			</div>
 			<div class="form-item" @click="openPicker1()">
 				<span class="name">*法人证件生效日期</span>
@@ -162,7 +162,14 @@ export default {
 		this.onlinePay2  = JSON.parse(sessionStorage.getItem('onlinePay2'))
 		this.setdate()
 	},
+	mouted () {
+		
+	},
 	methods: {
+		toView (event) {
+			let $target = event.currentTarget
+			$target.scrollIntoView(true)
+		},
 		filteremoji (id) {
 			let regStr = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig;
 			this[id] = this[id].replace(regStr, '')
@@ -303,7 +310,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -327,7 +334,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/shopExpandDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -391,7 +398,7 @@ export default {
 </script>
 <style scoped>
 *{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
-.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;position: absolute;font-size: 1.4rem;}
+.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;padding-bottom: 56px;position: fixed;font-size: 1.4rem;height: 100%;overflow-y: scroll;}
 .step{width: 75%;position: relative;margin: 34px 12.5% 0;padding-bottom: 60px;}
 .step dl {position: absolute;text-align: center;width: 70px;margin-left: -35px;color: #aaafb6;z-index: 3;}
 .step dl.active{color: #58c86b;}

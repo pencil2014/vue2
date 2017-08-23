@@ -207,7 +207,7 @@
 		</div>
 
 		<app-nav></app-nav>
-		<ex-notice :modal='model'  @confirm='confirm' v-show='!model.hide'></ex-notice>
+		<ex-notice :modal='model'  @confirm='confirm' v-show='model.show'></ex-notice>
 		<!-- 系统维护提示 -->
 		 <!-- <div class="ex-weihu" v-if=''>
 		 		<div class="ex-weihu-cnt">
@@ -274,15 +274,18 @@ export default {
 			userVipStatus: {},
 			customerService: false,
 			repeatBtn: false,
+			// msgIds: [],
+		  // msgInfo: [],
+		  // msgIndex: 0,
 			enterstatus: '',
 			model: {
-		  	title: '公  告',
+		  	title: '温馨提示',
 		  	text: 
-		  	'<b>全国各区域代理、联盟商家、消费者会员：</b><p>为了进一步促进消费分享经济的良性规范发展，依据国家相关部门指导性意见，特制定如下消费分享普惠政策。</p><p>1.会员（M）当月消费总额大于或等于E积分当月分享总额2倍以上的，次月，e积分享受公众比例。</p><p>2.会员（M）当月消费总额小于e积分当月分享总额2倍的，次月e积分享受：公众比例*系统月度参数值，按月以此类推。</p><p>（例如：M会员身份e积分100万，当月分享为3万左右，当月消费额大于或等于6万左右者，次月才能享受e积分公众比例。当月消费小于6万左右者，则享受公众比例*系统参数值）</p><p>3.系统识别计算从8月1日0点为起点，从9月1日0点执行。</p><p>4.本公告内容最终解释权归属于市场战略管理委员会。电话：<a href="tel:4006543888">4006543888</a></p><p>（注：公众比例是指《平台规则》设置的逐天消费分享比例，即逐天1‰左右）</p><p class="right">浙江易享时代商业服务（集团）有限公司市场战略管理委员会<br/>2017.8.20</p></div>',
-		  	confirm: '我知道了',
-		  	end: new Date('2018-8-14').getTime(),
-		  	identity: 'notice_1',
-		  	hide: false // false为默认显示， true为隐藏
+		  	'<b>尊敬的e享时代用户：</b><p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护；为了数据传输安全快捷，部分明细只显示近期（7天左右）数据。请各会员及时查看明细记录，特此通告！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年七月二十六日</p></div>',
+		  	confirm: '知道了',
+		  	end: new Date('2017-7-14').getTime(),
+		  	identity: 'notice',
+		  	show: false // false为默认显示， true为隐藏
 		  },
 		  isDownload: false,
 		  androidUrl: '',
@@ -296,6 +299,40 @@ export default {
 		exNotice
 	},
 	methods: {
+		// hasNotice () {
+		// 	let _this = this
+		// 	axios.post('/exsd-web//exsd-message/web/Notice/hasNotice',qs.stringify({})).then(function(res){
+		// 		if (res.data.code === '10000') {
+		// 			if (res.data.data && res.data.data.length > 0) {
+		// 				_this.msgInfo = res.data.data
+		// 				_this.model = res.data.data[0]
+		// 				if (res.data.data.length > 1) {
+		//   				  _this.model.confirm = '下一条'
+		// 	       } else {
+		// 	    	    _this.model.confirm = '我知道了'
+		// 	       }
+		// 	          _this.model.show = true
+		// 			}
+					
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 			Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
+
+		// readNotice () {
+		// 	let _this = this
+		// 	axios.post('/exsd-web//exsd-message/web/Notice/readNotice',qs.stringify({ids: this.msgIds})).then(function(res){
+		// 		if (res.data.code === '10000') {	
+		// 		} else {
+		// 			Toast(res.data.msg)
+		// 		}
+		// 	}).catch(function(){
+		// 			Toast('连接失败，请检查网络是否正常!')
+		// 	})
+		// },
 		toFillForm () {
 			let path = '/fillform/step1'
 			if(this.ExpandStatus === '5'){
@@ -338,7 +375,17 @@ export default {
 			}
 		},
 		confirm () {
-			this.model.hide = true
+			// this.msgIds.push(this.model.id)
+			// this.msgIndex += 1
+			// let num = this.msgIndex + 1
+			// if (this.msgInfo.length >= num) {
+			// 	this.model = this.msgInfo[this.msgIndex]
+			// 	this.model.confirm = (this.msgInfo.length === num) ? '我知道了' : '下一条'
+			// } else {
+			// 	this.model.show = false
+			// 	this.readNotice()
+			// }
+			this.model.show = false
 		},
 		changetoken () {
 			if (this.repeatBtn) {
@@ -350,7 +397,7 @@ export default {
 			})
 			let _this = this
 			this.repeatBtn = true
-			axios.post('/exsd-web/user/switchUser',qs.stringify({type: 2}))
+			axios.post('/exsd-web//exsd-web/user/switchUser',qs.stringify({type: 2}))
 				.then(function(res){
 					Indicator.close()
 					_this.repeatBtn = false
@@ -411,7 +458,7 @@ export default {
 		},
 		getandroidUrl () {
 			let _this = this
-			axios.post('/exsd-web/appversion/queryUrl',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web//exsd-web/appversion/queryUrl',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.androidUrl = res.data.data
 				} else {
@@ -427,7 +474,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web//exsd-web/user/personal',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
@@ -447,7 +494,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web/user/sysIndex',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web//exsd-web/user/sysIndex',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.sysData = res.data.data
@@ -463,7 +510,7 @@ export default {
 		},
 		getexamine () {
 			let _this = this
-			axios.post('/exsd-web/user/examine',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web//exsd-web/user/examine',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userVipStatus = res.data.data
 					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
@@ -481,7 +528,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web/shop/enterDetail',qs.stringify({}))
+			axios.post('/exsd-web//exsd-web/shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 				 	_this.enterstatus = res.data.data.status
@@ -499,7 +546,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
+			axios.post('/exsd-web//exsd-web/shop/shopExpandStatus',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

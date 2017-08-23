@@ -156,7 +156,7 @@ export default {
 			})
 			let _this = this
 			let applyshops = JSON.parse(window.localStorage.getItem('shopdata'))
-			axios.post('shop/apply',qs.stringify({
+			axios.post('/exsd-web/shop/apply',qs.stringify({
 				shopsName: applyshops.shopName,
 				shopsAddress: applyshops.addressDetail,
 				shopsLinkman: applyshops.shopsLinkman,
@@ -243,7 +243,7 @@ export default {
 			  text: '图片处理中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				_this.repeatBtn = false
 				Indicator.close()

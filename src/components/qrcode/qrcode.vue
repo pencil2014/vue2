@@ -50,7 +50,7 @@ export default {
 	mounted () {
 		let _this = this 
 		let pageUrl = window.location.origin + '/#/register';
-		axios.post('user/getQrcode',qs.stringify({
+		axios.post('/exsd-web/user/getQrcode',qs.stringify({
 			pageUrl: pageUrl
 		}),_this.config).then(function(res){
 			Indicator.close();

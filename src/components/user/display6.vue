@@ -83,7 +83,7 @@ export default {
 		},
 		getDetail () {
 			let _this = this
-			axios.post('commodityInfo/get',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/get',qs.stringify({
 				id: _this.id
 			})).then(function(res){
 				if (res.data.code === '10000') {

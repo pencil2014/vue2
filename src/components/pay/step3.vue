@@ -8,14 +8,14 @@
 				</div>
 				<div class="shopname">
 					<img src="../../assets/images/shop.png" alt="">
-					<span>{{shopname || '平安银行特约商户'}}</span>
+					<span>{{user || '平安银行特约商户'}}</span>
 				</div>
 			</div>
 			<div class="top">
 				<img src="../../assets/images/pack.png" alt=""><br>
 				<p v-if="!isReview">
 					<span class="active">{{money | checknum}}元</span>&nbsp;
-					现金分享已存入您的e享账户
+					e积分已赠送到您的e享账户
 				</p>
 				<p v-if="isReview">
 					消费成功，审核后可领取e享现金分享
@@ -43,7 +43,7 @@ export default {
 	data () {
 		return{
 			money: '0',
-			shopname: '',
+			user: '',
 			isReview: false,
 			outNo: '',
 			status: '',
@@ -71,11 +71,11 @@ export default {
 			})
 			axios.create({
 				headers: {'authorization': ''}
-			}).post('/consume/checkOrder',qs.stringify({outNo: this.outNo}))
+			}).post('/exsd-web/consume/checkOrder',qs.stringify({outNo: this.outNo}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
-					_this.shopname = res.data.data.shopName
+					_this.user = 'M' + res.data.data.user
 					_this.money = res.data.data.money
 					if(_this.money > 3000 || res.data.data.limitStatus*1 === 1){
 						_this.isReview = true

@@ -116,7 +116,7 @@ export default {
 </script>
 <style scoped>
 *{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;}
-.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;position: absolute;}
+.ex-fillform{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 56px;position: fixed;overflow-y: scroll;}
 .ex-fillform .top{text-align: center;font-size: 1.8rem;background: #fff;padding: 20px 10px 10px 10px;}
 .ex-fillform .top i.iconfont{color: #3dbc3c;font-size: 4rem;}
 .ex-fillform .top .box{text-align: left;background: #fff9e3;color: #f05850;padding: 10px;font-size: 1.4rem;margin: 15px 0 5px 0;}

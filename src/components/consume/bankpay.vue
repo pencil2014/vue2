@@ -121,7 +121,7 @@ export default {
 			let formData = new FormData()
 			formData.append("imgStr",this.fileList[0])
 
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
@@ -141,7 +141,7 @@ export default {
 		check () {
 			let _this = this
 			let path = window.localStorage.getItem('integralPath')
-			axios.post('user/vip',qs.stringify({consumptionPath: this.resurl[0]}))
+			axios.post('/exsd-web/user/vip',qs.stringify({consumptionPath: this.resurl[0]}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					MessageBox.alert('提交成功，后台正在审核您的会员升级申请,请稍后').then(action => {
@@ -158,7 +158,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('user/personal',qs.stringify({}))
+		axios.post('/exsd-web/user/personal',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.usercode = res.data.data.userCode

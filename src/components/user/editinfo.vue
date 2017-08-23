@@ -239,7 +239,7 @@ export default {
 			  text: '图片处理中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -262,7 +262,7 @@ export default {
 			  text: '商品保存中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('commodityInfo/update',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/update',qs.stringify({
 				id: this.id,
 				commodityName: this.name,
 				commodityTypeId: this.classifyId,
@@ -293,7 +293,7 @@ export default {
 
 		getList() {
 			let _this = this
-			axios.post('commodityInfo/listSet',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/commodityInfo/listSet',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.classifyList = res.data.data.typeList || []
 					// if (_this.classifyList.length > 0) {

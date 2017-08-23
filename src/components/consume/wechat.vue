@@ -45,7 +45,7 @@ export default {
 		},
 		getstatus () {
 			let _this = this
-			axios.post('user/vipWeixinStatus',qs.stringify({ordNo: this.ordernum}))
+			axios.post('/exsd-web/user/vipWeixinStatus',qs.stringify({ordNo: this.ordernum}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.orderstatus = res.data.data.status
@@ -86,7 +86,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('user/vipWeixin',qs.stringify({}))
+		axios.post('/exsd-web/user/vipWeixin',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.qrurl = res.data.data.url

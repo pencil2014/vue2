@@ -51,7 +51,16 @@
 			    </div>
 			</div>
 		</div>
-		<div class="bottom">可用享积分：<span class="orange">{{total|checknum}}</span></div>
+		<div class="bottom" v-if="userType === '2'">可用享积分：<span class="orange">{{total|checknum}}</span></div>
+
+		<div class="bottom" v-if="userType === '1'">
+			<div class="bottom-item">
+				本月分享总额：<span class="orange">{{monthIntegral | checknum}}</span>
+			</div>
+			<div class="bottom-item" v-if="level !== null">
+				本月分档比例：<span class="orange">{{level | checklevel}}</span>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -73,7 +82,9 @@ export default {
 			},
 			searchType:'1',
 			loading:false,
-	        total:'',
+	        total: 0,
+	        monthIntegral: 0,
+	        level: 0,
 	        year:(value => {return new Date().getFullYear()})(),
 	        month:(value => {return new Date().getMonth()+1})(),
 	        config:{
@@ -82,7 +93,8 @@ export default {
 	            }
 	        },
 	        wrapperHeight: 0,
-	        nodateStatus:false
+	        nodateStatus:false,
+	        userType: (value => localStorage.getItem('usertype'))()
 		}
 	},
 	mounted() {
@@ -177,6 +189,9 @@ export default {
 		},
 		tap (id) {
 			//this.$router.push({ name: 'Integral2', params: { id: id}})
+			if(this.searchType === id){
+				return
+			}
 			this.searchType = id;
 			this.loadTop()
 		},
@@ -187,7 +202,7 @@ export default {
 		getData () {
 			let _this = this;
 			_this.nodateStatus = false
-			axios.post('integralDetail/detail',qs.stringify({
+			axios.post('/exsd-web/integralDetail/detail',qs.stringify({
 				pageSize: _this.pageSize,
 				page: 1,
 				searchType: _this.searchType,
@@ -199,13 +214,15 @@ export default {
 					_this.nodateStatus = true
 					_this.totalPage = res.data.data.data.totalPage;
 					_this.total = res.data.data.integralTotal;
+					_this.level = res.data.data.level
+					_this.monthIntegral = res.data.data.monthIntegral
 					_this.page = 2
 				} else {	
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
 				Indicator.close();
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		},
 		loadMore () {
@@ -215,7 +232,7 @@ export default {
 			}
 			this.loading = true;
 			_this.nodateStatus = false
-			axios.post('integralDetail/detail',qs.stringify({
+			axios.post('/exsd-web/integralDetail/detail',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
 				searchType: _this.searchType,
@@ -227,6 +244,8 @@ export default {
 					_this.nodateStatus = true
 					_this.totalPage = res.data.data.data.totalPage
 					_this.total = res.data.data.integralTotal
+					_this.level = res.data.data.level
+					_this.monthIntegral = res.data.data.monthIntegral
 					_this.page += 1;
 					_this.loading = false;
 				} else {	
@@ -234,7 +253,7 @@ export default {
 				}
 			}).catch(function(){
 				Indicator.close();
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	},
@@ -245,20 +264,27 @@ export default {
 		monthformat (value) {
 			return value + '月'
 		},
-		num (value) {
-			if(/^\d*\.{1}\d{2,}$/.test(value)){
-				let value2 =value + '';
-				return value2.replace(/^(\d*)(\.{1}\d{2})(\d{1,})$/,'$1$2')
+		checknum (value) {
+			if(!value){
+				return '0.00'
 			}else{
-				return value
+				value += ''
+				let num = '0.00'
+				num = value >= 0 ? value : '0.00' 
+				num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+				return num 
 			}
 		},
-		checknum (value) {
-			value += ''
-			let num = '0.00'
-			num = value >= 0 ? value : '0.00' 
-			num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
-			return num 
+		checklevel (value) {
+			if(!value){
+				return '0.0'
+			}else{
+				value += ''
+				let num = '0.0'
+				num = value >= 0 ? value : '0.0' 
+				num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 2)*1).toFixed(1) : value + '.0' 
+				return num
+			}
 		}
 	},
 	destroyed () {
@@ -294,6 +320,7 @@ export default {
 
 i.disable{background: #ebebeb;}
 .wrapper{overflow-y: scroll;}
-.bottom{position: fixed;bottom: 0;left: 0;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;height: 50px;line-height: 50px;text-align: center; width: 100%;background: #fff;border-top: solid 1px #ebebeb;}
+.bottom{position: fixed;bottom: 0;left: 0;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;height: 50px;line-height: 50px;text-align: center; width: 100%;background: #fff;border-top: solid 1px #ebebeb;display: table;}
+.bottom .bottom-item{display: table-cell;}
 .bottom .orange{color: rgb(255,161,50);font-size: 1.6rem;}
 </style>

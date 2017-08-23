@@ -213,7 +213,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			});
-			axios.post('getBaseRegionAll',qs.stringify({}))
+			axios.post('/exsd-web/getBaseRegionAll',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -260,7 +260,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			});
-			axios.post('shop/enterDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

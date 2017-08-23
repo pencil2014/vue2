@@ -98,7 +98,7 @@ export default {
 				return
 			}
 			_this.submitBtn = true;
-			axios.post('user/updatePasswod',qs.stringify({
+			axios.post('/exsd-web/user/updatePasswod',qs.stringify({
 				oldPassword: md5(_this.oldpsw),
 				password: md5(_this.confirmpsw)
 			})).then(function(res){
@@ -107,7 +107,7 @@ export default {
 					  text: '正在退出登录...',
 					  spinnerType: 'fading-circle'
 					})
-					axios.post('user/loginOut',qs.stringify({}))
+					axios.post('/exsd-web/user/loginOut',qs.stringify({}))
 					.then(function(res){
 						Indicator.close()
 						if(res.data.code === '10000'){

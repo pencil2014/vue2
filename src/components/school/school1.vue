@@ -129,7 +129,7 @@ export default {
 			})
 			let _this = this
 			let page = refresh ? 1 : this.page
-			axios.post('artic/list',qs.stringify({
+			axios.post('/exsd-web/artic/list',qs.stringify({
 				article_type_name: value,
 				pageSize: this.pageSize, 
 				page: page

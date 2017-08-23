@@ -52,7 +52,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('bankard/list',qs.stringify({}))
+		axios.post('/exsd-web/bankard/list',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks = res.data.data
@@ -65,7 +65,7 @@ export default {
 				Toast('连接失败，请检查网络是否正常!')
 			})
 
-			axios.post('verify/checkRealName',qs.stringify({}))
+			axios.post('/exsd-web/verify/checkRealName',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.checkRealName = res.data.data
@@ -109,7 +109,7 @@ export default {
 				  confirmButtonText: '删除'
 				}).then(action => {
 					if (action === "confirm") {
-						axios.post('bankard/delete',qs.stringify({id: item.id}))
+						axios.post('/exsd-web/bankard/delete',qs.stringify({id: item.id}))
 						.then(function(res){
 							if (res.data.code === '10000') {
 								_this.banks.splice(index, 1)
@@ -129,7 +129,7 @@ export default {
 				return
 			}
 			let _this = this
-			axios.post('bankard/setDefault',qs.stringify({id: item.id}))
+			axios.post('/exsd-web/bankard/setDefault',qs.stringify({id: item.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.banks.forEach( (element) => {

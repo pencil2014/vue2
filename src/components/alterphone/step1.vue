@@ -79,7 +79,7 @@ export default {
 	created () {
 		let _this = this;
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
 			} else {
@@ -102,7 +102,7 @@ export default {
 				return 
 			}
 			_this.submitBtn = true;
-			axios.post('user/updateRegPhone1',qs.stringify({
+			axios.post('/exsd-web/user/updateRegPhone1',qs.stringify({
 				phoneCode: _this.VeryCode
 			})).then(res =>{
 				if (res.data.code === '10000') {
@@ -121,7 +121,7 @@ export default {
 			//获取短信验证码
 			_this.countdown = true
 			Indicator.open({ spinnerType: 'fading-circle'})
-			axios.post('verify/sendPhoneCode',qs.stringify({
+			axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({
 				phone: _this.phone,
 				codeType: 3,
 				smsType: 1

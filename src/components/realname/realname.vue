@@ -135,7 +135,7 @@ export default {
 	},
 	created () {
 		let _this = this;
-		axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/verify/checkRealName',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.info = res.data.data
 				if(_this.info.status === '4'){
@@ -197,7 +197,7 @@ export default {
 			  text: '图片上传中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function (res) {
 				Indicator.close();
 				if (res.data.code === '10000') {
@@ -227,7 +227,7 @@ export default {
 			  text: '正在提交...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('verify/realName',qs.stringify({
+			axios.post('/exsd-web/verify/realName',qs.stringify({
 				realName: _this.realName,
 				idCard: _this.idCard,
 				frontPic: _this.imgArray[0],
@@ -306,7 +306,7 @@ export default {
 			  text: '正在获取...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('verify/sendPhoneCode',qs.stringify({
+			axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({
 				phone: _this.phone,
 				codeType: 6,
 				smsType: 1

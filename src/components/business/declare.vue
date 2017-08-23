@@ -147,7 +147,7 @@ export default {
 			}
 			this.repeatBtn = true
 			let _this = this
-			axios.post('user/personal',qs.stringify({userCode: 'M' + userCode}))
+			axios.post('/exsd-web/user/personal',qs.stringify({userCode: 'M' + userCode}))
 			.then(function(res){
 				_this.repeatBtn = false
 				if (res.data.code === '10000') {
@@ -169,7 +169,7 @@ export default {
 		},
 		querycode () {
 			let _this = this
-			axios.post('user/isEixt',qs.stringify({phone: this.buyerPhone}))
+			axios.post('/exsd-web/user/isEixt',qs.stringify({phone: this.buyerPhone}))
 			.then(function(res){
 				if (res.data.msg === 'true') {
 					let str = ''
@@ -235,7 +235,7 @@ export default {
 			})
 			let _this = this
 			this.repeatBtn = true
-			axios.post('declaration/insert',qs.stringify({
+			axios.post('/exsd-web/declaration/insert',qs.stringify({
 				phone: this.buyerPhone,
 				userCode: userCode,
 				commodityName: this.commodityName,

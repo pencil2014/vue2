@@ -50,6 +50,12 @@
 					<input type="file" class="uploadimg" id="uploadimg" @change='getfile' accept="image/*">
 				</div>
 			</div>
+			<div class="ex-declare-msg">
+				<div class="ex-declare-cnt-item">
+					<span>*附言</span>
+					<input type="text" placeholder="卖家ID让买家ID (如B335让M1024)" v-model.trim='transferMsg' maxlength="30">
+				</div>
+			</div>	
 		</div>
 		<button type='button'  :class="[ 'ex-declare-btn', {disableBtn:disableBtn}]" @click='next'>提交</button>
 	</div>
@@ -74,6 +80,7 @@ export default {
 			transferUserName: '',
 			transferMoney: '',
 			rangliMoney: '',
+			transferMsg: '',
 			modal:{
 				text:'单笔报单',
 				fixed: false,
@@ -85,7 +92,8 @@ export default {
 			let rule1 = this.transferUserName ? true : false
 			let rule2 = Number(this.transferMoney)  >= Number(this.rangliMoney) ? true : false
 			let rule3 = this.file ? true : false
-			if (rule1 && rule2 && rule3) {
+			let rule4 = this.transferMsg ? true : false
+			if (rule1 && rule2 && rule3 && rule4) {
 				return false
 			} else {
 				return true
@@ -95,7 +103,7 @@ export default {
 	created () {
 		this.id = this.$route.params.id
 		let _this = this
-		axios.post('declaration/get',qs.stringify({id: this.id}))
+		axios.post('/exsd-web/declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.rangliMoney = res.data.data.rangliMoney
@@ -172,6 +180,10 @@ export default {
 				MessageBox('提示', '让利款转款凭据不能为空！')
 				return
 			}
+			if ( !this.transferMsg) {
+				MessageBox('提示', '附言不能为空！')
+				return
+			}
 			if (this.fileList.length === 0) {
 				MessageBox('提示', '图片处理中，请稍后...')
 				return
@@ -182,7 +194,7 @@ export default {
 			let formData = new FormData()
 			formData.append("imgStr",this.fileList[0])
 
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				_this.repeatBtn = false
 				if (res.data.code === '10000') {
@@ -204,12 +216,13 @@ export default {
 			})
 			let _this = this
 			this.repeatBtn = true
-			axios.post('declaration/update',qs.stringify({
+			axios.post('/exsd-web/declaration/update',qs.stringify({
 				transferVoucher: this.resurl[0],
 				type: this.type,
 				id: this.id,
 				transferUserName: this.transferUserName,
-				transferMoney: this.transferMoney
+				transferMoney: this.transferMoney,
+				remark: this.transferMsg
 			}))
 			.then(function(res){
 				Indicator.close()
@@ -277,4 +290,8 @@ export default {
 
 .ex-declare-btn {margin: 0 2%; display: block; background-color: #047dcb; color: #fff; height: 5rem; border-radius: 0.4rem;  text-align: center; font-size: 1.6rem; width: 92%; margin: 2rem auto;}
 .ex-declare-btn:active{background-color:#0470b6; }
+
+
+.ex-declare-msg {background-color: #fff;}
+.ex-declare-msg .ex-declare-cnt-item {padding: 0.5rem 1rem; border-bottom: none;}
 </style>

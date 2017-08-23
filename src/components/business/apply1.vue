@@ -14,9 +14,9 @@
 				</div>
 				<div class="ex-field-wrapper">
 					<label class="ex-field-title">联系电话</label>
-					<input type="tel" placeholder="请输入联系人手机号" @input="standardPhone('shopsLinkphone')" v-model.trim="shopsLinkphone" maxlength="11">
+					<input type="tel" placeholder="请输入联系人手机号" @input="standardPhone('shopsLinkphone')" v-model.trim="shopsLinkphone" maxlength="11"  @focus="toView($event)">
 				</div>
-				<div class="ex-field-wrapper" @click="openRangeSlots">
+				<div class="ex-field-wrapper" @click="openRangeSlots($event)">
 					<label class="ex-field-title">经营范围</label>
 					<i class="iconfont arrow">&#xe606;</i>
 					<span class="float_right">{{classifyName || '请选择'}}</span>
@@ -136,6 +136,10 @@ export default {
 		back () {
 			this.$router.back();
 		},
+		toView (event) {
+			let $target = event.currentTarget
+			$target.scrollIntoView(true)
+		},
 		toapply2 () {
 			let obj = {
 				shopsEnterName: this.shopsEnterName,
@@ -157,6 +161,8 @@ export default {
 			this.isOpenRangeSlots = false
 		},
 		openRangeSlots () {
+			let $target = event.currentTarget
+			$target.scrollIntoView(true)
 			this.isOpenRangeSlots = true
 		},
 		onRangeChange (picker,value) {
@@ -247,7 +253,7 @@ export default {
 			  text: '图片上传中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('upload/pic_min',formData)
+			axios.post('/exsd-web/upload/pic_min',formData)
 			.then(function(res){
 				if (res.data.code === '10000') {
 					_this.facadePhoto = res.data.urls[0]
@@ -271,7 +277,7 @@ export default {
 			  text: '提交中...',
 			  spinnerType: 'fading-circle'
 			});
-			axios.post('shop/enter',qs.stringify({
+			axios.post('/exsd-web/shop/enter',qs.stringify({
 				shopsEnterName: _this.shopsEnterName,
 				shopsLinkman: _this.shopsLinkman,
 				shopsLinkphone: _this.shopsLinkphone,
@@ -316,7 +322,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			});	
-			axios.post('shop/enterDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -358,7 +364,7 @@ export default {
 			  text: '加载中...',
 			  spinnerType: 'fading-circle'
 			});
-			axios.post('shopClassification/list',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/shopClassification/list',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.slots[0].values.push(...res.data.data)
@@ -399,7 +405,7 @@ export default {
 }
 </script>
 <style scoped>
-.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;min-height: 100%;padding-bottom: 56px;}
+.ex-apply{width: 100%;background: #f4f5f7;color: #212a32;overflow-x: hidden;height: 100%;padding-bottom: 56px;position: fixed;overflow-y: scroll;}
 .ex-apply .picker-range{position: fixed;bottom: 0;width: 100%;}
 .ex-apply .ex-range-slots{height: 100%;width: 100%;border-bottom: solid 1px #d6d6d6;line-height: 40px;padding: 0 15px;box-sizing: border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;font-size: 1.6rem;color: #047dcb;}
 .ex-apply .ex-range-slots .left{float: left;}

@@ -146,7 +146,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-		axios.post('declaration/get',qs.stringify({id: this.id}))
+		axios.post('/exsd-web/declaration/get',qs.stringify({id: this.id}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -200,7 +200,7 @@ export default {
 		},
 		removeRevoke () {
 			let _this = this
-			axios.post('declaration/deleteRevoked',qs.stringify({id: this.id}))
+			axios.post('/exsd-web/declaration/deleteRevoked',qs.stringify({id: this.id}))
 				.then(function(res){
 					if (res.data.code === '10000') {
 						MessageBox({

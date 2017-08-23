@@ -9,11 +9,11 @@
 			<div class="ex-detail-integral">
 				<div class="ex-detail-integral-item">
 					<span>e积分总额</span>
-					<p>{{integralA || 0}}</p>
+					<p>{{integralA | checknum}}</p>
 				</div>
 				<div class="ex-detail-integral-item">
 					<span>激励e积分总额</span>
-					<p>{{integralB || 0}}</p>
+					<p>{{integralB | checknum}}</p>
 				</div>
 			</div>
 	 </div>
@@ -41,8 +41,8 @@
 							<td>{{ item.sellerCode || '--'}}</td>
 							<td>{{ item.buyersCode || '--' }}</td>
 							<td>{{ item.shoppName || '--' }}</td>
-							<td>{{ item.integralValue  || '--'}}</td>
-							 <td>{{ item.integralValueE || '--'}}</td>
+							<td>{{ item.integralValue  | checknum}}</td>
+							 <td>{{ item.integralValueE | checknum}}</td>
 							<td>{{ item.integralSource  || '--'}}</td>
 						</tr>
 					</tbody>
@@ -92,7 +92,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('integralRecord/list',qs.stringify({pageSize: this.pageSize, page: 1}))
+			axios.post('/exsd-web/integralRecord/list',qs.stringify({pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -121,7 +121,7 @@ export default {
 			})
 			let _this = this
 			this.loading = true
-			axios.post('integralRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
+			axios.post('/exsd-web/integralRecord/list',qs.stringify({pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				_this.nodateStatus = true
@@ -151,7 +151,18 @@ export default {
 			let month = time.getMonth() + 1
 			let date = time.getDate()
 			return [month,date].join('/')
-		}
+		},
+		checknum (value) {
+			if(!value){
+				return '0.00'
+			}else{
+				value += ''
+				let num = '0.00'
+				num = value >= 0 ? value : '0.00' 
+				num = value.indexOf('.') > -1 ? (value.substring(0,value.indexOf(".") + 3)*1).toFixed(2) : value + '.00' 
+				return num 
+			}
+		},
 	},
 	components: {
 		HeadTitle,

@@ -180,7 +180,7 @@ export default {
 		},
 		confirm () {
 			let _this = this;
-			axios.post('commodityInfo/batchGroup',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/batchGroup',qs.stringify({
 				groupId: _this.groupId || 0,
 				ids: _this.optionList.join(',')
 			})).then(function(res){
@@ -211,7 +211,7 @@ export default {
 			  confirmButtonText: '下架'
 			}).then(action => {
 				if (action === 'confirm') {
-					axios.post('commodityInfo/batchOffline',qs.stringify({
+					axios.post('/exsd-web/commodityInfo/batchOffline',qs.stringify({
 						ids: _this.optionList.join(',')
 					})).then(function(res){
 						if (res.data.code === '10000') {
@@ -241,7 +241,7 @@ export default {
 			  showCancelButton: true,
 			}).then(action => {
 				if (action === 'confirm') {
-					axios.post('commodityInfo/batchOnline',qs.stringify({
+					axios.post('/exsd-web/commodityInfo/batchOnline',qs.stringify({
 						ids: this.optionList.join(',')
 					})).then(function(res){
 						if (res.data.code === '10000') {
@@ -276,7 +276,7 @@ export default {
 					  text: '加载中...',
 					  spinnerType: 'fading-circle'
 					});
-					axios.post('commodityInfo/batchDelete',qs.stringify({
+					axios.post('/exsd-web/commodityInfo/batchDelete',qs.stringify({
 						ids: _this.optionList.join(',')
 					})).then(function(res){
 						Indicator.close()
@@ -312,7 +312,7 @@ export default {
 			});
 			_this.nodateStatus = false
 			_this.loading = true;
-			axios.post('commodityInfo/list',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/list',qs.stringify({
 				shopsId: _this.id,
 				page: _this.page,
 				pageSize: _this.pageSize,
@@ -340,7 +340,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			});
 			_this.nodateStatus = false
-			axios.post('commodityInfo/list',qs.stringify({
+			axios.post('/exsd-web/commodityInfo/list',qs.stringify({
 				shopsId: _this.id,
 				page: 1,
 				pageSize: _this.pageSize,
@@ -362,7 +362,7 @@ export default {
 		},
 		getGroupList () {
 			let _this = this
-			axios.post('commodityGroup/list',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/commodityGroup/list',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.groupList = res.data.data.list
 				} else {

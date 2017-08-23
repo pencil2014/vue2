@@ -80,7 +80,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({
+			axios.post('/exsd-web/shopClassification/queryShopsById',qs.stringify({
 				keywords: this.keyword,
 				page: 1,
 				pageSize: this.pageSize
@@ -128,7 +128,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: 1}))
+			axios.post('/exsd-web/shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: 1}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -155,7 +155,7 @@ export default {
 			})
 			this.loading = true
 			let _this = this
-			axios.post('shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: this.page}))
+			axios.post('/exsd-web/shopClassification/queryShopsById',qs.stringify({keywords: this.keyword, pageSize: this.pageSize, page: this.page}))
 			.then(function(res){
 				Indicator.close()
 				

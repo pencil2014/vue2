@@ -58,7 +58,7 @@ export default {
 		},
 		checkRealName () {
 			let _this = this;
-			axios.post('verify/checkRealName',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/verify/checkRealName',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.examine = res.data.data
 				} else {
@@ -70,7 +70,7 @@ export default {
 		},
 		getPersonal () {
 			let _this = this
-			axios.post('user/personal',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userType = res.data.data.userCode.slice(0,1)
 				} else {

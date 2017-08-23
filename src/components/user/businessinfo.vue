@@ -150,7 +150,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('shop/examine',qs.stringify({}))
+		axios.post('/exsd-web/shop/examine',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.examineData = res.data.data

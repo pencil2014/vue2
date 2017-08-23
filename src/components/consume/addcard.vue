@@ -99,7 +99,7 @@ export default {
 	},
 	created () {
 		let _this = this
-		axios.post('user/personal',qs.stringify({}))
+		axios.post('/exsd-web/user/personal',qs.stringify({}))
 		.then(function(res){
 			if (res.data.code === '10000') {
 				_this.phone = res.data.data.phone
@@ -130,7 +130,7 @@ export default {
 			_this.countdown = true
 			_this.countdownFn()
 			// 请求验证码接口
-			axios.post('verify/sendPhoneCode',qs.stringify({ 
+			axios.post('/exsd-web/verify/sendPhoneCode',qs.stringify({ 
 				phone: _this.phone,
 				codeType: 1,
 				smsType: 1
@@ -178,7 +178,7 @@ export default {
 			  spinnerType: 'fading-circle'
 			})
 			let _this = this
-			axios.post('bankard/add',qs.stringify({
+			axios.post('/exsd-web/bankard/add',qs.stringify({
 				cardNo: this.card2,
 				banks: this.bankname,
 				branch: this.branchname,

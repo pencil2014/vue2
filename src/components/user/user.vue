@@ -158,9 +158,9 @@ export default {
 		  spinnerType: 'fading-circle'
 		})
 		 axios.all([
-		 	axios.post('user/personal'),
-    		// axios.post('message/getCount'),
-    		axios.post('verify/checkRealName'),
+		 	axios.post('/exsd-web/user/personal'),
+    		// axios.post('/exsd-web/message/getCount'),
+    		axios.post('/exsd-web/verify/checkRealName'),
 		 ]).then(axios.spread(function (personal,realname){
 		 	Indicator.close()
 		 	if(personal.data.code === '10000' && realname.data.code === '10000'){
@@ -227,7 +227,7 @@ export default {
 		},
 		getenterdetail () {
 			let _this = this;
-			axios.post('shop/enterDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 				 	_this.enterstatus = res.data.data.status
@@ -244,7 +244,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('shop/shopExpandStatus',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {

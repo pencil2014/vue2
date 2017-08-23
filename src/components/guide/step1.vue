@@ -69,7 +69,7 @@ export default {
 			})
 			let _this = this;
 			_this.nodateStatus = false
-			axios.post('artic/list',qs.stringify({
+			axios.post('/exsd-web/artic/list',qs.stringify({
 				article_type_name: '使用指南',
 				pageSize: _this.pageSize,
 				page: 1
@@ -95,7 +95,7 @@ export default {
 			let _this = this
 			this.loading = true
 			_this.nodateStatus = false
-			axios.post('artic/list',qs.stringify({
+			axios.post('/exsd-web/artic/list',qs.stringify({
 				article_type_name: '使用指南',
 				pageSize: _this.pageSize,
 				page: 1

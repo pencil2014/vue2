@@ -176,7 +176,7 @@ export default {
 		let _this = this;
 
 		// 获取用户详情
-		axios.post('user/personal',qs.stringify({})).then(function(res){
+		axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.personalData = res.data.data
 				_this.sexSlots[0].defaultIndex = _this.personalData.sex == '0'? 1 : 0;
@@ -202,7 +202,7 @@ export default {
 			let date = value.getDate()
 			let brithday = [year,month,date].join('-')
 	    	// 改变用户资料
-			axios.post('user/update',qs.stringify({
+			axios.post('/exsd-web/user/update',qs.stringify({
 				brithday: brithday
 			})).then(res =>{
 				if (res.data.code === '10000') {
@@ -227,7 +227,7 @@ export default {
 	    	let sex = _this.sexIndex === '0' ? 'girl0' : 'boy0';
 	    	_this.personalData.logoImg = sex + _this.Random(1,5)
 	    	// 改变用户资料
-			axios.post('user/update',qs.stringify({
+			axios.post('/exsd-web/user/update',qs.stringify({
 				sex: _this.sexIndex,
 				picPath: _this.personalData.logoImg
 			})).then(res =>{

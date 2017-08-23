@@ -65,7 +65,7 @@ export default {
 	},
 	created () {
 		let _this = this
-			axios.post('user/personal',qs.stringify({}))
+			axios.post('/exsd-web/user/personal',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 					let integral = res.data.data.integral >= 0 ? res.data.data.integral : 0
@@ -88,7 +88,7 @@ export default {
 	methods: {
 		createRequestToken () {
 			let _this = this
-			axios.post('user/createRequestToken',qs.stringify({
+			axios.post('/exsd-web/user/createRequestToken',qs.stringify({
 				moduleId: 2
 			})).then(function(res){
 				if(res.data.code === '10000'){
@@ -134,7 +134,7 @@ export default {
 			})
 			let _this = this
 			_this.repeatBtn = true
-			axios.post('integral/toBalance',qs.stringify({integral: this.exchange,requestToken:this.requestToken}))
+			axios.post('/exsd-web/integral/toBalance',qs.stringify({integral: this.exchange,requestToken:this.requestToken}))
 			.then(function(res){
 				Indicator.close()
 				_this.repeatBtn = false
