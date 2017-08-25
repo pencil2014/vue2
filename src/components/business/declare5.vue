@@ -87,10 +87,10 @@
 					<img :src="checkdata.transferVoucher"  @click='preimg(checkdata.transferVoucher)'>
 				</div>
 			</div>
-			<div class="ex-declare-item">
+			<!-- <div class="ex-declare-item">
 				<span>附言</span>
 				<b>{{checkdata.remark || ''}}</b>
-			</div>
+			</div> -->
 		</div>
 		<div class="actionBtn">
 			<button type='button' v-if="checkdata.status ==='3'" class="ex-declare-btn" @click='repeat'>重新提交</button>

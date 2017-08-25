@@ -182,14 +182,14 @@ export default {
 .ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
 .ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203)}*/
 
-.ex-detail-integral {margin-top: 4.5rem; padding: 0.5rem 0;overflow: hidden; background-color: #fff;border-bottom: solid 1px #ebebeb;position: fixed; width: 100%;display: table;}
+.ex-detail-integral {margin-top: 4.5rem; padding: 0.5rem 0;overflow: hidden; background-color: #fff;/*border-bottom: solid 1px #ebebeb;*/position: fixed; width: 100%;display: table;}
 .ex-detail-integral span {color: #cde5ff;font-size: 1.6rem;color: rgb(142,184,225);}
-.ex-detail-integral p{color: #fff;font-size: 2.8rem; padding-top: 0.5rem;color: rgb(4,125,203);}
+.ex-detail-integral p{color: #fff;font-size: 2.4rem; padding-top: 0.5rem;color: rgb(4,125,203);}
 .ex-detail-integral .ex-detail-integral-item { width: 50%; text-align: center;color: rgb(4,125,203);display: table-cell;}
 .ex-detail-integral .ex-detail-integral-item .month-detail{}
 .ex-detail-integral .ex-detail-integral-item i.iconfont{position: absolute;top: 50%;display: block;font-size: 2rem;right: 0.5rem;margin-top: -0.5rem}
 /*.ex-detail-cnt { padding-top: 12rem; }*/
-.ex-detail-cnt{position: fixed; top: 11rem; bottom: 0; overflow: auto;background-color: #f4f5f7;}
+.ex-detail-cnt{position: fixed; top: 11rem; bottom: 0; overflow: auto;background-color: #f4f5f7;border-top: solid 1px #ebebeb;}
 .ex-detail-cnt .table{background: #fff;}
 .table tr:last-child {border-bottom: none;}
 </style>

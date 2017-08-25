@@ -1,7 +1,7 @@
 <template>
 	<div class="ex-modal">
 		<div class="ex-content">
-			<div><img src="../../assets/images/bg_notice.png" alt=""></div>
+			<div class="imgbox"><img src="../../assets/images/bg_notice.png" alt=""></div>
 			<div class="ex-box">
 				<h3 class="title">{{modal.title || '公告'}}</h3>
 				<div class="text" v-html="formatHtml"></div>
@@ -29,7 +29,7 @@ export default{
 	},
 	computed: {
 		formatHtml () {
-			return this.modal.text.replace(/style="[^"]+"/ig,"")
+			return this.modal.content.replace(/style="[^"]+"/ig,"").replace(/(&nbsp;){3,}/ig, "&nbsp;&nbsp;")
 		}
 	},
 	methods: {
@@ -53,6 +53,8 @@ export default{
 .ex-modal .ex-box .option span.cancle{color: #666;}
 .ex-modal .ex-box .option span:active{background: #ebebeb;}
 .ex-modal .ex-box .option .confirm{ color: #047dcb; font-size: 1.6rem;}
+.imgbox img{ width: 100%; }
+
 </style>
 
 <style>

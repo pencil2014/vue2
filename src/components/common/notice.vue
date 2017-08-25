@@ -60,7 +60,7 @@ export default{
 .ex-modal .ex-box .option span:active{background: #ebebeb;}
 .ex-modal .ex-box .option .confirm{ color: #047dcb; font-size: 1.6rem;}
 
-.ex-modal .ex-content .imgbox img{width: 100%;}
+.ex-modal .ex-content .imgbox img{width: 100%;max-height: 250px;}
 </style>
 
 <style>

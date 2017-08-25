@@ -50,12 +50,12 @@
 					<input type="file" class="uploadimg" id="uploadimg" @change='getfile' accept="image/*">
 				</div>
 			</div>
-			<div class="ex-declare-msg">
+			<!-- <div class="ex-declare-msg">
 				<div class="ex-declare-cnt-item">
 					<span>*附言</span>
 					<input type="text" placeholder="卖家ID让买家ID (如B335让M1024)" v-model.trim='transferMsg' maxlength="30">
 				</div>
-			</div>	
+			</div> -->	
 		</div>
 		<button type='button'  :class="[ 'ex-declare-btn', {disableBtn:disableBtn}]" @click='next'>提交</button>
 	</div>
@@ -92,8 +92,8 @@ export default {
 			let rule1 = this.transferUserName ? true : false
 			let rule2 = Number(this.transferMoney)  >= Number(this.rangliMoney) ? true : false
 			let rule3 = this.file ? true : false
-			let rule4 = this.transferMsg ? true : false
-			if (rule1 && rule2 && rule3 && rule4) {
+			// let rule4 = this.transferMsg ? true : false
+			if (rule1 && rule2 && rule3) {
 				return false
 			} else {
 				return true
@@ -180,10 +180,10 @@ export default {
 				MessageBox('提示', '让利款转款凭据不能为空！')
 				return
 			}
-			if ( !this.transferMsg) {
-				MessageBox('提示', '附言不能为空！')
-				return
-			}
+			// if ( !this.transferMsg) {
+			// 	MessageBox('提示', '附言不能为空！')
+			// 	return
+			// }
 			if (this.fileList.length === 0) {
 				MessageBox('提示', '图片处理中，请稍后...')
 				return
@@ -222,7 +222,7 @@ export default {
 				id: this.id,
 				transferUserName: this.transferUserName,
 				transferMoney: this.transferMoney,
-				remark: this.transferMsg
+				// remark: this.transferMsg
 			}))
 			.then(function(res){
 				Indicator.close()

@@ -44,10 +44,10 @@
 					<img :src="checkdata.transferVoucher"  @click='preimg(checkdata.transferVoucher)'>
 				</div>
 			</div>
-			<div class="ex-declare-item">
+			<!-- <div class="ex-declare-item">
 				<span>附言</span>
 				<b>{{checkdata.remark  || ''}}</b>
-			</div>
+			</div> -->
 		</div>
 		<img-preview :imageData='imgpre' v-show='imgpre.show' @hideImg='hidepre'></img-preview>
 	</div>

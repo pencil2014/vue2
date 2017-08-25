@@ -125,6 +125,9 @@ export default {
 	},
 	filters: {
 		checknum (value) {
+			if(!value){
+				return '0.00'
+			}
 			value += ''
 			let num = '0.00'
 			num = value >= 0 ? value : '0.00' 
