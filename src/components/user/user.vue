@@ -62,12 +62,6 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
-					<!-- <li @click="toRealName">
-						<img src="../../assets/images/renzhen.png" alt="">
-						<span>实名认证</span>
-						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
-						<label for="">{{realnamestatus}}</label>
-					</li> -->
 					<li @click="toRealName" v-if="!isShop">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>个人实名认证</span>
@@ -159,13 +153,11 @@ export default {
 		})
 		 axios.all([
 		 	axios.post('/exsd-web/user/personal'),
-    		// axios.post('/exsd-web/message/getCount'),
     		axios.post('/exsd-web/verify/checkRealName'),
 		 ]).then(axios.spread(function (personal,realname){
 		 	Indicator.close()
 		 	if(personal.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
-		 		//_this.count = count.data.data.count<=99 ? count.data.data.count : '99+';
 		 		_this.checkRealName = realname.data.data
 		 		_this.realType = _this.checkRealName.hasOwnProperty('type') ? _this.checkRealName.type : false
 		 		if(_this.userinfo.userCode.slice(0,1) === 'B'){
@@ -174,7 +166,6 @@ export default {
 		 		}
 		 	}else{
 		 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
-		 		// count.data.code !== '10000' ? Toast(count.data.msg) : ''
 		 		realname.data.code !== '10000' ? Toast(realname.data.msg) : ''
 		 	}
 		 })).catch(function(){

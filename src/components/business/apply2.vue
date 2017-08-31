@@ -191,6 +191,10 @@ export default {
 			this.$router.back();
 		},
 		submit () {
+			if(!this.provinceId){
+				MessageBox('提示','行政区域不能为空！')
+				return
+			}
 			if(!this.shopsAddress){
 				MessageBox('提示','请输入详细地址')
 				return 

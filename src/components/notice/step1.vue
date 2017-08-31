@@ -67,6 +67,7 @@ export default {
 			let _this = this;
 			_this.nodateStatus = false
 			axios.post('/exsd-web/message/list',qs.stringify({
+				platform: '2',
 				pageSize: _this.pageSize,
 				page: 1,
 				messageType: 3
@@ -80,7 +81,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('连接失败，请检查网络是否正常!')
 			})
 			this.$refs.loadmore.onTopLoaded();
 		},
@@ -92,6 +93,7 @@ export default {
 			this.loading = true
 			_this.nodateStatus = false
 			axios.post('/exsd-web/message/list',qs.stringify({
+				platform: '2',
 				pageSize: _this.pageSize,
 				page: _this.page,
 				messageType: 3
@@ -106,7 +108,7 @@ export default {
 					Toast(res.data.msg)
 				}
 			}).catch(function(){
-				Indicator.open({ spinnerType: 'fading-circle'})
+				Toast('连接失败，请检查网络是否正常!')
 			})
 		}
 	},

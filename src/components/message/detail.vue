@@ -2,11 +2,12 @@
 	<div class="ex-warpper">
 		<HeadTitle :title="modal" @callback="back"></HeadTitle>
 		<div class="ex-content">
-			<div class="ex-head">
-				<p class="title" v-html="content.messageTitle"></p>
-				<p class="time" v-text="time"></p>
-			</div>
+				<!-- <div class="ex-head">
+					<p class="title" v-html="content.messageTitle"></p>
+					<p class="time" v-text="time"></p>
+				</div> -->
 			<div class="text" v-html="content.messageContent"></div>
+			<div class="bottom"><p class="time">{{content.pushTime | formatTime}}</p></div>
 		</div>
 	</div>
 </template>
@@ -28,28 +29,13 @@ export default {
 	computed:{
 		id () {
 			return this.$route.params.id
-		},
-		time () {
-			if(!this.content.pushTime){
-				return;
-			}else{
-				let time = new Date(this.content.pushTime*1000)
-				let year = time.getFullYear()
-				let month = time.getMonth() +1
-				let date = time.getDate()
-				let hours = time.getHours()
-				let minutes = time.getMinutes()
-				let time1 = [year,month,date].join('-')
-				let time2 = [hours,minutes].join(':')
-				return time1 + '    ' +time2;
-			}
 		}
 	},
 	created () {
 		let _this = this
-		axios.post('/exsd-web/message/get',qs.stringify({
+		axios.post('/exsd-message/web/message/read',qs.stringify({
 			id: _this.id,
-			type: 1
+			messageType: 1
 		})).then(function(res){
 			if (res.data.code === '10000') {
 				_this.content = res.data.data
@@ -67,6 +53,23 @@ export default {
 		back(){
 			this.$router.back();
 		},
+	},
+	filters: {
+		formatTime (stamp) {
+			if(!stamp){
+				return;
+			}else{
+				let time = new Date(stamp*1000)
+				let year = time.getFullYear()
+				let month = time.getMonth() +1
+				let date = time.getDate()
+				let hours = time.getHours()
+				let minutes = time.getMinutes()
+				let time1 = [year,month,date].join('-')
+				let time2 = [hours,minutes].join(':')
+				return time1 + '    ' +time2;
+			}
+		}
 	}
 }
 </script>
@@ -77,5 +80,6 @@ export default {
 .ex-head{border-bottom: solid 1px #ebebeb;line-height: 25px;}
 .ex-head .title {font-size: 2rem;color: #212a32;}
 .ex-head .time {font-size: 1rem;color: #aaafb6;}
-.ex-content .text{margin-top: 10px;}
+.ex-content .text{margin-top: 10px;word-break: break-all;}
+.ex-warpper .bottom p{text-align: right;padding-top: 20px;color: #999;}
 </style>

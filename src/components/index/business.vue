@@ -276,12 +276,12 @@ export default {
 			repeatBtn: false,
 			enterstatus: '',
 			model: {
-		  	title: '公  告',
+		  	title: '重要通知',
 		  	text: 
-		  	'<b>全国各区域代理、联盟商家、消费者会员：</b><p>为了进一步促进消费分享经济的良性规范发展，依据国家相关部门指导性意见，特制定如下消费分享普惠政策。</p><p>1.会员（M）当月消费总额大于或等于E积分当月分享总额2倍以上的，次月，e积分享受公众比例。</p><p>2.会员（M）当月消费总额小于e积分当月分享总额2倍的，次月e积分享受：公众比例*系统月度参数值，按月以此类推。</p><p>（例如：M会员身份e积分100万，当月分享为3万左右，当月消费额大于或等于6万左右者，次月才能享受e积分公众比例。当月消费小于6万左右者，则享受公众比例*系统参数值）</p><p>3.系统识别计算从8月1日0点为起点，从9月1日0点执行。</p><p>4.本公告内容最终解释权归属于市场战略管理委员会。电话：<a href="tel:4006543888">4006543888</a></p><p>注：（1）公众比例是指《平台规则》设置的逐天消费分享比例，即逐天1‰左右</p><p>（2）详情说明可去：我的->公告查看【关于2017年8月20日《公告》说明】</p><p class="right">浙江易享时代商业服务（集团）有限公司市场战略管理委员会<br/>2017.8.20</p></div>',
+		  	'<p>各区域代理．联盟商家，消费者，以下政策是稳定平台的一项重大变革，e享时代分享系统将于2017年8月31日零时进行全面的升级，升级后的e享时代平台执行</p><p>享积分操作提取30%其中5%为平台服务费和储备金，25%作为消费基金</p><p>此次系统升级为即将开通的电子商城做筹备，届时e享时代系统开放网络购物商城，消费者可通过手中的消费基金兑换平台内的商品，自提取成功后用于当月抵扣持续消费。</p><p>升级当日分享比例将统一由系统自动计算，9月1日恢复正常比例</p>',
 		  	confirm: '我知道了',
 		  	end: new Date('2018-8-14').getTime(),
-		  	identity: 'notice_1',
+		  	identity: 'notice_2',
 		  	hide: false // false为默认显示， true为隐藏
 		  },
 		  isDownload: false,
@@ -604,7 +604,8 @@ export default {
 background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; /*border:2px solid #fff;*/ margin-bottom: 0.5rem;}
 .ex-index-logo a img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
-.ex-index-logo .vip {position: absolute; top: 4rem; right: 1.2rem;}
+.ex-index-logo .code {margin-top: 1rem;}
+.ex-index-logo .vip {position: absolute; top: 3.6rem; right:1.6rem;}
 .ex-index-logo .vip img{ height: 1.5rem; }
 .ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
 .ex-index-money p{ color: #9bcbea; font-weight: 300;}

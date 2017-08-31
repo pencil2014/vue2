@@ -28,10 +28,10 @@
 				<span>消费金额</span>
 				<b>￥{{checkdata.consumptionMoney}}</b>
 			</div>
-			<!-- <div class="ex-declare-item">
+			<div class="ex-declare-item">
 				<span>附言</span>
 				<b>{{checkdata.remark  || ''}}</b>
-			</div> -->
+			</div>
 			<!-- <div class="ex-declare-item" v-if='checkdata.rangliMoney'>
 				<span>让利款</span>
 				<b>￥{{checkdata.rangliMoney}}</b>

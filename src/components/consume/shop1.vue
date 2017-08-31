@@ -92,7 +92,7 @@ export default {
 	},
 	computed: {
 		disableBtn () {
-			let rule = (this.shopName && this.addressDetail && this.shopsLinkman && this.shopsLinkphone) ? false : true
+			let rule = (this.shopName && this.addressDetail && this.shopsLinkman && this.shopsLinkphone && this.provinceId) ? false : true
 			let rule2 = /^1\d{10}$/.test(this.shopsLinkphone)
 			return (rule || !rule2)
 		},
@@ -274,6 +274,10 @@ export default {
 			}
 			if (!this.shopName) {
 				MessageBox('提示', '商家名称不能为空！')
+				return
+			}
+			if (!this.provinceId) {
+				MessageBox('提示', '联系地址未加载完成，请稍后！')
 				return
 			}
 			if (!this.addressDetail) {

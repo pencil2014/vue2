@@ -71,8 +71,8 @@ const Classify = resolve => require(['../components/partner/classify'], resolve)
 const Search = resolve => require(['../components/partner/search'], resolve)
 const City = resolve => require(['../components/partner/city'], resolve)
 
-const Message = resolve => require(['../components/message/message'], resolve)
-const Message2 = resolve => require(['../components/message/detail'], resolve)
+// const Message = resolve => require(['../components/message/message'], resolve)
+// const Message2 = resolve => require(['../components/message/detail'], resolve)
 
 const Settings = resolve => require(['../components/settings/settings'], resolve)
 const Personal = resolve => require(['../components/personal/personal'], resolve)
@@ -389,16 +389,16 @@ export default new Router({
       name: 'City',
       component: City
     },
-    {
-      path: '/message',
-      name: 'Message',
-      component: Message
-    },
-    {
-      path: '/messagedetail/:id',
-      name: 'Message2',
-      component: Message2
-    },
+    // {
+    //   path: '/message',
+    //   name: 'Message',
+    //   component: Message
+    // },
+    // {
+    //   path: '/messagedetail/:id',
+    //   name: 'Message2',
+    //   component: Message2
+    // },
     {
       path: '/settings',
       name: 'Settings',

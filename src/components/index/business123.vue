@@ -1,44 +1,5 @@
 <template>
 	<div class="ex-index">
-		<!-- <div class="ex-index-box">
-			<div class="ex-index-toplink">
-				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</div>  
-				<div class="links">
-					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
-					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
-				</div>
-			</div>
-			<div class="ex-index-userinfo">
-				<div class="ex-index-head">
-					<div class="ex-index-img" >
-						<a href="javascript:;" @click="gouser">
-							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
-						</a>
-						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
-							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> e享会员
-						</p>
-					</div>
-					<p class="name">{{userinfo.userName}}</p>
-					<p class="id">ID:{{userinfo.userCode}}</p>
-				</div>
-				<div class="ex-index-data">
-					<ul>
-						<li><b>账户余额:</b><span>{{userinfo.overMoney | checknum}}</span></li>
-						<li><b>提现金额:</b><span>{{userinfo.freezeMoney | checknum}}</span></li>
-						<li><b>e积分:</b><span>{{userinfo.integralA}}</span></li>
-						<li><b>激励e积分:</b><span>{{userinfo.integralB}}</span></li>
-						<li><b>享积分:</b><span>{{userinfo.integral}}</span></li>
-						<li><b>平台商家数:</b><span>{{sysData.businessNum}}</span></li>
-						<li><b>昨日交易总额:</b><span>{{sysData.totalShareMoney}}</span></li>
-						<li><b>e享比例:</b><span>{{sysData.eProportion}}</span></li>
-						<li><b>激励比例:</b><span>{{sysData.jeProportion}}</span></li>
-						<li><b>昨日分享平均值:</b><span>{{sysData.yesterdayMoney}}</span></li>
-					</ul>
-				</div>
-			</div>
-
-		</div> -->
-	
 		<div class="ex-index-header">
 			<div class="ex-index-user">
 				<div class="ex-index-logo">
@@ -207,7 +168,7 @@
 		</div>
 
 		<app-nav></app-nav>
-		<ex-notice :modal='model'  @confirm='confirm' v-show='model.show'></ex-notice>
+		<ex-notice :modal='model'  @confirm='confirm' v-show='showModel'></ex-notice>
 		<!-- 系统维护提示 -->
 		 <!-- <div class="ex-weihu" v-if=''>
 		 		<div class="ex-weihu-cnt">
@@ -274,19 +235,18 @@ export default {
 			userVipStatus: {},
 			customerService: false,
 			repeatBtn: false,
-			// msgIds: [],
-		  // msgInfo: [],
-		  // msgIndex: 0,
+			msgIds: [],
+		  msgInfo: [],
+		  msgIndex: 0,
 			enterstatus: '',
 			model: {
-		  	title: '温馨提示',
-		  	text: 
-		  	'<b>尊敬的e享时代用户：</b><p>为了保障系统稳定、精确运行，平台决定6月2日起每日凌晨0:00-2:00在会员积分自动转换时对系统进行维护；为了数据传输安全快捷，部分明细只显示近期（7天左右）数据。请各会员及时查看明细记录，特此通告！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"><p>深圳易享时代运营服务有限公司</p><p>二〇一七年七月二十六日</p></div>',
-		  	confirm: '知道了',
-		  	end: new Date('2017-7-14').getTime(),
-		  	identity: 'notice',
-		  	show: false // false为默认显示， true为隐藏
+		  	title: '',
+		  	content: '',
+		  	author: '',
+		  	publishTime: '',
+		  	confirm: '我知道了'
 		  },
+		  showModel: false,
 		  isDownload: false,
 		  androidUrl: '',
 		  isAndroid: false,
@@ -299,40 +259,40 @@ export default {
 		exNotice
 	},
 	methods: {
-		// hasNotice () {
-		// 	let _this = this
-		// 	axios.post('/exsd-web//exsd-message/web/Notice/hasNotice',qs.stringify({})).then(function(res){
-		// 		if (res.data.code === '10000') {
-		// 			if (res.data.data && res.data.data.length > 0) {
-		// 				_this.msgInfo = res.data.data
-		// 				_this.model = res.data.data[0]
-		// 				if (res.data.data.length > 1) {
-		//   				  _this.model.confirm = '下一条'
-		// 	       } else {
-		// 	    	    _this.model.confirm = '我知道了'
-		// 	       }
-		// 	          _this.model.show = true
-		// 			}
+		hasNotice () {
+			let _this = this
+			axios.post('/exsd-message/web/Notice/hasNotice',qs.stringify({platform: '2'})).then(function(res){
+				if (res.data.code === '10000') {
+					if (res.data.data && res.data.data.length > 0) {
+						_this.msgInfo = res.data.data
+						_this.model = res.data.data[0]
+						if (res.data.data.length > 1) {
+		  				  _this.model.confirm = '下一条'
+			      } else {
+			    	    _this.model.confirm = '我知道了'
+			      }
+			      _this.showModel = true
+					}
 					
-		// 		} else {
-		// 			Toast(res.data.msg)
-		// 		}
-		// 	}).catch(function(){
-		// 			Toast('连接失败，请检查网络是否正常!')
-		// 	})
-		// },
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 
-		// readNotice () {
-		// 	let _this = this
-		// 	axios.post('/exsd-web//exsd-message/web/Notice/readNotice',qs.stringify({ids: this.msgIds})).then(function(res){
-		// 		if (res.data.code === '10000') {	
-		// 		} else {
-		// 			Toast(res.data.msg)
-		// 		}
-		// 	}).catch(function(){
-		// 			Toast('连接失败，请检查网络是否正常!')
-		// 	})
-		// },
+		readNotice () {
+			let _this = this
+			axios.post('/exsd-message/web/Notice/readNotice',qs.stringify({'ids[]': this.msgIds.join(',')})).then(function(res){
+				if (res.data.code === '10000') {
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		toFillForm () {
 			let path = '/fillform/step1'
 			if(this.ExpandStatus === '5'){
@@ -375,17 +335,18 @@ export default {
 			}
 		},
 		confirm () {
-			// this.msgIds.push(this.model.id)
-			// this.msgIndex += 1
-			// let num = this.msgIndex + 1
-			// if (this.msgInfo.length >= num) {
-			// 	this.model = this.msgInfo[this.msgIndex]
-			// 	this.model.confirm = (this.msgInfo.length === num) ? '我知道了' : '下一条'
-			// } else {
-			// 	this.model.show = false
-			// 	this.readNotice()
-			// }
-			this.model.show = false
+			this.msgIds.push(this.model.id)
+			this.msgIndex += 1
+			let num = this.msgIndex + 1
+			if (this.msgInfo.length >= num) {
+				this.model = this.msgInfo[this.msgIndex]
+				this.model.confirm = (this.msgInfo.length === num) ? '我知道了' : '下一条'
+				this.showModel = true
+			} else {
+				this.showModel = false
+				this.readNotice()
+			}
+
 		},
 		changetoken () {
 			if (this.repeatBtn) {
@@ -397,7 +358,7 @@ export default {
 			})
 			let _this = this
 			this.repeatBtn = true
-			axios.post('/exsd-web//exsd-web/user/switchUser',qs.stringify({type: 2}))
+			axios.post('/exsd-web/user/switchUser',qs.stringify({type: 2}))
 				.then(function(res){
 					Indicator.close()
 					_this.repeatBtn = false
@@ -458,7 +419,7 @@ export default {
 		},
 		getandroidUrl () {
 			let _this = this
-			axios.post('/exsd-web//exsd-web/appversion/queryUrl',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/appversion/queryUrl',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.androidUrl = res.data.data
 				} else {
@@ -474,7 +435,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web//exsd-web/user/personal',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/personal',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.userinfo = res.data.data
@@ -494,7 +455,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web//exsd-web/user/sysIndex',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/sysIndex',qs.stringify({})).then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
 					_this.sysData = res.data.data
@@ -510,7 +471,7 @@ export default {
 		},
 		getexamine () {
 			let _this = this
-			axios.post('/exsd-web//exsd-web/user/examine',qs.stringify({})).then(function(res){
+			axios.post('/exsd-web/user/examine',qs.stringify({})).then(function(res){
 				if (res.data.code === '10000') {
 					_this.userVipStatus = res.data.data
 					// window.localStorage.setItem('userVipStatus', JSON.stringify(res.data.data))
@@ -528,7 +489,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web//exsd-web/shop/enterDetail',qs.stringify({}))
+			axios.post('/exsd-web/shop/enterDetail',qs.stringify({}))
 			.then(function(res){
 				if (res.data.code === '10000') {
 				 	_this.enterstatus = res.data.data.status
@@ -546,7 +507,7 @@ export default {
 			  text: '数据加载中...',
 			  spinnerType: 'fading-circle'
 			})
-			axios.post('/exsd-web//exsd-web/shop/shopExpandStatus',qs.stringify({}))
+			axios.post('/exsd-web/shop/shopExpandStatus',qs.stringify({}))
 			.then(function(res){
 				Indicator.close()
 				if (res.data.code === '10000') {
@@ -588,42 +549,13 @@ export default {
 	watch: {
 	},
 	created () {
-		// let phone = window.localStorage.getItem('phone')
-		// let userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
-		// if (!!userinfo && phone === userinfo.phone) {
-		// 	// 获取用户详情
-		// 	let personal = this.$getcache('user/personal')
-		// 	if (personal) {
-		// 		this.userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
-		// 	} else {
-		// 		this.getuserinfo()
-		// 	}
-		// 	// 获取平台信息
-		// 	let sysIndex = this.$getcache('user/sysIndex')
-		// 	if (sysIndex) {
-		// 		this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
-		// 	} else {
-		// 		this.getsysIndex()
-		// 	}
-		// 	//获取会员审核详情信息
-		// 	let examine = this.$getcache('user/examine')
-		// 	if (examine) {
-		// 		this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-		// 	} else {
-		// 		this.getexamine()
-		// 	}
-		// } else {
-		// 	this.getuserinfo()
-		// 	this.getsysIndex()
-		// 	this.getexamine()
-		// 	this.getenterdetail()
-		// }
 		this.getuserinfo()
 		this.getsysIndex()
 		this.getexamine()
 		this.getenterdetail()
 		this.getandroidUrl()
 		this.shopExpandStatus()
+		this.hasNotice()
 		// if (!window.localStorage.getItem('batchNotice')) {
 		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
 		// 	window.localStorage.setItem('batchNotice', 'true')

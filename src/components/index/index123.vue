@@ -1,41 +1,5 @@
 <template>
 	<div class="ex-index">
-		<!-- <div class="ex-index-box">
-			<div class="ex-index-toplink">
-				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为商家</div>  
-				<div class="links">
-					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
-					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
-				</div>
-			</div>
-			<div class="ex-index-userinfo">
-				<div class="ex-index-head">
-					<div class="ex-index-img" >
-						<a href="javascript:;" @click="gouser">
-							<img :src="'/static/'+userinfo.logoImg+'.png'"  v-show="userinfo.logoImg">
-						</a>
-						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
-							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> e享会员
-						</p>
-					</div>
-					<p class="name">{{userinfo.userName}}</p>
-					<p class="id">ID:{{userinfo.userCode}}</p>
-				</div>
-				<div class="ex-index-data">
-					<ul>
-						<li><b>账户余额:</b><span>{{userinfo.overMoney | checknum}}</span></li>
-						<li><b>提现金额:</b><span>{{userinfo.freezeMoney | checknum}}</span></li>
-						<li><b>e积分:</b><span>{{userinfo.integralA}}</span></li>
-						<li><b>享积分:</b><span>{{userinfo.integral}}</span></li>
-						<li><b>平台商家数:</b><span>{{sysData.businessNum}}</span></li>
-						<li><b>昨日交易总额:</b><span>{{sysData.totalShareMoney}}</span></li>
-						<li><b>e享比例:</b><span>{{sysData.eProportion}}</span></li>
-						<li><b>昨日分享平均值:</b><span>{{sysData.yesterdayMoney}}</span></li>
-					</ul>
-				</div>
-			</div>
-		</div> -->
-		
 		<div class="ex-index-header">
 			<div class="ex-index-user">
 				<div class="ex-index-logo">
@@ -184,7 +148,7 @@
 		</div>
 		<app-nav></app-nav>
 
-		<ex-notice :modal='model'  @confirm='confirm' v-show='model.show'></ex-notice>
+		<ex-notice :modal='model'  @confirm='confirm' v-show='showModel'></ex-notice>
 
 		<!-- 系统维护提示 -->
 		 <!-- <div class="ex-weihu" v-if=''>
@@ -257,13 +221,13 @@ export default {
 		  msgInfo: [],
 		  msgIndex: 0,
 		  model: {
-		  	title: '温馨提示',
-		  	content: '<p>为了符合数据规范化透明化，现把昨日交易总额更改为显示历史应分享单元值。参数为历史剩下的分享单元总额。请刷新页面自动更新！</p><p>感谢您对e享时代的支持与信任！如有任何疑问，敬请致电客服:<a href="tel:4006543888">4006543888</a>,<a href="tel:075523300320">0755-23300320</a></p><div class="inscribe"></div>',
-		  	author: '李行亮',
-		  	publishTime: '2017-8-15',
-		  	confirm: '我知道了',
-		  	show: true
+		  	title: '',
+		  	content: '',
+		  	author: '',
+		  	publishTime: '',
+		  	confirm: '我知道了'
 		  },
+		  showModel: false,
 		  isDownload: false,
 		  androidUrl: '',
 		  isAndroid: false,
@@ -277,17 +241,17 @@ export default {
 	methods: {
 		hasNotice () {
 			let _this = this
-			axios.create({baseURL:'http://192.168.1.98:9090'}).post('/exsd-message/web/Notice/hasNotice',qs.stringify({})).then(function(res){
+			axios.post('/exsd-message/web/Notice/hasNotice',qs.stringify({platform: '2'})).then(function(res){
 				if (res.data.code === '10000') {
 					if (res.data.data && res.data.data.length > 0) {
 						_this.msgInfo = res.data.data
 						_this.model = res.data.data[0]
 						if (res.data.data.length > 1) {
 		  				  _this.model.confirm = '下一条'
-			       } else {
+			      } else {
 			    	    _this.model.confirm = '我知道了'
-			       }
-			          _this.model.show = true
+			      }
+			      _this.showModel = true
 					}
 					
 				} else {
@@ -300,8 +264,8 @@ export default {
 
 		readNotice () {
 			let _this = this
-			axios.post('/exsd-message/web/Notice/readNotice',qs.stringify({ids: this.msgIds})).then(function(res){
-				if (res.data.code === '10000') {	
+			axios.post('/exsd-message/web/Notice/readNotice',qs.stringify({'ids[]': this.msgIds.join(',')})).then(function(res){
+				if (res.data.code === '10000') {
 				} else {
 					Toast(res.data.msg)
 				}
@@ -345,17 +309,15 @@ export default {
 			this.msgIds.push(this.model.id)
 			this.msgIndex += 1
 			let num = this.msgIndex + 1
-			console.log(this.msgInfo.length >= num)
 			if (this.msgInfo.length >= num) {
 				this.model = this.msgInfo[this.msgIndex]
 				this.model.confirm = (this.msgInfo.length === num) ? '我知道了' : '下一条'
-				this.model.show = true
+				this.showModel = true
 			} else {
-				this.model.show = false
+				this.showModel = false
 				this.readNotice()
 			}
 
-			// this.model.show = false
 		},
 		changetoken () {
 			if (this.repeatBtn) {
@@ -520,37 +482,6 @@ export default {
 	watch: {
 	},
 	created () {
-		// let phone = window.localStorage.getItem('phone')
-		// let userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
-		// if (!!userinfo && phone === userinfo.phone) {
-		// 	// 获取用户详情
-		// 	let personal = this.$getcache('user/personal')
-		// 	if (personal) {
-		// 		this.userinfo = JSON.parse(window.localStorage.getItem('userinfo'))
-		// 	} else {
-		// 		this.getuserinfo()
-		// 	}
-		// 	// 获取平台信息
-		// 	let sysIndex = this.$getcache('user/sysIndex')
-		// 	if (sysIndex) {
-		// 		this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
-		// 	} else {
-		// 		this.getsysIndex()
-		// 	}
-		// 	//获取会员审核详情信息
-		// 	this.getexamine()
-		// 	// let examine = this.$getcache('user/examine')
-		// 	// if (examine) {
-		// 	// 	this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-		// 	// } else {
-		// 	// 	this.getexamine()
-		// 	// }
-		// } else {
-		// 	this.getuserinfo()
-		// 	this.getsysIndex()
-		// 	this.getexamine()
-		// }
-
 		this.getuserinfo()
 		this.getsysIndex()
 		this.getexamine()

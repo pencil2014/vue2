@@ -50,16 +50,22 @@ export default {
 	},
 	created () {
 		let _this = this
+		Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
 		axios.post('/exsd-web/message/get',qs.stringify({
 			id: _this.id,
 			type: 2
 		})).then(function(res){
+			Indicator.close();
 			if (res.data.code === '10000') {
 				_this.content = res.data.data
 			} else {
 				Toast(res.data.msg)
 			}
 		}).catch(function(){
+			Indicator.close();
 				Toast('连接失败，请检查网络是否正常!')
 		})
 	},

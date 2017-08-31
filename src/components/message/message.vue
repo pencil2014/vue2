@@ -4,12 +4,12 @@
 		<div class="tabbar">
 			<div class="m1" @click="tap(1)" :class="{active:messageType==1}">
 				<div class="numbox">消息
-					<span class="num">99+</span>
+					<span class="num" v-show="noReadCount1 != 0">{{noReadCount1}}</span>
 				</div>
 			</div>
 			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">
-				<div class="numbox">系统
-					<span class="num">3</span>
+				<div class="numbox">通知
+					<span class="num" v-show="noReadCount2 != 0">{{noReadCount2}}</span>
 				</div>
 			</div>
 		</div>
@@ -23,14 +23,14 @@
 				 	<mt-loadmore :top-method="loadTop" ref="loadmore">
 				 	<no-data :hasdata="hasdata"></no-data>
 					<li v-for="(item, index) in list" @click="todetail(item.id)" :class="{read:item.isRead == '1'}" >
-						<span class="title" v-text="item.messageTitle"></span>
-						<span class="time">{{item.pushTime | localTime}}</span>
+						<span class="title" v-text="item.messageContent"></span>
+						<p class="time">{{item.pushTime | localTime}}</p>
 					</li>
 					</mt-loadmore>
 				</ul>
-				<div class="page-infinite-loading" v-show="loading">
+				<!-- <div class="page-infinite-loading" v-show="loading">
 			       <mt-spinner type="fading-circle"></mt-spinner>
-			    </div>
+			    </div> -->
 			</div>
 		</div>
 	</div>
@@ -51,6 +51,8 @@ export default {
 			messageType: (function(){
 				return (sessionStorage.getItem('messageType') ? sessionStorage.getItem('messageType') : 1)
 			})(),
+			noReadCount1: 0,
+			noReadCount2: 0,
 			modal: {
 				text:'我的消息',
 				fixed: false
@@ -92,7 +94,6 @@ export default {
     },
 	methods: {
 		back () {
-			sessionStorage.setItem('messageType','')
 			this.$router.back()
 		},
 		tap (id) {
@@ -114,7 +115,11 @@ export default {
 		getData () {
 			let _this = this;
 			_this.nodateStatus = false
-			axios.post('/exsd-web/message/list',qs.stringify({
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
+			axios.post('/exsd-message/web/message/list',qs.stringify({
 				messageType: _this.messageType,	
 				pageSize: _this.pageSize,
 				page: 1
@@ -123,6 +128,8 @@ export default {
 				if (res.data.code === '10000') {
 					_this.list = res.data.data.list || [];
 					_this.totalPage = res.data.data.totalPage
+					_this.noReadCount1 = res.data.data.noReadCount1*1 <= 99 ? res.data.data.noReadCount1*1 : '99+';
+					_this.noReadCount2 = res.data.data.noReadCount2*1 <= 99 ? res.data.data.noReadCount2*1 : '99+';
 					_this.page = 2
 					_this.nodateStatus = true
 				} else {	
@@ -138,23 +145,33 @@ export default {
 			if (_this.page > _this.totalPage) {
 				return
 			}
+			Indicator.open({
+			  text: '加载中...',
+			  spinnerType: 'fading-circle'
+			})
 			this.loading = true
 			_this.nodateStatus = false
-			axios.post('/exsd-web/message/list',qs.stringify({
+			axios.post('/exsd-message/web/message/list',qs.stringify({
 				pageSize: _this.pageSize,
 				page: _this.page,
 				messageType: _this.messageType
 			})).then(function(res){
+				Indicator.close();
 				if (res.data.code === '10000') {
 					_this.list.push(...res.data.data.list);
 					_this.totalPage = res.data.data.totalPage
+					_this.noReadCount1 = res.data.data.noReadCount1*1 <= 99 ? res.data.data.noReadCount1*1 : '99+';
+					_this.noReadCount2 = res.data.data.noReadCount2*1 <= 99 ? res.data.data.noReadCount2*1 : '99+';
 					_this.page += 1;
 					_this.loading = false;
 					_this.nodateStatus = true
+					
 				} else {	
 					Toast(res.data.msg)
 				}
-			}).catch(function(){
+			}).catch(function(err){
+				Indicator.close();
+				console.log(err)
 				Toast('连接失败，请检查网络是否正常!')
 			})
 		}
@@ -171,7 +188,13 @@ export default {
 			let time2 = [hours,minutes].join(':')
 			return time1 + '    ' +time2;
 		},
-	}
+	},
+	beforeRouteLeave (to,from,next) {
+		if(to.path.indexOf('/messagedetail') === -1){
+			sessionStorage.setItem('messageType','')
+		}
+		next()
+	},
 }
 </script>
 <style scoped>
@@ -183,10 +206,10 @@ export default {
 .tabbar div .num{display: inline-block;min-width: 20px;height: 20px;line-height: 20px;border-radius: 10px;text-align: center;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding: 0 5px;font-size: 1.2rem;background: #f0544d;color: #fff;position: absolute;top: -0.6rem;left: 30px;}
 .active{border-bottom: solid 3px rgb(4,112,182);color: rgb(4,112,182);}
 .ex-message-item{overflow-y: scroll;}
-.ex-message-item li{display: block;font-size: 1.4rem;padding: 20px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;background: rgb(241,250,255)}
+.ex-message-item li{display: block;font-size: 1.4rem;padding: 10px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;background: rgb(241,250,255)}
 .ex-message-item li:last-child{border-bottom: none;}
-.ex-message-item .title{}
-.ex-message-item .time{color: rgb(196,201,209);float: right;padding-top: 5px;}
+.ex-message-item .title{display: inline-block;line-height: 20px;height: 40px;overflow:hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;}
+.ex-message-item .time{color: rgb(196,201,209);text-align: right;}
 .ex-message-item li.read{background: #fff;color: #aaafb6;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>
