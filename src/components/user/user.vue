@@ -47,12 +47,12 @@
 						<span>店铺管理</span>
 						<i class="iconfont">&#xe606;</i>
 					</li>
-					<!-- <router-link to="/message" tag="li">
+					<router-link to="/message" tag="li">
 						<img src="../../assets/images/news.png" alt="">
 						<span>我的消息</span>
 						<i class="iconfont">&#xe606;</i>
-						<span for="" class="count" v-text="count" v-show="count!=0"></span>
-					</router-link> -->
+						<span for="" class="count" v-text="count" v-show="count"></span>
+					</router-link>
 					<router-link to="/notice" tag="li">
 						<img src="../../assets/images/notice.png" alt="">
 						<span>公告</span>
@@ -62,6 +62,12 @@
 			</div>
 			<div class="ex-user-item">
 				<ul>
+					<!-- <li @click="toRealName">
+						<img src="../../assets/images/renzhen.png" alt="">
+						<span>实名认证</span>
+						<i class="iconfont" v-if="checkRealName.status !== '2'">&#xe606;</i>
+						<label for="">{{realnamestatus}}</label>
+					</li> -->
 					<li @click="toRealName" v-if="!isShop">
 						<img src="../../assets/images/renzhen.png" alt="">
 						<span>个人实名认证</span>
@@ -153,11 +159,13 @@ export default {
 		})
 		 axios.all([
 		 	axios.post('/exsd-web/user/personal'),
+    		axios.post('/exsd-message/web/message/getNoReadCounts'),
     		axios.post('/exsd-web/verify/checkRealName'),
-		 ]).then(axios.spread(function (personal,realname){
+		 ]).then(axios.spread(function (personal,count,realname){
 		 	Indicator.close()
-		 	if(personal.data.code === '10000' && realname.data.code === '10000'){
+		 	if(personal.data.code === '10000'&& count.data.code === '10000' && realname.data.code === '10000'){
 		 		_this.userinfo = personal.data.data;
+		 		_this.count = count.data.data.noReadCounts*1 <= 99 ? count.data.data.noReadCounts*1 : '99+';
 		 		_this.checkRealName = realname.data.data
 		 		_this.realType = _this.checkRealName.hasOwnProperty('type') ? _this.checkRealName.type : false
 		 		if(_this.userinfo.userCode.slice(0,1) === 'B'){
@@ -166,6 +174,7 @@ export default {
 		 		}
 		 	}else{
 		 		personal.data.code !== '10000' ? Toast(personal.data.msg) : ''
+		 		count.data.code !== '10000' ? Toast(count.data.msg) : ''
 		 		realname.data.code !== '10000' ? Toast(realname.data.msg) : ''
 		 	}
 		 })).catch(function(){
@@ -293,5 +302,5 @@ export default {
 .ex-user-item ul li img{width: 30px;vertical-align: middle;}
 .ex-user-item ul li span{}
 .ex-user-item ul li label{float: right;color: #aaafb6;padding: 0 15px 0 0;}
-.ex-user-item ul li span.count{display: inline-block;border: none;box-sizing: border-box;float: right;background: #f0544d;height: 24px;min-width: 24px;text-align: center;line-height: 24px;margin-top: 3px;color: #fff;border-radius: 15px;padding: 0 4px;font-size: 1.2rem;}
+.ex-user-item ul li span.count{display: inline-block;border: none;box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;float: right;background: #f0544d;height: 20px;min-width: 20px;text-align: center;line-height: 20px;margin-top: 5px;color: #fff;border-radius: 10px;padding: 0 4px;font-size: 1.2rem;}
 </style>

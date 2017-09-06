@@ -12,9 +12,12 @@
 				 	<no-data :hasdata="hasdata"></no-data>
 					<li v-for="(item, index) in list" @click="todetail(item.id)"  :class="{read:item.isRead == '1'}">
 					    <div class="list-item">
-					    <span class="title" v-text="item.messageTitle" ></span>
+					    <span class="title" v-text="item.messageTitle" ></span>	
+
 							<span class="summary">{{item.messageContent | formatHtml}}</span>
-							<span class="time">{{item.pushTime | localTime}}</span>
+							<span class="time" v-show="item.author">{{item.author}}</span>
+							<span class="time" v-if='item.strategy==="1"'>{{item.publishTime | localTime}}</span>
+							<span class="time" v-else>{{item.effectTime | localTime}}</span>
 					    </div>
 					</li>
 					</mt-loadmore>
@@ -114,12 +117,15 @@ export default {
 	},
 	filters: {
 		localTime (time) {
-			let newdate = new Date(time*1000)
+			if (!time) {
+				return ''
+			}
+			let newdate = new Date(time)
 			let year = newdate.getFullYear()
-			let month = newdate.getMonth() +1
-			let date = newdate.getDate()
-			let hours = newdate.getHours()
-			let minutes = newdate.getMinutes()
+			let month = newdate.getMonth() +1 < 10? '0' + (newdate.getMonth() +1) : (newdate.getMonth() + 1)
+			let date = newdate.getDate() < 10 ? '0' + newdate.getDate() : newdate.getDate()
+			let hours = newdate.getHours() < 10 ? '0' + newdate.getHours() : newdate.getHours()
+			let minutes = newdate.getMinutes() < 10 ? '0' + newdate.getMinutes() : newdate.getMinutes()
 			let time1 = [year,month,date].join('-')
 			let time2 = [hours,minutes].join(':')
 			return time1 + '    ' +time2;
@@ -145,6 +151,6 @@ export default {
 .ex-notice-item li .list-item{padding-left: 1rem;}
 .ex-notice-item span.title{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;display: inline-block;width: 100%;}
 .ex-notice-item .summary{display: block;color: #aaafb6;font-size: 1.2rem;line-height: 15px;min-height: 15px;max-height: 30px;overflow:hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;}
-.ex-notice-item .time{color: #aaafb6;float: left;padding-top: 5px;font-size: 1rem;}
+.ex-notice-item .time{color: #aaafb6;float: left;padding-top: 5px;font-size: 1rem;padding-right: 10px;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>

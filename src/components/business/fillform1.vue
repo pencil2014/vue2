@@ -160,6 +160,9 @@ export default {
 	},
 	watch: {
 		provinceId () {
+			if(!this.provinceId){
+				return
+			}
 			let arr = this.city.filter(function(item){
 				return item.parentId === this.provinceId
 			}.bind(this))

@@ -1,44 +1,5 @@
 <template>
 	<div class="ex-index">
-		<!-- <div class="ex-index-box">
-			<div class="ex-index-toplink">
-				<div class="switch" v-if="userinfo.shopsStatus === '2'" @click='changetoken'>切换为会员</div>  
-				<div class="links">
-					<router-link to="/message"><i class='iconfont'>&#xe611;</i></router-link>
-					<router-link to="/settings"><i class='iconfont'>&#xe651;</i></router-link>
-				</div>
-			</div>
-			<div class="ex-index-userinfo">
-				<div class="ex-index-head">
-					<div class="ex-index-img" >
-						<a href="javascript:;" @click="gouser">
-							<img :src="userinfo.logoImg"  v-show="userinfo.logoImg">
-						</a>
-						<p :class="{vip:userVipStatus.auditStatus ==='2'}">
-							<img src="../../assets/images/vip.png" alt="" v-if="userVipStatus.auditStatus ==='2'"> e享会员
-						</p>
-					</div>
-					<p class="name">{{userinfo.userName}}</p>
-					<p class="id">ID:{{userinfo.userCode}}</p>
-				</div>
-				<div class="ex-index-data">
-					<ul>
-						<li><b>账户余额:</b><span>{{userinfo.overMoney | checknum}}</span></li>
-						<li><b>提现金额:</b><span>{{userinfo.freezeMoney | checknum}}</span></li>
-						<li><b>e积分:</b><span>{{userinfo.integralA}}</span></li>
-						<li><b>激励e积分:</b><span>{{userinfo.integralB}}</span></li>
-						<li><b>享积分:</b><span>{{userinfo.integral}}</span></li>
-						<li><b>平台商家数:</b><span>{{sysData.businessNum}}</span></li>
-						<li><b>昨日交易总额:</b><span>{{sysData.totalShareMoney}}</span></li>
-						<li><b>e享比例:</b><span>{{sysData.eProportion}}</span></li>
-						<li><b>激励比例:</b><span>{{sysData.jeProportion}}</span></li>
-						<li><b>昨日分享平均值:</b><span>{{sysData.yesterdayMoney}}</span></li>
-					</ul>
-				</div>
-			</div>
-
-		</div> -->
-	
 		<div class="ex-index-header">
 			<div class="ex-index-user">
 				<div class="ex-index-logo">
@@ -85,7 +46,7 @@
 					<tr>
 						<td>
 							<b>应分享单元值</b>
-							<span>{{sysData.yesterdayMoney}}</span>
+							<span>{{sysData.yesterdayMoney | checknum}}</span>
 						</td>
 						<td>
 							<b>昨日分享平均值</b>
@@ -148,6 +109,10 @@
 				<!-- <b class=" m5"><i class="iconfont">&#xe6be;</i></b> -->
 				<span>转存银行</span></a>
 				</li>
+				<li><router-link to="/orderlist">
+				<img src="../../assets/images/21.png" alt="">
+				<span>我的订单</span></router-link>
+				</li>
 				<li><router-link to="/recommend">
 				<img src="../../assets/images/7.png" alt="">
 				<!-- <b class=" m6"><i class="iconfont">&#xe603;</i></b> -->
@@ -207,7 +172,7 @@
 		</div>
 
 		<app-nav></app-nav>
-		<ex-notice :modal='model'  @confirm='confirm' v-show='!model.hide'></ex-notice>
+		<ex-notice :modal='model'  @confirm='confirm' v-show='showModel'></ex-notice>
 		<!-- 系统维护提示 -->
 		 <!-- <div class="ex-weihu" v-if=''>
 		 		<div class="ex-weihu-cnt">
@@ -274,16 +239,18 @@ export default {
 			userVipStatus: {},
 			customerService: false,
 			repeatBtn: false,
+			msgIds: [],
+		  msgInfo: [],
+		  msgIndex: 0,
 			enterstatus: '',
 			model: {
-		  	title: '重要通知',
-		  	text: 
-		  	'<p>各区域代理．联盟商家，消费者，以下政策是稳定平台的一项重大变革，e享时代分享系统将于2017年8月31日零时进行全面的升级，升级后的e享时代平台执行</p><p>享积分操作提取30%其中5%为平台服务费和储备金，25%作为消费基金</p><p>此次系统升级为即将开通的电子商城做筹备，届时e享时代系统开放网络购物商城，消费者可通过手中的消费基金兑换平台内的商品，自提取成功后用于当月抵扣持续消费。</p><p>升级当日分享比例将统一由系统自动计算，9月1日恢复正常比例</p>',
-		  	confirm: '我知道了',
-		  	end: new Date('2018-8-14').getTime(),
-		  	identity: 'notice_2',
-		  	hide: false // false为默认显示， true为隐藏
+		  	title: '',
+		  	content: '',
+		  	author: '',
+		  	publishTime: '',
+		  	confirm: '我知道了'
 		  },
+		  showModel: false,
 		  isDownload: false,
 		  androidUrl: '',
 		  isAndroid: false,
@@ -296,6 +263,40 @@ export default {
 		exNotice
 	},
 	methods: {
+		hasNotice () {
+			let _this = this
+			axios.post('/exsd-message/web/Notice/hasNotice',qs.stringify({platform: '2'})).then(function(res){
+				if (res.data.code === '10000') {
+					if (res.data.data && res.data.data.length > 0) {
+						_this.msgInfo = res.data.data
+						_this.model = res.data.data[0]
+						if (res.data.data.length > 1) {
+		  				  _this.model.confirm = '下一条'
+			      } else {
+			    	    _this.model.confirm = '我知道了'
+			      }
+			      _this.showModel = true
+					}
+					
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
+		},
+
+		readNotice () {
+			let _this = this
+			axios.post('/exsd-message/web/Notice/readNotice',qs.stringify({'ids[]': this.msgIds.join(',')})).then(function(res){
+				if (res.data.code === '10000') {
+				} else {
+					Toast(res.data.msg)
+				}
+			}).catch(function(){
+					Toast('连接失败，请检查网络是否正常!')
+			})
+		},
 		toFillForm () {
 			let path = '/fillform/step1'
 			if(this.ExpandStatus === '5'){
@@ -338,7 +339,18 @@ export default {
 			}
 		},
 		confirm () {
-			this.model.hide = true
+			this.msgIds.push(this.model.id)
+			this.msgIndex += 1
+			let num = this.msgIndex + 1
+			if (this.msgInfo.length >= num) {
+				this.model = this.msgInfo[this.msgIndex]
+				this.model.confirm = (this.msgInfo.length === num) ? '我知道了' : '下一条'
+				this.showModel = true
+			} else {
+				this.showModel = false
+				this.readNotice()
+			}
+
 		},
 		changetoken () {
 			if (this.repeatBtn) {
@@ -541,42 +553,13 @@ export default {
 	watch: {
 	},
 	created () {
-		// let phone = window.localStorage.getItem('phone')
-		// let userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
-		// if (!!userinfo && phone === userinfo.phone) {
-		// 	// 获取用户详情
-		// 	let personal = this.$getcache('user/personal')
-		// 	if (personal) {
-		// 		this.userinfo = JSON.parse(window.localStorage.getItem('businessinfo'))
-		// 	} else {
-		// 		this.getuserinfo()
-		// 	}
-		// 	// 获取平台信息
-		// 	let sysIndex = this.$getcache('user/sysIndex')
-		// 	if (sysIndex) {
-		// 		this.sysData = JSON.parse(window.localStorage.getItem('sysData'))
-		// 	} else {
-		// 		this.getsysIndex()
-		// 	}
-		// 	//获取会员审核详情信息
-		// 	let examine = this.$getcache('user/examine')
-		// 	if (examine) {
-		// 		this.userVipStatus = JSON.parse(window.localStorage.getItem('userVipStatus'))
-		// 	} else {
-		// 		this.getexamine()
-		// 	}
-		// } else {
-		// 	this.getuserinfo()
-		// 	this.getsysIndex()
-		// 	this.getexamine()
-		// 	this.getenterdetail()
-		// }
 		this.getuserinfo()
 		this.getsysIndex()
 		this.getexamine()
 		this.getenterdetail()
 		this.getandroidUrl()
 		this.shopExpandStatus()
+		this.hasNotice()
 		// if (!window.localStorage.getItem('batchNotice')) {
 		// 	MessageBox('提示','为了增加商家和会员体验，特增加批量报单功能！')
 		// 	window.localStorage.setItem('batchNotice', 'true')
@@ -604,8 +587,7 @@ export default {
 background-size: cover; display: block; width: 5rem; height: 5rem; border-radius: 50%; margin:auto; /*border:2px solid #fff;*/ margin-bottom: 0.5rem;}
 .ex-index-logo a img {width: 5rem; height: 5rem;}
 .ex-index-logo p{line-height: 2; background-color: #0470b6; border-radius: 2rem; width: 80%; margin: 0.5rem auto;}
-.ex-index-logo .code {margin-top: 1rem;}
-.ex-index-logo .vip {position: absolute; top: 3.6rem; right:1.6rem;}
+.ex-index-logo .vip {position: absolute; top: 4rem; right: 1.2rem;}
 .ex-index-logo .vip img{ height: 1.5rem; }
 .ex-index-money { width: 50%; text-align: center; font-size: 1.4rem; padding-top:2rem; }
 .ex-index-money p{ color: #9bcbea; font-weight: 300;}

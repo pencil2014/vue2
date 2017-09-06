@@ -119,7 +119,6 @@ export default {
 						if (res.data.code === '10000') {
 							window.localStorage.setItem('token', res.data.data.token)
 							window.localStorage.setItem('usertype', '1')
-							window.localStorage.removeItem('notice_2')
 							axios.defaults.headers.common['authorization'] = 'Bearer ' + res.data.data.token
 							_this.$router.push('/index')
 						} else {

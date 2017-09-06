@@ -71,8 +71,8 @@ const Classify = resolve => require(['../components/partner/classify'], resolve)
 const Search = resolve => require(['../components/partner/search'], resolve)
 const City = resolve => require(['../components/partner/city'], resolve)
 
-// const Message = resolve => require(['../components/message/message'], resolve)
-// const Message2 = resolve => require(['../components/message/detail'], resolve)
+const Message = resolve => require(['../components/message/message'], resolve)
+const Message2 = resolve => require(['../components/message/detail'], resolve)
 
 const Settings = resolve => require(['../components/settings/settings'], resolve)
 const Personal = resolve => require(['../components/personal/personal'], resolve)
@@ -118,6 +118,15 @@ const Fillform3 = resolve => require(['../components/business/fillform3'], resol
 const Fillform4 = resolve => require(['../components/business/fillform4'], resolve)
 const Fillform5 = resolve => require(['../components/business/fillform5'], resolve)
 const Fillform6 = resolve => require(['../components/business/fillform6'], resolve)
+
+const Address = resolve => require(['../components/mall/address'], resolve)
+const NewAddress = resolve => require(['../components/mall/newaddress'], resolve)
+const OrderList = resolve => require(['../components/mall/orderlist'], resolve)
+const Mall = resolve => require(['../components/mall/mall'], resolve)
+const Commodity = resolve => require(['../components/mall/commodity'], resolve)
+
+const Buy = resolve => require(['../components/mall/buy'], resolve)
+const OrderDetail = resolve => require(['../components/mall/order'], resolve)
 
 // 导出路由配置
 export default new Router({
@@ -389,16 +398,16 @@ export default new Router({
       name: 'City',
       component: City
     },
-    // {
-    //   path: '/message',
-    //   name: 'Message',
-    //   component: Message
-    // },
-    // {
-    //   path: '/messagedetail/:id',
-    //   name: 'Message2',
-    //   component: Message2
-    // },
+    {
+      path: '/message',
+      name: 'Message',
+      component: Message
+    },
+    {
+      path: '/messagedetail/:id',
+      name: 'Message2',
+      component: Message2
+    },
     {
       path: '/settings',
       name: 'Settings',
@@ -598,6 +607,41 @@ export default new Router({
       path: '/fillform/step6',
       name: 'Fillform6',
       component: Fillform6
+    },
+    {
+      path: '/address',
+      name: 'Address',
+      component: Address
+    },
+    {
+      path: '/newaddress',
+      name: 'NewAddress',
+      component: NewAddress
+    },
+    {
+      path: '/orderlist',
+      name: 'OrderList',
+      component: OrderList
+    },
+    {
+      path: '/mall',
+      name: 'Mall',
+      component: Mall
+    },
+    {
+      path: '/commodity/:id',
+      name: 'Commodity',
+      component: Commodity
+    },
+    {
+      path: '/buy/:id',
+      name: 'Buy',
+      component: Buy
+    },
+    {
+      path: '/order/:id',
+      name: 'OrderDetail',
+      component: OrderDetail
     },
     {
       path:'*', 

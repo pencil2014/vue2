@@ -4,9 +4,13 @@
 	<div class="ex-content">
 		<div class="ex-head">
 			<p class="title" v-text="content.messageTitle"></p>
-			<p class="time" v-text="time"></p>
+			<p class="time">
+				<span class="p_right" v-show="content.author">{{content.author}}</span>
+				<span v-if='content.strategy==="1"'>{{content.publishTime | localTime}}</span>
+				<span v-else>{{content.effectTime | localTime}}</span>
+			</p>
 		</div>
-		<div class="text" v-html="content.messageContent"></div>
+		<div class="text" v-html="formatHtml"></div>
 	</div>
 </div>
 </template>
@@ -29,20 +33,11 @@ export default {
 		id () {
 			return this.$route.params.id
 		},
-		time () {
-			if(!this.content.pushTime){
-				return;
-			}else{
-				let time = new Date(this.content.pushTime*1000)
-				let year = time.getFullYear()
-				let month = time.getMonth() +1
-				let date = time.getDate()
-				let hours = time.getHours()
-				let minutes = time.getMinutes()
-				let time1 = [year,month,date].join('-')
-				let time2 = [hours,minutes].join(':')
-				return time1 + '    ' +time2;
+		formatHtml () {
+			if (!this.content.messageContent) {
+				return ''
 			}
+			return this.content.messageContent.replace(/style="[^"]+"/ig,"").replace(/[&nbsp; ]{3,}/ig, "&nbsp;&nbsp;").replace(/[↵\r\n]+/mg,'<br/>')
 		}
 	},
 	components: {
@@ -73,6 +68,22 @@ export default {
 		back () {
 			this.$router.back();
 		},
+	},
+	filters: {
+		localTime (time) {
+			if (!time) {
+				return ''
+			}
+			let newdate = new Date(time)
+			let year = newdate.getFullYear()
+			let month = newdate.getMonth() +1 < 10? '0' + (newdate.getMonth() +1) : (newdate.getMonth() + 1)
+			let date = newdate.getDate() < 10 ? '0' + newdate.getDate() : newdate.getDate()
+			let hours = newdate.getHours() < 10 ? '0' + newdate.getHours() : newdate.getHours()
+			let minutes = newdate.getMinutes() < 10 ? '0' + newdate.getMinutes() : newdate.getMinutes()
+			let time1 = [year,month,date].join('-')
+			let time2 = [hours,minutes].join(':')
+			return time1 + '    ' +time2;
+		}
 	}
 
 }
@@ -85,4 +96,5 @@ export default {
 .ex-head .title {font-size: 2rem;color: #212a32;}
 .ex-head .time {font-size: 1rem;color: #aaafb6;}
 .ex-content .text{margin-top: 10px;}
+.p_right{padding-right: 10px;}
 </style>

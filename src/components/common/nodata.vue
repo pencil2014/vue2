@@ -1,7 +1,7 @@
 <template>
 	<div class="no-data" :class="{hide:hasdata}">
 		<img src="../../assets/images/nodata.png" alt="">
-		还没有数据哦~
+		您还没有数据哦~
 	</div>
 </template>
 <script>

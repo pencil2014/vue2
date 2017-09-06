@@ -5,10 +5,10 @@
 			<input type="search" name="" id="" placeholder="搜索关键字"  v-model='keyword'>
 		</div>
 		<div class="ex-shop-head">
-			<div class="ex-shop-head-banner">
+			<div class="ex-shop-head-banner" @click='goshop'>
 				<mt-swipe :auto="5000">
 				  <!-- <mt-swipe-item v-for='item in imgurl'>{{item}}</mt-swipe-item> -->
-				  <mt-swipe-item><img src="../../assets/images/banner.png" alt=""></mt-swipe-item>
+				  <mt-swipe-item><img src="../../assets/images/banner2.png" alt=""></mt-swipe-item>
 				</mt-swipe>
 			</div>
 			<div class="ex-shop-top">
@@ -139,6 +139,9 @@ export default {
 		appNav
 	},
 	methods: {
+		goshop () {
+			this.$router.push('/orderlist')
+		},
 		gotosearch () {
 			this.$router.push('/search')
 		},

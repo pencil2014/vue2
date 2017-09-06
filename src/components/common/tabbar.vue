@@ -25,7 +25,7 @@
 			平台规则
 		</a> -->
 		<router-link to="/user">
-			<span class="m4"></span>
+			<span class="m4" :class="{'read': read}"></span>
 			<br>
 			我的
 		</router-link>
@@ -39,7 +39,7 @@ import { MessageBox, Indicator, Toast} from 'mint-ui'
 export default {
 	data () {
 		return {
-			read: ''
+			read: false
 		}
 	},
 	computed: {
@@ -52,17 +52,17 @@ export default {
 		}
 	},
 	created () {
-		// let _this = this;
-		// axios.post('/exsd-web/message/getCount',qs.stringify({}))
-		// .then(function(res){
-		// 	if (res.data.code === '10000') {
-		// 		_this.read = res.data.data.count > 0 ? true : false
-		// 	} else {
-		// 		_this.read = false
-		// 	}
-		// }).catch(function(){
-		// 	Toast('连接失败，请检查网络是否正常!')
-		// })
+		let _this = this;
+		axios.post('/exsd-message/web/message/getNoReadCounts',qs.stringify({}))
+		.then(function(res){
+			if (res.data.code === '10000') {
+				_this.read = res.data.data.noReadCounts ? true : false;
+			} else {
+				Toast(res.data.msg)
+			}
+		}).catch(function(){
+			Toast('连接失败，请检查网络是否正常!')
+		})
 	},
 	methods: {
 		disabled () {
@@ -85,8 +85,11 @@ export default {
 .activeRouter .m2{background:url(../../assets/images/partner_select.png) no-repeat center;background-size: 100%;}
 .ex-nav .m3{background:url(../../assets/images/school.png) no-repeat center;background-size: 100%;}
 .activeRouter .m3{background:url(../../assets/images/school_select.png) no-repeat center;background-size: 100%;}
-.ex-nav .m4{background:url(../../assets/images/user.png) no-repeat center;background-size: 100%;}
+.ex-nav .m4{background:url(../../assets/images/user.png) no-repeat center;background-size: 100%;position: relative;}
 .activeRouter .m4{background:url(../../assets/images/user_select.png) no-repeat center;background-size: 100%;}
 .ex-nav .m4.read:before{content: '';background: red;display: inline-block;width: 10px;height: 10px;margin: 0 10px 5px 0;border-radius: 50%;}
-.activeRouter .m4.read:before{display: none;}
+/*.activeRouter .m4.read:before{display: none;}*/
+
+/*.ex-nav .m4 .count{position: absolute;background: #f0544d;color: #fff;display: inline-block;height: 17px;min-width: 17px;padding: 0 ;line-height: 16px;padding: 0 4px;box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;text-align: center;border-radius: 8px;right: -4px;top: -5px;}
+.ex-nav .activeRouter .m4 .count{display: none;}*/
 </style>

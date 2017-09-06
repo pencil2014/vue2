@@ -30,7 +30,7 @@ export default{
 	},
 	computed: {
 		formatHtml () {
-			return this.modal.content.replace(/style="[^"]+"/ig,"").replace(/(&nbsp;){3,}/ig, "&nbsp;&nbsp;")
+			return this.modal.content.replace(/style="[^"]+"/ig,"").replace(/(&nbsp;){3,}/ig, "&nbsp;&nbsp;").replace(/↵+/mg,'<br/>')
 		}
 	},
 	filters: {

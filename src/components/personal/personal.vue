@@ -121,6 +121,7 @@ export default {
 			}],
 			openSexSlots:false,
 			sexIndex:'',
+			defaultBrithday: new Date()
 		}
 	},
 	components: {
@@ -147,11 +148,13 @@ export default {
 				return year+'年'+month+'月'+date+'日';
 			}	
 		},
-		defaultBrithday () {
-			if(this.personalData.brithday){
-				return new Date(this.personalData.brithday*1000)
-			}
-		},
+		// defaultBrithday () {
+		// 	if(this.personalData.brithday){
+		// 		return new Date(this.personalData.brithday*1000)
+		// 	}else{
+		// 		return new Date()
+		// 	}
+		// },
 		sex () {
 			 if(this.personalData.sex){
 			 	let sex = this.personalData.sex === '0'? '女':'男'
@@ -180,6 +183,9 @@ export default {
 			if (res.data.code === '10000') {
 				_this.personalData = res.data.data
 				_this.sexSlots[0].defaultIndex = _this.personalData.sex == '0'? 1 : 0;
+				if(_this.personalData.brithday){
+					_this.defaultBrithday = new Date(_this.personalData.brithday*1000)
+				}
 			} else {
 				Toast(res.data.msg)
 			}

@@ -4,11 +4,12 @@
 			<div class="imgbox"><img src="../../assets/images/bg_notice.png" alt=""></div>
 			<div class="ex-box">
 				<h3 class="title">{{modal.title || '公告'}}</h3>
-				<div class="text" v-html="modal.text"></div>
-				<!-- <div class="footer">
+				<div class="text" v-html="formatHtml"></div>
+				<div class="footer">
 					<span>{{modal.author}}</span>
-					<span class="time">{{modal.time}}</span>
-				</div> -->
+					<span class="time" v-if='modal.strategy==="1"'>{{modal.publishTime | formatTime}}</span>
+					<span class="time" v-else>{{modal.effectTime | formatTime}}</span>
+				</div>
 				<div class="option">
 					<span class="confirm" @click="confirm" >{{modal.confirm || '我知道了'}}</span>
 				</div>
@@ -17,11 +18,7 @@
 	</div>
 </template>
 <script>
-/**
-* end： 结束日期 （必填）
-* identity： 本地储存的标志 （必填）
-* hide: true 隐藏 false 显示 （必填）
-**/
+
 export default{	
 	props:['modal'],
 	data () {
@@ -30,16 +27,29 @@ export default{
 		} 
 	},
 	created () {
-		let time1 = new Date().getTime()
-		let time2 = this.notice.end
-		let identity = window.localStorage[this.notice.identity] ? true : false
-		if((time1 >= time2) || identity){
-			this.notice.hide = true
+	},
+	computed: {
+		formatHtml () {
+			return this.modal.content.replace(/style="[^"]+"/ig,"").replace(/[&nbsp; ]{3,}/ig, "&nbsp;&nbsp;").replace(/[↵\r\n]+/mg,'<br/>')
 		}
 	},
+	filters: {
+		formatTime (value) {
+			if (!value) {
+				return ''
+			}
+			let time = new Date(value)
+			let year = time.getFullYear()
+			let month = time.getMonth() + 1
+			let date = time.getDate()
+			let hours = time.getHours() < 10 ? '0'+time.getHours() : time.getHours()
+			let minutes = time.getMinutes() < 10 ? '0'+time.getMinutes() : time.getMinutes()
+			let seconds = time.getSeconds() < 10 ? '0'+time.getSeconds(): time.getSeconds()
+			return [year,month,date].join('-') + ' ' + [hours,minutes].join(':')
+		}
+	},	
 	methods: {
 		confirm () {
-			window.localStorage.setItem([this.notice.identity],true)
 			this.$emit('confirm')
 		}
 	}
@@ -48,10 +58,10 @@ export default{
 <style scoped>
 .ex-modal{background: rgba(0,0,0,0.5);position: fixed;width: 100%;height: 100%;top: 0;left: 0;right:0; bottom: 0; display: table; z-index: 7;}
 .ex-modal .ex-content{display: table-cell;vertical-align: middle;padding: 0 5%;}
-.ex-modal .ex-box{background: #fff;width: 100%;border-radius:0 0 0.5rem 0.5rem; margin-top: -0.5rem;}
+.ex-modal .ex-box{background: #fff;width: 100%;border-radius:0 0 0.5rem 0.5rem; margin-top: -0.5rem;word-break: break-all;}
 .ex-modal .ex-box .title{text-align: center;font-size: 1.6rem; margin-bottom: 1rem; padding: 0 1rem;}
-.ex-modal .ex-box .text{max-height: 20rem;font-size: 1.4rem;padding:0 1.5rem;overflow-y: scroll;line-height: 2.2rem; color: #666; word-break: break-all;}
-.ex-modal .ex-box .footer{font-size: 1.4rem; padding: 0.5rem 1.5rem 1rem; text-align: right; color: #999; }
+.ex-modal .ex-box .text{height: 15rem; max-height: 20rem;font-size: 1.4rem;padding:0 1.5rem;overflow-y: scroll;line-height: 2.2rem; color: #666; word-break: break-all;}
+.ex-modal .ex-box .footer{font-size: 1.2rem; padding: 0.5rem 1.5rem 1rem; text-align: right; color: #999; }
 .ex-modal .ex-box .footer .time{ margin-left: 1rem; }
 .ex-modal .ex-box .option{display: table;width: 100%;text-align: center;height: 5rem;line-height: 48px;border-top: solid 1px #eee;font-size: 1.4rem;}
 .ex-modal .ex-box .option span{display: table-cell;border-right: solid 1px #eee;}
@@ -59,17 +69,13 @@ export default{
 .ex-modal .ex-box .option span.cancle{color: #666;}
 .ex-modal .ex-box .option span:active{background: #ebebeb;}
 .ex-modal .ex-box .option .confirm{ color: #047dcb; font-size: 1.6rem;}
+.imgbox img{ width: 100%; height: 10rem; max-height: 25rem;}
 
-.ex-modal .ex-content .imgbox img{width: 100%;max-height: 250px;}
 </style>
 
 <style>
 .ex-modal .ex-box .text p { text-indent: 2rem; padding-top: 0.5rem;}
 .ex-modal .ex-box .text p a { margin: 0 0.5rem; color: #047dcb;}
-.ex-modal .ex-box .text p.right{text-align: right;}
 .ex-modal .ex-box .text .inscribe {text-align: right; padding-top: 0.5rem;}
 .ex-modal .ex-box .text .inscribe p{padding-top: 0;}
-
-.ex-modal .ex-box .text .time{text-align: right;}
-.ex-modal .ex-box .text .name{ text-align: right;}
 </style>

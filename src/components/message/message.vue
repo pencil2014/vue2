@@ -4,12 +4,12 @@
 		<div class="tabbar">
 			<div class="m1" @click="tap(1)" :class="{active:messageType==1}">
 				<div class="numbox">消息
-					<span class="num" v-show="noReadCount1 != 0">{{noReadCount1}}</span>
+					<span class="num" v-show="noReadCount1">{{noReadCount1}}</span>
 				</div>
 			</div>
 			<div class="m2" @click="tap(2)" :class="{active:messageType==2}">
 				<div class="numbox">通知
-					<span class="num" v-show="noReadCount2 != 0">{{noReadCount2}}</span>
+					<span class="num" v-show="noReadCount2">{{noReadCount2}}</span>
 				</div>
 			</div>
 		</div>
@@ -178,12 +178,15 @@ export default {
 	},
 	filters: {
 		localTime (time) {
-			let newdate = new Date(time*1000)
+			if (!time) {
+				return ''
+			}
+			let newdate = new Date(time)
 			let year = newdate.getFullYear()
-			let month = newdate.getMonth() +1
-			let date = newdate.getDate()
-			let hours = newdate.getHours()
-			let minutes = newdate.getMinutes()
+			let month = newdate.getMonth() +1 < 10? '0' + (newdate.getMonth() +1) : (newdate.getMonth() + 1)
+			let date = newdate.getDate() < 10 ? '0' + newdate.getDate() : newdate.getDate()
+			let hours = newdate.getHours() < 10 ? '0' + newdate.getHours() : newdate.getHours()
+			let minutes = newdate.getMinutes() < 10 ? '0' + newdate.getMinutes() : newdate.getMinutes()
 			let time1 = [year,month,date].join('-')
 			let time2 = [hours,minutes].join(':')
 			return time1 + '    ' +time2;
@@ -209,7 +212,7 @@ export default {
 .ex-message-item li{display: block;font-size: 1.4rem;padding: 10px 10px;line-height: 20px;border-bottom: solid 1px #ebebeb;background: rgb(241,250,255)}
 .ex-message-item li:last-child{border-bottom: none;}
 .ex-message-item .title{display: inline-block;line-height: 20px;height: 40px;overflow:hidden;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;word-break: break-all;}
-.ex-message-item .time{color: rgb(196,201,209);text-align: right;}
+.ex-message-item .time{color: rgb(196,201,209);text-align: right; font-size: 1.2rem;}
 .ex-message-item li.read{background: #fff;color: #aaafb6;}
 .page-infinite-loading{text-align: center;width: 28px;margin: 10px auto;}
 </style>
